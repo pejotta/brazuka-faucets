@@ -1,24 +1,50 @@
 [
     {
         "id": 1,
-        "nome": "FreeBits",
-        "url": "https://freebits.com",
+        "nome": "Brazuka BTC Faucet",
+        "url": "https://brazukatest.com/btc",
         "moeda": "btc",
         "tipo": "padrao",
-        "minimo_saque": "500 Satoshis",
-        "tempo_saque": "5 minutos",
+        "minimo_saque": "200 Satoshis",
+        "tempo_saque": "10 Minutos",
         "status": "paying",
-        "avaliacao": 4.5
+        "avaliacao": 4.8,
+        "pagamento": "faucetpay"
     },
     {
         "id": 2,
-        "nome": "AutoCrypto",
-        "url": "https://autocrypto.net",
+        "nome": "LTC Rápida",
+        "url": "https://ltc-rapida.net",
+        "moeda": "ltc",
+        "tipo": "padrao",
+        "minimo_saque": "0.001 LTC",
+        "tempo_saque": "2 Horas",
+        "status": "pending",
+        "avaliacao": 3.5,
+        "pagamento": "direct"
+    },
+    {
+        "id": 3,
+        "nome": "Auto Cripto Central",
+        "url": "https://autocripto.xyz",
         "moeda": "central",
         "tipo": "auto",
         "minimo_saque": "1000 Pontos",
         "tempo_saque": "Imediato",
         "status": "paying",
-        "avaliacao": 3.8
+        "avaliacao": 4.1,
+        "pagamento": "faucetpay"
+    },
+    {
+        "id": 4,
+        "nome": "Dogecoin Fácil",
+        "url": "https://dogefacil.com",
+        "moeda": "doge",
+        "tipo": "padrao",
+        "minimo_saque": "5 DOGE",
+        "tempo_saque": "24 Horas",
+        "status": "scam",
+        "avaliacao": 2.1,
+        "pagamento": "direct"
     }
 ]
