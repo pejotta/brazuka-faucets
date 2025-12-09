@@ -1,0 +1,24 @@
+[
+    {
+        "id": 1,
+        "nome": "FreeBits",
+        "url": "https://freebits.com",
+        "moeda": "btc",
+        "tipo": "padrao",
+        "minimo_saque": "500 Satoshis",
+        "tempo_saque": "5 minutos",
+        "status": "paying",
+        "avaliacao": 4.5
+    },
+    {
+        "id": 2,
+        "nome": "AutoCrypto",
+        "url": "https://autocrypto.net",
+        "moeda": "central",
+        "tipo": "auto",
+        "minimo_saque": "1000 Pontos",
+        "tempo_saque": "Imediato",
+        "status": "paying",
+        "avaliacao": 3.8
+    }
+]
