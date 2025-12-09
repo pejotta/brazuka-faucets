@@ -1,5 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const coinFilter = "btc"; // ⚠️ IMPORTANTE: Mude este valor para cada arquivo (ex: "ltc", "doge", etc.)
+    const body = document.querySelector('body');
+    const coinFilter = body ? body.getAttribute('data-coin') : null; 
+    
+    // Se não houver moeda definida, para o script
+    if (!coinFilter) {
+        console.error("Erro: Atributo data-coin não encontrado no <body>.");
+        return;
+    }
     const tbody = document.getElementById('faucets-tbody');
     const applyButton = document.getElementById('apply-filters');
 
