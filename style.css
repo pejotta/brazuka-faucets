@@ -250,3 +250,102 @@ body {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* Adicione estas classes ao final do seu arquivo style.css */
+
+.banner-lista-top, .banner-lista-bottom {
+    background-color: #f0f0f0;
+    color: #555;
+    text-align: center;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px dashed #ccc;
+    font-size: 1.1em;
+}
+
+/* Filtros */
+.filter-controls {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap; /* Para funcionar bem no mobile */
+}
+
+.filter-controls label {
+    font-weight: bold;
+    color: #555;
+}
+
+.filter-controls select, .filter-controls button {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.filter-controls button {
+    background-color: #1a73e8;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.filter-controls button:hover {
+    background-color: #0d60d8;
+}
+
+/* Tabela */
+.table-responsive {
+    overflow-x: auto; /* Para a tabela não quebrar no mobile */
+}
+
+.faucet-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.faucet-table th, .faucet-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.faucet-table th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.faucet-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Estrelas na Tabela */
+.faucet-table .stars .fa-star, .faucet-table .stars .fa-star-half-stroke {
+    color: gold;
+    font-size: 0.9em;
+}
+
+/* Botão Visitar na Tabela */
+.faucet-visit-btn {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white !important;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.faucet-visit-btn:hover {
+    background-color: #45a049;
+}
