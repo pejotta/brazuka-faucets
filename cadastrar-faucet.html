@@ -1,0 +1,32 @@
+<form name="cadastro_faucet" method="POST" data-netlify="true" class="faucet-form">
+    <h2>Preencha os dados da sua Faucet:</h2>
+    
+    <label for="faucet-nome">Nome da Faucet *</label>
+    <input type="text" id="faucet-nome" name="nome" required>
+
+    <label for="faucet-url">URL da Faucet *</label>
+    <input type="url" id="faucet-url" name="url" placeholder="https://..." required>
+    
+    <label for="faucet-moeda">Moeda Principal da Recompensa *</label>
+    <select id="faucet-moeda" name="moeda" required>
+        <option value="">-- Selecione a Criptomoeda --</option>
+        <option value="btc">Bitcoin (BTC)</option>
+        <option value="eth">Ethereum (ETH)</option>
+        <option value="doge">Dogecoin (DOGE)</option>
+        <option value="central">Central de Faucets (Múltiplas Moedas)</option>
+    </select>
+    
+    <label for="faucet-tipo">Tipo de Faucet *</label>
+    <select id="faucet-tipo" name="tipo" required>
+        <option value="padrao">Faucet Padrão</option>
+        <option value="auto">Auto Faucet (Pontos/Surf)</option>
+    </select>
+    
+    <label for="faucet-minimo">Mínimo de Saque (Ex: 500 Satoshis) *</label>
+    <input type="text" id="faucet-minimo" name="minimo_saque" required>
+    
+    <label for="faucet-tempo">Frequência/Tempo de Coleta *</label>
+    <input type="text" id="faucet-tempo" name="tempo_saque" placeholder="Ex: A cada 5 minutos / Imediato" required>
+    
+    <button type="submit">Cadastrar Minha Faucet</button>
+</form>
