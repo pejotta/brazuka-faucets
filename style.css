@@ -173,6 +173,13 @@ body {
     color: #1a73e8;
 }
 
+.faucet-icon img {
+    image-rendering: -webkit-optimize-contrast; /* Melhora a nitidez em navegadores Chrome/Edge */
+    object-fit: contain;
+    background: #fff; /* Fundo branco caso a logo seja transparente e borrada */
+    padding: 2px;
+}
+
 .faucet-info h3 {
     font-size: 1.1em;
     margin: 0;
