@@ -110,6 +110,10 @@
     border-color: #1a73e8;
 }
 
+.status-tag {
+    position: relative;
+}
+
 .submit-comment-btn {
     background-color: #1a73e8;
     color: white;
