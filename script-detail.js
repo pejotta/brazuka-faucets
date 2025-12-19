@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('faucet-min').textContent = faucet.minimo_saque;
             document.getElementById('faucet-time').textContent = faucet.tempo_saque;
             document.getElementById('faucet-visit-link').href = faucet.url;
+            document.getElementById('faucet-payment').textContent = faucet.pagamento || 'Não especificado';
             
             // Status Tag
             const statusTag = document.getElementById('faucet-status');
