@@ -69,22 +69,28 @@ function setupShareButtons(faucetNome) {
 
 // FUNÇÃO PARA AVALIAÇÃO INTERATIVA (ESTRELAS)
 function initInteractiveRating() {
+    // Seleciona os iconify-icon dentro da div #user-rating
     const stars = document.querySelectorAll('#user-rating iconify-icon');
     const statusText = document.getElementById('rating-status');
 
     stars.forEach(star => {
+        // Importante: forçar o cursor pointer no JS se o CSS falhar
+        star.style.cursor = "pointer";
+        
         star.addEventListener('click', () => {
-            const val = star.getAttribute('data-value');
+            const val = parseInt(star.getAttribute('data-value'));
             
-            // Pinta as estrelas até a que foi clicada
             stars.forEach(s => {
-                const sVal = s.getAttribute('data-value');
-                s.icon = sVal <= val ? 'ic:round-star' : 'ic:round-star-border';
+                const sVal = parseInt(s.getAttribute('data-value'));
+                if (sVal <= val) {
+                    s.setAttribute('icon', 'ic:round-star'); // Estrela cheia
+                } else {
+                    s.setAttribute('icon', 'ic:round-star-border'); // Estrela vazia
+                }
             });
 
-            statusText.textContent = `Você avaliou com ${val} estrelas! Obrigado.`;
-            statusText.style.color = "#25d366";
-            statusText.style.fontWeight = "bold";
+            statusText.textContent = `Nota ${val}!`;
+            statusText.style.color = "#1a73e8";
         });
     });
 }
