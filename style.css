@@ -179,7 +179,7 @@ body {
 }
 
 .status-tag {
-    position: absolute;
+    position: relative;
     top: 5px;
     right: 5px;
     padding: 3px 8px;
