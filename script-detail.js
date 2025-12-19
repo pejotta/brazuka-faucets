@@ -1,5 +1,5 @@
 // CONFIGURAÇÃO: Substitua pela URL que a Cloudflare te deu
-const WORKER_URL = "brazuka-faucets.moneynanet-yt.workers.dev";
+const WORKER_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
