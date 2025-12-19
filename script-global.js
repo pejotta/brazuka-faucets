@@ -31,4 +31,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // Chamando as funções. É melhor carregar o Header, depois o Footer.
     loadHeader();
     loadFooter();
+
+    // Função para carregar componentes (Menu, Footer e agora Ads)
+async function loadComponent(id, file) {
+    const element = document.getElementById(id);
+    if (element) {
+        try {
+            const response = await fetch(file);
+            const data = await response.text();
+            element.innerHTML = data;
+        } catch (error) {
+            console.error(`Erro ao carregar o componente: ${file}`, error);
+        }
+    }
+}
+
+// Chame os componentes quando a página carregar
+document.addEventListener("DOMContentLoaded", () => {
+    loadComponent("header-placeholder", "header_template.html");
+    loadComponent("footer-placeholder", "footer_template.html");
+    
+    // NOVOS: Injeção de Ads
+    loadComponent("top-ad-placeholder", "top_ad.html");
+    loadComponent("bottom-ad-placeholder", "bottom_ad.html");
+});
 });
