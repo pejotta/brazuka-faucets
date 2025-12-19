@@ -9,7 +9,8 @@
     "minimo_saque": "0.005 USD",
     "tempo_saque": "Imediato",
     "status": "paying",
-    "avaliacao": 4.8
+    "destaque": false,
+    "patrocinado": false
   },
   {
     "id": 2,
@@ -21,7 +22,8 @@
     "minimo_saque": "30.000 Satoshis",
     "tempo_saque": "Toda semana",
     "status": "paying",
-    "avaliacao": 5.0
+    "destaque": true,
+    "patrocinado": false
   },
   {
     "id": 3,
@@ -33,7 +35,8 @@
     "minimo_saque": "0.00001000 TRX",
     "tempo_saque": "Imediato",
     "status": "paying",
-    "avaliacao": 4.7
+    "destaque": true,
+    "patrocinado": true
   },
   {
     "id": 4,
@@ -45,7 +48,8 @@
     "minimo_saque": "1000 Dogetoshis",
     "tempo_saque": "Imediato",
     "status": "paying",
-    "avaliacao": 4.7
+    "destaque": true,
+    "patrocinado": true
   },
   {
     "id": 5,
@@ -57,7 +61,8 @@
     "minimo_saque": "Variável",
     "tempo_saque": "Imediato",
     "status": "paying",
-    "avaliacao": 4.9
+    "destaque": false,
+    "patrocinado": false
   },
   {
     "id": 6,
@@ -69,6 +74,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
-    "avaliacao": 4.0
+    "destaque": false,
+    "patrocinado": false
   }
 ]
