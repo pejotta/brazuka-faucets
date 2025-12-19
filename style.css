@@ -429,3 +429,14 @@ body {
 .tw { background: #000; }
 .rd { background: #ff4500; }
 .ml { background: #888; }
+
+.input-group-row { display: flex; gap: 10px; margin-bottom: 10px; }
+.input-group-row input { flex: 1; }
+.comment-form input, .comment-form textarea {
+    width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px;
+}
+.comment-item {
+    background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #1a73e8; margin-top: 15px;
+}
+.new-anim { animation: fadeIn 0.5s ease-in; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
