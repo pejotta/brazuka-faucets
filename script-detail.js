@@ -1,4 +1,4 @@
-// CONFIGURAÇÃO: Substitua pela URL que a Cloudflare te deu
+// CONFIGURAÇÃO: Coloque sua URL da Cloudflare (com https:// e sem / no final)
 const WORKER_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             fillPageData(faucet);
             setupShareButtons(faucet.nome);
             
-            // Carrega os dados reais do Worker (Votos e Comentários)
+            // Busca dados reais (Votos e Comentários) no Worker
             loadWorkerData(faucetId);
             
             // Inicia os sistemas interativos
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// 1. Preenche os dados fixos do JSON
+// 1. Preenche os dados fixos que vêm do JSON
 function fillPageData(faucet) {
     document.title = `${faucet.nome} | Brazuka Faucets`;
     document.getElementById('faucet-name').textContent = faucet.nome;
@@ -45,43 +45,52 @@ function fillPageData(faucet) {
     document.getElementById('faucet-payment').textContent = faucet.pagamento || 'Não especificado';
     
     const statusTag = document.getElementById('faucet-status');
-    statusTag.textContent = faucet.status === 'paying' ? 'PAGA REGULARMENTE' : 'EM ANÁLISE';
+    statusTag.textContent = faucet.status === 'paying' ? 'PAGA REGULARMENTE' : (faucet.status === 'pending' ? 'PENDENTE' : 'SCAM/FECHADA');
     statusTag.className = `status-tag ${faucet.status} large-tag`;
 }
 
-// 2. Busca votos e comentários salvos no Cloudflare KV
+// 2. Busca dados globais no Cloudflare KV (Média e Comentários Reais)
 async function loadWorkerData(faucetId) {
     try {
         const response = await fetch(`${WORKER_URL}/get-data?id=${faucetId}`);
+        if (!response.ok) return;
+        
         const data = await response.json();
 
-        // Atualiza média de estrelas se houver
-        if (data.media) {
+        // Atualiza a média global de estrelas
+        if (data.totalVotos > 0) {
             document.getElementById('rating-status').textContent = `Média: ${data.media} (${data.totalVotos} votos)`;
-            updateStarsVisual(Math.round(data.media));
+            // Se o usuário já votou antes, a gente pinta as estrelas com a nota dele
+            const meuVoto = localStorage.getItem(`voto_faucet_${faucetId}`);
+            updateStarsVisual(meuVoto ? parseInt(meuVoto) : Math.round(data.media));
         }
 
-        // Carrega comentários reais
+        // Carrega os comentários reais salvos
         if (data.comentarios && data.comentarios.length > 0) {
             const display = document.getElementById('comments-display-list');
-            display.innerHTML = ''; // Limpa o "Seja o primeiro"
+            display.innerHTML = ''; // Limpa a mensagem de "Seja o primeiro"
             data.comentarios.forEach(c => renderComment(c));
         }
     } catch (e) {
-        console.log("Worker ainda não configurado ou sem dados.");
+        console.log("Worker ainda sem dados para esta faucet.");
     }
 }
 
-// 3. Sistema de Voto (Envia para o Worker)
+// 3. Sistema de Voto Anti-Fraude
 function initInteractiveRating(faucetId) {
     const stars = document.querySelectorAll('#user-rating iconify-icon');
     const statusText = document.getElementById('rating-status');
 
     stars.forEach(star => {
         star.addEventListener('click', async () => {
+            // Verifica se o usuário já votou (Bloqueio Local)
+            if (localStorage.getItem(`voto_faucet_${faucetId}`)) {
+                alert("Pejotta, você já avaliou essa faucet! 😉");
+                return;
+            }
+
             const val = parseInt(star.getAttribute('data-value'));
-            
-            statusText.textContent = "Enviando voto...";
+            statusText.textContent = "Processando seu voto...";
             
             try {
                 const response = await fetch(`${WORKER_URL}/votar`, {
@@ -89,13 +98,24 @@ function initInteractiveRating(faucetId) {
                     body: JSON.stringify({ faucetId, nota: val }),
                     headers: { 'Content-Type': 'application/json' }
                 });
+
                 const resData = await response.json();
-                
-                statusText.textContent = `Média: ${resData.media} (${resData.total} votos)`;
-                updateStarsVisual(val);
-                alert("Voto registrado com sucesso!");
+
+                if (response.ok) {
+                    // Salva no navegador para bloquear cliques futuros
+                    localStorage.setItem(`voto_faucet_${faucetId}`, val);
+                    
+                    statusText.textContent = `Média: ${resData.media} (${resData.total} votos)`;
+                    updateStarsVisual(val);
+                    alert("Obrigado pelo seu voto!");
+                } else {
+                    // Caso o Worker bloqueie pelo IP
+                    alert(resData.error || "Erro ao computar voto.");
+                    statusText.textContent = "Voto não permitido.";
+                }
             } catch (err) {
-                statusText.textContent = "Erro ao votar.";
+                console.error(err);
+                statusText.textContent = "Erro de conexão.";
             }
         });
     });
@@ -109,7 +129,7 @@ function updateStarsVisual(val) {
     });
 }
 
-// 4. Sistema de Comentários (Envia para o Worker)
+// 4. Sistema de Comentários Reais
 function initCommentsSystem(faucetId) {
     const form = document.getElementById('comment-form');
 
@@ -125,17 +145,19 @@ function initCommentsSystem(faucetId) {
         };
 
         try {
-            await fetch(`${WORKER_URL}/comentar`, {
+            const response = await fetch(`${WORKER_URL}/comentar`, {
                 method: 'POST',
                 body: JSON.stringify(commentData),
                 headers: { 'Content-Type': 'application/json' }
             });
 
-            renderComment(commentData);
-            form.reset();
-            alert('Comentário publicado!');
+            if (response.ok) {
+                renderComment(commentData);
+                form.reset();
+                alert('Comentário publicado com sucesso!');
+            }
         } catch (err) {
-            alert('Erro ao publicar comentário.');
+            alert('Erro ao enviar comentário.');
         }
     });
 }
@@ -152,7 +174,7 @@ function renderComment(c) {
     display.prepend(div);
 }
 
-// 5. Botões de Compartilhamento (Não mudou)
+// 5. Compartilhamento
 function setupShareButtons(faucetNome) {
     const pageUrl = window.location.href;
     const title = `Confira a faucet ${faucetNome} no Brazuka Faucets!`;
