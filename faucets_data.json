@@ -30,7 +30,7 @@
     "moeda": "trx",
     "pagamento": "FaucetPay",
     "tipo": "padrão",
-    "minimo_saque": "1000 TRX",
+    "minimo_saque": "0.00001000 TRX",
     "tempo_saque": "Imediato",
     "status": "paying",
     "avaliacao": 4.7
