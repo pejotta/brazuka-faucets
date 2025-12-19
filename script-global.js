@@ -1,4 +1,18 @@
 async function loadEverything() {
+
+    // Define o favicon dinamicamente para todas as páginas
+function setFavicon() {
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+    }
+    // Aqui você coloca o link da imagem que a gente gerou ou sua logo oficial
+    link.href = 'logo-brazuka.png'; 
+}
+setFavicon();
+    
     // 1. Carregar Header (Menu)
     try {
         const res = await fetch('menu_template.html');
