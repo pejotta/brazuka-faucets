@@ -1,1 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato | Brazuka Faucets</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .content-section { padding: 40px 0; max-width: 800px; margin: 0 auto; text-align: center; }
+        .content-section h1 { color: #1a73e8; margin-bottom: 20px; }
+        .content-section p { margin-bottom: 30px; font-size: 1.1em; color: #555; }
+        
+        .contact-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 20px; 
+            margin-top: 30px; 
+        }
 
+        .contact-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-color: #1a73e8;
+        }
+
+        .contact-card i { font-size: 2.5em; margin-bottom: 15px; color: #1a73e8; }
+        .contact-card h3 { margin-bottom: 10px; color: #333; }
+        .contact-card p { font-size: 0.95em; color: #777; margin-bottom: 0; }
+
+        .telegram-color { color: #0088cc !important; }
+        .email-color { color: #d44638 !important; }
+        .location-info { margin-top: 50px; padding: 20px; background: #f9f9f9; border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <article class="content-section">
+            <h1>Fale com o Brazuka! 📢</h1>
+            <p>Tem alguma dúvida, sugestão ou quer reportar uma faucet que parou de pagar? Escolha o melhor canal abaixo e entre em contato conosco.</p>
+
+            <div class="contact-grid">
+                <a href="https://t.me/BrasilCryptoLivre" target="_blank" class="contact-card">
+                    <i class="fa-brands fa-telegram telegram-color"></i>
+                    <h3>Nosso Telegram</h3>
+                    <p>Brasil Crypto - Renda e Criptomoedas</p>
+                    <p><strong>Clique para entrar no canal</strong></p>
+                </a>
+
+                <a href="mailto:moneynanet.yt@gmail.com" class="contact-card">
+                    <i class="fa-solid fa-envelope email-color"></i>
+                    <h3>E-mail</h3>
+                    <p>moneynanet.yt@gmail.com</p>
+                    <p><strong>Clique para enviar uma mensagem</strong></p>
+                </a>
+            </div>
+
+            <div class="location-info">
+                <h3>📍 Localização</h3>
+                <p>Operando diretamente de <strong>Rondônia, Brasil</strong> para toda a comunidade cripto.</p>
+            </div>
+        </article>
+    </main>
+
+    <script src="script-global.js"></script>
+</body>
+</html>
