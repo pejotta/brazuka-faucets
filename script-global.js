@@ -55,3 +55,20 @@ async function loadAd(id, file) {
 
 // Executa assim que o script é lido
 loadEverything();
+
+let currentSlide = 0;
+
+function moveSlide(direction) {
+    const slides = document.querySelectorAll('.slide');
+    const track = document.getElementById('carousel-track');
+    
+    currentSlide += direction;
+
+    if (currentSlide >= slides.length) currentSlide = 0;
+    if (currentSlide < 0) currentSlide = slides.length - 1;
+
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+}
+
+// Auto-play a cada 5 segundos
+setInterval(() => moveSlide(1), 5000);
