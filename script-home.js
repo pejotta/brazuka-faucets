@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Pegamos a URL limpa para buscar o favicon
     const domain = faucet.url.replace(/^(https?:\/\/)/, '').split('/')[0];
     // API do Google para buscar Favicons
-    const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+    const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
 
     const card = `
         <a href="faucet_page_template.html?id=${faucet.id}" class="faucet-card">
