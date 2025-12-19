@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
 
     const card = `
-        <a href="faucet_page_template.html?id=${faucet.id}" class="faucet-card">
+        <a href="faucet.html?id=${faucet.id}" class="faucet-card">
             <div class="faucet-icon">
                 <img src="${faviconUrl}" alt="${faucet.nome}" 
                      style="width: 32px; height: 32px; border-radius: 4px;"
