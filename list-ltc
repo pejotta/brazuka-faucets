@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<body data-coin="ltc"> 
+
+    <main class="container">
+        <section class="headline">
+            <h1>Faucets de Litecoin (LTC)</h1>
+            <p>Use os filtros abaixo para encontrar a melhor opção para você.</p>
+        </section>
+
+        <section class="filters-container" style="background: #f4f4f4; padding: 20px; border-radius: 10px; margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
+            <div>
+                <label>Tipo:</label><br>
+                <select id="filter-tipo">
+                    <option value="all">Todos</option>
+                    <option value="padrao">Faucet Padrão</option>
+                    <option value="auto">Auto Faucet</option>
+                </select>
+            </div>
+            <div>
+                <label>Avaliação Mínima:</label><br>
+                <select id="filter-avaliacao">
+                    <option value="0">Todas</option>
+                    <option value="3">3+ Estrelas</option>
+                    <option value="4">4+ Estrelas</option>
+                    <option value="4.5">4.5+ Estrelas</option>
+                </select>
+            </div>
+            <div>
+                <label>Pagamento:</label><br>
+                <select id="filter-pagamento">
+                    <option value="all">Todos</option>
+                    <option value="faucetpay">FaucetPay</option>
+                    <option value="pix">PIX</option>
+                    <option value="direto">Direto</option>
+                </select>
+            </div>
+            <button id="apply-filters" style="padding: 10px 20px; background: #1a73e8; color: white; border: none; border-radius: 5px; cursor: pointer;">Aplicar Filtros</button>
+        </section>
+
+        <div style="overflow-x: auto;">
+            <table class="faucets-table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                <thead>
+                    <tr style="background: #1a73e8; color: white; text-align: left;">
+                        <th style="padding: 12px;">Nome/URL</th>
+                        <th style="padding: 12px;">Tipo</th>
+                        <th style="padding: 12px;">Min. Saque</th>
+                        <th style="padding: 12px;">Tempo Saque</th>
+                        <th style="padding: 12px;">Avaliação</th>
+                        <th style="padding: 12px;">Status</th>
+                        <th style="padding: 12px;">Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="faucets-tbody">
+                    </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="script-global.js"></script>
+    <script src="script-list-advanced.js"></script> 
+</body>
+</html>
