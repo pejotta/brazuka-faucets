@@ -21,25 +21,29 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             filtered.forEach(faucet => {
-                // Função para definir o ícone correto do Iconify
-                const iconTag = getIconTag(faucet.moeda);
+    // Pegamos a URL limpa para buscar o favicon
+    const domain = faucet.url.replace(/^(https?:\/\/)/, '').split('/')[0];
+    // API do Google para buscar Favicons
+    const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
 
-                const card = `
-                    <a href="faucet_page_template.html?id=${faucet.id}" class="faucet-card">
-                        <div class="faucet-icon">
-                            ${iconTag}
-                        </div>
-                        <div class="faucet-info">
-                            <h3>${faucet.nome}</h3>
-                            <p class="url">${faucet.url.replace(/^(https?:\/\/)/, '').split('/')[0]}</p>
-                        </div>
-                        <span class="status-tag ${faucet.status}">
-                            ${faucet.status === 'paying' ? 'Paga' : 'Análise'}
-                        </span>
-                    </a>
-                `;
-                container.innerHTML += card;
-            });
+    const card = `
+        <a href="faucet_page_template.html?id=${faucet.id}" class="faucet-card">
+            <div class="faucet-icon">
+                <img src="${faviconUrl}" alt="${faucet.nome}" 
+                     style="width: 32px; height: 32px; border-radius: 4px;"
+                     onerror="this.src='https://api.iconify.design/cryptocurrency:${faucet.moeda}.svg'">
+            </div>
+            <div class="faucet-info">
+                <h3>${faucet.nome}</h3>
+                <p class="url">${domain}</p>
+            </div>
+            <span class="status-tag ${faucet.status}">
+                ${faucet.status === 'paying' ? 'Paga' : 'Análise'}
+            </span>
+        </a>
+    `;
+    container.innerHTML += card;
+});
         });
     } catch (error) {
         console.error("Erro na Home:", error);
