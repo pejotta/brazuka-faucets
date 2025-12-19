@@ -101,6 +101,21 @@
                     <option value="central">Central Multimoedas (30+ moedas)</option>
                     <option value="outra">Outra (especificar nos detalhes)</option>
                 </select>
+
+                <label for="faucet-pagamento">Formas de Pagamento / Carteiras Aceites *</label>
+<select id="faucet-pagamento" name="pagamento" required>
+    <option value="">-- Selecione o Meio de Recebimento --</option>
+    <option value="faucetpay">FaucetPay (Recomendado)</option>
+    <option value="faucetpanel">FaucetPanel</option>
+    <option value="pix">PIX (Brasil)</option>
+    <option value="paypal">PayPal</option>
+    <option value="metamask">MetaMask / Web3</option>
+    <option value="trust">Trust Wallet</option>
+    <option value="coinbase">Coinbase Wallet</option>
+    <option value="exodus">Exodus</option>
+    <option value="direto">Carteira Direta (On-chain)</option>
+    <option value="outra">Outra / Múltiplas</option>
+</select>
                 
                 <label for="faucet-tipo">Tipo de Faucet *</label>
                 <select id="faucet-tipo" name="tipo" required>
