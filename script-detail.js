@@ -1,22 +1,19 @@
-// script-detail.js
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const faucetId = params.get('id');
     
     if (!faucetId) {
-        window.location.href = 'index.html'; // Se não tiver ID, volta pra home
+        window.location.href = 'index.html';
         return;
     }
 
     try {
         const response = await fetch('faucets_data.json');
         const faucets = await response.json();
-        
-        // Encontra a faucet pelo ID (convertendo pra número)
         const faucet = faucets.find(f => f.id == faucetId);
 
         if (faucet) {
-            // Preenche os dados na página
+            // Preenche os dados básicos
             document.title = `${faucet.nome} | Brazuka Faucets`;
             document.getElementById('faucet-name').textContent = faucet.nome;
             document.getElementById('faucet-coin').textContent = faucet.moeda.toUpperCase();
@@ -31,8 +28,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             statusTag.textContent = faucet.status === 'paying' ? 'PAGA REGULARMENTE' : (faucet.status === 'pending' ? 'PENDENTE' : 'SCAM/FECHADA');
             statusTag.className = `status-tag ${faucet.status} large-tag`;
 
-            // Estrelas (Reaproveitando a lógica de estrelas que criamos antes)
-            renderStars(faucet.avaliacao);
+            // === AQUI ESTÁ O PULO DO GATO ===
+            // 1. Ativa os botões de compartilhamento
+            setupShareButtons(faucet.nome);
+
+            // 2. Ativa o sistema de avaliação interativo
+            initInteractiveRating();
 
         } else {
             document.body.innerHTML = "<h1>Faucet não encontrada!</h1>";
@@ -40,50 +41,50 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error("Erro ao carregar detalhes:", error);
     }
-    
-    function setupShareButtons(faucetNome) {
+});
+
+// FUNÇÃO PARA COMPARTILHAMENTO
+function setupShareButtons(faucetNome) {
     const pageUrl = window.location.href;
     const title = `Confira a faucet ${faucetNome} no Brazuka Faucets!`;
     const message = `Ei, descobri essa faucet de ${faucetNome} que está pagando bem. Veja aqui: `;
 
-    // WhatsApp
-    document.getElementById('share-wa').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(message + pageUrl)}`;
-    
-    // Telegram
-    document.getElementById('share-tg').href = `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(message)}`;
-    
-    // Facebook
-    document.getElementById('share-fb').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
-    
-    // Twitter (X)
-    document.getElementById('share-tw').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(pageUrl)}`;
-    
-    // Reddit
-    document.getElementById('share-rd').href = `https://www.reddit.com/submit?url=${encodeURIComponent(pageUrl)}&title=${encodeURIComponent(title)}`;
-    
-    // Email
-    document.getElementById('share-ml').href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(message + pageUrl)}`;
+    const shareLinks = {
+        'share-wa': `https://api.whatsapp.com/send?text=${encodeURIComponent(message + pageUrl)}`,
+        'share-tg': `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(message)}`,
+        'share-fb': `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`,
+        'share-tw': `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(pageUrl)}`,
+        'share-rd': `https://www.reddit.com/submit?url=${encodeURIComponent(pageUrl)}&title=${encodeURIComponent(title)}`,
+        'share-ml': `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(message + pageUrl)}`
+    };
 
-    // Garante que todos abram em aba nova
-    document.querySelectorAll('.btn-share').forEach(btn => {
-        if(btn.id !== 'share-ml') btn.target = "_blank";
-    });
-}
-});
-
-function renderStars(rating) {
-    const starsContainer = document.querySelector('.stars');
-    if (!starsContainer) return;
-    
-    let starsHtml = '';
-    for (let i = 1; i <= 5; i++) {
-        if (i <= Math.floor(rating)) {
-            starsHtml += '<i class="fa-solid fa-star rated"></i>';
-        } else if (i === Math.ceil(rating) && rating % 1 !== 0) {
-            starsHtml += '<i class="fa-solid fa-star-half-stroke rated"></i>';
-        } else {
-            starsHtml += '<i class="fa-regular fa-star"></i>';
+    for (const [id, url] of Object.entries(shareLinks)) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.href = url;
+            if (id !== 'share-ml') el.target = "_blank";
         }
     }
-    starsContainer.innerHTML = `${starsHtml} <span class="score">${rating} / 5.0</span>`;
+}
+
+// FUNÇÃO PARA AVALIAÇÃO INTERATIVA (ESTRELAS)
+function initInteractiveRating() {
+    const stars = document.querySelectorAll('#user-rating iconify-icon');
+    const statusText = document.getElementById('rating-status');
+
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const val = star.getAttribute('data-value');
+            
+            // Pinta as estrelas até a que foi clicada
+            stars.forEach(s => {
+                const sVal = s.getAttribute('data-value');
+                s.icon = sVal <= val ? 'ic:round-star' : 'ic:round-star-border';
+            });
+
+            statusText.textContent = `Você avaliou com ${val} estrelas! Obrigado.`;
+            statusText.style.color = "#25d366";
+            statusText.style.fontWeight = "bold";
+        });
+    });
 }
