@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // 2. Filtra os dados
             const filteredFaucets = data.filter(faucet => {
                 // Filtro por Moeda (Necessário para a página)
-                const isCorrectCoin = (faucet.moeda === coinFilter) || (coinFilter === 'central' && faucet.moeda === 'central');
+                const isCorrectCoin = (faucet.moeda === coinFilter) || (faucet.moeda === 'central');
                 
                 // Filtro por Tipo
                 const isCorrectType = filterTipo === 'all' || faucet.tipo === filterTipo;
