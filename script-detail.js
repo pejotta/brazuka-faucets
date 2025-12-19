@@ -40,6 +40,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error("Erro ao carregar detalhes:", error);
     }
+    
+    function setupShareButtons(faucetNome) {
+    const pageUrl = window.location.href;
+    const title = `Confira a faucet ${faucetNome} no Brazuka Faucets!`;
+    const message = `Ei, descobri essa faucet de ${faucetNome} que está pagando bem. Veja aqui: `;
+
+    // WhatsApp
+    document.getElementById('share-wa').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(message + pageUrl)}`;
+    
+    // Telegram
+    document.getElementById('share-tg').href = `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(message)}`;
+    
+    // Facebook
+    document.getElementById('share-fb').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
+    
+    // Twitter (X)
+    document.getElementById('share-tw').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(pageUrl)}`;
+    
+    // Reddit
+    document.getElementById('share-rd').href = `https://www.reddit.com/submit?url=${encodeURIComponent(pageUrl)}&title=${encodeURIComponent(title)}`;
+    
+    // Email
+    document.getElementById('share-ml').href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(message + pageUrl)}`;
+
+    // Garante que todos abram em aba nova
+    document.querySelectorAll('.btn-share').forEach(btn => {
+        if(btn.id !== 'share-ml') btn.target = "_blank";
+    });
+}
 });
 
 function renderStars(rating) {
