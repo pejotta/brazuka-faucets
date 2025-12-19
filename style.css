@@ -257,10 +257,7 @@ body {
     background-color: #f0f0f0;
     color: #555;
     text-align: center;
-    padding: 20px;
-    margin: 20px 0;
-    border: 1px dashed #ccc;
-    font-size: 1.1em;
+    margin: 20px 0
 }
 
 /* Filtros */
