@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todas as Moedas | Brazuka Faucets</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .coins-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            padding: 40px 0;
+        }
+        .coin-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .coin-item:hover {
+            transform: translateY(-5px);
+            border-color: #1a73e8;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .coin-item i {
+            font-size: 2em;
+            color: #1a73e8;
+        }
+        .coin-item span {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header-placeholder"></div>
+    <div id="top-ad-placeholder"></div>
+
+    <main class="container">
+        <section class="headline">
+            <h1>💰 Todas as Moedas Disponíveis</h1>
+            <p>Escolha sua criptomoeda favorita e encontre as melhores faucets para coletar agora.</p>
+        </section>
+
+        <div id="coins-grid" class="coins-container">
+            </div>
+    </main>
+
+    <div id="bottom-ad-placeholder"></div>
+    <div id="footer-placeholder"></div>
+
+    <script src="script-global.js"></script>
+    <script src="script-todas-moedas.js"></script>
+</body>
+</html>
