@@ -368,3 +368,18 @@ body {
 .coin-item:hover iconify-icon {
     transform: scale(1.2); /* Dá um zoom no ícone quando passa o mouse */
 }
+
+.share-buttons { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.btn-share { 
+    width: 45px; height: 45px; border-radius: 50%; /* Botões redondos ficam mais modernos */
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none; color: white; font-size: 22px; transition: 0.3s;
+}
+.btn-share:hover { transform: scale(1.1); filter: brightness(1.1); }
+
+.wa { background-color: #25d366; }
+.tg { background-color: #0088cc; }
+.fb { background-color: #1877f2; }
+.tw { background-color: #000000; } /* Cor do X */
+.rd { background-color: #ff4500; }
+.ml { background-color: #888888; }
