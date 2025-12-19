@@ -1,35 +1,43 @@
-// Função única e poderosa para carregar qualquer componente
-async function loadComponent(id, file, mode = 'inner') {
-    const element = document.getElementById(id);
-    if (!element) return; // Se não achar o ID na página, ele ignora silenciosamente
-
+async function loadEverything() {
+    // 1. Carregar Header (Menu)
     try {
-        const response = await fetch(file);
-        if (!response.ok) throw new Error(`Não foi possível carregar ${file}`);
-        const html = await response.text();
-
-        if (mode === 'inner') {
-            element.innerHTML = html;
-        } else if (mode === 'afterbegin') {
-            element.insertAdjacentHTML('afterbegin', html);
-        } else if (mode === 'beforeend') {
-            element.insertAdjacentHTML('beforeend', html);
+        const res = await fetch('menu_template.html');
+        const html = await res.text();
+        const placeholder = document.getElementById('header-placeholder');
+        if (placeholder) {
+            placeholder.innerHTML = html;
+        } else {
+            document.body.insertAdjacentHTML('afterbegin', html);
         }
-    } catch (error) {
-        console.error('Erro no componente:', error);
+    } catch (e) { console.error("Erro no Menu:", e); }
+
+    // 2. Carregar Ads (Só se existirem os Placeholders)
+    loadAd('top-ad-placeholder', 'top_ad.html');
+    loadAd('bottom-ad-placeholder', 'bottom_ad.html');
+
+    // 3. Carregar Footer
+    try {
+        const res = await fetch('footer_template.html');
+        const html = await res.text();
+        const placeholder = document.getElementById('footer-placeholder');
+        if (placeholder) {
+            placeholder.innerHTML = html;
+        } else {
+            document.body.insertAdjacentHTML('beforeend', html);
+        }
+    } catch (e) { console.error("Erro no Footer:", e); }
+}
+
+async function loadAd(id, file) {
+    const el = document.getElementById(id);
+    if (el) {
+        try {
+            const res = await fetch(file);
+            const html = await res.text();
+            el.innerHTML = html;
+        } catch (e) { console.error(`Erro no Ad ${file}:`, e); }
     }
 }
 
-// Quando o documento carregar, ele executa tudo de uma vez
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // 1. Injeta o Header (Menu) - Use um ID 'header-placeholder' no seu HTML
-    loadComponent('header-placeholder', 'menu_template.html');
-
-    // 2. Injeta os Ads
-    loadComponent('top-ad-placeholder', 'top_ad.html');
-    loadComponent('bottom-ad-placeholder', 'bottom_ad.html');
-
-    // 3. Injeta o Footer - Use um ID 'footer-placeholder' no seu HTML
-    loadComponent('footer-placeholder', 'footer_template.html');
-});
+// Executa assim que o script é lido
+loadEverything();
