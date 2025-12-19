@@ -58,6 +58,12 @@
     color: #1a73e8;
 }
 
+.status-tag {
+    position: relative;
+    top: 0;
+    right: 0;
+}
+
 .stars .fa-star, .stars .fa-star-half-stroke {
     color: #ccc; /* Estrela não preenchida */
     font-size: 1.5em;
