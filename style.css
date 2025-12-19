@@ -347,3 +347,15 @@ body {
 .faucet-visit-btn:hover {
     background-color: #45a049;
 }
+
+.coin-item i {
+    font-size: 2.5em; /* Aumentei um pouco */
+    color: #f2a900;  /* Cor dourada clássica de cripto, ou mantenha o azul #1a73e8 */
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Efeito legal: mudar a cor da moeda no hover */
+.coin-item:hover i {
+    color: #1a73e8;
+}
