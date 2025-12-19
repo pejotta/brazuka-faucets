@@ -1,50 +1,74 @@
 [
-    {
-        "id": 1,
-        "nome": "Brazuka BTC Faucet",
-        "url": "https://brazukatest.com/btc",
-        "moeda": "btc",
-        "tipo": "padrao",
-        "minimo_saque": "200 Satoshis",
-        "tempo_saque": "10 Minutos",
-        "status": "paying",
-        "avaliacao": 4.8,
-        "pagamento": "faucetpay"
-    },
-    {
-        "id": 2,
-        "nome": "LTC Rápida",
-        "url": "https://ltc-rapida.net",
-        "moeda": "ltc",
-        "tipo": "padrao",
-        "minimo_saque": "0.001 LTC",
-        "tempo_saque": "2 Horas",
-        "status": "pending",
-        "avaliacao": 3.5,
-        "pagamento": "direct"
-    },
-    {
-        "id": 3,
-        "nome": "Auto Cripto Central",
-        "url": "https://autocripto.xyz",
-        "moeda": "central",
-        "tipo": "auto",
-        "minimo_saque": "1000 Pontos",
-        "tempo_saque": "Imediato",
-        "status": "paying",
-        "avaliacao": 4.1,
-        "pagamento": "faucetpay"
-    },
-    {
-        "id": 4,
-        "nome": "Dogecoin Fácil",
-        "url": "https://dogefacil.com",
-        "moeda": "doge",
-        "tipo": "padrao",
-        "minimo_saque": "5 DOGE",
-        "tempo_saque": "24 Horas",
-        "status": "scam",
-        "avaliacao": 2.1,
-        "pagamento": "direct"
-    }
+  {
+    "id": 1,
+    "nome": "Vie Faucet",
+    "url": "https://viefaucet.com?r=64ccee302edd5e5772d58744",
+    "moeda": "central",
+    "pagamento": "FaucetPay, Coinbase, Payeer",
+    "tipo": "padrao",
+    "minimo_saque": "0.005 USD",
+    "tempo_saque": "Imediato",
+    "status": "paying",
+    "avaliacao": 4.8
+  },
+  {
+    "id": 2,
+    "nome": "FreeBitco.in",
+    "url": "https://freebitco.in/?r=16898774",
+    "moeda": "btc",
+    "pagamento": "Carteira Direta",
+    "tipo": "padrao",
+    "minimo_saque": "30.000 Satoshis",
+    "tempo_saque": "Toda semana",
+    "status": "paying",
+    "avaliacao": 5.0
+  },
+  {
+    "id": 3,
+    "nome": "TG FAUCET - TRON",
+    "url": "https://tenteiganhei.blogspot.com/p/faucet.html?r=paulo.tan@hotmail.com",
+    "moeda": "trx",
+    "pagamento": "FaucetPay",
+    "tipo": "padrão",
+    "minimo_saque": "1000 TRX",
+    "tempo_saque": "Imediato",
+    "status": "paying",
+    "avaliacao": 4.7
+  },
+  {
+    "id": 4,
+    "nome": "FAUCET DOGE",
+    "url": "https://brasilrendacrypto.blogspot.com/p/faucet-doge.html?r=paulo.tan@hotmail.com",
+    "moeda": "doge",
+    "pagamento": "FaucetPay",
+    "tipo": "padrão",
+    "minimo_saque": "1000 Dogetoshis",
+    "tempo_saque": "Imediato",
+    "status": "paying",
+    "avaliacao": 4.7
+  },
+  {
+    "id": 5,
+    "nome": "Final Autoclaim",
+    "url": "https://autofaucet.dutchycorp.space/?r=Tentei,Ganhei",
+    "moeda": "central",
+    "pagamento": "FaucetPay, Metamask",
+    "tipo": "auto",
+    "minimo_saque": "Variável",
+    "tempo_saque": "Imediato",
+    "status": "paying",
+    "avaliacao": 4.9
+  },
+  {
+    "id": 6,
+    "nome": "GoodWallet",
+    "url": "http://goodwallet.xyz?inviteCode=nTgVwtnjYr",
+    "moeda": "G$, XDC",
+    "pagamento": "GoodWallet",
+    "tipo": "padrao",
+    "minimo_saque": "Sem mínimo",
+    "tempo_saque": "Imediato",
+    "status": "paying",
+    "avaliacao": 4.0
+  }
 ]
