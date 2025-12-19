@@ -1,157 +1,157 @@
-/* fAUCEt_DETAIL.CSS */
+/* fAUCEt_DETAIL.CSS - Versão Clean & Pro */
 
-/* Botão de Visitar */
+/* Botão de Visitar - Chamada Principal */
 .visit-btn {
     display: block;
     width: 100%;
     text-align: center;
-    padding: 15px;
-    background-color: #4CAF50; 
+    padding: 18px;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
     color: white;
-    font-size: 1.3em;
+    font-size: 1.4em;
     font-weight: bold;
-    border-radius: 8px;
-    margin: 20px 0;
+    border-radius: 12px;
+    margin: 25px 0;
     text-decoration: none;
-    transition: background-color 0.3s;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
 }
 
 .visit-btn:hover {
-    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
 }
 
-/* Detalhes */
-.details p {
-    margin-bottom: 8px;
-    font-size: 1.1em;
-}
-
-.details a {
-    color: #1a73e8;
-}
-
-.large-tag {
-    font-size: 1em;
-    padding: 5px 10px;
-}
-
-/* Avaliação e Compartilhamento */
-.meta-info {
-    border-top: 1px solid #eee;
-    margin-top: 30px;
-    padding-top: 20px;
-}
-
-.rating-share {
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-    padding: 20px 0;
-}
-
-.rating-box, .share-box {
-    flex: 1;
-}
-
-.rating-box h3, .share-box h3 {
-    margin-bottom: 10px;
-    color: #1a73e8;
-}
-
-.status-tag {
-    position: relative;
-    top: 0;
-    right: 0;
-}
-
-.stars .fa-star, .stars .fa-star-half-stroke {
-    color: #ccc; /* Estrela não preenchida */
-    font-size: 1.5em;
-}
-
-.stars .rated {
-    color: gold; /* Estrela preenchida */
-}
-
-.score {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-left: 10px;
-}
-
-/* Botões Sociais */
-.social-buttons a {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
-    color: white;
-    border-radius: 50%;
-    margin-right: 10px;
-    font-size: 1.2em;
-    transition: opacity 0.3s;
-}
-
-.social-buttons a:hover {
-    opacity: 0.8;
-}
-
-.facebook { background-color: #3b5998; }
-.twitter { background-color: #00acee; }
-.telegram { background-color: #0088cc; }
-
-/* Seção de Comentários */
-.comments-section {
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-}
-
-.comments-section h2 {
+/* Grid de Detalhes (Ficha Técnica) */
+.details h2 {
     margin-bottom: 20px;
+    color: #333;
+    border-left: 5px solid #1a73e8;
+    padding-left: 10px;
 }
 
-.comment-form textarea {
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+}
+
+.details-grid p {
+    margin: 0;
+    font-size: 1.05em;
+    color: #555;
+    padding: 8px 0;
+    border-bottom: 1px dashed #f0f0f0;
+}
+
+.details-grid strong {
+    color: #1a73e8;
+}
+
+/* Selo de Dica */
+.pro-tip {
+    background: #eef6ff;
+    border-left: 5px solid #1a73e8;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 6px;
+    font-size: 0.95em;
+    color: #444;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Tags de Status */
+.large-tag {
+    font-size: 0.9em;
+    padding: 6px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Seção de Comentários - Melhorada */
+.comments-section {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 2px solid #f0f0f0;
+}
+
+.comment-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+.input-group-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.comment-form input, .comment-form textarea {
     width: 100%;
-    min-height: 100px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.comment-form input:focus, .comment-form textarea:focus {
+    border-color: #1a73e8;
 }
 
 .submit-comment-btn {
     background-color: #1a73e8;
     color: white;
-    padding: 10px 15px;
+    padding: 12px 25px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background 0.3s;
+    width: 100%;
 }
 
 .submit-comment-btn:hover {
     background-color: #0d60d8;
 }
 
-.comment {
+/* Lista de Comentários */
+.comment-item {
     background-color: #fff;
     border: 1px solid #eee;
-    padding: 15px;
-    margin-top: 10px;
-    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    position: relative;
 }
 
-.comment strong {
-    display: block;
-    margin-bottom: 5px;
-    color: #333;
+.comment-item strong {
+    color: #1a73e8;
+    font-size: 1.1em;
 }
 
-/* Responsividade para a página de detalhes */
-@media (max-width: 700px) {
-    .rating-share {
+.comment-item small {
+    color: #999;
+    margin-bottom: 10px;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .input-group-row {
         flex-direction: column;
+    }
+    .details-grid {
+        grid-template-columns: 1fr;
     }
 }
