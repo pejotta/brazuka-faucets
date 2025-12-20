@@ -30,14 +30,36 @@
     padding-left: 10px;
 }
 
-.details-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
+.ficha-wrapper {
+    display: flex;
+    gap: 20px;
     background: #fff;
     padding: 20px;
     border-radius: 10px;
-    border: 1px solid #eee;
+    align-items: center; /* Centraliza o banner verticalmente com o texto */
+}
+
+.details-grid {
+    flex: 1; /* Faz a ficha ocupar o espaço que sobrar */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.ad-slot-sidebar {
+    width: 300px; /* Largura fixa do banner quadrado */
+    min-width: 300px;
+}
+
+/* Magia do Mobile */
+@media (max-width: 768px) {
+    .ficha-wrapper {
+        flex-direction: column; /* Joga o banner para baixo da ficha */
+    }
+    .ad-slot-sidebar {
+        width: 100%;
+        min-width: unset;
+    }
 }
 
 .details-grid p {
