@@ -47,7 +47,7 @@ function renderTable(data) {
             <td>${f.minimo_saque}</td>
             <td>${f.tempo_saque}</td>
             <td><i class="fas fa-star" style="color: gold;"></i> 4.5</td>
-            <td><span class="status-tag ${f.status}">${f.status === 'paying' ? 'Pagando' : 'Pendente'}</span></td>
+            <td><span style="position:relative;" class="status-tag ${f.status}">${f.status === 'paying' ? 'Pagando' : 'Pendente'}</span></td>
             <td><a href="faucet.html?id=${f.id}" class="details-btn">Ver Detalhes</a></td>
         `;
         tbody.appendChild(row);
