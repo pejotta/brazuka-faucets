@@ -533,3 +533,54 @@ body {
     display: block;
     margin: 0 auto;         /* Centraliza o banner em si */
 }
+
+/* --- Desktop --- */
+.menu-toggle {
+    display: none; /* Escondido no PC */
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #333;
+    cursor: pointer;
+}
+
+/* --- Mobile (Até 768px) --- */
+@media (max-width: 768px) {
+    .header {
+        justify-content: space-between;
+        padding: 10px 20px;
+    }
+
+    .menu-toggle {
+        display: block; /* Aparece no Mobile */
+    }
+
+    .navbar {
+        display: none; /* Esconde a lista original */
+        flex-direction: column;
+        position: absolute;
+        top: 60px; 
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        padding: 20px;
+        z-index: 999;
+    }
+
+    .navbar.active {
+        display: flex; /* Mostra quando clicado */
+    }
+
+    .navbar a, .dropdown {
+        width: 100%;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .dropdown-content {
+        position: static; /* Dropdown vira lista simples no mobile */
+        box-shadow: none;
+        padding-left: 20px;
+    }
+}
