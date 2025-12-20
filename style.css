@@ -521,7 +521,7 @@ body {
     font-size: 11px;
     color: #999;
     text-transform: uppercase;
-    margin-bottom: 5px;     /* Dá um respiro entre o texto e o banner */
+    margin-bottom: -17px;     /* Dá um respiro entre o texto e o banner */
     padding-left: 5px;      /* Pequeno ajuste para não colar na borda */
 }
 
