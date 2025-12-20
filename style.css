@@ -503,11 +503,14 @@ body {
 /* Container do anúncio para garantir centralização */
 .ad-slot-top, .ad-slot-mid, .ad-slot-sidebar {
     display: flex;
-    flex-direction: column; /* Força o label para cima e o ad para baixo */
-    align-items: center;    /* Centraliza o conteúdo horizontalmente */
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     margin: 15px auto;
     width: 100%;
+    background: #c0c0c03d;
+    padding: 20px;
+    border-radius: 15px;
 }
 
 /* O texto "Publicidade" */
