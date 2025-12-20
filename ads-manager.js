@@ -4,8 +4,7 @@ const BRAZUKA_ADS = {
         homeTop: [
             '<a href="https://www.coinpayu.com/?r=PejottaTG" target="_blank"><img title="Join coinpayu to earn!" alt="coinpayu" src="https://www.coinpayu.com/static/earners_banner/728X90.gif"></a>',
             '<a href="https://cryptoflare.net/?r=276959" target="_blank"><img src="https://cryptoflare.net/refbanner/728x90.gif" /></a>',
-            '<a href="https://faucetcrypto.com/r/84889" target="_blank"><img src="https://faucetcrypto.com/img/banners/728x90_minimalist.gif" width="728" height="90"></a>',
-            '<a href="https://viefaucet.com?r=64ccee302edd5e5772d58744" target="_blank"><img src="https://viefaucet.com/banners/300x250.gif" /></a>'
+            '<a href="https://faucetcrypto.com/r/84889" target="_blank"><img src="https://faucetcrypto.com/img/banners/728x90_minimalist.gif" width="728" height="90"></a>'
         ],
         homeMid: [
             '<a href="https://freebitcoin.io/?ref=96687" target="_blank"><img src="https://freebitcoin.io/img/freebitcoin/banners/Banner728x90.jpg"></a>',
@@ -14,7 +13,8 @@ const BRAZUKA_ADS = {
         ],
         sidebar: [
             '<iframe src="https://ad2bitcoin.com/ad.php?ref=pejottatg&width=300" marginwidth="0" marginheight="0" width="300" height="250" scrolling="no" border="0" frameborder="0"></iframe>',
-            '<a href="https://faucetpay.io/?r=31765" target="_blank"><img src="https://cdn.faucetpay.io/banners/gif/300x250.gif" alt="" width="300" height="250"/></a>'
+            '<a href="https://faucetpay.io/?r=31765" target="_blank"><img src="https://cdn.faucetpay.io/banners/gif/300x250.gif" alt="" width="300" height="250"/></a>',
+            '<a href="https://viefaucet.com?r=64ccee302edd5e5772d58744" target="_blank"><img src="https://viefaucet.com/banners/300x250.gif" /></a>'
         ]
     },
 
