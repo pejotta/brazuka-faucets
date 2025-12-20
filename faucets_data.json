@@ -9,6 +9,7 @@
     "minimo_saque": "0.005 USD",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.8,
     "destaque": false,
     "patrocinado": false
   },
@@ -22,6 +23,7 @@
     "minimo_saque": "30.000 Satoshis",
     "tempo_saque": "Toda semana",
     "status": "paying",
+    "avaliacao": 5.0,
     "destaque": true,
     "patrocinado": false
   },
@@ -31,10 +33,11 @@
     "url": "https://tenteiganhei.blogspot.com/p/faucet.html?r=paulo.tan@hotmail.com",
     "moeda": "trx",
     "pagamento": "FaucetPay",
-    "tipo": "padrão",
+    "tipo": "padrao",
     "minimo_saque": "0.00001000 TRX",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.9,
     "destaque": true,
     "patrocinado": true
   },
@@ -44,10 +47,11 @@
     "url": "https://brasilrendacrypto.blogspot.com/p/faucet-doge.html?r=paulo.tan@hotmail.com",
     "moeda": "doge",
     "pagamento": "FaucetPay",
-    "tipo": "padrão",
+    "tipo": "padrao",
     "minimo_saque": "1000 Dogetoshis",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.9,
     "destaque": true,
     "patrocinado": true
   },
@@ -61,6 +65,7 @@
     "minimo_saque": "Variável",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.7,
     "destaque": false,
     "patrocinado": false
   },
@@ -74,6 +79,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.5,
     "destaque": false,
     "patrocinado": false
   },
@@ -87,6 +93,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.6,
     "destaque": false,
     "patrocinado": false
   },
@@ -100,6 +107,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.6,
     "destaque": false,
     "patrocinado": false
   },
@@ -113,6 +121,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.6,
     "destaque": false,
     "patrocinado": false
   },
@@ -126,6 +135,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.6,
     "destaque": false,
     "patrocinado": false
   },
@@ -139,6 +149,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.6,
     "destaque": false,
     "patrocinado": false
   },
@@ -152,6 +163,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.6,
     "destaque": false,
     "patrocinado": false
   },
@@ -165,6 +177,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.5,
     "destaque": false,
     "patrocinado": false
   },
@@ -178,6 +191,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.5,
     "destaque": false,
     "patrocinado": false
   },
@@ -191,6 +205,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.5,
     "destaque": false,
     "patrocinado": false
   },
@@ -204,6 +219,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.5,
     "destaque": false,
     "patrocinado": false
   },
@@ -217,6 +233,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.4,
     "destaque": false,
     "patrocinado": false
   },
@@ -230,6 +247,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.4,
     "destaque": false,
     "patrocinado": false
   },
@@ -243,6 +261,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.4,
     "destaque": false,
     "patrocinado": false
   },
@@ -256,6 +275,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.4,
     "destaque": false,
     "patrocinado": false
   },
@@ -269,6 +289,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.3,
     "destaque": false,
     "patrocinado": false
   },
@@ -282,6 +303,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.3,
     "destaque": false,
     "patrocinado": false
   },
@@ -295,6 +317,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.3,
     "destaque": false,
     "patrocinado": false
   },
@@ -308,6 +331,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.3,
     "destaque": false,
     "patrocinado": false
   },
@@ -321,6 +345,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.3,
     "destaque": false,
     "patrocinado": false
   },
@@ -334,6 +359,7 @@
     "minimo_saque": "Sem mínimo",
     "tempo_saque": "Imediato",
     "status": "paying",
+    "avaliacao": 4.3,
     "destaque": false,
     "patrocinado": false
   },
@@ -347,6 +373,7 @@
     "minimo_saque": "0.0003 BTC",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.5,
     "destaque": false,
     "patrocinado": false
   },
@@ -360,6 +387,7 @@
     "minimo_saque": "100 XEM",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.0,
     "destaque": false,
     "patrocinado": false
   },
@@ -373,6 +401,7 @@
     "minimo_saque": "10.0 ADA",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.2,
     "destaque": false,
     "patrocinado": false
   },
@@ -386,6 +415,7 @@
     "minimo_saque": "15.0 XRP",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.2,
     "destaque": false,
     "patrocinado": false
   },
@@ -399,6 +429,7 @@
     "minimo_saque": "5 Steam",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.1,
     "destaque": false,
     "patrocinado": false
   },
@@ -412,6 +443,7 @@
     "minimo_saque": "10.0 USDT",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.4,
     "destaque": false,
     "patrocinado": false
   },
@@ -425,6 +457,7 @@
     "minimo_saque": "5.0 USDC",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.4,
     "destaque": false,
     "patrocinado": false
   },
@@ -438,6 +471,7 @@
     "minimo_saque": "0.03 BNB",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.5,
     "destaque": false,
     "patrocinado": false
   },
@@ -451,6 +485,7 @@
     "minimo_saque": "0.004 ETH",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.4,
     "destaque": false,
     "patrocinado": false
   },
@@ -464,6 +499,7 @@
     "minimo_saque": "70 TRX",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.3,
     "destaque": false,
     "patrocinado": false
   },
@@ -477,6 +513,7 @@
     "minimo_saque": "0.2 DASH",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.2,
     "destaque": false,
     "patrocinado": false
   },
@@ -490,6 +527,7 @@
     "minimo_saque": "0.5 LINK",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.2,
     "destaque": false,
     "patrocinado": false
   },
@@ -503,6 +541,7 @@
     "minimo_saque": "1.0 NEO",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.0,
     "destaque": false,
     "patrocinado": false
   },
@@ -516,6 +555,7 @@
     "minimo_saque": "0.15 LTC",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.5,
     "destaque": false,
     "patrocinado": false
   },
@@ -529,6 +569,7 @@
     "minimo_saque": "111 DOGE",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.5,
     "destaque": false,
     "patrocinado": false
   },
@@ -542,6 +583,7 @@
     "minimo_saque": "500000 SHIB",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.6,
     "destaque": false,
     "patrocinado": false
   },
@@ -555,6 +597,7 @@
     "minimo_saque": "3 CAKE",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.3,
     "destaque": false,
     "patrocinado": false
   },
@@ -568,6 +611,7 @@
     "minimo_saque": "10 MATIC",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.3,
     "destaque": false,
     "patrocinado": false
   },
@@ -581,6 +625,7 @@
     "minimo_saque": "5000000 BTT",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.0,
     "destaque": false,
     "patrocinado": false
   },
@@ -594,6 +639,7 @@
     "minimo_saque": "300 BFG",
     "tempo_saque": "minimo",
     "status": "paying",
+    "avaliacao": 4.2,
     "destaque": false,
     "patrocinado": false
   }
