@@ -500,4 +500,4 @@ body {
 .new-anim { animation: fadeIn 0.5s ease-in; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.ad-slot-top, .ad-slot-mid {place-items:center;}
+.ad-slot-top, .ad-slot-mid {text-align:center;}
