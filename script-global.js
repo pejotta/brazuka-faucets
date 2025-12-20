@@ -84,3 +84,25 @@ setInterval(() => {
         moveSlide(1);
     }
 }, 5000);
+
+// Dentro da sua função de carregar templates ou logo abaixo
+function initMobileMenu() {
+    const menuBtn = document.getElementById('mobile-menu');
+    const nav = document.getElementById('navbar');
+
+    if (menuBtn && nav) {
+        menuBtn.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            
+            // Troca o ícone de bars (três riscos) para X
+            const icon = menuBtn.querySelector('i');
+            if (nav.classList.contains('active')) {
+                icon.classList.replace('fa-bars', 'fa-xmark');
+            } else {
+                icon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        });
+    }
+}
+
+// Chame initMobileMenu() logo após carregar o template do menu no loadEverything()
