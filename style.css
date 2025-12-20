@@ -500,4 +500,33 @@ body {
 .new-anim { animation: fadeIn 0.5s ease-in; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.ad-slot-top, .ad-slot-mid {text-align:center;}
+/* Container do anúncio para garantir centralização */
+.ad-slot-top, .ad-slot-mid, .ad-slot-sidebar {
+    display: flex;
+    flex-direction: column; /* Força o label para cima e o ad para baixo */
+    align-items: center;    /* Centraliza o conteúdo horizontalmente */
+    text-align: center;
+    margin: 15px auto;
+    width: 100%;
+}
+
+/* O texto "Publicidade" */
+.ad-label {
+    display: block;         /* Ocupa a linha toda, jogando o banner para baixo */
+    width: 100%;            /* Garante que ocupe a largura total */
+    text-align: left;       /* Alinha o texto no canto esquerdo, como você quer */
+    font-size: 11px;
+    color: #999;
+    text-transform: uppercase;
+    margin-bottom: 5px;     /* Dá um respiro entre o texto e o banner */
+    padding-left: 5px;      /* Pequeno ajuste para não colar na borda */
+}
+
+/* Garante que imagens e iframes não quebrem o layout */
+.ad-slot-top img, .ad-slot-mid img, .ad-slot-sidebar img, 
+.ad-slot-top iframe, .ad-slot-sidebar iframe {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;         /* Centraliza o banner em si */
+}
