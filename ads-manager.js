@@ -14,8 +14,7 @@ const BRAZUKA_ADS = {
         ],
         sidebar: [
             '<iframe src="https://ad2bitcoin.com/ad.php?ref=pejottatg&width=300" marginwidth="0" marginheight="0" width="300" height="250" scrolling="no" border="0" frameborder="0"></iframe>',
-            '<a href="https://faucetpay.io/?r=31765" target="_blank"><img src="https://cdn.faucetpay.io/banners/gif/300x250.gif" alt="" width="300" height="250"/></a>',
-            '
+            '<a href="https://faucetpay.io/?r=31765" target="_blank"><img src="https://cdn.faucetpay.io/banners/gif/300x250.gif" alt="" width="300" height="250"/></a>'
         ]
     },
 
