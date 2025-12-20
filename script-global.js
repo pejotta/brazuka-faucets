@@ -4,13 +4,14 @@ async function loadEverything() {
     // 1. Define o favicon dinamicamente
     setFavicon();
     
-    // 2. Carregar Menu (Template)
+    // 2. Carregar Menu e aguardar a conclusão para ativar o sanduíche
     await loadTemplate('menu_template.html', 'header-placeholder', 'afterbegin');
+    initMobileMenu(); // Ativa o menu mobile logo após o carregamento do HTML
 
-    // 3. Carregar Footer (Template)
+    // 3. Carregar Footer
     await loadTemplate('footer_template.html', 'footer-placeholder', 'beforeend');
 
-    // 4. Carregar Ads (Se existirem os placeholders na página)
+    // 4. Carregar Ads
     loadAd('top-ad-placeholder', 'top_ad.html');
     loadAd('bottom-ad-placeholder', 'bottom_ad.html');
 }
@@ -26,7 +27,6 @@ async function loadTemplate(file, id, position) {
         if (placeholder) {
             placeholder.innerHTML = html;
         } else {
-            // Se não achou o ID, joga no início ou fim do body para não quebrar o layout
             document.body.insertAdjacentHTML(position, html);
         }
     } catch (e) { 
@@ -34,7 +34,31 @@ async function loadTemplate(file, id, position) {
     }
 }
 
-// Função para o Favicon
+// Inicialização do Menu Mobile (Sanduíche)
+function initMobileMenu() {
+    const menuBtn = document.getElementById('mobile-menu');
+    const nav = document.getElementById('navbar');
+
+    if (menuBtn && nav) {
+        menuBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            nav.classList.toggle('active');
+            
+            // Troca o ícone de bars para X
+            const icon = menuBtn.querySelector('i');
+            if (nav.classList.contains('active')) {
+                icon.classList.replace('fa-bars', 'fa-xmark');
+            } else {
+                icon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        });
+    } else {
+        // Log para te ajudar a debugar se o ID sumir
+        console.warn("Aviso: Elementos do menu mobile não encontrados no DOM.");
+    }
+}
+
+// --- Funções Auxiliares (Favicon e Ads) ---
 function setFavicon() {
     let link = document.querySelector("link[rel~='icon']");
     if (!link) {
@@ -45,7 +69,6 @@ function setFavicon() {
     link.href = 'logo-brazuka.png'; 
 }
 
-// Função para os Banners de Ads
 async function loadAd(id, file) {
     const el = document.getElementById(id);
     if (el) {
@@ -61,8 +84,7 @@ async function loadAd(id, file) {
     }
 }
 
-// --- Lógica do Carrossel (Hero Section) ---
-// Só funciona se a página tiver os elementos do carrossel
+// --- Lógica do Carrossel ---
 let currentSlide = 0;
 function moveSlide(direction) {
     const slides = document.querySelectorAll('.slide');
@@ -78,31 +100,9 @@ function moveSlide(direction) {
 // Inicia o carregamento de tudo
 loadEverything();
 
-// Auto-play do carrossel (se existir na página)
+// Auto-play do carrossel
 setInterval(() => {
     if (document.getElementById('carousel-track')) {
         moveSlide(1);
     }
 }, 5000);
-
-// Dentro da sua função de carregar templates ou logo abaixo
-function initMobileMenu() {
-    const menuBtn = document.getElementById('mobile-menu');
-    const nav = document.getElementById('navbar');
-
-    if (menuBtn && nav) {
-        menuBtn.addEventListener('click', () => {
-            nav.classList.toggle('active');
-            
-            // Troca o ícone de bars (três riscos) para X
-            const icon = menuBtn.querySelector('i');
-            if (nav.classList.contains('active')) {
-                icon.classList.replace('fa-bars', 'fa-xmark');
-            } else {
-                icon.classList.replace('fa-xmark', 'fa-bars');
-            }
-        });
-    }
-}
-
-// Chame initMobileMenu() logo após carregar o template do menu no loadEverything()
