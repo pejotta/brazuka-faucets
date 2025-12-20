@@ -1,57 +1,54 @@
-// brazuka-ad-engine.js
-
 const BRAZUKA_ADS = {
-    // Aqui você cola os códigos que as redes te dão
-    config: {
-        topBanner: {
-            type: "html", // Pode ser "html" ou "image"
-            content: `<a target="_blank" href="https://faucetcrypto.com/r/84889"><img src="https://faucetcrypto.com/img/banners/728x90_minimalist.gif" width="728" height="90"></a>`,
-            active: true
-        },
-        sidebarBanner: {
-            type: "image", // Para banners que você mesmo criou ou de afiliados diretos
-            img: "https://blog.encurta.net/wp-content/uploads/2017/07/336x280.png",
-            link: "https://encurta.net/ref/103238836015601144211",
-            active: true
-        }
+    // Listas de anúncios (pode colocar quantos códigos quiser)
+    pools: {
+        homeTop: [
+            '<a href="https://www.coinpayu.com/?r=PejottaTG" target="_blank"><img title="Join coinpayu to earn!" alt="coinpayu" src="https://www.coinpayu.com/static/earners_banner/728X90.gif"></a>',
+            '<a href="https://cryptoflare.net/?r=276959" target="_blank"><img src="https://cryptoflare.net/refbanner/728x90.gif" /></a>',
+            '<a href="https://faucetcrypto.com/r/84889" target="_blank"><img src="https://faucetcrypto.com/img/banners/728x90_minimalist.gif" width="728" height="90"></a>',
+            '<a href="https://viefaucet.com?r=64ccee302edd5e5772d58744" target="_blank"><img src="https://viefaucet.com/banners/300x250.gif" /></a>'
+        ],
+        homeMid: [
+            '<a href="https://freebitcoin.io/?ref=96687" target="_blank"><img src="https://freebitcoin.io/img/freebitcoin/banners/Banner728x90.jpg"></a>',
+            '<a href="https://freebitco.in/?r=16898774" target="_blank"><img src="https://static1.freebitco.in/banners/728x90-3.png"></a>',            
+            '<a href="https://cryptofaucet.watch?ref=2CZVL7h0wXXN" target="_blank"><img src="https://cryptofaucet.watch/images/banner-cryptofaucet.png" width="468" height="60"></a>'
+        ],
+        sidebar: [
+            '<iframe src="https://ad2bitcoin.com/ad.php?ref=pejottatg&width=300" marginwidth="0" marginheight="0" width="300" height="250" scrolling="no" border="0" frameborder="0"></iframe>',
+            '<a href="https://faucetpay.io/?r=31765" target="_blank"><img src="https://cdn.faucetpay.io/banners/gif/300x250.gif" alt="" width="300" height="250"/></a>',
+            '
+        ]
     },
 
     render() {
-        // Renderiza nos slots do Topo
-        this.injectAds('.ad-slot-top', this.config.topBanner);
+        // Renderiza o Topo (Aleatório)
+        this.injectRandom('.ad-slot-top', this.pools.homeTop);
         
-        // Renderiza nos slots da Sidebar
-        this.injectAds('.ad-slot-sidebar', this.config.sidebarBanner);
+        // Renderiza o Meio (Aleatório)
+        this.injectRandom('.ad-slot-mid', this.pools.homeMid);
+
+        // Renderiza a Sidebar (Aleatório)
+        this.injectRandom('.ad-slot-sidebar', this.pools.sidebar);
     },
 
-    injectAds(selector, adConfig) {
-        if (!adConfig.active) return;
-
+    injectRandom(selector, adPool) {
         const slots = document.querySelectorAll(selector);
+        if (slots.length === 0 || adPool.length === 0) return;
+
         slots.forEach(slot => {
-            slot.innerHTML = `<span class="ad-label">Publicidade</span>`;
+            // Escolhe um anúncio aleatório da lista
+            const randomIndex = Math.floor(Math.random() * adPool.length);
+            const adContent = adPool[randomIndex];
 
-            if (adConfig.type === "image") {
-                // Caso simples: Imagem + Link
-                slot.innerHTML += `
-                    <a href="${adConfig.link}" target="_blank">
-                        <img src="${adConfig.img}" style="max-width:100%; height:auto; border-radius:8px;">
-                    </a>`;
-            } else if (adConfig.type === "html") {
-                // Caso Network: Injeta o HTML e força a execução dos scripts
-                const container = document.createElement('div');
-                container.innerHTML = adConfig.content;
-                slot.appendChild(container);
+            slot.innerHTML = `<span class="ad-label">Publicidade</span>` + adContent;
 
-                // Truque para carregar scripts externos das redes de Ads
-                const scripts = container.querySelectorAll("script");
-                scripts.forEach(oldScript => {
-                    const newScript = document.createElement("script");
-                    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-                    oldScript.parentNode.replaceChild(newScript, oldScript);
-                });
-            }
+            // Re-executa scripts se houver
+            const scripts = slot.querySelectorAll("script");
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement("script");
+                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
         });
     }
 };
