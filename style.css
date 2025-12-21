@@ -203,12 +203,38 @@ body {
     color: #333;
 }
 
+/* GRID DE FAUCETS - Ajustado para ser responsivo */
 .faucet-grid {
     display: grid;
-    /* 5 colunas no desktop */
+    /* No Desktop ele mantém as 5 colunas */
     grid-template-columns: repeat(5, 1fr); 
     gap: 15px;
     margin-top: 20px;
+}
+
+/* --- AJUSTE PARA TELAS MENORES (TABLETS) --- */
+@media (max-width: 1024px) {
+    .faucet-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 colunas em tablets */
+    }
+}
+
+/* --- AJUSTE PARA CELULAR (ONDE ESTÁ O ERRO) --- */
+@media (max-width: 768px) {
+    .faucet-grid {
+        /* Aqui ele quebra para 1 ou 2 colunas, evitando o corte lateral */
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+        gap: 10px;
+    }
+
+    .faucet-card {
+        padding: 12px; /* Diminui um pouco o respiro interno no mobile */
+    }
+
+    .coin-title {
+        font-size: 1.3em; /* Título um pouco menor no celular */
+        margin-top: 25px;
+    }
 }
 
 .faucet-card {
