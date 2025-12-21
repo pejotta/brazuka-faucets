@@ -2,82 +2,129 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastrar Faucet | Brazuka Faucets</title>
+    <title>Cadastrar Faucet | Auditor Brazuka</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <style>
     /* Estilos para o Formulário de Cadastro */
-.faucet-form-container {
-    max-width: 600px;
-    margin: 50px auto;
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
+    .faucet-form-container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        position: relative;
+        z-index: 2;
+    }
 
-.faucet-form h2 {
-    color: #1a73e8;
-    margin-bottom: 25px;
-    text-align: center;
-    font-size: 1.6em;
-}
+    .faucet-form h2 {
+        color: #1a73e8;
+        margin-bottom: 25px;
+        text-align: center;
+        font-size: 1.6em;
+    }
 
-.faucet-form label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #333;
-    font-size: 0.95em;
-}
+    .faucet-form label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #333;
+        font-size: 0.95em;
+    }
 
-.faucet-form input, 
-.faucet-form select, 
-.faucet-form textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1em;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
+    .faucet-form input, 
+    .faucet-form select, 
+    .faucet-form textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1em;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
 
-.faucet-form input:focus, 
-.faucet-form select:focus {
-    border-color: #1a73e8;
-    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
-    outline: none;
-}
+    /* Estilo para os Checkboxes de Recursos */
+    .recursos-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 8px;
+    }
+    .recursos-item {
+        display: flex;
+        align-items: center;
+        font-size: 0.9em;
+        font-weight: normal !important;
+    }
+    .recursos-item input {
+        width: auto;
+        margin-bottom: 0;
+        margin-right: 8px;
+    }
 
-.faucet-form button {
-    width: 100%;
-    background-color: #1a73e8;
-    color: white;
-    padding: 15px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
+    .faucet-form button {
+        width: 100%;
+        background-color: #1a73e8;
+        color: white;
+        padding: 15px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
 
-.faucet-form button:hover {
-    background-color: #0d60d8;
-    transform: translateY(-2px);
-}
+    .faucet-form button:hover {
+        background-color: #0d60d8;
+        transform: translateY(-2px);
+    }
 
-.faucet-form button:active {
-    transform: translateY(0);
-}
+    /* Banners Laterais Fixos */
+    .banner-lateral {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 160px;
+        height: 600px;
+        background-color: #eee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ddd;
+        font-size: 12px;
+        color: #666;
+        text-align: center;
+        z-index: 1;
+    }
+    .banner-left { left: 20px; }
+    .banner-right { right: 20px; }
+
+    /* Responsividade para sumir os banners em telas pequenas */
+    @media (max-width: 1000px) {
+        .banner-lateral { display: none; }
+    }
 </style>
+
+    <div class="banner-lateral banner-left">
+        ADS 160x600
+    </div>
+
+    <div class="banner-lateral banner-right">
+        ADS 160x600
+    </div>
+
     <main class="container">
         <div class="faucet-form-container">
             <form action="https://formspree.io/f/mjgbvzbq" method="POST" class="faucet-form">
-                <h2><i class="fa-solid fa-plus-circle"></i> Sugerir Nova Faucet</h2>
+                <h2><i class="fa-solid fa-magnifying-glass-chart"></i> Auditoria de Nova Faucet</h2>
                 
                 <label for="faucet-nome">Nome da Faucet *</label>
                 <input type="text" id="faucet-nome" name="nome" placeholder="Ex: Brazuka Claimer" required>
@@ -95,45 +142,37 @@
                     <option value="sol">Solana (SOL)</option>
                     <option value="trx">Tron (TRX)</option>
                     <option value="usdt">Tether (USDT)</option>
-                    <option value="fey">Feyorra (FEY)</option>
-                    <option value="bnb">Binance Coin (BNB)</option>
-                    <option value="matic">Polygon (MATIC)</option>
                     <option value="central">Central Multimoedas (30+ moedas)</option>
-                    <option value="outra">Outra (especificar nos detalhes)</option>
                 </select>
 
-                <label for="faucet-pagamento">Formas de Pagamento / Carteiras Aceites *</label>
-<select id="faucet-pagamento" name="pagamento" required>
-    <option value="">-- Selecione o Meio de Recebimento --</option>
-    <option value="faucetpay">FaucetPay (Recomendado)</option>
-    <option value="faucetpanel">FaucetPanel</option>
-    <option value="pix">PIX (Brasil)</option>
-    <option value="paypal">PayPal</option>
-    <option value="metamask">MetaMask / Web3</option>
-    <option value="trust">Trust Wallet</option>
-    <option value="coinbase">Coinbase Wallet</option>
-    <option value="exodus">Exodus</option>
-    <option value="direto">Carteira Direta (On-chain)</option>
-    <option value="outra">Outra / Múltiplas</option>
-</select>
-                
-                <label for="faucet-tipo">Tipo de Faucet *</label>
-                <select id="faucet-tipo" name="tipo" required>
-                    <option value="padrao">Faucet Padrão (Manual)</option>
-                    <option value="auto">Auto Faucet</option>
-                    <option value="shortlink">Shortlinks / Offerwalls</option>
+                <label for="faucet-tipo">Classificação Principal *</label>
+                <select id="faucet-tipo" name="tipo_principal" required>
+                    <option value="faucet_padrao">Faucet Padrão (Manual)</option>
+                    <option value="autofaucet">Auto Faucet</option>
+                    <option value="central_faucets">Central de Faucets / Multi-tarefas</option>
+                    <option value="mineradora">Mineradora (Web/Cloud)</option>
                 </select>
+
+                <label>Recursos Disponíveis (Selecione todos):</label>
+                <div class="recursos-group">
+                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="faucet"> Faucet</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="ptc"> PTC (Ads)</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="shortlinks"> Shortlinks</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="staking"> Staking</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="jogos"> Jogos/Dice</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="offerwall"> Offerwalls</label>
+                </div>
                 
                 <label for="faucet-minimo">Mínimo de Saque *</label>
-                <input type="text" id="faucet-minimo" name="minimo_saque" placeholder="Ex: 100 Satoshis / Sem mínimo" required>
+                <input type="text" id="faucet-minimo" name="minimo_saque" placeholder="Ex: 0.005 USD / 30k Satoshis" required>
                 
-                <label for="faucet-tempo">Frequência de Coleta *</label>
-                <input type="text" id="faucet-tempo" name="tempo_saque" placeholder="Ex: 5 min / Imediato" required>
+                <label for="faucet-tempo">Frequência/Tempo de Saque *</label>
+                <input type="text" id="faucet-tempo" name="tempo_saque" placeholder="Ex: Imediato / Semanal" required>
 
-                <label for="faucet-obs">Observações Adicionais (Opcional)</label>
-                <textarea id="faucet-obs" name="observacoes" rows="3" placeholder="Algo mais que devemos saber?"></textarea>
+                <label for="faucet-obs">Observações da Auditoria (Opcional)</label>
+                <textarea id="faucet-obs" name="observacoes" rows="3" placeholder="Algo suspeito ou algum bônus especial?"></textarea>
                 
-                <button type="submit">Enviar para Análise</button>
+                <button type="submit">Enviar para Auditoria</button>
             </form>
         </div>
     </main>
