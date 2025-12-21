@@ -551,30 +551,40 @@ body {
 
 /* --- Mobile (Até 768px) --- */
 @media (max-width: 768px) {
-    .header {
-        justify-content: space-between;
+      .header {
+        display: flex;            /* Ativa o Flexbox */
+        flex-direction: row;      /* Garante que fiquem na horizontal */
+        justify-content: space-between; /* Logo de um lado, Menu do outro */
+        align-items: center;      /* Alinha verticalmente no centro */
         padding: 10px 20px;
+        flex-wrap: nowrap;        /* Impede que o menu pule para a linha de baixo */
+    }
+
+    .logo-container {
+        display: flex;
+        align-items: center;
     }
 
     .menu-toggle {
-        display: block; /* Aparece no Mobile */
+        display: block;           /* Garante que o ícone apareça */
+        margin: 0;                /* Remove margens que possam deslocar o ícone */
+        order: 2;                 /* Garante que o menu fique depois da logo */
     }
 
+    /* Ajuste para a Navbar não empurrar tudo quando aberta */
     .navbar {
-        display: none; /* Esconde a lista original */
-        flex-direction: column;
+        display: none; 
         position: absolute;
-        top: 60px; 
+        top: 100%;                /* Aparece logo abaixo do header */
         left: 0;
         width: 100%;
         background-color: #ffffff;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        padding: 20px;
         z-index: 999;
     }
 
     .navbar.active {
-        display: flex; /* Mostra quando clicado */
+        display: flex;
+        flex-direction: column;
     }
 
     .navbar a, .dropdown {
