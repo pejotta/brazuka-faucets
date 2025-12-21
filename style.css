@@ -601,7 +601,7 @@ body {
     .faucet-card {max-width: 195px;padding:5px;}
     .status-tag {
         bottom: 0;
-        left: 0;
+        right: 0;
         padding: 2px 3px;}
     .faucet-info .url {
         font-size: 0.6em;
