@@ -1155,14 +1155,22 @@ header {
 
     }
 
-
-
+    .nav-links {
+        display: none; /* Esconde menu padrão no mobile */
+    }
+    
     .menu-toggle {
-
-        display: block; /* Aparece no Mobile */
-
+        display: block; /* Mostra o ícone sanduíche */
     }
 
+    .banner-lateral {
+        display: none; /* Esconde banners fixos no mobile */
+    }
+
+    .faucets-grid {
+        grid-template-columns: 1fr;
+    }
+}
 
 
     .navbar {
