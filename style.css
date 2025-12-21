@@ -606,5 +606,8 @@ body {
     .faucet-info .url {
         font-size: 0.6em;
 }
+    .faucet-info {
+        width: 100px;
+    overflow-wrap: break-word;}
     
 }
