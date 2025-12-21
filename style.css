@@ -41,7 +41,7 @@ body {
 .logo {
     font-size: 1.5em;
     font-weight: bold;
-    color: #1a73e8;
+    color: #1a73e8; /* Cor que remete a confiança */
 }
 
 .navbar a {
@@ -55,8 +55,9 @@ body {
     color: #000;
 }
 
+/* Botão de Cadastro/Submit */
 .submit-btn {
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* Verde de Ação */
     color: white !important;
     padding: 8px 15px !important;
     border-radius: 5px;
@@ -106,7 +107,18 @@ body {
     display: block;
 }
 
-/* CAROUSEL */
+/* BANNER */
+.banner-rotativo {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    /* Estilos minimalistas para o AD */
+    font-size: 1.2em;
+}
+
 .hero-carousel {
     position: relative;
     max-width: 1200px;
@@ -156,6 +168,7 @@ body {
 
 .btn-carousel:hover { background: #45a049; }
 
+/* Setas */
 .prev, .next {
     position: absolute; top: 50%; transform: translateY(-50%);
     background: rgba(255,255,255,0.2); border: none; color: white;
@@ -165,7 +178,7 @@ body {
 .prev:hover, .next:hover { background: rgba(255,255,255,0.5); }
 .next { right: 20px; } .prev { left: 20px; }
 
-/* HEADLINE */
+/* HEADLINE E STATS */
 .headline {
     text-align: center;
     margin: 40px 0 30px;
@@ -192,7 +205,8 @@ body {
 
 .faucet-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr); 
+    /* 5 colunas no desktop */
+    grid-template-columns: repeat(5, 1fr); 
     gap: 15px;
     margin-top: 20px;
 }
@@ -224,9 +238,9 @@ body {
 }
 
 .faucet-icon img {
-    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -webkit-optimize-contrast; /* Melhora a nitidez em navegadores Chrome/Edge */
     object-fit: contain;
-    background: #fff;
+    background: #fff; /* Fundo branco caso a logo seja transparente e borrada */
     padding: 2px;
 }
 
@@ -251,100 +265,79 @@ body {
     color: white;
 }
 
-.paying { background-color: #4CAF50; }
-.auto { background-color: #ff9800; }
-.scam { background-color: #f44336; }
+.paying { background-color: #4CAF50; } /* Verde Paga */
+.auto { background-color: #ff9800; } /* Laranja Auto */
+.scam { background-color: #f44336; } /* Vermelho Scam/Fechada */
 
-/* --- RESPONSIVIDADE (MOBILE AJUSTADO) --- */
+.view-more {
+    display: block;
+    text-align: right;
+    margin-top: 15px;
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-@media (max-width: 1024px) {
+.view-more:hover {
+    text-decoration: underline;
+}
+
+/* FOOTER */
+.footer {
+    background-color: #333;
+    color: #ccc;
+    text-align: center;
+    padding: 15px 20px;
+    margin-top: 40px;
+    font-size: 0.9em;
+}
+
+.footer-links a {
+    color: #ccc;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.footer-links a:hover {
+    color: #fff;
+}
+
+/* MEDIA QUERIES para responsividade */
+@media (max-width: 900px) {
     .faucet-grid {
+        /* 3 colunas em tablets */
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
-@media (max-width: 768px) {
-    .header {
-        justify-content: space-between;
-        padding: 10px 20px;
-    }
-
-    .menu-toggle {
-        display: block;
-        background: none;
-        border: none;
-        font-size: 1.8rem;
-        color: #333;
-        cursor: pointer;
-    }
-
-    .navbar {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 60px; 
-        left: 0;
-        width: 100%;
-        background-color: #ffffff;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        padding: 20px;
-        z-index: 999;
-    }
-
-    .navbar.active {
-        display: flex;
-    }
-
-    .navbar a, .dropdown {
-        width: 100%;
-        padding: 15px 0;
-        border-bottom: 1px solid #eee;
-    }
-
-    .dropdown-content {
-        position: static;
-        box-shadow: none;
-        padding-left: 20px;
-    }
-
-    .coin-title {
-        font-size: 1.3em;
-        margin-top: 25px;
-    }
-}
-
-/* AJUSTES ESPECÍFICOS SOLICITADOS (MOBILE 600px) */
 @media (max-width: 600px) {
+    .header {
+        flex-direction: column;
+    }
+    .navbar {
+        margin-top: 10px;
+    }
+    .navbar a, .dropbtn, .submit-btn {
+        padding: 5px 8px;
+        font-size: 0.9em;
+    }
     .faucet-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 10px;
-        justify-items: center; /* Centraliza os cards na grid */
-    }
-
-    .faucet-card {
-        padding: 10px; /* Ajustado conforme pedido */
-        max-width: 195px; /* Ajustado conforme pedido */
-        width: 100%;
-        height: 70px; /* Altura fixa opcional para alinhar */
-    }
-
-    .faucet-info .url {
-        font-size: 0.6em; /* Ajustado conforme pedido */
-    }
-
-    .status-tag {
-        top: auto; /* Remove o topo */
-        bottom: 3px; /* Ajustado conforme pedido */
-        right: 3px;
-    }
-    
-    .faucet-icon {
-        font-size: 1.2em;
-        margin-right: 8px;
+        /* 2 colunas em celulares */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/* OUTROS ESTILOS (FILTROS, TABELAS, COMENTÁRIOS) */
+/* Adicione estas classes ao final do seu arquivo style.css */
+
+.banner-lista-top, .banner-lista-bottom {
+    background-color: #c9c9c9;
+    color: #555;
+    text-align: center;
+    padding: 10px;
+    margin: 20px 0;
+}
+
+/* Filtros */
 .filter-controls {
     background-color: #fff;
     padding: 15px;
@@ -354,18 +347,41 @@ body {
     display: flex;
     gap: 15px;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Para funcionar bem no mobile */
 }
 
+.filter-controls label {
+    font-weight: bold;
+    color: #555;
+}
+
+.filter-controls select, .filter-controls button {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.filter-controls button {
+    background-color: #1a73e8;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.filter-controls button:hover {
+    background-color: #0d60d8;
+}
+
+/* Tabela */
 .table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow-x: auto; /* Para a tabela não quebrar no mobile */
 }
 
 .faucet-table {
     width: 100%;
     border-collapse: collapse;
     background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
 
 .faucet-table th, .faucet-table td {
@@ -374,16 +390,65 @@ body {
     border-bottom: 1px solid #eee;
 }
 
+.faucet-table th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.faucet-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Estrelas na Tabela */
+.faucet-table .stars .fa-star, .faucet-table .stars .fa-star-half-stroke {
+    color: gold;
+    font-size: 0.9em;
+}
+
+/* Botão Visitar na Tabela */
+.faucet-visit-btn {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white !important;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.faucet-visit-btn:hover {
+    background-color: #45a049;
+}
+
+.coin-item iconify-icon {
+    margin-bottom: 10px;
+    transition: transform 0.3s;
+}
+
+.coin-item:hover iconify-icon {
+    transform: scale(1.2); /* Dá um zoom no ícone quando passa o mouse */
+}
+
 .engagement-container {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; /* Estrelas de um lado, botões do outro */
     background: #f9f9f9;
     padding: 15px;
     border-radius: 12px;
     margin-top: 20px;
     gap: 20px;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Importante para celular */
+}
+
+.engagement-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .stars {
@@ -392,6 +457,18 @@ body {
     color: #f2a900;
     font-size: 28px;
     cursor: pointer;
+}
+
+#rating-status {
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    min-width: 60px;
+}
+
+.social-grid {
+    display: flex;
+    gap: 8px;
 }
 
 .btn-share {
@@ -407,6 +484,9 @@ body {
     transition: 0.3s;
 }
 
+.btn-share:hover { transform: translateY(-3px); }
+
+/* Cores das Redes */
 .wa { background: #25d366; }
 .tg { background: #0088cc; }
 .fb { background: #1877f2; }
@@ -414,7 +494,18 @@ body {
 .rd { background: #ff4500; }
 .ml { background: #888; }
 
-/* ANÚNCIOS */
+.input-group-row { display: flex; gap: 10px; margin-bottom: 10px; }
+.input-group-row input { flex: 1; }
+.comment-form input, .comment-form textarea {
+    width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px;
+}
+.comment-item {
+    background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #1a73e8; margin-top: 15px;
+}
+.new-anim { animation: fadeIn 0.5s ease-in; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Container do anúncio para garantir centralização */
 .ad-slot-top, .ad-slot-mid, .ad-slot-sidebar {
     display: flex;
     flex-direction: column;
@@ -427,22 +518,112 @@ body {
     border-radius: 15px;
 }
 
+/* O texto "Publicidade" */
 .ad-label {
-    display: block;
-    width: 100%;
-    text-align: left;
+    display: block;         /* Ocupa a linha toda, jogando o banner para baixo */
+    width: 100%;            /* Garante que ocupe a largura total */
+    text-align: left;       /* Alinha o texto no canto esquerdo, como você quer */
     font-size: 11px;
     color: #999;
     text-transform: uppercase;
-    margin-bottom: -17px;
-    padding-left: 5px;
+    margin-bottom: -17px;     /* Dá um respiro entre o texto e o banner */
+    padding-left: 5px;      /* Pequeno ajuste para não colar na borda */
 }
 
-/* FOOTER */
-.footer {
-    background-color: #333;
-    color: #ccc;
-    text-align: center;
-    padding: 15px 20px;
-    margin-top: 40px;
+/* Garante que imagens e iframes não quebrem o layout */
+.ad-slot-top img, .ad-slot-mid img, .ad-slot-sidebar img, 
+.ad-slot-top iframe, .ad-slot-sidebar iframe {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;         /* Centraliza o banner em si */
+}
+
+/* --- Desktop --- */
+.menu-toggle {
+    display: none; /* Escondido no PC */
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #333;
+    cursor: pointer;
+}
+
+/* AJUSTES ESPECÍFICOS SOLICITADOS (MOBILE 600px) */
+
+@media (max-width: 600px) {
+
+    .faucet-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+        justify-items: center; /* Centraliza os cards na grid */
+    }
+
+    .faucet-card {
+        max-width: 195px; /* Ajustado conforme pedido */
+        padding:10px;
+    }
+
+
+
+    .faucet-info .url {
+        font-size: 0.6em; /* Ajustado conforme pedido */
+    }
+
+
+
+    .status-tag {
+        bottom: 3px; /* Ajustado conforme pedido */
+    }
+
+    
+
+    .faucet-icon {
+        font-size: 1.2em;
+        margin-right: 8px;
+
+    }
+
+}
+
+
+/* --- Mobile (Até 768px) --- */
+@media (max-width: 768px) {
+    .header {
+        justify-content: space-between;
+        padding: 10px 20px;
+    }
+
+    .menu-toggle {
+        display: block; /* Aparece no Mobile */
+    }
+
+    .navbar {
+        display: none; /* Esconde a lista original */
+        flex-direction: column;
+        position: absolute;
+        top: 60px; 
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        padding: 20px;
+        z-index: 999;
+    }
+
+    .navbar.active {
+        display: flex; /* Mostra quando clicado */
+    }
+
+    .navbar a, .dropdown {
+        width: 100%;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .dropdown-content {
+        position: static; /* Dropdown vira lista simples no mobile */
+        box-shadow: none;
+        padding-left: 20px;
+    }
 }
