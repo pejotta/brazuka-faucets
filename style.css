@@ -609,5 +609,9 @@ body {
     .faucet-info {
         width: 100px;
     overflow-wrap: break-word;}
+    .faucet-icon img {
+        height: 62px;
+        object-fit: cover;
+    }
     
 }
