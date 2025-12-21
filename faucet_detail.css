@@ -181,3 +181,24 @@
         grid-template-columns: 1fr;
     }
 }
+
+.badge-recurso {
+    background: #e1f5fe;
+    color: #0288d1;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.75em;
+    font-weight: bold;
+    margin-right: 5px;
+    display: inline-block;
+    border: 1px solid #b3e5fc;
+    text-transform: capitalize;
+}
+
+.audit-box {
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px dashed #1a73e8;
+}
