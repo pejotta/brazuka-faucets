@@ -1,5 +1,8 @@
 // script-list.js
 
+// URL do seu Worker (Centralizada para facilitar)
+const WORKER_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
+
 document.addEventListener('DOMContentLoaded', async () => {
     const tbody = document.getElementById('faucets-tbody');
     const targetCoin = document.body.getAttribute('data-coin'); 
@@ -10,20 +13,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch('faucets_data.json');
         const faucets = await response.json();
 
-        // Filtra pela moeda da página (BTC, DOGE, etc)
+        // Filtra pela moeda da página
         const filtered = faucets.filter(f => f.moeda === targetCoin);
 
-        // Chama a renderização passando os dados filtrados
+        // Renderiza a tabela
         await renderTable(filtered);
 
-        // Lógica do botão de Filtros
+        // Filtros
         const filterBtn = document.getElementById('apply-filters');
         if (filterBtn) {
             filterBtn.addEventListener('click', async () => {
                 const tipo = document.getElementById('filter-tipo').value;
-                const finalData = filtered.filter(f => {
-                    return tipo === 'all' || f.tipo === tipo;
-                });
+                const finalData = filtered.filter(f => tipo === 'all' || f.tipo === tipo);
                 await renderTable(finalData);
             });
         }
@@ -34,12 +35,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// Tornamos a função assíncrona para buscar as notas no KV ou JSON
 async function renderTable(data) {
     const tbody = document.getElementById('faucets-tbody');
     if (!tbody) return;
 
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Buscando avaliações...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Buscando avaliações reais...</td></tr>';
 
     if (data.length === 0) {
         tbody.innerHTML = '<tr><td colspan="7">Nenhuma faucet encontrada.</td></tr>';
@@ -48,33 +48,39 @@ async function renderTable(data) {
 
     const rows = await Promise.all(data.map(async (f) => {
         let notaExibicao = 0;
-        let fonteReal = false; // Para saber se veio do KV ou do JSON
+        let votosReais = 0;
         
         try {
-            // 1. Tenta buscar a nota real no Worker (KV)
-            const res = await fetch(`https://brazuka-faucets.moneynanet-yt.workers.dev/get-rating?id=${f.id}`);
+            // USANDO O MESMO ENDPOINT DO SCRIPT DE DETALHES (/get-data)
+            const res = await fetch(`${WORKER_URL}/get-data?id=${f.id}`);
             if (res.ok) {
-                const ratingData = await res.json();
-                if (ratingData.average && ratingData.average > 0) {
-                    notaExibicao = ratingData.average;
-                    fonteReal = true;
+                const workerData = await res.json();
+                // O seu worker retorna 'media' e 'totalVotos'
+                if (workerData.totalVotos > 0) {
+                    notaExibicao = workerData.media;
+                    votosReais = workerData.totalVotos;
                 }
             }
         } catch (err) {
-            console.error(`Erro ao buscar nota real da faucet ${f.id}:`, err);
+            console.log(`Faucet ${f.id} ainda sem votos no Worker.`);
         }
 
-        // 2. Se o Worker não deu nota, usa a do JSON (f.avaliacao)
-        if (!fonteReal && f.avaliacao) {
+        // Se não tem voto no Worker, usa a nota do JSON (Plano B)
+        if (votosReais === 0 && f.avaliacao) {
             notaExibicao = f.avaliacao;
         }
 
-        // Define o HTML da coluna de avaliação
+        // Estilização da Estrela
         let avaliacaoHTML = '';
         if (notaExibicao > 0) {
-            avaliacaoHTML = `<i class="fas fa-star" style="color: gold;"></i> ${parseFloat(notaExibicao).toFixed(1)}`;
+            avaliacaoHTML = `
+                <div title="${votosReais > 0 ? votosReais + ' votos reais' : 'Nota inicial'}">
+                    <i class="fas fa-star" style="color: gold;"></i> 
+                    <strong>${parseFloat(notaExibicao).toFixed(1)}</strong>
+                    ${votosReais > 0 ? `<small style="display:block; font-size:10px; color:#666;">${votosReais} votos</small>` : ''}
+                </div>`;
         } else {
-            avaliacaoHTML = `<span style="font-size: 0.8em; color: #007bff; font-style: italic;">Seja o primeiro a avaliar!</span>`;
+            avaliacaoHTML = `<span style="font-size: 0.8em; color: #007bff; font-style: italic;">Seja o primeiro!</span>`;
         }
 
         return `
@@ -83,8 +89,8 @@ async function renderTable(data) {
                 <td>${f.tipo === 'auto' ? 'Auto Faucet' : 'Padrão'}</td>
                 <td>${f.minimo_saque}</td>
                 <td>${f.tempo_saque}</td>
-                <td>${avaliacaoHTML}</td>
-                <td><span style="position:relative;" class="status-tag ${f.status}">${f.status === 'paying' ? 'Pagando' : 'Pendente'}</span></td>
+                <td style="text-align: center;">${avaliacaoHTML}</td>
+                <td><span class="status-tag ${f.status}">${f.status === 'paying' ? 'Pagando' : 'Pendente'}</span></td>
                 <td><a href="faucet.html?id=${f.id}" class="details-btn">Ver Detalhes</a></td>
             </tr>
         `;
