@@ -60,24 +60,30 @@ body {
 
 /* HEADER/NAVBAR */
 
-.header {
-
-    background-color: #fff;
-
-    border-bottom: 2px solid #eee;
-
-    padding: 15px 20px;
-
+/* --- CABEÇALHO E MENU (Onde estava o erro!) --- */
+header {
+    background: #fff;
+    padding: 1rem 5%;
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
 
-
+/* Esconde o menu sanduíche na versão Desktop */
+.menu-toggle {
+    display: none; 
+    font-size: 1.5rem;
+    cursor: pointer;
+}
 .logo {
 
     font-size: 1.5em;
@@ -1134,21 +1140,6 @@ body {
 
 /* --- Desktop --- */
 
-.menu-toggle {
-
-    display: none; /* Escondido no PC */
-
-    background: none;
-
-    border: none;
-
-    font-size: 1.8rem;
-
-    color: #333;
-
-    cursor: pointer;
-
-}
 
 
 
