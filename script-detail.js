@@ -194,3 +194,17 @@ function setupShareButtons(faucetNome) {
         if (el) { el.href = url; if (id !== 'share-ml') el.target = "_blank"; }
     }
 }
+
+// Quando carregar a faucet pelo ID:
+function displayFaucetDetails(f) {
+    document.getElementById('faucet-name').innerText = f.nome;
+    // ... outros campos ...
+
+    // Renderizar os Recursos (Badges)
+    const recursosDiv = document.getElementById('recursos-list');
+    if (f.recursos) {
+        recursosDiv.innerHTML = f.recursos.map(r => 
+            `<span class="badge-recurso">${r.replace('_', ' ')}</span>`
+        ).join('');
+    }
+}
