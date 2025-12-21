@@ -549,44 +549,6 @@ body {
     cursor: pointer;
 }
 
-/* AJUSTES ESPECÍFICOS SOLICITADOS (MOBILE 600px) */
-
-@media (max-width: 600px) {
-
-    .faucet-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 10px;
-        justify-items: center; /* Centraliza os cards na grid */
-    }
-
-    .faucet-card {
-        max-width: 195px; /* Ajustado conforme pedido */
-        padding:10px;
-    }
-
-
-
-    .faucet-info .url {
-        font-size: 0.6em; /* Ajustado conforme pedido */
-    }
-
-
-
-    .status-tag {
-        bottom: 3px; /* Ajustado conforme pedido */
-    }
-
-    
-
-    .faucet-icon {
-        font-size: 1.2em;
-        margin-right: 8px;
-
-    }
-
-}
-
-
 /* --- Mobile (Até 768px) --- */
 @media (max-width: 768px) {
     .header {
