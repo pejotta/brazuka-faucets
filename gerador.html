@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerador de JSON | Brazuka Faucets</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; display: flex; gap: 20px; }
+        .form-container { background: #fff; padding: 20px; border-radius: 10px; width: 40%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .output-container { width: 60%; }
+        h2 { color: #1a73e8; margin-top: 0; }
+        label { display: block; margin: 10px 0 5px; font-weight: bold; font-size: 14px; }
+        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .checkbox-group { display: grid; grid-template-columns: 1fr 1fr; background: #f9f9f9; padding: 10px; border-radius: 5px; }
+        .checkbox-item { font-size: 13px; margin: 5px 0; }
+        button { width: 100%; padding: 15px; background: #1a73e8; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; }
+        button:hover { background: #1557b0; }
+        #json-output { width: 100%; height: 500px; font-family: monospace; background: #272822; color: #f8f8f2; padding: 15px; border-radius: 10px; border: none; }
+        .copy-btn { background: #28a745; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>🕵️ Gerador de Item JSON</h2>
+    
+    <label>ID (Confira o último no seu .json)</label>
+    <input type="number" id="id" placeholder="Ex: 47">
+
+    <label>Nome da Faucet</label>
+    <input type="text" id="nome" placeholder="Ex: Doge Express">
+
+    <label>URL de Referência</label>
+    <input type="url" id="url" placeholder="https://...">
+
+    <label>Moeda Principal (slug)</label>
+    <input type="text" id="moeda" placeholder="Ex: doge, btc, central">
+
+    <label>Métodos de Pagamento</label>
+    <input type="text" id="pagamento" placeholder="Ex: FaucetPay, Direto">
+
+    <label>Tipo Principal</label>
+    <select id="tipo_principal">
+        <option value="faucet_padrao">Faucet Padrão</option>
+        <option value="autofaucet">Auto Faucet</option>
+        <option value="central_faucets">Central Multitarefas</option>
+        <option value="mineradora">Mineradora</option>
+    </select>
+
+    <label>Recursos (Badges)</label>
+    <div class="checkbox-group">
+        <div class="checkbox-item"><input type="checkbox" class="recurso" value="faucet"> Faucet</div>
+        <div class="checkbox-item"><input type="checkbox" class="recurso" value="ptc"> PTC</div>
+        <div class="checkbox-item"><input type="checkbox" class="recurso" value="shortlinks"> Shortlinks</div>
+        <div class="checkbox-item"><input type="checkbox" class="recurso" value="staking"> Staking</div>
+        <div class="checkbox-item"><input type="checkbox" class="recurso" value="offerwall"> Offerwalls</div>
+        <div class="checkbox-item"><input type="checkbox" class="recurso" value="jogos"> Jogos</div>
+    </div>
+
+    <label>Mínimo de Saque</label>
+    <input type="text" id="minimo" placeholder="Ex: Sem mínimo">
+
+    <label>Tempo de Saque</label>
+    <input type="text" id="tempo" placeholder="Ex: Imediato">
+
+    <label>Destaque?</label>
+    <select id="destaque">
+        <option value="false">Não</option>
+        <option value="true">Sim (Estrela)</option>
+    </select>
+
+    <button onclick="gerarJSON()">🚀 GERAR CÓDIGO JSON</button>
+</div>
+
+<div class="output-container">
+    <h2>📄 Resultado para Copiar</h2>
+    <textarea id="json-output" readonly placeholder="O código aparecerá aqui..."></textarea>
+    <button class="copy-btn" onclick="copiarTexto()">📋 Copiar Código</button>
+    <p style="font-size: 12px; color: #666;">* Lembre-se de adicionar uma vírgula entre os itens no seu arquivo principal!</p>
+</div>
+
+<script>
+function gerarJSON() {
+    const recursos = Array.from(document.querySelectorAll('.recurso:checked')).map(cb => cb.value);
+    
+    const obj = {
+        id: parseInt(document.getElementById('id').value),
+        nome: document.getElementById('nome').value,
+        url: document.getElementById('url').value,
+        moeda: document.getElementById('moeda').value,
+        pagamento: document.getElementById('pagamento').value,
+        tipo_principal: document.getElementById('tipo_principal').value,
+        recursos: recursos,
+        minimo_saque: document.getElementById('minimo').value,
+        tempo_saque: document.getElementById('tempo').value,
+        status: "paying",
+        destaque: document.getElementById('destaque').value === "true",
+        patrocinado: false
+    };
+
+    // Formata o JSON com recuo de 2 espaços
+    const jsonString = JSON.stringify(obj, null, 2);
+    // Adiciona a vírgula no final para facilitar a colagem
+    document.getElementById('json-output').value = "  " + jsonString + ",";
+}
+
+function copiarTexto() {
+    const copyText = document.getElementById("json-output");
+    copyText.select();
+    document.execCommand("copy");
+    alert("Código copiado! Só colar no seu .json agora.");
+}
+</script>
+
+</body>
+</html>
