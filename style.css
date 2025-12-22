@@ -630,3 +630,44 @@ body {
     }
     
 }
+
+/* --- TAGS DE STATUS ESPECIAIS --- */
+.faucet-card {
+    position: relative; /* Essencial para as tags se posicionarem em relação ao card */
+    margin-top: 15px; 
+}
+
+.tag-badge {
+    position: absolute;
+    top: -12px;
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Estrela de Ouro para os Destaques */
+.tag-destaque {
+    right: 10px;
+    background: linear-gradient(135deg, #ffd700, #ffa000);
+    border: 1px solid #ffb300;
+}
+
+/* Estilo para Patrocinados */
+.tag-patrocinado {
+    left: 10px;
+    background: linear-gradient(135deg, #1a73e8, #0052cc);
+    border: 1px solid #1557b0;
+}
+
+.tag-badge i {
+    font-size: 12px;
+}
