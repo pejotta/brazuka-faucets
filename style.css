@@ -256,7 +256,7 @@ body {
 
 .status-tag {
     position: absolute;
-    top: 3px;
+    bottom: 3px;
     right: 3px;
     padding: 3px 8px;
     border-radius: 3px;
