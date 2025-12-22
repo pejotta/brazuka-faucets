@@ -539,25 +539,44 @@ body {
     margin: 0 auto;         /* Centraliza o banner em si */
 }
 
-/* --- Desktop --- */
+/* --- GARANTINDO QUE O MENU APAREÇA --- */
 .menu-toggle {
-    display: none; /* Escondido no PC */
+    display: none; /* Escondido no Desktop */
     background: none;
     border: none;
-    font-size: 1.8rem;
-    color: #333;
     cursor: pointer;
+    padding: 10px;
+    z-index: 1001; /* Fica acima de tudo */
+}
+
+/* Ícone dentro do botão (Font Awesome ou Barrinhas) */
+.menu-toggle i, .menu-toggle span {
+    font-size: 28px; /* Tamanho grande para enxergar bem */
+    color: #333;    /* Cor escura para contrastar com o fundo branco */
+    display: block;
 }
 
 /* --- Mobile (Até 768px) --- */
 @media (max-width: 768px) {
       .header {
-        display: flex;            /* Ativa o Flexbox */
-        flex-direction: row;      /* Garante que fiquem na horizontal */
-        justify-content: space-between; /* Logo de um lado, Menu do outro */
-        align-items: center;      /* Alinha verticalmente no centro */
-        padding: 10px 20px;
-        flex-wrap: nowrap;        /* Impede que o menu pule para a linha de baixo */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative; /* Necessário para o menu absoluto funcionar */
+    }
+
+    .menu-toggle {
+        display: block !important; /* Força o aparecimento no Mobile */
+    }
+
+    /* Se você estiver usando 3 spans para fazer as barrinhas na mão */
+    .bar {
+        width: 25px;
+        height: 3px;
+        background-color: #333;
+        margin: 5px 0;
+        transition: 0.4s;
+        display: block;
     }
 
     .logo-container {
@@ -565,11 +584,6 @@ body {
         align-items: center;
     }
 
-    .menu-toggle {
-        display: block;           /* Garante que o ícone apareça */
-        margin: 0;                /* Remove margens que possam deslocar o ícone */
-        order: 2;                 /* Garante que o menu fique depois da logo */
-    }
 
     /* Ajuste para a Navbar não empurrar tudo quando aberta */
     .navbar {
