@@ -24,10 +24,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // --- LÓGICA DE TAGS (Destaque e Patrocinado) ---
                 let tagsHTML = '';
                 if (faucet.destaque === true || faucet.destaque === "true") {
-                    tagsHTML += `<div class="tag-badge tag-destaque"><i class="fas fa-star"></i> Destaque</div>`;
+                    tagsHTML += `<div class="tag-badge tag-destaque"><i class="fas fa-star"></i></div>`;
                 }
                 if (faucet.patrocinado === true || faucet.patrocinado === "true") {
-                    tagsHTML += `<div class="tag-badge tag-patrocinado"><i class="fas fa-ad"></i> Patrocinado</div>`;
+                    tagsHTML += `<div class="tag-badge tag-patrocinado"><i class="fas fa-ad"></i></div>`;
                 }
 
                 // Pegamos a URL limpa para buscar o favicon
