@@ -563,6 +563,7 @@ body {
         justify-content: space-between;
         align-items: center;
         position: relative; /* Necessário para o menu absoluto funcionar */
+          flex-direction: row;
     }
 
     .menu-toggle {
@@ -602,8 +603,8 @@ body {
     }
 
     .navbar a, .dropdown {
-        width: 100%;
-        padding: 15px 0;
+        width: 95%;
+        padding: 15px;
         border-bottom: 1px solid #eee;
     }
 
