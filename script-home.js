@@ -67,8 +67,8 @@ function getIconTag(moeda) {
         'eth': 'cryptocurrency:eth',
         'doge': 'cryptocurrency:doge',
         'trx': 'cryptocurrency:trx',
-        'central': 'fa6-solid:building-columns'
-        'autofaucet': 'fa6-solid:building-columns'
+        'central': 'fa6-solid:building-columns',
+        'autofaucet': 'fa6-solid:building-columns',
         'minerador': 'fa6-solid:building-columns'
     };
     const iconName = icons[moeda] || 'fa6-solid:wallet';
