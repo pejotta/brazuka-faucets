@@ -631,43 +631,35 @@ body {
     
 }
 
-/* --- TAGS DE STATUS ESPECIAIS --- */
-.faucet-card {
-    position: relative; /* Essencial para as tags se posicionarem em relação ao card */
-    margin-top: 15px; 
-}
-
+/* --- TAGS MINIMALISTAS (SÓ ÍCONES) --- */
 .tag-badge {
     position: absolute;
-    top: -12px;
-    padding: 5px 12px;
-    border-radius: 50px;
-    font-size: 10px;
-    font-weight: bold;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    z-index: 10;
+    top: 5px; /* Ajustado para ficar dentro do card mas no topo */
+    width: 22px;
+    height: 22px;
     display: flex;
     align-items: center;
-    gap: 5px;
+    justify-content: center;
+    border-radius: 5px; /* Quadradinho levemente arredondado */
+    font-size: 11px;
+    color: white;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Estrela de Ouro para os Destaques */
+/* Estrela no canto direito */
 .tag-destaque {
-    right: 10px;
-    background: linear-gradient(135deg, #ffd700, #ffa000);
-    border: 1px solid #ffb300;
+    right: 5px;
+    background: #ffc107; /* Amarelo sólido mais limpo */
 }
 
-/* Estilo para Patrocinados */
+/* Ícone AD no canto esquerdo */
 .tag-patrocinado {
-    left: 10px;
-    background: linear-gradient(135deg, #1a73e8, #0052cc);
-    border: 1px solid #1557b0;
+    left: 5px;
+    background: #1a73e8; /* Azul Brazuka */
 }
 
-.tag-badge i {
-    font-size: 12px;
+/* Ajuste no card para não encavalar com o ícone da faucet */
+.faucet-card {
+    padding-top: 25px !important; /* Dá um respiro pro ícone não bater na tag */
 }
