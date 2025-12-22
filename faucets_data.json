@@ -59,7 +59,7 @@
     "id": 5,
     "nome": "Final Autoclaim",
     "url": "https://autofaucet.dutchycorp.space/?r=Tentei,Ganhei",
-    "moeda": "central,autofaucet",
+    "moeda": ["central","autofaucet"],
     "pagamento": "FaucetPay, Metamask",
     "tipo_principal": "autofaucet",
     "recursos": ["faucet", "autofaucet", "ptc", "staking", "mineracao_web"],
