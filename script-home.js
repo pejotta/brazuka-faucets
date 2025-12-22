@@ -10,8 +10,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             const container = document.getElementById(`grid-${moeda}`);
             if (!container) return;
 
-            // Filtra as faucets dessa moeda e limita a 5 itens
-            const filtered = data.filter(f => f.moeda === moeda).slice(0, 5);
+            // Agora ele verifica se a moeda que a Home quer está dentro da lista da Faucet
+const filtered = data.filter(f => {
+    // Se for um array (lista), ele usa o .includes()
+    if (Array.isArray(f.moeda)) {
+        return f.moeda.includes(moeda);
+    }
+    // Se ainda for um texto simples (para as antigas), ele compara normal
+    return f.moeda === moeda;
+}).slice(0, 5);
 
             container.innerHTML = ''; // Limpa o "Carregando..."
 
