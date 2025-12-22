@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const data = await response.json();
 
         // Lista de moedas que aparecem na Home
-        const moedasHome = ['btc', 'eth', 'doge', 'trx', 'central'];
+        const moedasHome = ['btc', 'eth', 'doge', 'trx', 'central', 'minerador', 'autofaucet'];
 
         moedasHome.forEach(moeda => {
             const container = document.getElementById(`grid-${moeda}`);
