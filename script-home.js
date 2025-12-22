@@ -68,6 +68,8 @@ function getIconTag(moeda) {
         'doge': 'cryptocurrency:doge',
         'trx': 'cryptocurrency:trx',
         'central': 'fa6-solid:building-columns'
+        'autofaucet': 'fa6-solid:building-columns'
+        'minerador': 'fa6-solid:building-columns'
     };
     const iconName = icons[moeda] || 'fa6-solid:wallet';
     return `<iconify-icon icon="${iconName}" style="font-size: 30px; color: #1a73e8;"></iconify-icon>`;
