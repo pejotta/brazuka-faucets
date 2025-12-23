@@ -34,7 +34,7 @@ function renderCoins() {
         const coinSlug = m.nome.toLowerCase().replace(/\s+/g, '-');
         
         const coinLink = `${coinSlug}.html`;
-        const iconColor = m.sigla === 'btc' ? '#f2a900' : '#ffffff';
+        const iconColor = m.sigla === 'btc' ? '#f2a900';
 
         return `
             <a href="${coinLink}" class="coin-item">
