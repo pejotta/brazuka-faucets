@@ -707,7 +707,7 @@ body {
 
 /* CSS Reforçado */
 .footer {
-    background-color: #f8f9fa; 
+    background-color: #555; 
     padding: 30px 0;
     border-top: 2px solid #eee;
     width: 100%;
@@ -717,8 +717,7 @@ body {
 .footer-container {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
+    align-items: center
     margin: 0 auto;
     padding: 0 20px;
     flex-wrap: wrap; /* Garante que não quebre em telas menores */
@@ -736,7 +735,7 @@ body {
 
 .footer-links a {
     text-decoration: none;
-    color: #007bff;
+    color: #ccc;
     font-size: 14px;
     margin: 0 5px;
 }
