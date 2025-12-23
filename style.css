@@ -337,7 +337,7 @@ body {
     margin: 20px 0;
 }
 
-/* Filtros */
+/* Filtros Organizados */
 .filter-controls {
     background-color: #fff;
     padding: 15px;
@@ -345,27 +345,49 @@ body {
     border-radius: 8px;
     margin-bottom: 20px;
     display: flex;
-    gap: 15px;
+    gap: 12px;
     align-items: center;
-    flex-wrap: wrap; /* Para funcionar bem no mobile */
+    flex-wrap: wrap; 
+}
+
+/* Padronização de altura e estilo para inputs e selects */
+.filter-controls input[type="text"],
+.filter-controls select, 
+.filter-controls button {
+    height: 40px; /* Altura idêntica para todos */
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Garante que o padding não aumente o tamanho */
+}
+
+/* Ajuste específico da barra de busca */
+#search-faucet {
+    flex: 1; /* Faz a barra ocupar o espaço restante se houver */
+    min-width: 200px; /* Não deixa ela ficar espremida */
+    border-radius: 5px; /* Mantendo o padrão quadrado/arredondado dos outros */
+    outline: none;
+}
+
+#search-faucet:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 0 5px rgba(26, 115, 232, 0.2);
 }
 
 .filter-controls label {
     font-weight: bold;
     color: #555;
-}
-
-.filter-controls select, .filter-controls button {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    font-size: 14px;
 }
 
 .filter-controls button {
     background-color: #1a73e8;
     color: white;
+    font-weight: bold;
+    border: none;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: 0.3s;
+    padding: 0 20px;
 }
 
 .filter-controls button:hover {
@@ -777,8 +799,4 @@ body {
 }
 .modal-content {
     background: white; padding: 20px; border-radius: 8px; width: 300px; text-align: center;
-}
-.search-container { margin-bottom: 20px; }
-#search-faucet {
-    width: 100%; padding: 12px; border-radius: 25px; border: 1px solid #ddd; outline: none;
 }
