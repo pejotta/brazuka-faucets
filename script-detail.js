@@ -1,12 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const params = new URLSearchParams(window.location.search);
-    const faucetId = params.get('id');
+    // ... seu código de busca de params e fetch ...
     
-    if (!faucetId) {
-        window.location.href = 'index.html';
-        return;
-    }
-
     try {
         const response = await fetch('faucets_data.json');
         const faucets = await response.json();
@@ -20,8 +14,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             initCommentsSystem(faucetId);
             showRecommended(faucets, faucet); 
             
-            // --- O PULO DO GATO: CHAME A FUNÇÃO AQUI! ---
-            initReportSystem(faucetId); 
+            // AQUI ESTAVA O ERRO: Passar o objeto 'faucet' e não o 'faucetId'
+            initReportSystem(faucet); 
             
         } else {
             document.body.innerHTML = "<h1 style='text-align:center; padding-top:50px;'>Faucet não encontrada!</h1>";
@@ -35,7 +29,7 @@ function initReportSystem(faucet) {
     const btn = document.getElementById('report-btn');
     const modal = document.getElementById('report-modal');
     
-    // Campos hidden do Formspree
+    // Verificamos se os elementos existem na página para não dar erro
     const hiddenId = document.getElementById('hidden-faucet-id');
     const hiddenNome = document.getElementById('hidden-faucet-nome');
     const subject = document.getElementById('report-subject');
@@ -44,21 +38,12 @@ function initReportSystem(faucet) {
         btn.onclick = (e) => {
             e.preventDefault();
             
-            // Preenche os dados da faucet atual nos campos escondidos
-            hiddenId.value = faucet.id;
-            hiddenNome.value = faucet.nome;
-            subject.value = `[Report] - ${faucet.nome}`; // Deixa o assunto do e-mail bonitinho
+            // Preenche os campos se eles existirem no HTML
+            if(hiddenId) hiddenId.value = faucet.id;
+            if(hiddenNome) hiddenNome.value = faucet.nome;
+            if(subject) subject.value = `[Report] - ${faucet.nome}`;
             
             modal.style.display = 'flex';
         };
     }
-}
-
-// Lógica de envio com alerta para o usuário
-const reportForm = document.getElementById('report-form');
-if (reportForm) {
-    reportForm.addEventListener('submit', function() {
-        alert("Valeu, Pejotta! Report enviado. Vou checar isso o quanto antes! 👊");
-        closeReport();
-    });
 }
