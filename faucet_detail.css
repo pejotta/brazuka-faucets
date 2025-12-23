@@ -182,19 +182,6 @@
     }
 }
 
-.badge-recurso {
-    background: #e1f5fe;
-    color: #0288d1;
-    padding: 4px 10px;
-    border-radius: 15px;
-    font-size: 0.75em;
-    font-weight: bold;
-    margin-right: 5px;
-    display: inline-block;
-    border: 1px solid #b3e5fc;
-    text-transform: capitalize;
-}
-
 /* Estilo para as Badges de Recursos */
 #recursos-auditados {
     display: flex;
@@ -213,4 +200,10 @@
     font-weight: 600;
     border: 1px solid #d2e3fc;
     text-transform: capitalize;
+}
+
+.recommended-section {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid #eee;
 }
