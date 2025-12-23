@@ -539,8 +539,7 @@ body {
     max-width: 100%;
     display: block;
     margin: 0 auto;         /* Centraliza o banner em si */
-    border: none;    
-    zoom: 86%;
+    border: none;
 }
 
 /* --- GARANTINDO QUE O MENU APAREÇA --- */
