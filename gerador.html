@@ -82,25 +82,29 @@
 function gerarJSON() {
     const recursos = Array.from(document.querySelectorAll('.recurso:checked')).map(cb => cb.value);
     
+    // Melhoria: Transforma a string de moedas em um Array se houver vírgulas
+    const moedaInput = document.getElementById('moeda').value;
+    const moedaProcessada = moedaInput.includes(',') 
+        ? moedaInput.split(',').map(m => m.trim().toLowerCase()) 
+        : moedaInput.trim().toLowerCase();
+
     const obj = {
         id: parseInt(document.getElementById('id').value),
         nome: document.getElementById('nome').value,
         url: document.getElementById('url').value,
-        moeda: document.getElementById('moeda').value,
+        moeda: moedaProcessada, // Agora suporta ["btc", "doge"]
         pagamento: document.getElementById('pagamento').value,
         tipo_principal: document.getElementById('tipo_principal').value,
         recursos: recursos,
         minimo_saque: document.getElementById('minimo').value,
         tempo_saque: document.getElementById('tempo').value,
-        status: "paying",
+        status: document.getElementById('status').value, // Pegando do select
         destaque: document.getElementById('destaque').value === "true",
         patrocinado: false
     };
 
-    // Formata o JSON com recuo de 2 espaços
     const jsonString = JSON.stringify(obj, null, 2);
-    // Adiciona a vírgula no final para facilitar a colagem
-    document.getElementById('json-output').value = "  " + jsonString + ",";
+    document.getElementById('json-output').value = jsonString + ",";
 }
 
 function copiarTexto() {
