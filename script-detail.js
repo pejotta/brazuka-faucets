@@ -29,6 +29,53 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
+if (faucet) {
+    fillPageData(faucet);
+    // ... outras chamadas ...
+    showRecommended(faucets, faucet); // ADICIONE ESTA LINHA
+}
+
+function showRecommended(allFaucets, currentFaucet) {
+    const container = document.getElementById('recommended-grid');
+    if (!container) return;
+
+    // 1. Filtra faucets que tenham a mesma moeda (ou uma delas, se for array)
+    // E remove a faucet que o usuário já está vendo
+    const related = allFaucets.filter(f => {
+        if (f.id === currentFaucet.id) return false;
+        
+        // Verifica se compartilha alguma moeda/categoria
+        const currentMoedas = Array.isArray(currentFaucet.moeda) ? currentFaucet.moeda : [currentFaucet.moeda];
+        const targetMoedas = Array.isArray(f.moeda) ? f.moeda : [f.moeda];
+        
+        return currentMoedas.some(m => targetMoedas.includes(m));
+    }).slice(0, 4); // Mostra apenas 4 recomendações
+
+    if (related.length === 0) {
+        container.innerHTML = '<p>Explore nossas outras categorias para ganhar mais!</p>';
+        return;
+    }
+
+    // 2. Renderiza os cards (usando a mesma lógica da Home)
+    container.innerHTML = related.map(f => {
+        const domain = f.url.replace(/^(https?:\/\/)/, '').split('/')[0];
+        const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+        
+        return `
+            <a href="faucet.html?id=${f.id}" class="faucet-card">
+                <div class="faucet-icon">
+                    <img src="${faviconUrl}" alt="${f.nome}" style="width:32px;height:32px;">
+                </div>
+                <div class="faucet-info">
+                    <h3>${f.nome}</h3>
+                    <p class="url">${domain}</p>
+                </div>
+                <span class="status-tag ${f.status}">${f.status === 'paying' ? 'Paga' : 'Análise'}</span>
+            </a>
+        `;
+    }).join('');
+}
+
 // 1. Preenche os dados fixos
 function fillPageData(faucet) {
     document.title = `${faucet.nome} | Brazuka Faucets`;
