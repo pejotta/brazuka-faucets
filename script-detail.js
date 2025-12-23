@@ -16,11 +16,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const faucet = faucets.find(f => f.id == faucetId);
 
         if (faucet) {
-            fillPageData(faucet); // Preenche tudo (incluindo recursos)
+            fillPageData(faucet); 
             setupShareButtons(faucet.nome);
             loadWorkerData(faucetId);
             initInteractiveRating(faucetId);
             initCommentsSystem(faucetId);
+            
+            // --- AGORA SIM: Chama as recomendadas aqui dentro! ---
+            showRecommended(faucets, faucet); 
         } else {
             document.body.innerHTML = "<h1 style='text-align:center; padding-top:50px;'>Faucet não encontrada!</h1>";
         }
@@ -29,38 +32,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-if (faucet) {
-    fillPageData(faucet);
-    // ... outras chamadas ...
-    showRecommended(faucets, faucet); // ADICIONE ESTA LINHA
-}
-
+// FUNÇÃO: Mostrar Faucets Recomendadas
 function showRecommended(allFaucets, currentFaucet) {
     const container = document.getElementById('recommended-grid');
     if (!container) return;
 
-    // 1. Filtra faucets que tenham a mesma moeda (ou uma delas, se for array)
-    // E remove a faucet que o usuário já está vendo
     const related = allFaucets.filter(f => {
         if (f.id === currentFaucet.id) return false;
-        
-        // Verifica se compartilha alguma moeda/categoria
         const currentMoedas = Array.isArray(currentFaucet.moeda) ? currentFaucet.moeda : [currentFaucet.moeda];
         const targetMoedas = Array.isArray(f.moeda) ? f.moeda : [f.moeda];
-        
         return currentMoedas.some(m => targetMoedas.includes(m));
-    }).slice(0, 4); // Mostra apenas 4 recomendações
+    }).slice(0, 4);
 
     if (related.length === 0) {
         container.innerHTML = '<p>Explore nossas outras categorias para ganhar mais!</p>';
         return;
     }
 
-    // 2. Renderiza os cards (usando a mesma lógica da Home)
     container.innerHTML = related.map(f => {
         const domain = f.url.replace(/^(https?:\/\/)/, '').split('/')[0];
         const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
-        
         return `
             <a href="faucet.html?id=${f.id}" class="faucet-card">
                 <div class="faucet-icon">
@@ -81,7 +72,6 @@ function fillPageData(faucet) {
     document.title = `${faucet.nome} | Brazuka Faucets`;
     document.getElementById('faucet-name').textContent = faucet.nome;
     
-    // Tratamento para quando moeda é um Array (ex: FireFaucet)
     const moedaTexto = Array.isArray(faucet.moeda) ? faucet.moeda.join(' / ') : faucet.moeda;
     document.getElementById('faucet-coin').textContent = moedaTexto.toUpperCase();
     
@@ -95,7 +85,6 @@ function fillPageData(faucet) {
     statusTag.textContent = faucet.status === 'paying' ? 'PAGA REGULARMENTE' : (faucet.status === 'pending' ? 'PENDENTE' : 'SCAM/FECHADA');
     statusTag.className = `status-tag ${faucet.status} large-tag`;
 
-    // --- RENDERIZAR RECURSOS AUDITADOS (Agora dentro da função correta!) ---
     const recursosContainer = document.getElementById('recursos-auditados'); 
     if (recursosContainer) {
         if (faucet.recursos && faucet.recursos.length > 0) {
@@ -103,7 +92,7 @@ function fillPageData(faucet) {
                 `<span class="badge-recurso">${rec.replace('_', ' ')}</span>`
             ).join('');
         } else {
-            recursosContainer.innerHTML = '<span style="color:#999; font-size:0.9em;">Nenhum recurso listado para esta auditoria.</span>';
+            recursosContainer.innerHTML = '<span style="color:#999; font-size:0.9em;">Nenhum recurso listado.</span>';
         }
     }
 }
@@ -114,28 +103,25 @@ async function loadWorkerData(faucetId) {
         const response = await fetch(`${WORKER_URL}/get-data?id=${faucetId}`);
         if (!response.ok) return;
         const data = await response.json();
-
         if (data.totalVotos > 0) {
             document.getElementById('rating-status').textContent = `Média: ${data.media} (${data.totalVotos} votos)`;
             const meuVoto = localStorage.getItem(`voto_faucet_${faucetId}`);
             updateStarsVisual(meuVoto ? parseInt(meuVoto) : Math.round(data.media));
         }
-
         if (data.comentarios && data.comentarios.length > 0) {
             const display = document.getElementById('comments-display-list');
-            display.innerHTML = ''; 
-            data.comentarios.forEach(c => renderComment(c));
+            if(display) {
+                display.innerHTML = ''; 
+                data.comentarios.forEach(c => renderComment(c));
+            }
         }
-    } catch (e) {
-        console.log("Worker ainda sem dados.");
-    }
+    } catch (e) { console.log("Worker sem dados."); }
 }
 
 // 3. Sistema de Voto
 function initInteractiveRating(faucetId) {
     const stars = document.querySelectorAll('#user-rating iconify-icon');
     const statusText = document.getElementById('rating-status');
-
     stars.forEach(star => {
         star.addEventListener('click', async () => {
             if (localStorage.getItem(`voto_faucet_${faucetId}`)) {
@@ -156,9 +142,7 @@ function initInteractiveRating(faucetId) {
                     statusText.textContent = `Média: ${resData.media} (${resData.total} votos)`;
                     alert("Obrigado pelo seu voto!");
                 }
-            } catch (err) {
-                console.error(err);
-            }
+            } catch (err) { console.error(err); }
         });
     });
 }
@@ -175,7 +159,6 @@ function updateStarsVisual(val) {
 function initCommentsSystem(faucetId) {
     const form = document.getElementById('comment-form');
     if (!form) return;
-
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const commentData = {
@@ -194,11 +177,8 @@ function initCommentsSystem(faucetId) {
             if (response.ok) {
                 renderComment(commentData);
                 form.reset();
-                alert('Comentário publicado!');
             }
-        } catch (err) {
-            alert('Erro ao enviar.');
-        }
+        } catch (err) { alert('Erro ao enviar.'); }
     });
 }
 
@@ -207,11 +187,7 @@ function renderComment(c) {
     if (!display) return;
     const div = document.createElement('div');
     div.className = 'comment-item new-anim';
-    div.innerHTML = `
-        <strong>${c.nome} ${c.site ? `<a href="${c.site}" target="_blank" style="font-size:0.8em; color:#1a73e8;">(Site)</a>` : ''}</strong>
-        <small style="display:block; color:#999; font-size:0.7em;">Postado em ${c.data}</small>
-        <p>${c.texto}</p>
-    `;
+    div.innerHTML = `<strong>${c.nome}</strong> <p>${c.texto}</p>`;
     display.prepend(div);
 }
 
