@@ -663,3 +663,44 @@ body {
 .faucet-card {
     padding-top: 25px !important; /* Dá um respiro pro ícone não bater na tag */
 }
+.social-stats { margin: 40px auto; }
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+.stats-column {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid #f0f0f0;
+}
+.stats-column h3 {
+    font-size: 1.1rem;
+    color: #1a73e8;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px solid #e8f0fe;
+    padding-bottom: 10px;
+}
+.mini-list { display: flex; flex-direction: column; gap: 12px; }
+
+/* Estilo dos itens dentro dos widgets */
+.mini-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #333;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+.mini-item:hover { background: #f8fbff; }
+.mini-item img { width: 24px; height: 24px; border-radius: 4px; }
+.mini-info h4 { font-size: 0.9rem; margin: 0; }
+.mini-info p { font-size: 0.75rem; color: #777; margin: 0; }
+.rating-pill { background: #fff8e1; color: #ffa000; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; }
