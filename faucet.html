@@ -37,6 +37,26 @@
             <h3 style="padding: 5px 0;">Recursos Auditados:</h3>
             <div id="recursos-auditados" class="recursos-grid"></div>
             </div>
+            <button id="report-btn" class="btn-report">
+    <i class="fas fa-flag"></i> Reportar Problema
+</button>
+
+<div id="report-modal" class="modal">
+    <div class="modal-content">
+        <h3>Reportar Faucet</h3>
+        <p>O que aconteceu com esta faucet?</p>
+        <select id="report-reason">
+            <option value="not-paying">Não está pagando</option>
+            <option value="broken-link">Link quebrado / Fora do ar</option>
+            <option value="insufficient-funds">Saldo insuficiente na faucet</option>
+            <option value="other">Outro motivo</option>
+        </select>
+        <div class="modal-buttons">
+            <button onclick="sendReport()" class="btn-confirm">Enviar</button>
+            <button onclick="closeReport()" class="btn-cancel">Cancelar</button>
+        </div>
+    </div>
+</div>
         </div>
         
         <div class="ad-slot-sidebar">
