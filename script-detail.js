@@ -21,9 +21,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             loadWorkerData(faucetId);
             initInteractiveRating(faucetId);
             initCommentsSystem(faucetId);
-
-            // --- AGORA SIM: Chama as recomendadas aqui dentro! ---
             showRecommended(faucets, faucet); 
+            
+            // --- O PULO DO GATO: ATIVANDO O REPORT ---
+            initReportSystem(faucet); 
+            
         } else {
             document.body.innerHTML = "<h1 style='text-align:center; padding-top:50px;'>Faucet não encontrada!</h1>";
         }
@@ -209,26 +211,39 @@ function setupShareButtons(faucetNome) {
     }
 }
 
-function initReportSystem(faucetId) {
+// 6. SISTEMA DE REPORT (FORMSPREE)
+function initReportSystem(faucet) {
     const btn = document.getElementById('report-btn');
     const modal = document.getElementById('report-modal');
+    
+    // Campos do Formspree
+    const hiddenId = document.getElementById('hidden-faucet-id');
+    const hiddenNome = document.getElementById('hidden-faucet-nome');
+    const subject = document.getElementById('report-subject');
 
-    if(btn) {
-        btn.onclick = () => modal.style.display = 'flex';
+    if(btn && modal) {
+        btn.onclick = (e) => {
+            e.preventDefault();
+            // Preenche os dados automaticamente
+            if(hiddenId) hiddenId.value = faucet.id;
+            if(hiddenNome) hiddenNome.value = faucet.nome;
+            if(subject) subject.value = `[Report] - ${faucet.nome}`;
+            
+            modal.style.display = 'flex';
+        };
+    }
+
+    // Listener para fechar o modal e avisar o envio
+    const reportForm = document.getElementById('report-form');
+    if (reportForm) {
+        reportForm.onsubmit = () => {
+            alert("Valeu, Pejotta! Report enviado. Vou checar essa faucet! 👊");
+            setTimeout(closeReport, 500); // Fecha o modal após meio segundo
+        };
     }
 }
 
-async function sendReport() {
-    const reason = document.getElementById('report-reason').value;
-    const faucetId = new URLSearchParams(window.location.search).get('id');
-
-    // Aqui você enviaria para o seu Worker
-    console.log(`Reportando faucet ${faucetId} por: ${reason}`);
-    
-    alert("Obrigado! O relatório foi enviado e vamos analisar.");
-    closeReport();
-}
-
 function closeReport() {
-    document.getElementById('report-modal').style.display = 'none';
+    const modal = document.getElementById('report-modal');
+    if(modal) modal.style.display = 'none';
 }
