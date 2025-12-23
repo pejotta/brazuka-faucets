@@ -47,11 +47,10 @@
 }
 
 .ad-slot-sidebar {
-    width: 300px; /* Largura fixa do banner quadrado */
-    min-width: 300px;
+    max-width: 300px; /* Largura fixa do banner quadrado */
 }
 
-.ad-label {margin-bottom:-17px;}
+.ad-label {margin-bottom:0;}
 
 /* Magia do Mobile */
 @media (max-width: 768px) {
