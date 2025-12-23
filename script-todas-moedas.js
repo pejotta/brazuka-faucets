@@ -20,43 +20,32 @@ const moedas = [
     { nome: 'USD Coin', sigla: 'usdc', icon: 'cryptocurrency:usdc' },
     { nome: 'Monero', sigla: 'xmr', icon: 'cryptocurrency:xmr' },
     { nome: 'Taraxa', sigla: 'tara', icon: 'cryptocurrency:tara' },
-    { nome: 'Official Trump', sigla: 'trump', icon: '' }, // Exemplo vazio para testar o logo
+    { nome: 'Official Trump', sigla: 'trump', icon: 'cryptocurrency:trump' },
     { nome: 'Pepe', sigla: 'pepe', icon: 'cryptocurrency:pepe' }
 ];
 
 function renderCoins() {
     const grid = document.getElementById('coins-grid');
-    if (!grid) {
-        console.warn("Elemento 'coins-grid' não encontrado!");
-        return;
-    }
+    if (!grid) return;
 
     grid.innerHTML = moedas.map(m => {
-        // Gera o slug para o link
+        // Gera o slug para o link (ex: binance-coin.html)
         const coinSlug = m.nome.toLowerCase().replace(/\s+/g, '-');
         const coinLink = `${coinSlug}.html`;
         
-        let iconHTML = '';
-
-        // Se o icon estiver vazio, none ou não existir, usa o logo-brazuka
-        if (!m.icon || m.icon === 'none' || m.icon.trim() === '') {
-            iconHTML = `<img src="logo-brazuka.png" alt="Brazuka" style="width: 40px; height: 40px; object-fit: contain;">`;
-        } else {
-            // Se for BTC, forçamos o dourado. Se não, deixamos a cor original do iconify
-            const customStyle = m.sigla === 'btc' ? 'color: #f2a900;' : '';
-            iconHTML = `<iconify-icon icon="${m.icon}" style="font-size: 40px; ${customStyle}"></iconify-icon>`;
-        }
+        // Agora TODAS usam o logo-brazuka.png
+        const iconHTML = `<img src="logo-brazuka.png" alt="Brazuka" style="width: 42px; height: 42px; object-fit: contain;">`;
 
         return `
             <a href="${coinLink}" class="coin-item">
-                <div class="icon-wrapper" style="height: 45px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                <div class="icon-wrapper" style="height: 50px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
                     ${iconHTML}
                 </div>
-                <span>${m.nome}</span>
+                <span style="font-weight: 500;">${m.nome}</span>
             </a>
         `;
     }).join('');
 }
 
-// O PULO DO GATO: Executar a função quando a página carregar
+// Executa assim que o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', renderCoins);
