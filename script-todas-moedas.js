@@ -29,18 +29,25 @@ function renderCoins() {
     if (!grid) return;
 
     grid.innerHTML = moedas.map(m => {
-        // Criando o slug: "Binance Coin" -> "binance-coin"
+        // Gera o slug para o link: "Binance Coin" -> "binance-coin.html"
         const coinSlug = m.nome.toLowerCase().replace(/\s+/g, '-');
         const coinLink = `${coinSlug}.html`;
         
-        // Lógica do Ícone: Se não tiver iconify, usa o seu logo PNG
-        const iconHTML = (m.icon === 'none' || !m.icon || m.icon === '') 
-            ? `<img src="logo-brazuka.png" alt="Brazuka Icon" style="width: 40px; height: 40px; object-fit: contain;">`
-            : `<iconify-icon icon="${m.icon}" style="font-size: 40px; color: #f2a900;""></iconify-icon>`;
+        let iconHTML = '';
+
+        // Se o icon estiver vazio, for 'none' ou não existir, usa o logo-brazuka
+        if (!m.icon || m.icon === 'none' || m.icon === '') {
+            iconHTML = `<img src="logo-brazuka.png" alt="Brazuka" style="width: 40px; height: 40px; object-fit: contain;">`;
+        } else {
+            // Removemos a trava do 'white' para os ícones usarem suas cores originais!
+            // Se quiser forçar o BTC amarelo, mantemos a lógica apenas para ele.
+            const customStyle = m.sigla === 'btc' ? 'color: #f2a900;' : '';
+            iconHTML = `<iconify-icon icon="${m.icon}" style="font-size: 40px; ${customStyle}"></iconify-icon>`;
+        }
 
         return `
             <a href="${coinLink}" class="coin-item">
-                <div class="icon-wrapper" style="height: 40px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                <div class="icon-wrapper" style="height: 45px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
                     ${iconHTML}
                 </div>
                 <span>${m.nome}</span>
@@ -48,5 +55,3 @@ function renderCoins() {
         `;
     }).join('');
 }
-
-document.addEventListener('DOMContentLoaded', renderCoins);
