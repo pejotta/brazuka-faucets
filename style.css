@@ -518,6 +518,22 @@ body {
     border-radius: 15px;
 }
 
+.ad-slot-sidebar {
+    width: 300px;
+    min-height: 250px; /* Deixa crescer se precisar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible !important; /* MUITO IMPORTANTE: Garante que não corte nada */
+    margin: 10px auto;
+}
+
+/* Forçar os iframes que vêm de fora a respeitarem o espaço */
+.ad-slot-sidebar iframe {
+    max-width: 100% !important;
+    border: none !important;
+}
+
 /* O texto "Publicidade" */
 .ad-label {
     display: block;         /* Ocupa a linha toda, jogando o banner para baixo */
