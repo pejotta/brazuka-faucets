@@ -237,7 +237,7 @@ function initReportSystem(faucet) {
     const reportForm = document.getElementById('report-form');
     if (reportForm) {
         reportForm.onsubmit = () => {
-            alert("Valeu, Pejotta! Report enviado. Vou checar essa faucet! 👊");
+            alert("Valeu por avisar! Report enviado. Vou checar essa faucet! 👊");
             setTimeout(closeReport, 500); // Fecha o modal após meio segundo
         };
     }
