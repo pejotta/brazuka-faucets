@@ -518,14 +518,8 @@ body {
     border-radius: 15px;
 }
 
-.ad-slot-sidebar {
-    width: 300px;
-    min-height: 250px; /* Deixa crescer se precisar */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: visible !important; /* MUITO IMPORTANTE: Garante que não corte nada */
-    margin: 10px auto;
+.ad-slot-sidebar iframe {
+    zoom: 86%;
 }
 
 /* O texto "Publicidade" */
@@ -545,7 +539,8 @@ body {
     max-width: 100%;
     display: block;
     margin: 0 auto;         /* Centraliza o banner em si */
-    border: none;
+    border: none;    
+    zoom: 86%;
 }
 
 /* --- GARANTINDO QUE O MENU APAREÇA --- */
