@@ -29,15 +29,20 @@ function renderCoins() {
     if (!grid) return;
 
     grid.innerHTML = moedas.map(m => {
-        // 1. Transforma em minúsculo: "Binance Coin" -> "binance coin"
-        // 2. Troca espaços por traços: "binance coin" -> "binance-coin"
+        // Criando o slug: "Binance Coin" -> "binance-coin"
         const coinSlug = m.nome.toLowerCase().replace(/\s+/g, '-');
-        
         const coinLink = `${coinSlug}.html`;
+        
+        // Lógica do Ícone: Se não tiver iconify, usa o seu logo PNG
+        const iconHTML = (m.icon === 'none' || !m.icon || m.icon === '') 
+            ? `<img src="logo-brazuka.png" alt="Brazuka Icon" style="width: 40px; height: 40px; object-fit: contain;">`
+            : `<iconify-icon icon="${m.icon}" style="font-size: 40px; color: ${m.sigla === 'btc' ? '#f2a900' : '#ffffff'};"></iconify-icon>`;
 
         return `
             <a href="${coinLink}" class="coin-item">
-                <iconify-icon icon="${m.icon}" style="font-size: 40px; color: #f2a900;"></iconify-icon>
+                <div class="icon-wrapper" style="height: 40px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                    ${iconHTML}
+                </div>
                 <span>${m.nome}</span>
             </a>
         `;
