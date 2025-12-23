@@ -31,53 +31,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// FUNÇÃO: Inicializa os eventos do Modal
-function initReportSystem(faucetId) {
+function initReportSystem(faucet) {
     const btn = document.getElementById('report-btn');
     const modal = document.getElementById('report-modal');
+    
+    // Campos hidden do Formspree
+    const hiddenId = document.getElementById('hidden-faucet-id');
+    const hiddenNome = document.getElementById('hidden-faucet-nome');
+    const subject = document.getElementById('report-subject');
 
     if(btn && modal) {
         btn.onclick = (e) => {
             e.preventDefault();
+            
+            // Preenche os dados da faucet atual nos campos escondidos
+            hiddenId.value = faucet.id;
+            hiddenNome.value = faucet.nome;
+            subject.value = `[Report] - ${faucet.nome}`; // Deixa o assunto do e-mail bonitinho
+            
             modal.style.display = 'flex';
         };
     }
 }
 
-// FUNÇÃO: Envia o Report para o seu Worker
-async function sendReport() {
-    const reason = document.getElementById('report-reason').value;
-    const params = new URLSearchParams(window.location.search);
-    const faucetId = params.get('id');
-
-    if(!faucetId) return;
-
-    try {
-        // Agora enviando de verdade para o Worker!
-        const response = await fetch(`${WORKER_URL}/reportar`, {
-            method: 'POST',
-            body: JSON.stringify({ 
-                faucetId: faucetId, 
-                motivo: reason,
-                data: new Date().toISOString()
-            }),
-            headers: { 'Content-Type': 'application/json' }
-        });
-
-        if (response.ok) {
-            alert("Obrigado, Pejotta! O relatório foi enviado. Vamos analisar essa faucet agora mesmo! 🕵️‍♂️");
-        } else {
-            alert("O relatório foi registrado localmente. Obrigado pelo aviso!");
-        }
-    } catch (err) {
-        console.error("Erro ao reportar:", err);
-        alert("Ocorreu um erro, mas o report foi logado. Obrigado!");
-    }
-    
-    closeReport();
-}
-
-function closeReport() {
-    const modal = document.getElementById('report-modal');
-    if(modal) modal.style.display = 'none';
+// Lógica de envio com alerta para o usuário
+const reportForm = document.getElementById('report-form');
+if (reportForm) {
+    reportForm.addEventListener('submit', function() {
+        alert("Valeu, Pejotta! Report enviado. Vou checar isso o quanto antes! 👊");
+        closeReport();
+    });
 }
