@@ -43,19 +43,32 @@
 
 <div id="report-modal" class="modal">
     <div class="modal-content">
-        <h3>Reportar Faucet</h3>
-        <p>O que aconteceu com esta faucet?</p>
-        <select id="report-reason">
-            <option value="not-paying">Não está pagando</option>
-            <option value="broken-link">Link quebrado / Fora do ar</option>
-            <option value="insufficient-funds">Saldo insuficiente na faucet</option>
-            <option value="other">Outro motivo</option>
-        </select>
-        <div class="modal-buttons">
-            <button onclick="sendReport()" class="btn-confirm">Enviar</button>
-            <button onclick="closeReport()" class="btn-cancel">Cancelar</button>
-        </div>
+        <h3>Reportar Problema</h3>
+        <p>Ajude a comunidade Brazuka!</p>
+        
+        <form id="report-form" action="https://formspree.io/f/SEU_ID_AQUI" method="POST">
+            <input type="hidden" name="_subject" id="report-subject" value="[Report] - Faucet">
+            <input type="hidden" name="faucet_id" id="hidden-faucet-id">
+            <input type="hidden" name="faucet_nome" id="hidden-faucet-nome">
+
+            <label for="reason">O que aconteceu?</label>
+            <select name="motivo" id="report-reason" required>
+                <option value="nao-pagando">Não está pagando</option>
+                <option value="link-quebrado">Link quebrado / Off-line</option>
+                <option value="saldo-vazio">Saldo da Faucet vazio</option>
+                <option value="outros">Outro motivo</option>
+            </select>
+
+            <label for="msg">Detalhes adicionais (opcional):</label>
+            <textarea name="mensagem" id="report-msg" rows="3" placeholder="Conte o que houve..."></textarea>
+
+            <div class="modal-buttons">
+                <button type="submit" class="btn-confirm">Enviar Report</button>
+                <button type="button" onclick="closeReport()" class="btn-cancel">Cancelar</button>
+            </div>
+        </form>
     </div>
+</div>
 </div>
         </div>
         
