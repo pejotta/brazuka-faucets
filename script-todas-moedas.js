@@ -20,27 +20,29 @@ const moedas = [
     { nome: 'USD Coin', sigla: 'usdc', icon: 'cryptocurrency:usdc' },
     { nome: 'Monero', sigla: 'xmr', icon: 'cryptocurrency:xmr' },
     { nome: 'Taraxa', sigla: 'tara', icon: 'cryptocurrency:tara' },
-    { nome: 'Official Trump', sigla: 'trump', icon: 'cryptocurrency:trump' },
+    { nome: 'Official Trump', sigla: 'trump', icon: '' }, // Exemplo vazio para testar o logo
     { nome: 'Pepe', sigla: 'pepe', icon: 'cryptocurrency:pepe' }
 ];
 
 function renderCoins() {
     const grid = document.getElementById('coins-grid');
-    if (!grid) return;
+    if (!grid) {
+        console.warn("Elemento 'coins-grid' não encontrado!");
+        return;
+    }
 
     grid.innerHTML = moedas.map(m => {
-        // Gera o slug para o link: "Binance Coin" -> "binance-coin.html"
+        // Gera o slug para o link
         const coinSlug = m.nome.toLowerCase().replace(/\s+/g, '-');
         const coinLink = `${coinSlug}.html`;
         
         let iconHTML = '';
 
-        // Se o icon estiver vazio, for 'none' ou não existir, usa o logo-brazuka
-        if (!m.icon || m.icon === 'none' || m.icon === '') {
+        // Se o icon estiver vazio, none ou não existir, usa o logo-brazuka
+        if (!m.icon || m.icon === 'none' || m.icon.trim() === '') {
             iconHTML = `<img src="logo-brazuka.png" alt="Brazuka" style="width: 40px; height: 40px; object-fit: contain;">`;
         } else {
-            // Removemos a trava do 'white' para os ícones usarem suas cores originais!
-            // Se quiser forçar o BTC amarelo, mantemos a lógica apenas para ele.
+            // Se for BTC, forçamos o dourado. Se não, deixamos a cor original do iconify
             const customStyle = m.sigla === 'btc' ? 'color: #f2a900;' : '';
             iconHTML = `<iconify-icon icon="${m.icon}" style="font-size: 40px; ${customStyle}"></iconify-icon>`;
         }
@@ -55,3 +57,6 @@ function renderCoins() {
         `;
     }).join('');
 }
+
+// O PULO DO GATO: Executar a função quando a página carregar
+document.addEventListener('DOMContentLoaded', renderCoins);
