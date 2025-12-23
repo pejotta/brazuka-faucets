@@ -2,11 +2,11 @@
     <div class="footer-container">
         
         <div class="footer-section footer-left">
-            <div id="google_translate_element"></div>
+            <div id="google_translate_element" style="min-width: 150px; min-height: 30px;"></div>
         </div>
 
         <div class="footer-section footer-center">
-            <p>&copy; 2025 Brazuka Faucets. Todos os direitos reservados.</p>
+            <p style="margin-bottom: 5px;">&copy; 2025 Brazuka Faucets. Todos os direitos reservados.</p>
             <div class="footer-links">
                 <a href="contato.html">Contato</a> | 
                 <a href="privacidade.html">Política de Privacidade</a> | 
@@ -15,8 +15,10 @@
         </div>
 
         <div class="footer-section footer-right">
-            <script id="_wautqi">var _wau = _wau || []; _wau.push(["classic", "z19kbip6mo", "tqi"]);</script>
-            <script async src="//waust.at/c.js"></script>
+            <div class="wau-box" style="min-width: 80px; display: flex; justify-content: flex-end;">
+                <script id="_wautqi">var _wau = _wau || []; _wau.push(["classic", "z19kbip6mo", "tqi"]);</script>
+                <script async src="https://waust.at/c.js"></script>
+            </div>
         </div>
 
     </div>
@@ -25,7 +27,8 @@
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: 'pt', 
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
             }, 'google_translate_element');
         }
     </script>
@@ -33,12 +36,13 @@
 </footer>
 
 <style>
-/* Estilização para deixar tudo alinhado */
+/* CSS Reforçado */
 .footer {
-    background-color: #555; /* Ou a cor do seu site */
-    padding: 20px 0;
-    border-top: 1px solid #ddd;
+    background-color: #555; 
+    padding: 30px 0;
+    border-top: 2px solid #eee;
     width: 100%;
+    font-family: sans-serif;
 }
 
 .footer-container {
@@ -47,44 +51,35 @@
     align-items: center;
     margin: 0 auto;
     padding: 0 20px;
+    flex-wrap: wrap; /* Garante que não quebre em telas menores */
 }
 
 .footer-section {
-    flex: 1; /* Divide o espaço em 3 partes iguais */
-}
-
-.footer-left {
+    flex: 1;
     display: flex;
-    justify-content: flex-start;
+    flex-direction: column;
 }
 
-.footer-center {
-    text-align: center;
-}
-
-.footer-right {
-    display: flex;
-    justify-content: flex-end;
-}
+.footer-left { align-items: flex-start; }
+.footer-center { align-items: center; text-align: center; }
+.footer-right { align-items: flex-end; }
 
 .footer-links a {
     text-decoration: none;
     color: #ccc;
-    font-size: 0.9em;
+    font-size: 14px;
+    margin: 0 5px;
 }
 
-.footer-links a:hover {
-    color: #1a73e8;
-}
-
-/* Ajuste para celular (empilha os itens) */
+/* Se no celular ficar bagunçado, ele empilha */
 @media (max-width: 768px) {
     .footer-container {
         flex-direction: column;
-        gap: 15px;
-    }
-    .footer-section {
         text-align: center;
+        gap: 20px;
+    }
+    .footer-left, .footer-center, .footer-right {
+        align-items: center;
         justify-content: center;
     }
 }
