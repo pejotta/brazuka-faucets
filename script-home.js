@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         });
 
-        // --- 2. PREENCHER RECÉM ADICIONADOS (Agora dentro do escopo onde 'data' existe!) ---
+        // --- 2. PREENCHER RECÉM ADICIONADOS ---
         const recentContainer = document.getElementById('grid-recent');
         if (recentContainer) {
             const recentFaucets = [...data].reverse().slice(0, 5);
@@ -73,17 +73,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             `).join('');
         }
 
-        // --- 3. CHAMAR DADOS DO WORKER ---
-        loadHomeStats();
+        // --- 3. CHAMAR DADOS DO WORKER (Passando o data para ter os nomes) ---
+        loadHomeStats(data);
 
     } catch (error) {
         console.error("Erro na Home:", error);
     }
 });
 
-// --- FUNÇÕES AUXILIARES (Fora do DOMContentLoaded) ---
+// --- FUNÇÕES AUXILIARES ---
 
-async function loadHomeStats() {
+async function loadHomeStats(allFaucetsJson) {
     try {
         const res = await fetch(`${WORKER_URL}/get-global-stats`);
         if (!res.ok) throw new Error();
@@ -91,30 +91,42 @@ async function loadHomeStats() {
 
         // Preencher Comentários
         const commContainer = document.getElementById('grid-comments');
-        if (commContainer) {
-            commContainer.innerHTML = stats.recentComments.map(c => `
-                <div class="mini-item">
-                    <div class="mini-info">
-                        <h4>${c.nome} <small>em ${c.faucetNome}</small></h4>
-                        <p>"${c.texto.substring(0, 40)}..."</p>
+        if (commContainer && stats.recentComments) {
+            commContainer.innerHTML = stats.recentComments.map(c => {
+                // Busca o nome da faucet no JSON local pelo ID
+                const faucetInfo = allFaucetsJson.find(f => f.id == c.faucetId);
+                const nomeParaExibir = faucetInfo ? faucetInfo.nome : "Faucet";
+                
+                return `
+                    <div class="mini-item">
+                        <div class="mini-info">
+                            <h4>${c.nome} <small>em ${nomeParaExibir}</small></h4>
+                            <p>"${c.texto.substring(0, 40)}..."</p>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // Preencher Top Avaliados
         const topContainer = document.getElementById('grid-top-rated');
-        if (topContainer) {
-            topContainer.innerHTML = stats.topRated.map(f => `
-                <a href="faucet.html?id=${f.id}" class="mini-item">
-                    <div class="mini-info">
-                        <h4>${f.nome}</h4>
-                        <span class="rating-pill">⭐ ${f.media}</span>
-                    </div>
-                </a>
-            `).join('');
+        if (topContainer && stats.topRated) {
+            topContainer.innerHTML = stats.topRated.map(f => {
+                // Busca o nome da faucet no JSON local pelo ID
+                const faucetInfo = allFaucetsJson.find(item => item.id == f.id);
+                const nomeReal = faucetInfo ? faucetInfo.nome : `Faucet #${f.id}`;
+
+                return `
+                    <a href="faucet.html?id=${f.id}" class="mini-item">
+                        <div class="mini-info">
+                            <h4>${nomeReal}</h4>
+                            <span class="rating-pill">⭐ ${f.media}</span>
+                        </div>
+                    </a>
+                `;
+            }).join('');
         }
     } catch (e) {
-        console.log("Worker ainda não tem a rota global ou está offline.");
+        console.log("Erro ao carregar estatísticas ou Worker offline.");
     }
 }
