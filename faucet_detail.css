@@ -51,6 +51,8 @@
     min-width: 300px;
 }
 
+.ad-label {margin-bottom:-17px;}
+
 /* Magia do Mobile */
 @media (max-width: 768px) {
     .ficha-wrapper {
