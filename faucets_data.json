@@ -11,7 +11,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "15/12/2025"
   },
   {
     "id": 2,
@@ -25,7 +26,8 @@
     "tempo_saque": "Toda semana",
     "status": "paying",
     "destaque": true,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "15/12/2025"
   },
   {
     "id": 3,
@@ -39,7 +41,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": true,
-    "patrocinado": true
+    "patrocinado": true,
+    "data_cadastro": "15/12/2025"
   },
   {
     "id": 4,
@@ -53,7 +56,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": true,
-    "patrocinado": true
+    "patrocinado": true,
+    "data_cadastro": "15/12/2025"
   },
   {
     "id": 5,
@@ -67,7 +71,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "15/12/2025"
   },
   {
     "id": 6,
@@ -81,7 +86,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "15/12/2025"
   },
   {
     "id": 7,
@@ -95,7 +101,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 8,
@@ -109,7 +116,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 9,
@@ -123,7 +131,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 10,
@@ -137,9 +146,9 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
-  
   {
     "id": 11,
     "nome": "ClaimFreeCoins BCH",
@@ -152,7 +161,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 12,
@@ -166,7 +176,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 13,
@@ -180,7 +191,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 14,
@@ -194,7 +206,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 15,
@@ -208,7 +221,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 16,
@@ -222,7 +236,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 17,
@@ -236,7 +251,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 18,
@@ -250,7 +266,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 19,
@@ -264,7 +281,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 20,
@@ -278,7 +296,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 21,
@@ -292,7 +311,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 22,
@@ -306,7 +326,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 23,
@@ -320,7 +341,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 24,
@@ -334,7 +356,8 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
   {
     "id": 25,
@@ -348,9 +371,9 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
-
   {
     "id": 26,
     "nome": "ClaimFreeCoins USDC",
@@ -363,9 +386,9 @@
     "tempo_saque": "Imediato",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "18/12/2025"
   },
-
   {
     "id": 27,
     "nome": "FreeBitcoin",
@@ -378,9 +401,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 28,
     "nome": "FreeNem",
@@ -393,9 +416,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 29,
     "nome": "FreeCardano",
@@ -408,9 +431,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 30,
     "nome": "FreeXRP",
@@ -423,9 +446,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 31,
     "nome": "FreeSteam",
@@ -438,9 +461,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 32,
     "nome": "FreeUSDT",
@@ -453,9 +476,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 33,
     "nome": "FreeUSDCoin",
@@ -468,9 +491,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 34,
     "nome": "FreeBNB",
@@ -483,9 +506,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 35,
     "nome": "FreeEthereum",
@@ -498,9 +521,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 36,
     "nome": "FreeTron",
@@ -513,9 +536,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 37,
     "nome": "FreeDash",
@@ -528,9 +551,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 38,
     "nome": "FreeChainlink",
@@ -543,9 +566,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 39,
     "nome": "FreeNeo",
@@ -558,9 +581,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 40,
     "nome": "FreeLitecoin",
@@ -573,9 +596,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 41,
     "nome": "FreeDogecoin",
@@ -588,9 +611,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 42,
     "nome": "FreeShibaInu",
@@ -603,9 +626,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 43,
     "nome": "FreePancakeSwap",
@@ -618,9 +641,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 44,
     "nome": "FreeMatic",
@@ -633,9 +656,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 45,
     "nome": "FreeBitTorrent",
@@ -648,9 +671,9 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   },
-
   {
     "id": 46,
     "nome": "FreeBFG",
@@ -663,6 +686,7 @@
     "tempo_saque": "Variável",
     "status": "paying",
     "destaque": false,
-    "patrocinado": false
+    "patrocinado": false,
+    "data_cadastro": "20/12/2025"
   }
 ]
