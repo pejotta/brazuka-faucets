@@ -11,41 +11,98 @@
 </head>
 <body>
 
-    <main class="container">
-        <div class="faucet-detail-box">
-            <div class="ad-slot-top"></div>
-            <div class="header-detail">
-                <h1 id="faucet-name">Carregando Nome...</h1>
-                <span id="faucet-status" class="status-tag large-tag">---</span>
-            </div>
+   <main class="container">
+    <div class="faucet-detail-box">
+        <div class="ad-slot-top"></div>
+        
+        <div class="header-detail">
+            <h1 id="faucet-name">Carregando Nome...</h1>
+            <span id="faucet-status" class="status-tag large-tag">---</span>
+        </div>
 
-            <a href="#" target="_blank" id="faucet-visit-link" class="visit-btn">
-                VISITAR FAUCET AGORA <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            </a>
+        <a href="#" target="_blank" id="faucet-visit-link" class="visit-btn">
+            VISITAR FAUCET AGORA <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
 
-    <section class="details">
-    <h2>📋 Ficha Técnica</h2>
-    <div class="ficha-wrapper">
-        <div class="details-grid">
-            <p><strong><i class="fa-solid fa-coins"></i> Moeda/Tipo:</strong> <span id="faucet-coin">---</span></p>
-            <p><strong><i class="fa-solid fa-wallet"></i> Onde Receber:</strong> <span id="faucet-payment">---</span></p>
-            <p><strong><i class="fa-solid fa-bolt"></i> Sistema:</strong> <span id="faucet-type">---</span></p>
-            <p><strong><i class="fa-solid fa-hand-holding-dollar"></i> Min. Saque:</strong> <span id="faucet-min">---</span></p>
-            <p><strong><i class="fa-solid fa-clock"></i> Prazo de Saque:</strong> <span id="faucet-time">---</span></p>
-            <p><strong><i class="fa-solid fa-shield-check"></i> Verificação:</strong> <span>Auditoria Brazuka</span></p>
-            <div class="audit-box">
-            <h3 style="padding: 5px 0;">Recursos Auditados:</h3>
-            <div id="recursos-auditados" class="recursos-grid"></div>
+        <section class="details">
+            <h2>📋 Ficha Técnica</h2>
+            
+            <div class="ficha-wrapper">
+                <div class="details-grid">
+                    <p><strong><i class="fa-solid fa-coins"></i> Moeda/Tipo:</strong> <span id="faucet-coin">---</span></p>
+                    <p><strong><i class="fa-solid fa-wallet"></i> Onde Receber:</strong> <span id="faucet-payment">---</span></p>
+                    <p><strong><i class="fa-solid fa-bolt"></i> Sistema:</strong> <span id="faucet-type">---</span></p>
+                    <p><strong><i class="fa-solid fa-hand-holding-dollar"></i> Min. Saque:</strong> <span id="faucet-min">---</span></p>
+                    <p><strong><i class="fa-solid fa-clock"></i> Prazo de Saque:</strong> <span id="faucet-time">---</span></p>
+                    <p><strong><i class="fa-solid fa-shield-check"></i> Verificação:</strong> <span>Auditoria Brazuka</span></p>
+                    
+                    <div class="audit-box">
+                        <h3 style="padding: 5px 0;">Recursos Auditados:</h3>
+                        <div id="recursos-auditados" class="recursos-grid"></div>
+                    </div>
+
+                    <button id="report-btn" class="btn-report">
+                        <i class="fas fa-flag"></i> Reportar Problema
+                    </button>
+                </div>
+
+                <div class="ad-slot-sidebar">
+                    </div>
+            </div> <div class="pro-tip">
+                <i class="fa-solid fa-circle-info"></i>
+                <strong>Dica Brazuka:</strong> Sempre utilize a mesma carteira cadastrada na FaucetPay para evitar taxas desnecessárias.
             </div>
-            <button id="report-btn" class="btn-report">
-    <i class="fas fa-flag"></i> Reportar Problema
-</button>
+        </section>
+
+        <section class="meta-info">
+            <div class="engagement-container">
+                <div class="engagement-item">
+                    <div class="stars" id="user-rating">
+                        <iconify-icon icon="ic:round-star-border" data-value="1"></iconify-icon>
+                        <iconify-icon icon="ic:round-star-border" data-value="2"></iconify-icon>
+                        <iconify-icon icon="ic:round-star-border" data-value="3"></iconify-icon>
+                        <iconify-icon icon="ic:round-star-border" data-value="4"></iconify-icon>
+                        <iconify-icon icon="ic:round-star-border" data-value="5"></iconify-icon>
+                    </div>
+                    <span id="rating-status">Avalie!</span>
+                </div>
+
+                <div class="engagement-item social-grid">
+                    <a href="#" id="share-wa" class="btn-share wa"><iconify-icon icon="ic:baseline-whatsapp"></iconify-icon></a>
+                    <a href="#" id="share-tg" class="btn-share tg"><iconify-icon icon="ic:baseline-telegram"></iconify-icon></a>
+                    <a href="#" id="share-fb" class="btn-share fb"><iconify-icon icon="ic:baseline-facebook"></iconify-icon></a>
+                    <a href="#" id="share-tw" class="btn-share tw"><iconify-icon icon="simple-icons:x"></iconify-icon></a>
+                    <a href="#" id="share-rd" class="btn-share rd"><iconify-icon icon="ic:baseline-reddit"></iconify-icon></a>
+                    <a href="#" id="share-ml" class="btn-share ml"><iconify-icon icon="ic:baseline-email"></iconify-icon></a>
+                </div>
+            </div>
+        </section>
+
+        <section class="recommended-section container">
+            <h2 class="coin-title"><i class="fas fa-thumbs-up"></i> Faucets Recomendadas</h2>
+            <div id="recommended-grid" class="faucet-grid"></div>
+        </section>
+
+        <section id="comments" class="comments-section">
+            <h2>💬 Comentários e Provas de Pagamento</h2>
+            <form id="comment-form" class="comment-form">
+                <div class="input-group-row">
+                    <input type="text" id="comm-name" placeholder="Seu Nome (Obrigatório)" required>
+                    <input type="email" id="comm-email" placeholder="E-mail (Opcional)">
+                </div>
+                <input type="url" id="comm-site" placeholder="Seu Site ou Link de Referência (Opcional)">
+                <textarea id="comm-text" placeholder="Deixe seu depoimento ou dúvida sobre esta faucet..." required></textarea>
+                <button type="submit" class="submit-comment-btn">Publicar Comentário</button>
+            </form>
+            <div id="comments-display-list"></div>
+        </section>
+    </div>
+</main>
 
 <div id="report-modal" class="modal">
     <div class="modal-content">
         <h3>Reportar Problema</h3>
         <p>Ajude a comunidade Brazuka!</p>
-        
         <form id="report-form" action="https://formspree.io/f/mwveynoa" method="POST">
             <input type="hidden" name="_subject" id="report-subject" value="[Report] - Faucet">
             <input type="hidden" name="faucet_id" id="hidden-faucet-id">
@@ -69,73 +126,6 @@
         </form>
     </div>
 </div>
-</div>
-        </div>
-        
-        <div class="ad-slot-sidebar">
-            </div>
-    </div>
-    
-    <div class="pro-tip">
-        <i class="fa-solid fa-circle-info"></i>
-        <strong>Dica Brazuka:</strong> Sempre utilize a mesma carteira cadastrada na FaucetPay para evitar taxas desnecessárias.
-    </div>
-</section>
-
-            <section class="meta-info">
-         <div class="engagement-container">
-    
-    <div class="engagement-item">
-        <div class="stars" id="user-rating">
-            <iconify-icon icon="ic:round-star-border" data-value="1"></iconify-icon>
-            <iconify-icon icon="ic:round-star-border" data-value="2"></iconify-icon>
-            <iconify-icon icon="ic:round-star-border" data-value="3"></iconify-icon>
-            <iconify-icon icon="ic:round-star-border" data-value="4"></iconify-icon>
-            <iconify-icon icon="ic:round-star-border" data-value="5"></iconify-icon>
-        </div>
-        <span id="rating-status">Avalie!</span>
-    </div>
-
-    <div class="engagement-item social-grid">
-        <a href="#" id="share-wa" class="btn-share wa"><iconify-icon icon="ic:baseline-whatsapp"></iconify-icon></a>
-        <a href="#" id="share-tg" class="btn-share tg"><iconify-icon icon="ic:baseline-telegram"></iconify-icon></a>
-        <a href="#" id="share-fb" class="btn-share fb"><iconify-icon icon="ic:baseline-facebook"></iconify-icon></a>
-        <a href="#" id="share-tw" class="btn-share tw"><iconify-icon icon="simple-icons:x"></iconify-icon></a>
-        <a href="#" id="share-rd" class="btn-share rd"><iconify-icon icon="ic:baseline-reddit"></iconify-icon></a>
-        <a href="#" id="share-ml" class="btn-share ml"><iconify-icon icon="ic:baseline-email"></iconify-icon></a>
-    </div>
-</div>
-            </section>
-
-            <section class="recommended-section container">
-    <h2 class="coin-title"><i class="fas fa-thumbs-up"></i> Faucets Recomendadas</h2>
-    <div id="recommended-grid" class="faucet-grid">
-        </div>
-</section>
-            
-           <section id="comments" class="comments-section">
-    <h2>💬 Comentários e Provas de Pagamento</h2>
-    
-    <form id="comment-form" class="comment-form">
-        <div class="input-group-row">
-            <input type="text" id="comm-name" placeholder="Seu Nome (Obrigatório)" required>
-            <input type="email" id="comm-email" placeholder="E-mail (Opcional)">
-        </div>
-        <input type="url" id="comm-site" placeholder="Seu Site ou Link de Referência (Opcional)">
-        <textarea id="comm-text" placeholder="Deixe seu depoimento ou dúvida sobre esta faucet..." required></textarea>
-        <button type="submit" class="submit-comment-btn">Publicar Comentário</button>
-    </form>
-
-    <div id="comments-display-list">
-        <div class="comment-item">
-            <strong>Suporte Brazuka:</strong>
-            <p>Seja o primeiro a comentar sobre esta faucet!</p>
-        </div>
-    </div>
-</section>
-
-        </div>
-    </main>
 
     <script src="script-global.js"></script> <script src="script-detail.js"></script><script src="ads-manager.js"></script> </body>
 </html>
