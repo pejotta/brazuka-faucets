@@ -1,19 +1,92 @@
 <footer class="footer">
-    <p>&copy; 2025 Brazuka Faucets. Todos os direitos reservados.</p>
+    <div class="footer-container">
+        
+        <div class="footer-section footer-left">
+            <div id="google_translate_element"></div>
+        </div>
 
-    <div class="footer-links">
-        <a href="contato.html">Contato</a> | 
-        <a href="privacidade.html">Política de Privacidade</a> | 
-        <a href="termos.html">Termos de Uso</a>
-        <div id="google_translate_element" class="translator-gadget" style="float: right;
-    margin-top: -30px;"></div>
+        <div class="footer-section footer-center">
+            <p>&copy; 2025 **Brazuka Faucets**. Todos os direitos reservados.</p>
+            <div class="footer-links">
+                <a href="contato.html">Contato</a> | 
+                <a href="privacidade.html">Política de Privacidade</a> | 
+                <a href="termos.html">Termos de Uso</a>
+            </div>
+        </div>
+
+        <div class="footer-section footer-right">
+            <script id="_wautqi">var _wau = _wau || []; _wau.push(["classic", "z19kbip6mo", "tqi"]);</script>
+            <script async src="//waust.at/c.js"></script>
+        </div>
+
     </div>
 
-    
     <script type="text/javascript">
         function googleTranslateElementInit() {
-          new google.translate.TranslateElement({pageLanguage: 'pt', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+            new google.translate.TranslateElement({
+                pageLanguage: 'pt', 
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
         }
     </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </footer>
+
+<style>
+/* Estilização para deixar tudo alinhado */
+.footer {
+    background-color: #f8f9fa; /* Ou a cor do seu site */
+    padding: 20px 0;
+    border-top: 1px solid #ddd;
+    width: 100%;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-section {
+    flex: 1; /* Divide o espaço em 3 partes iguais */
+}
+
+.footer-left {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.footer-center {
+    text-align: center;
+}
+
+.footer-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #333;
+    font-size: 0.9em;
+}
+
+.footer-links a:hover {
+    color: #1a73e8;
+}
+
+/* Ajuste para celular (empilha os itens) */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .footer-section {
+        text-align: center;
+        justify-content: center;
+    }
+}
+</style>
