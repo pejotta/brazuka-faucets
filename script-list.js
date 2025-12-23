@@ -35,6 +35,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
+// Adicione isso dentro da função onde você inicializa os filtros
+document.getElementById('search-faucet').addEventListener('input', function(e) {
+    const term = e.target.value.toLowerCase();
+    const rows = document.querySelectorAll('#faucets-tbody tr');
+
+    rows.forEach(row => {
+        const name = row.querySelector('td:first-child').textContent.toLowerCase();
+        if (name.includes(term)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+
 async function renderTable(data) {
     const tbody = document.getElementById('faucets-tbody');
     if (!tbody) return;
