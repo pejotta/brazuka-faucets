@@ -49,6 +49,15 @@ function fillPageData(faucet) {
     statusTag.className = `status-tag ${faucet.status} large-tag`;
 }
 
+const recursosContainer = document.getElementById('recursos-auditados'); // Ajuste para o seu ID
+if (faucet.recursos && faucet.recursos.length > 0) {
+    recursosContainer.innerHTML = faucet.recursos.map(rec => 
+        `<span class="badge-recurso">${rec}</span>`
+    ).join('');
+} else {
+    recursosContainer.innerHTML = 'Nenhum recurso listado.';
+}
+
 // 2. Busca dados globais no Cloudflare KV (Média e Comentários Reais)
 async function loadWorkerData(faucetId) {
     try {
