@@ -28,12 +28,21 @@ function renderCoins() {
     const grid = document.getElementById('coins-grid');
     if (!grid) return;
 
-    grid.innerHTML = moedas.map(m => `
-        <a href="list-${m.sigla}.html" class="coin-item">
-            <iconify-icon icon="${m.icon}" style="font-size: 40px; color: #f2a900;"></iconify-icon>
-            <span>${m.nome}</span>
-        </a>
-    `).join('');
+    grid.innerHTML = moedas.map(m => {
+        // 1. Transforma em minúsculo: "Binance Coin" -> "binance coin"
+        // 2. Troca espaços por traços: "binance coin" -> "binance-coin"
+        const coinSlug = m.nome.toLowerCase().replace(/\s+/g, '-');
+        
+        const coinLink = `${coinSlug}.html`;
+        const iconColor = m.sigla === 'btc' ? '#f2a900' : '#ffffff';
+
+        return `
+            <a href="${coinLink}" class="coin-item">
+                <iconify-icon icon="${m.icon}" style="font-size: 40px; color: ${iconColor};"></iconify-icon>
+                <span>${m.nome}</span>
+            </a>
+        `;
+    }).join('');
 }
 
-renderCoins();
+document.addEventListener('DOMContentLoaded', renderCoins);
