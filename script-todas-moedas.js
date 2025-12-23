@@ -7,7 +7,7 @@ const moedas = [
     { nome: 'Dash', sigla: 'dash', icon: 'cryptocurrency:dash' },
     { nome: 'DigiByte', sigla: 'dgb', icon: 'cryptocurrency:dgb' },
     { nome: 'Tron', sigla: 'trx', icon: 'cryptocurrency:trx' },
-    { nome: 'Tether TRC20', sigla: 'usdt', icon: 'cryptocurrency:usdt' },
+    { nome: 'Tether', sigla: 'usdt', icon: 'cryptocurrency:usdt' },
     { nome: 'Feyorra', sigla: 'fey', icon: 'cryptocurrency:fey' },
     { nome: 'Zcash', sigla: 'zec', icon: 'cryptocurrency:zec' },
     { nome: 'Binance Coin', sigla: 'bnb', icon: 'cryptocurrency:bnb' },
