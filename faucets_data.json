@@ -27,7 +27,9 @@
     "status": "paying",
     "destaque": true,
     "patrocinado": false,
-    "data_cadastro": "15/12/2025"
+    "data_cadastro": "15/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Turnstile"
   },
   {
     "id": 3,
@@ -42,7 +44,9 @@
     "status": "paying",
     "destaque": true,
     "patrocinado": true,
-    "data_cadastro": "15/12/2025"
+    "data_cadastro": "15/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 4,
@@ -57,7 +61,9 @@
     "status": "paying",
     "destaque": true,
     "patrocinado": true,
-    "data_cadastro": "15/12/2025"
+    "data_cadastro": "15/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 5,
@@ -102,7 +108,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 8,
@@ -117,7 +125,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 9,
@@ -132,7 +142,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 10,
@@ -147,7 +159,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 11,
@@ -162,7 +176,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 12,
@@ -177,7 +193,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 13,
@@ -192,7 +210,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 14,
@@ -207,7 +227,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 15,
@@ -222,7 +244,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 16,
@@ -237,7 +261,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 17,
@@ -252,7 +278,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 18,
@@ -267,7 +295,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 19,
@@ -282,7 +312,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 20,
@@ -297,7 +329,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 21,
@@ -312,7 +346,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 22,
@@ -327,7 +363,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 23,
@@ -342,7 +380,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 24,
@@ -357,7 +397,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 25,
@@ -372,7 +414,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 26,
@@ -387,7 +431,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "18/12/2025"
+    "data_cadastro": "18/12/2025",
+    "intervalo": "60 minutos",
+    "captcha": "Recaptcha"
   },
   {
     "id": 27,
@@ -402,7 +448,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 28,
@@ -417,7 +465,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 29,
@@ -432,7 +482,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 30,
@@ -447,7 +499,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 31,
@@ -462,7 +516,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 32,
@@ -477,7 +533,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 33,
@@ -492,7 +550,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 34,
@@ -507,7 +567,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 35,
@@ -522,7 +584,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 36,
@@ -537,7 +601,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 37,
@@ -552,7 +618,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 38,
@@ -567,7 +635,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 39,
@@ -582,7 +652,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 40,
@@ -597,7 +669,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 41,
@@ -612,7 +686,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 42,
@@ -627,7 +703,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 43,
@@ -642,7 +720,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 44,
@@ -657,7 +737,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 45,
@@ -672,7 +754,9 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   },
   {
     "id": 46,
@@ -687,6 +771,8 @@
     "status": "paying",
     "destaque": false,
     "patrocinado": false,
-    "data_cadastro": "20/12/2025"
+    "data_cadastro": "20/12/2025",
+    "intervalo": "36 minutos",
+    "captcha": "Hcaptcha"
   }
 ]
