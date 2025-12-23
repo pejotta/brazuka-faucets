@@ -208,3 +208,27 @@ function setupShareButtons(faucetNome) {
         if (el) { el.href = url; el.target = "_blank"; }
     }
 }
+
+function initReportSystem(faucetId) {
+    const btn = document.getElementById('report-btn');
+    const modal = document.getElementById('report-modal');
+
+    if(btn) {
+        btn.onclick = () => modal.style.display = 'flex';
+    }
+}
+
+async function sendReport() {
+    const reason = document.getElementById('report-reason').value;
+    const faucetId = new URLSearchParams(window.location.search).get('id');
+
+    // Aqui você enviaria para o seu Worker
+    console.log(`Reportando faucet ${faucetId} por: ${reason}`);
+    
+    alert("Obrigado! O relatório foi enviado e vamos analisar.");
+    closeReport();
+}
+
+function closeReport() {
+    document.getElementById('report-modal').style.display = 'none';
+}
