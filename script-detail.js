@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // ... seu código de busca de params e fetch ...
+    const params = new URLSearchParams(window.location.search);
+    const faucetId = params.get('id');
     
+    if (!faucetId) {
+        window.location.href = 'index.html';
+        return;
+    }
+
     try {
         const response = await fetch('faucets_data.json');
         const faucets = await response.json();
