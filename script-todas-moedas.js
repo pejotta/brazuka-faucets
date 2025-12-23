@@ -36,7 +36,7 @@ function renderCoins() {
         // Lógica do Ícone: Se não tiver iconify, usa o seu logo PNG
         const iconHTML = (m.icon === 'none' || !m.icon || m.icon === '') 
             ? `<img src="logo-brazuka.png" alt="Brazuka Icon" style="width: 40px; height: 40px; object-fit: contain;">`
-            : `<iconify-icon icon="${m.icon}" style="font-size: 40px; color: ${m.sigla === 'btc' ? '#f2a900' : '#ffffff'};"></iconify-icon>`;
+            : `<iconify-icon icon="${m.icon}" style="font-size: 40px; color: #f2a900;""></iconify-icon>`;
 
         return `
             <a href="${coinLink}" class="coin-item">
