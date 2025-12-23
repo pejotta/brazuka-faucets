@@ -195,14 +195,6 @@
     text-transform: capitalize;
 }
 
-.audit-box {
-    margin-top: 20px;
-    padding: 15px;
-    background: #fff;
-    border-radius: 8px;
-    border: 1px dashed #1a73e8;
-}
-
 /* Estilo para as Badges de Recursos */
 #recursos-auditados {
     display: flex;
