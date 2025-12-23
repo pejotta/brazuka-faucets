@@ -528,12 +528,6 @@ body {
     margin: 10px auto;
 }
 
-/* Forçar os iframes que vêm de fora a respeitarem o espaço */
-.ad-slot-sidebar iframe {
-    max-width: 100% !important;
-    border: none !important;
-}
-
 /* O texto "Publicidade" */
 .ad-label {
     display: block;         /* Ocupa a linha toda, jogando o banner para baixo */
@@ -542,7 +536,6 @@ body {
     font-size: 11px;
     color: #999;
     text-transform: uppercase;
-    margin-bottom: -17px;     /* Dá um respiro entre o texto e o banner */
     padding-left: 5px;      /* Pequeno ajuste para não colar na borda */
 }
 
@@ -553,6 +546,7 @@ body {
     height: auto;
     display: block;
     margin: 0 auto;         /* Centraliza o banner em si */
+    border: none;
 }
 
 /* --- GARANTINDO QUE O MENU APAREÇA --- */
