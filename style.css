@@ -553,6 +553,7 @@ body {
     color: #999;
     text-transform: uppercase;
     padding-left: 5px;      /* Pequeno ajuste para não colar na borda */
+    margin-bottom: -17px;
 }
 
 /* Garante que imagens e iframes não quebrem o layout */
