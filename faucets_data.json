@@ -73,7 +73,7 @@
     "id": 6,
     "nome": "GoodWallet",
     "url": "http://goodwallet.xyz?inviteCode=nTgVwtnjYr",
-    "moeda": "G$, XDC",
+    "moeda": ["G$","XDC"],
     "pagamento": "GoodWallet",
     "tipo_principal": "mineradora",
     "recursos": ["faucet", "mineracao_mobile"],
