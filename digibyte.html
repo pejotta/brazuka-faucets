@@ -13,36 +13,38 @@
     <main class="container">
         <h1>Todas as Faucets de Digibyte (DGB)</h1>
 
-        <section class="banner-lista-top">
+           <section class="banner-lista-top">
             <div id="top-ad-placeholder"></div>
         </section>
 
-        <section class="filter-controls">
-            <label>Filtrar por Tipo:</label>
-            <select id="filter-tipo">
-                <option value="all">Todos os Tipos</option>
-                <option value="padrao">Faucet Padrão</option>
-                <option value="auto">Auto Faucet</option>
-            </select>
+       <section class="filter-controls">
+    <input type="text" id="search-faucet" placeholder="🔍 Buscar por nome...">
 
-            <label>Avaliação (Mínima):</label>
-            <select id="filter-avaliacao">
-                <option value="0">Qualquer</option>
-                <option value="4">4 Estrelas +</option>
-                <option value="3">3 Estrelas +</option>
-                <option value="2">2 Estrelas +</option>
-            </select>
-            
-            <label>Pagamento:</label>
-            <select id="filter-pagamento">
-                <option value="all">Qualquer</option>
-                <option value="faucetpay">FaucetPay</option>
-                <option value="direct">Direto (Carteira)</option>
-            </select>
-            
-            <button id="apply-filters">Aplicar Filtros</button>
-        </section>
+    <label>Tipo:</label>
+    <select id="filter-tipo">
+        <option value="all">Todos</option>
+        <option value="padrao">Faucet Padrão</option>
+        <option value="auto">Auto Faucet</option>
+    </select>
 
+    <label>Avaliação:</label>
+    <select id="filter-avaliacao">
+        <option value="0">Qualquer</option>
+        <option value="4">4 Estrelas +</option>
+        <option value="3">3 Estrelas +</option>
+        <option value="2">2 Estrelas +</option>
+    </select>
+    
+    <label>Pagamento:</label>
+    <select id="filter-pagamento">
+        <option value="all">Qualquer</option>
+        <option value="faucetpay">FaucetPay</option>
+        <option value="direct">Direto</option>
+    </select>
+    
+    <button id="apply-filters">Aplicar Filtros</button>
+</section>
+        
         <div class="table-responsive">
             <table id="faucets-table" class="faucet-table">
                 <thead>
