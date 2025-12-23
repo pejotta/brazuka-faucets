@@ -543,7 +543,6 @@ body {
 .ad-slot-top img, .ad-slot-mid img, .ad-slot-sidebar img, 
 .ad-slot-top iframe, .ad-slot-sidebar iframe {
     max-width: 100%;
-    height: auto;
     display: block;
     margin: 0 auto;         /* Centraliza o banner em si */
     border: none;
