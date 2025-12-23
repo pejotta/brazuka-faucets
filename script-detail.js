@@ -82,6 +82,8 @@ function fillPageData(faucet) {
     document.getElementById('faucet-time').textContent = faucet.tempo_saque || '---';
     document.getElementById('faucet-visit-link').href = faucet.url;
     document.getElementById('faucet-payment').textContent = faucet.pagamento || 'Não especificado';
+    document.getElementById('faucet-interval').textContent = faucet.intervalo || 'N/A';
+    document.getElementById('faucet-captcha').textContent = faucet.captcha || 'N/A';
 
     const statusTag = document.getElementById('faucet-status');
     statusTag.textContent = faucet.status === 'paying' ? 'PAGA REGULARMENTE' : (faucet.status === 'pending' ? 'PENDENTE' : 'SCAM/FECHADA');
