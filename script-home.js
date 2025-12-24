@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const data = await response.json();
 
         // --- 1. PREENCHER AS CATEGORIAS DA HOME ---
-        const moedasHome = ['btc', 'eth', 'doge', 'trx', 'central', 'minerador', 'autofaucet'];
+        const moedasHome = ['btc', 'eth', 'doge', 'trx', 'central', 'minerador', 'autofaucet', 'airdrop', 'ipo',];
 
         moedasHome.forEach(moeda => {
             const container = document.getElementById(`grid-${moeda}`);
