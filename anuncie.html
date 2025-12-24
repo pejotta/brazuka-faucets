@@ -9,25 +9,17 @@
     <style>
         :root {
             --primary-blue: #1a73e8;
+            --primary-dark: #0d47a1;
             --success-green: #27ae60;
+            --gold: #ff9800;
         }
 
-        .media-kit-container {
-            max-width: 900px;
-            margin: 50px auto;
-            padding: 20px;
-            font-family: 'Segoe UI', sans-serif;
-        }
-        
-        .media-kit-container h3 {
-            font-size: 2em;
-            padding: 20px 0;
-        }
-        
-         .hero-ads {
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; }
+
+        .hero-ads {
             text-align: center;
             padding: 60px 20px;
-            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
             color: white;
             border-radius: 0 0 50px 50px;
         }
@@ -35,11 +27,18 @@
         .hero-ads h1 { font-size: 2.5em; margin-bottom: 10px; }
         .hero-ads p { opacity: 0.9; font-size: 1.1em; }
 
+        .media-kit-container {
+            max-width: 1000px;
+            margin: -30px auto 50px;
+            padding: 20px;
+        }
+
+        /* Cards de Estatísticas */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
         .stat-card {
@@ -51,178 +50,114 @@
             border-bottom: 4px solid var(--primary-blue);
         }
 
-        .stat-card i {
-            font-size: 2em;
-            color: var(--primary-blue);
-            margin-bottom: 10px;
-        }
-
+        .stat-card i { font-size: 2em; color: var(--primary-blue); margin-bottom: 10px; }
         .stat-card h3 { font-size: 1.8em; margin: 10px 0; color: #333; }
-        .stat-card p { color: #666; font-size: 0.9em; }
+
+        /* Grid de Espaços */
+        .section-title { text-align: center; margin: 40px 0 30px; font-size: 2em; color: #333; }
 
         .ad-options {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
         }
 
         .ad-box {
             background: #fff;
-            padding: 20px;
-            border: 2px dashed #ccc;
-            border-radius: 10px;
-            text-align: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
         }
 
-        .ad-box h4 { color: var(--primary-blue); margin-top: 0; }
-        
+        .ad-box:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-color: var(--primary-blue); }
+        .ad-box h4 { color: var(--primary-blue); margin-top: 0; font-size: 1.25em; }
+        .ad-box p { color: #666; font-size: 0.95em; line-height: 1.5; margin: 5px 0; }
+
+        /* Estilo das Vagas e Preços */
         .price-tag {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: var(--success-green);
-            display: block;
-            margin: 10px 0;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed #eee;
         }
 
+        .consult-label { display: block; color: var(--success-green); font-weight: bold; font-size: 1.1em; margin-bottom: 5px; }
+
+        .vagas-badge {
+            display: inline-block;
+            background: #eef5ff;
+            color: var(--primary-blue);
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .ad-box.featured-space { border-left: 5px solid var(--gold); background: #fffdf5; }
+
+        /* Botão Principal */
         .btn-contato {
-            display: block;
-            width: 100%;
-            max-width: 300px;
-            margin: 40px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            max-width: 350px;
+            margin: 50px auto;
             background: var(--success-green);
             color: white;
-            text-align: center;
-            padding: 15px;
+            padding: 18px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
+            font-size: 1.2em;
+            border: none;
+            cursor: pointer;
             transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
         }
 
         .btn-contato:hover { transform: scale(1.05); background: #219150; }
 
-        @media (max-width: 768px) {
-            .ad-options { grid-template-columns: 1fr; }
+        /* MODAL */
+        .modal-ads {
+            display: none; position: fixed; z-index: 2000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
         }
 
-      /* Ajustes do Modal */
-.modal-ads-content {
-    background: #fff;
-    padding: 35px;
-    border-radius: 15px;
-    max-width: 500px;
-    width: 90%;
-}
+        .modal-ads-content {
+            background: #fff; margin: 2% auto; padding: 30px;
+            border-radius: 15px; width: 90%; max-width: 550px;
+            position: relative; max-height: 90vh; overflow-y: auto;
+        }
 
-.input-group {
-    margin-bottom: 15px;
-    text-align: left;
-}
+        .close-modal { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #666; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-weight: bold; margin-bottom: 5px; }
+        .input-group input, .input-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
 
-.input-group label {
-    display: block; /* Força a label a ficar em cima do input */
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
-}
+        .recursos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
+        .check-item { font-size: 0.9em; display: flex; align-items: center; cursor: pointer; }
+        .check-item input { margin-right: 8px; }
 
-.input-group input, 
-.input-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-sizing: border-box; /* Garante que o padding não quebre a largura */
-}
-
-.section-label {
-    display: block;
-    font-weight: bold;
-    margin: 20px 0 10px 0;
-    border-top: 1px solid #eee;
-    padding-top: 15px;
-}
-
-.recursos-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Duas colunas organizadas */
-    gap: 10px;
-    text-align: left;
-    margin-bottom: 20px;
-}
-
-.check-item {
-    font-size: 0.85em;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.check-item input {
-    margin-right: 8px;
-}
-
-.btn-enviar-ads {
-    width: 100%;
-    background-color: #27ae60;
-    color: white;
-    padding: 15px;
-    border: none;
-    border-radius: 50px;
-    font-weight: bold;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-enviar-ads:hover {
-    background-color: #219150;
-    transform: translateY(-2px);
-}
-        /* Estilo do Modal de Anúncios */
-.modal-ads {
-    display: none; 
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
-    backdrop-filter: blur(5px);
-}
-
-.modal-ads-content {
-    background-color: #fff;
-    margin: 5% auto;
-    padding: 30px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-    box-shadow: 0 5px 30px rgba(0,0,0,0.3);
-}
-
-.close-modal {
-    position: absolute;
-    right: 20px;
-    top: 15px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #666;
-}
-
-.close-modal:hover { color: #f00; }
+        @media (max-width: 768px) {
+            .ad-options { grid-template-columns: 1fr; }
+            .recursos-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
- <section class="hero-ads">
-            <h1>🚀 Anuncie no Brazuka Faucets</h1>
-            <p>Conecte sua Faucet ou Serviço Cripto à maior comunidade de caçadores de satoshis do Brasil.</p>
-        </section>
-    <div class="media-kit-container">       
 
+    <section class="hero-ads">
+        <h1>🚀 Anuncie no Brazuka Faucets</h1>
+        <p>Conecte seu projeto à maior comunidade de entusiastas cripto do Brasil.</p>
+    </section>
+
+    <div class="media-kit-container">
         <div class="stats-grid">
             <div class="stat-card">
                 <i class="fas fa-users"></i>
@@ -237,129 +172,165 @@
             <div class="stat-card">
                 <i class="fas fa-chart-line"></i>
                 <h3>100%</h3>
-                <p>Público Cripto/Web3</p>
+                <p>Público Qualificado Web3</p>
             </div>
         </div>
 
-        <h3>🎯 Nossos Espaços</h3>
+        <h3 class="section-title">🎯 Nossos Espaços</h3>
+
         <div class="ad-options">
+            <div class="ad-box featured-space">
+                <div>
+                    <h4>Carrossel - Home</h4>
+                    <p><strong>1160x350px</strong></p>
+                    <p>MEGA EXPOSIÇÃO - O destaque principal no topo do site.</p>
+                </div>
+                <div class="price-tag">
+                    <span class="consult-label">R$ 500 / mês</span>
+                    <span class="vagas-badge">4 Vagas</span>
+                </div>
+            </div>
+
             <div class="ad-box">
-                <h4>Carrossel - Página Inicial</h4>
-                <p>Tamanho: 1160x350px</p>
-                <p>MEGA EXPOSIÇÃO - Visível no topo da página inicial.</p>
-                <span class="price-tag">Consultar Preço<p/>4 Vagas</span>
+                <div>
+                    <h4>Banner Topo</h4>
+                    <p><strong>728x90px</strong></p>
+                    <p>Página Inicial e Listas. Visibilidade imediata no carregamento.</p>
+                </div>
+                <div class="price-tag">
+                    <span class="consult-label">R$ 200 / mês</span>
+                    <span class="vagas-badge">4 Vagas</span>
+                </div>
             </div>
+
             <div class="ad-box">
-                <h4>Banner Topo - Página Inicial e Listas</h4>
-                <p>Tamanho: 728x90px</p>
-                <p>O primeiro que o usuário vê ao entrar.</p>
-                <span class="price-tag">Consultar Preço<p/>4 Vagas</span>
+                <div>
+                    <h4>Banner Meio/Rodapé</h4>
+                    <p><strong>728x90px</strong></p>
+                    <p>Inserido estrategicamente entre as listas de criptomoedas.</p>
+                </div>
+                <div class="price-tag">
+                    <span class="consult-label">R$ 150 / mês</span>
+                    <span class="vagas-badge">4 Vagas</span>
+                </div>
             </div>
+
+            <div class="ad-box featured-space">
+                <div>
+                    <h4>Espaço para Cursos</h4>
+                    <p><strong>900x250px</strong></p>
+                    <p>Seção exclusiva entre Mineradores e Estatísticas. Ótimo CTR.</p>
+                </div>
+                <div class="price-tag">
+                    <span class="consult-label">R$ 300 / mês</span>
+                    <span class="vagas-badge">4 Vagas</span>
+                </div>
+            </div>
+
             <div class="ad-box">
-                <h4>Banner Meio/Rodapé - Página Inicial Entre Seções e Rodapé de Listas</h4>
-                <p>Tamanho: 728x90px</p>
-                <p>Aparece entre as seções das criptomoedas.</p>
-                <span class="price-tag">Consultar Preço<p/>4 Vagas</span>
+                <div>
+                    <h4>Banner Quadrado</h4>
+                    <p><strong>300x250px</strong></p>
+                    <p>Posicionado nas páginas de detalhes de cada faucet.</p>
+                </div>
+                <div class="price-tag">
+                    <span class="consult-label">R$ 150 / mês</span>
+                    <span class="vagas-badge">4 Vagas</span>
+                </div>
             </div>
-             <div class="ad-box">
-                <h4>Espaço para Cursos - Página Inicial Entre Mineradores e Estatísticas</h4>
-                <p>Tamanho: 900x250px</p>
-                <p>Expositor de Gifs ou Imagens Exclusivo para Cursos.</p>
-                <span class="price-tag">Consultar Preço<p/>4 Vagas</span>
-            </div>
-           <div class="ad-box">
-                <h4>Banner Quadrado - Páginas de Faucets</h4>
-                <p>Tamanho: 300x250px</p>
-                <p>Ao lado da ficha técnica das faucets.</p>
-                <span class="price-tag">Consultar Preço<p/>4 Vagas</span>
-            </div>
+
             <div class="ad-box">
-                <h4>Arranha-céu - Página de Cadastro de Faucets</h4>
-                <p>Tamanho: 160x600px</p>
-                <p>Banners flutuantes ao lado do formulário.</p>
-                <span class="price-tag">Consultar Preço<p/>2 Vagas</span>
+                <div>
+                    <h4>Arranha-céu (Skyscraper)</h4>
+                    <p><strong>160x600px</strong></p>
+                    <p>Banners laterais flutuantes na página de cadastro.</p>
+                </div>
+                <div class="price-tag">
+                    <span class="consult-label">R$ 100 / mês</span>
+                    <span class="vagas-badge">2 Vagas</span>
+                </div>
             </div>
-            <div class="ad-box">
-                <h4>Faucet em Destaque</h4>
-                <p>Sua faucet no topo da lista principal na página inicial.</p>
-                <span class="price-tag">Consultar Preço<p/>3 Vagas</span>
+
+            <div class="ad-box" style="background: #fffdf2; border-color: var(--gold);">
+                <div>
+                    <h4><i class="fas fa-star" style="color: var(--gold);"></i> Faucet em Destaque</h4>
+                    <p>Sua faucet fixa no topo da lista principal da página inicial.</p>
+                </div>
+                <div class="price-tag">
+                    <span class="consult-label">R$ 100 / mês</span>
+                    <span class="vagas-badge" style="background: #fff3e0; color: #ef6c00;">3 Vagas</span>
+                </div>
             </div>
+
             <div class="ad-box">
-                <h4>Artigo de Auditoria</h4>
-                <p>Review completo no blog do Brazuka.</p>
-                <span class="price-tag">Consultar Preço</span>
+                <div>
+                    <h4>Artigo de Auditoria</h4>
+                    <p>Review completo no blog com links permanentes e SEO.</p>
+                </div>
+                <div class="price-tag">
+                    <span class="consult-label">R$ 150 / Artigo</span>
+                    <span class="vagas-badge">Sob Demanda</span>
+                </div>
             </div>
         </div>
 
         <button id="open-ad-modal" class="btn-contato">
-    <i class="fas fa-paper-plane"></i> Solicitar Orçamento Agora
-</button>
+            <i class="fas fa-paper-plane"></i> Solicitar Orçamento Agora
+        </button>
         
-        <p style="text-align: center; color: #999; font-size: 0.8em;">
-            Aceitamos pagamentos em PIX, BTC, LTC, TRX e USDT (Carteira direta ou via FaucetPay).
+        <p style="text-align: center; color: #999; font-size: 0.85em; margin-top: 20px;">
+            Aceitamos pagamentos em PIX, BTC, LTC, TRX e USDT.
         </p>
     </div>
-<div id="ad-modal" class="modal-ads">
-    <div class="modal-ads-content">
-    <span class="close-modal">&times;</span>
-    <h2><i class="fas fa-bullhorn"></i> Solicitar Espaço Publicitário</h2>
-    <p>Preencha os dados abaixo e nossa equipe entrará em contato.</p>
 
-    <form action="https://formspree.io/f/mjgbvzbq" method="POST" id="form-anuncio">
-        <div class="input-group">
-            <label for="ad-nome">Seu Nome / Empresa *</label>
-            <input type="text" name="cliente" id="ad-nome" placeholder="Ex: Crypto Faucet Inc." required>
+    <div id="ad-modal" class="modal-ads">
+        <div class="modal-ads-content">
+            <span class="close-modal">&times;</span>
+            <h2 style="color: var(--primary-blue);"><i class="fas fa-bullhorn"></i> Solicitar Espaço</h2>
+            <p>Envie sua proposta e retornaremos o mais rápido possível.</p>
+
+            <form action="https://formspree.io/f/mjgbvzbq" method="POST" id="form-anuncio">
+                <div class="input-group">
+                    <label>Seu Nome / Empresa *</label>
+                    <input type="text" name="cliente" placeholder="Ex: Crypto Faucet Inc." required>
+                </div>
+
+                <div class="input-group">
+                    <label>E-mail ou Telegram *</label>
+                    <input type="text" name="contato" placeholder="@seu_usuario ou email@..." required>
+                </div>
+
+                <label style="font-weight: bold; display: block; margin-top: 20px;">Espaços de Interesse:</label>
+                <div class="recursos-grid">
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Carrossel"> Carrossel</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Topo"> Banner Topo</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Meio"> Banner Meio</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Espaço Cursos"> Espaço Cursos</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Quadrado"> Banner Quadrado</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Destaque"> Faucet Destaque</label>
+                </div>
+
+                <div class="input-group">
+                    <label>Mensagem / Observações</label>
+                    <textarea name="mensagem" rows="3" placeholder="Conte-nos mais sobre seu projeto..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-enviar-ads">
+                    🚀 Enviar Pedido de Orçamento
+                </button>
+            </form>
         </div>
+    </div>
 
-        <div class="input-group">
-            <label for="ad-contato">E-mail ou Telegram *</label>
-            <input type="text" name="contato" id="ad-contato" placeholder="Para onde enviamos a proposta?" required>
-        </div>
+    <script>
+        const adModal = document.getElementById("ad-modal");
+        const btnOpen = document.getElementById("open-ad-modal");
+        const spanClose = document.querySelector(".close-modal");
 
-        <label class="section-label">Quais espaços te interessam?</label>
-        <div class="recursos-grid">
-            <label class="check-item"><input type="checkbox" name="espaço[]" value="Carrossel"> Carrossel - Home</label>
-            <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Topo"> Banner Topo - Home e Listas</label>
-            <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Meio"> Banner Meio/Rodapé - Home e Listas</label>
-            <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Quadrado"> Banner Quadrado - Faucets</label>
-            <label class="check-item"><input type="checkbox" name="espaço[]" value="Destaque"> Faucet em Destaque - Home e Listas</label>
-            <label class="check-item"><input type="checkbox" name="espaço[]" value="Artigo"> Artigo de Auditoria</label>
-        </div>
-
-        <div class="input-group">
-            <label for="ad-msg">Detalhes Adicionais</label>
-            <textarea name="mensagem" id="ad-msg" rows="3" placeholder="Alguma dúvida ou proposta específica?"></textarea>
-        </div>
-
-        <button type="submit" class="btn-enviar-ads">
-            🚀 Enviar Pedido de Orçamento
-        </button>
-    </form>
-</div>
-</div>
-
-  <script>
-    const adModal = document.getElementById("ad-modal");
-const btnOpen = document.getElementById("open-ad-modal");
-const spanClose = document.getElementsByClassName("close-modal")[0];
-
-// Abre o modal
-btnOpen.onclick = function() {
-    adModal.style.display = "block";
-}
-
-// Fecha no X
-spanClose.onclick = function() {
-    adModal.style.display = "none";
-}
-
-// Fecha se clicar fora do modal
-window.onclick = function(event) {
-    if (event.target == adModal) {
-        adModal.style.display = "none";
-    }
-}
-  </script>
+        btnOpen.onclick = () => adModal.style.display = "block";
+        spanClose.onclick = () => adModal.style.display = "none";
+        window.onclick = (event) => { if (event.target == adModal) adModal.style.display = "none"; }
+    </script>
     <script src="script-global.js"></script>
 </body>
 </html>
