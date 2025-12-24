@@ -25,4 +25,14 @@ export async function onRequestPost(context) {
         // CÓDIGO SE FOR BOT
         return new Response("Erro no Captcha. Tente novamente!", { status: 403 });
     }
+
+    // No seu arquivo cadastrar.js
+const btn = document.getElementById('btn-cadastrar');
+btn.disabled = true; // Começa bloqueado
+
+// Essa função é chamada automaticamente quando o Turnstile termina
+function onTurnstileSuccess(token) {
+    btn.disabled = false;
+    btn.style.backgroundColor = '#1a73e8';
+}
 }
