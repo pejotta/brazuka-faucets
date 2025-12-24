@@ -828,3 +828,20 @@ body {
     object-fit: cover; /* Garante que o GIF preencha o espaço sem esticar feio */
     transition: opacity 0.5s ease-in-out;
 }
+
+.ad-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #999;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+/* Um pequeno ajuste no container para o label não ficar colado */
+.ad-slider-container {
+    margin-bottom: 30px; /* Dá espaço para o conteúdo debaixo */
+    background: none; /* Remove o fundo se quiser algo mais clean */
+    box-shadow: none; /* Se preferir o banner "solto" no layout */
+}
