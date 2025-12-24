@@ -100,41 +100,80 @@
             .ad-options { grid-template-columns: 1fr; }
         }
 
-      /* Estilo do Modal de Anúncios */
-.modal-ads {
-    display: none; 
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
-    backdrop-filter: blur(5px);
-}
-
+      /* Ajustes do Modal */
 .modal-ads-content {
-    background-color: #fff;
-    margin: 5% auto;
-    padding: 30px;
+    background: #fff;
+    padding: 35px;
     border-radius: 15px;
-    width: 90%;
     max-width: 500px;
-    position: relative;
-    box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+    width: 90%;
 }
 
-.close-modal {
-    position: absolute;
-    right: 20px;
-    top: 15px;
-    font-size: 28px;
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block; /* Força a label a ficar em cima do input */
     font-weight: bold;
-    cursor: pointer;
-    color: #666;
+    margin-bottom: 5px;
+    color: #333;
 }
 
-.close-modal:hover { color: #f00; }
+.input-group input, 
+.input-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box; /* Garante que o padding não quebre a largura */
+}
+
+.section-label {
+    display: block;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.recursos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas organizadas */
+    gap: 10px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.check-item {
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.check-item input {
+    margin-right: 8px;
+}
+
+.btn-enviar-ads {
+    width: 100%;
+    background-color: #27ae60;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-enviar-ads:hover {
+    background-color: #219150;
+    transform: translateY(-2px);
+}
     </style>
 </head>
 <body>
@@ -210,35 +249,41 @@
     </div>
 <div id="ad-modal" class="modal-ads">
     <div class="modal-ads-content">
-        <span class="close-modal">&times;</span>
-        <h2><i class="fas fa-bullhorn"></i> Solicitar Espaço Publicitário</h2>
-        <p>Preencha os dados abaixo e nossa equipe entrará em contato.</p>
+    <span class="close-modal">&times;</span>
+    <h2><i class="fas fa-bullhorn"></i> Solicitar Espaço Publicitário</h2>
+    <p>Preencha os dados abaixo e nossa equipe entrará em contato.</p>
 
-        <form action="https://formspree.io/f/mwvezvqr" method="POST" id="form-anuncio">
+    <form action="https://formspree.io/f/mjgbvzbq" method="POST" id="form-anuncio">
+        <div class="input-group">
             <label for="ad-nome">Seu Nome / Empresa *</label>
             <input type="text" name="cliente" id="ad-nome" placeholder="Ex: Crypto Faucet Inc." required>
+        </div>
 
+        <div class="input-group">
             <label for="ad-contato">E-mail ou Telegram *</label>
             <input type="text" name="contato" id="ad-contato" placeholder="Para onde enviamos a proposta?" required>
+        </div>
 
-            <label>Quais espaços te interessam?</label>
-            <div class="recursos-group">
-                <label class="recursos-item"><input type="checkbox" name="espaço[]" value="Carrossel - Página Inicial"> Carrossel - Página Inicial</label>
-                <label class="recursos-item"><input type="checkbox" name="espaço[]" value="Banner Topo - Página Inicial e Listas"> Banner Topo - Página Inicial e Listas</label>
-                <label class="recursos-item"><input type="checkbox" name="espaço[]" value="Banner Meio/Rodapé - Página Inicial Entre Seções e Rodapé de Listas"> Banner Meio/Rodapé - Página Inicial Entre Seções e Rodapé de Listas</label>
-                <label class="recursos-item"><input type="checkbox" name="espaço[]" value="Banner Quadrado - Páginas de Faucets"> Banner Quadrado - Páginas de Faucets</label>
-                <label class="recursos-item"><input type="checkbox" name="espaço[]" value="Destaque Home"> Faucet em Destaque</label>
-                <label class="recursos-item"><input type="checkbox" name="espaço[]" value="Artigo Review"> Artigo de Auditoria</label>
-            </div>
+        <label class="section-label">Quais espaços te interessam?</label>
+        <div class="recursos-grid">
+            <label class="check-item"><input type="checkbox" name="espaço[]" value="Carrossel"> Carrossel - Home</label>
+            <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Topo"> Banner Topo</label>
+            <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Meio"> Banner Meio/Rodapé</label>
+            <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Quadrado"> Banner Quadrado</label>
+            <label class="check-item"><input type="checkbox" name="espaço[]" value="Destaque"> Faucet em Destaque</label>
+            <label class="check-item"><input type="checkbox" name="espaço[]" value="Artigo"> Artigo de Auditoria</label>
+        </div>
 
+        <div class="input-group">
             <label for="ad-msg">Detalhes Adicionais</label>
-            <textarea name="mensagem" id="ad-msg" rows="4" placeholder="Alguma dúvida ou proposta específica?"></textarea>
+            <textarea name="mensagem" id="ad-msg" rows="3" placeholder="Alguma dúvida ou proposta específica?"></textarea>
+        </div>
 
-            <button type="submit" class="btn-contato" style="margin-top: 10px;">
-                🚀 Enviar Pedido de Orçamento
-            </button>
-        </form>
-    </div>
+        <button type="submit" class="btn-enviar-ads">
+            🚀 Enviar Pedido de Orçamento
+        </button>
+    </form>
+</div>
 </div>
 
   <script>
