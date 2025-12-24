@@ -131,3 +131,34 @@ async function loadHomeStats(allFaucetsJson) {
         console.log("Erro ao carregar estatísticas do Worker.");
     }
 }
+
+const counters = document.querySelectorAll('.stat-number');
+const speed = 200; // Quanto maior, mais lento
+
+const startCounters = () => {
+    counters.forEach(counter => {
+        const updateCount = () => {
+            const target = +counter.getAttribute('data-target');
+            const count = +counter.innerText;
+            const inc = target / speed;
+
+            if (count < target) {
+                counter.innerText = Math.ceil(count + inc);
+                setTimeout(updateCount, 15);
+            } else {
+                counter.innerText = target;
+            }
+        };
+        updateCount();
+    });
+};
+
+// Dispara a animação apenas quando a seção aparece na tela
+const observer = new IntersectionObserver((entries) => {
+    if(entries[0].isIntersecting) {
+        startCounters();
+        observer.disconnect(); // Roda apenas uma vez
+    }
+}, { threshold: 0.5 });
+
+observer.observe(document.querySelector('.stats-hero'));
