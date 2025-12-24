@@ -829,7 +829,7 @@ body {
     transition: opacity 0.5s ease-in-out;
 }
 
-.ad-label {
+.ad-label-curso {
     font-size: 11px;
     text-transform: uppercase;
     color: #999;
