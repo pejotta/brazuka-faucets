@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anuncie | Auditor Brazuka</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1a73e8;
+            --success-green: #27ae60;
+        }
+
+        .media-kit-container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .hero-ads {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-bottom: 4px solid var(--primary-blue);
+        }
+
+        .stat-card i {
+            font-size: 2em;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+        }
+
+        .stat-card h3 { font-size: 1.8em; margin: 10px 0; color: #333; }
+        .stat-card p { color: #666; font-size: 0.9em; }
+
+        .ad-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .ad-box {
+            background: #fff;
+            padding: 20px;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .ad-box h4 { color: var(--primary-blue); margin-top: 0; }
+        
+        .price-tag {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--success-green);
+            display: block;
+            margin: 10px 0;
+        }
+
+        .btn-contato {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 40px auto;
+            background: var(--success-green);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-contato:hover { transform: scale(1.05); background: #219150; }
+
+        @media (max-width: 768px) {
+            .ad-options { grid-template-columns: 1fr; }
+        }
+
+      /* Estilo do Modal de Anúncios */
+.modal-ads {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    backdrop-filter: blur(5px);
+}
+
+.modal-ads-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #666;
+}
+
+.close-modal:hover { color: #f00; }
+    </style>
+</head>
+<body>
+
+    <div class="media-kit-container">
+        <section class="hero-ads">
+            <h1>🚀 Anuncie no Brazuka Faucets</h1>
+            <p>Conecte sua Faucet ou Serviço Cripto à maior comunidade de caçadores de satoshis do Brasil.</p>
+        </section>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <h3>+10k</h3>
+                <p>Usuários Mensais</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-mouse-pointer"></i>
+                <h3>+50k</h3>
+                <p>Cliques em Faucets</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>100%</h3>
+                <p>Público Cripto/Web3</p>
+            </div>
+        </div>
+
+        <h3>🎯 Nossos Espaços</h3>
+        <div class="ad-options">
+            <div class="ad-box">
+                <h4>Carrossel - Página Inicial</h4>
+                <p>Tamanho: 1160x350px</p>
+                <p>Visível no topo da página inicial.</p>
+                <span class="price-tag">Consultar Preço</span>
+            </div>
+            <div class="ad-box">
+                <h4>Banner Topo - Página Inicial e Listas</h4>
+                <p>Tamanho: 728x90px à 1200x150px</p>
+                <p>O primeiro que o usuário vê ao entrar.</p>
+                <span class="price-tag">Consultar Preço</span>
+            </div>
+            <div class="ad-box">
+                <h4>Banner Meio/Rodapé - Página Inicial Entre Seções e Rodapé de Listas</h4>
+                <p>Tamanho: 728x90px à 1200x150px</p>
+                <p>Aparece entre as seções das criptomoedas.</p>
+                <span class="price-tag">Consultar Preço</span>
+            </div>
+           <div class="ad-box">
+                <h4>Banner Quadrado - Páginas de Faucets</h4>
+                <p>Tamanho: 300x250px</p>
+                <p>O primeiro que o usuário vê ao entrar.</p>
+                <span class="price-tag">Consultar Preço</span>
+            </div>
+            <div class="ad-box">
+                <h4>Faucet em Destaque</h4>
+                <p>Sua faucet no topo da lista principal na página inicial.</p>
+                <span class="price-tag">Consultar Preço</span>
+            </div>
+            <div class="ad-box">
+                <h4>Artigo de Auditoria</h4>
+                <p>Review completo no blog do Brazuka.</p>
+                <span class="price-tag">Consultar Preço</span>
+            </div>
+        </div>
+
+        <button id="open-ad-modal" class="btn-contato">
+    <i class="fas fa-paper-plane"></i> Solicitar Orçamento Agora
+</button>
+        
+        <p style="text-align: center; color: #999; font-size: 0.8em;">
+            Aceitamos pagamentos em PIX, BTC, LTC, TRX e USDT (Carteira direta ou via FaucetPay).
+        </p>
+    </div>
+<div id="ad-modal" class="modal-ads">
+    <div class="modal-ads-content">
+        <span class="close-modal">&times;</span>
+        <h2><i class="fas fa-bullhorn"></i> Solicitar Espaço Publicitário</h2>
+        <p>Preencha os dados abaixo e nossa equipe entrará em contato.</p>
+
+        <form action="https://formspree.io/f/mwvezvqr" method="POST" id="form-anuncio">
+            <label for="ad-nome">Seu Nome / Empresa *</label>
+            <input type="text" name="cliente" id="ad-nome" placeholder="Ex: Crypto Faucet Inc." required>
+
+            <label for="ad-contato">E-mail ou Telegram *</label>
+            <input type="text" name="contato" id="ad-contato" placeholder="Para onde enviamos a proposta?" required>
+
+            <label>Quais espaços te interessam?</label>
+            <div class="recursos-group">
+                <label class="recursos-item"><input type="checkbox" name="espaço[]" value="Carrossel - Página Inicial"> Carrossel - Página Inicial</label>
+                <label class="recursos-item"><input type="checkbox" name="espaço[]" value="Banner Topo - Página Inicial e Listas"> Banner Topo - Página Inicial e Listas</label>
+                <label class="recursos-item"><input type="checkbox" name="espaço[]" value="Banner Meio/Rodapé - Página Inicial Entre Seções e Rodapé de Listas"> Banner Meio/Rodapé - Página Inicial Entre Seções e Rodapé de Listas</label>
+                <label class="recursos-item"><input type="checkbox" name="espaço[]" value="Banner Quadrado - Páginas de Faucets"> Banner Quadrado - Páginas de Faucets</label>
+                <label class="recursos-item"><input type="checkbox" name="espaço[]" value="Destaque Home"> Faucet em Destaque</label>
+                <label class="recursos-item"><input type="checkbox" name="espaço[]" value="Artigo Review"> Artigo de Auditoria</label>
+            </div>
+
+            <label for="ad-msg">Detalhes Adicionais</label>
+            <textarea name="mensagem" id="ad-msg" rows="4" placeholder="Alguma dúvida ou proposta específica?"></textarea>
+
+            <button type="submit" class="btn-contato" style="margin-top: 10px;">
+                🚀 Enviar Pedido de Orçamento
+            </button>
+        </form>
+    </div>
+</div>
+
+  <script>
+    const adModal = document.getElementById("ad-modal");
+const btnOpen = document.getElementById("open-ad-modal");
+const spanClose = document.getElementsByClassName("close-modal")[0];
+
+// Abre o modal
+btnOpen.onclick = function() {
+    adModal.style.display = "block";
+}
+
+// Fecha no X
+spanClose.onclick = function() {
+    adModal.style.display = "none";
+}
+
+// Fecha se clicar fora do modal
+window.onclick = function(event) {
+    if (event.target == adModal) {
+        adModal.style.display = "none";
+    }
+}
+  </script>
+</body>
+</html>
