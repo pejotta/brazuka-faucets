@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Faucet Perdida | Auditor Brazuka</title>
+    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .error-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            background: #f4f7f9;
+        }
+
+        .error-icon {
+            font-size: 80px;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .error-code {
+            font-size: 120px;
+            font-weight: bold;
+            color: #d1d1d1;
+            line-height: 1;
+            margin: 0;
+        }
+
+        .error-message {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+
+        .btn-home {
+            background-color: #1a73e8;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s, background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-home:hover {
+            background-color: #0d60d8;
+            transform: scale(1.05);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="error-container">
+        <div class="error-code">404</div>
+        <div class="error-icon">
+            <i class="fa-solid fa-faucet-dotted"></i>
+        </div>
+        
+        <h1 class="error-message">
+            Ops! Parece que essa faucet foi sugada pelo buraco negro do blockchain ou deu <strong>exit scam</strong>! 😱
+        </h1>
+        
+        <p style="color: #666; margin-bottom: 30px;">
+            Não gaste seu "gas" aqui. Vamos voltar para onde as satoshis estão caindo?
+        </p>
+
+        <a href="index.html" class="btn-home">
+            <i class="fa-solid fa-house"></i> Voltar para a Home
+        </a>
+    </main>
+
+</body>
+</html>
