@@ -137,4 +137,4 @@ setInterval(() => {
     if (document.getElementById('carousel-track')) {
         moveSlide(1);
     }
-}, 5000);
+}, 15000);
