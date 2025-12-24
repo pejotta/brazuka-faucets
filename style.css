@@ -814,8 +814,8 @@ body {
 .ad-slider-container {
     width: 100%;
     max-width: 900px;
-    height: 250px;
-    margin: 20px auto;
+    height: auto;
+    margin: 40px auto;
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
