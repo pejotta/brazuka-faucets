@@ -7,19 +7,22 @@ const meusAnuncios = [
     { img: "gif-faucetmaniacos.gif", link: "https://tenteiganhei.blogspot.com/p/curso-faucetmaniacos.html" }
 ];
 
-let adIndex = 0;
+// Sorteia um índice inicial aleatório para não começar sempre com o mesmo ao atualizar a página
+let adIndex = Math.floor(Math.random() * meusAnuncios.length);
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Inicia o rodízio de anúncios imediatamente ao carregar
+    // Inicia o rodízio imediatamente (com o sorteado)
     rotacionarAnuncios();
-    setInterval(rotacionarAnuncios, 15 * 60 * 1000); // 15 minutos
+    // Configura para trocar a cada 15 minutos
+    setInterval(rotacionarAnuncios, 15 * 60 * 1000); 
 
     try {
         const response = await fetch('faucets_data.json');
         const data = await response.json();
 
         // --- 1. PREENCHER AS CATEGORIAS DA HOME ---
-        const moedasHome = ['btc', 'eth', 'doge', 'trx', 'central', 'minerador', 'autofaucet', 'airdrop', 'ipo',];
+        // Adicionadas categorias: airdrop e ipo
+        const moedasHome = ['btc', 'eth', 'doge', 'trx', 'central', 'minerador', 'autofaucet', 'airdrop', 'ipo'];
 
         moedasHome.forEach(moeda => {
             const container = document.getElementById(`grid-${moeda}`);
@@ -33,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             container.innerHTML = ''; 
 
             if (filtered.length === 0) {
-                container.innerHTML = '<p style="color:#777; padding:10px;">Em breve novas faucets aqui!</p>';
+                container.innerHTML = '<p style="color:#777; padding:10px;">Em breve novas oportunidades aqui!</p>';
                 return;
             }
 
@@ -85,10 +88,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             `).join('');
         }
 
-        // --- 3. CHAMAR DADOS DO WORKER ---
         loadHomeStats(data);
 
-        // --- 4. CONFIGURAR CONTADORES ANIMADOS (Intersection Observer) ---
         const statsHero = document.querySelector('.stats-hero');
         if (statsHero) {
             const observer = new IntersectionObserver((entries) => {
@@ -113,13 +114,11 @@ async function loadHomeStats(allFaucetsJson) {
         if (!res.ok) throw new Error();
         const stats = await res.json();
 
-        // --- COMENTÁRIOS ---
         const commContainer = document.getElementById('grid-comments');
         if (commContainer && stats.recentComments) {
             commContainer.innerHTML = stats.recentComments.map(c => {
                 const faucetRef = allFaucetsJson.find(f => f.id == c.faucetId);
                 const nomeExibicao = faucetRef ? faucetRef.nome : "Faucet";
-
                 return `
                     <a href="faucet.html?id=${c.faucetId}" class="mini-item comment-link" style="text-decoration: none; color: inherit;">
                         <div class="mini-info">
@@ -131,13 +130,11 @@ async function loadHomeStats(allFaucetsJson) {
             }).join('');
         }
 
-        // --- TOP AVALIADOS ---
         const topContainer = document.getElementById('grid-top-rated');
         if (topContainer && stats.topRated) {
             topContainer.innerHTML = stats.topRated.map(f => {
                 const faucetRef = allFaucetsJson.find(item => item.id == f.id);
                 const nomeReal = faucetRef ? faucetRef.nome : `Faucet #${f.id}`;
-
                 return `
                     <a href="faucet.html?id=${f.id}" class="mini-item">
                         <div class="mini-info">
@@ -153,7 +150,6 @@ async function loadHomeStats(allFaucetsJson) {
     }
 }
 
-// Lógica dos Contadores
 const startCounters = () => {
     const counters = document.querySelectorAll('.stat-number');
     const speed = 200;
@@ -173,7 +169,6 @@ const startCounters = () => {
     });
 };
 
-// Lógica de Rotação de Anúncios
 function rotacionarAnuncios() {
     const container = document.getElementById("ad-content");
     if (!container) return;
@@ -187,6 +182,7 @@ function rotacionarAnuncios() {
             </a>
         `;
         container.style.opacity = "1";
+        // Avança para o próximo índice (volta ao zero se chegar no fim)
         adIndex = (adIndex + 1) % meusAnuncios.length;
     }, 500);
 }
