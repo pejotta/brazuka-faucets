@@ -164,9 +164,8 @@ const observer = new IntersectionObserver((entries) => {
 observer.observe(document.querySelector('.stats-hero'));
 
 const meusAnuncios = [
-    { img: "curso-faucet-1.gif", link: "https://hotmart.com/link1" },
-    { img: "banner-promocional-2.png", link: "https://hotmart.com/link2" },
-    { img: "anuncio-venda-3.gif", link: "https://hotmart.com/link3" }
+    { img: "alta-performance-moedas-digitais-brazuka.gif", link: "https://go.hotmart.com/T83952619I" },
+    { img: "gif-faucetmaniacos.gif", link: "https://tenteiganhei.blogspot.com/p/curso-faucetmaniacos.html" }
 ];
 
 let adIndex = 0;
