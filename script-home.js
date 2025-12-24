@@ -1,7 +1,19 @@
 // CONFIGURAÇÃO
 const WORKER_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
+// --- ARRAY DE ANÚNCIOS (900x250px) ---
+const meusAnuncios = [
+    { img: "alta-performance-moedas-digitais-brazuka.gif", link: "https://go.hotmart.com/T83952619I" },
+    { img: "gif-faucetmaniacos.gif", link: "https://tenteiganhei.blogspot.com/p/curso-faucetmaniacos.html" }
+];
+
+let adIndex = 0;
+
 document.addEventListener('DOMContentLoaded', async () => {
+    // Inicia o rodízio de anúncios imediatamente ao carregar
+    rotacionarAnuncios();
+    setInterval(rotacionarAnuncios, 15 * 60 * 1000); // 15 minutos
+
     try {
         const response = await fetch('faucets_data.json');
         const data = await response.json();
@@ -73,8 +85,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             `).join('');
         }
 
-        // --- 3. CHAMAR DADOS DO WORKER (Passando o data para ter os nomes) ---
+        // --- 3. CHAMAR DADOS DO WORKER ---
         loadHomeStats(data);
+
+        // --- 4. CONFIGURAR CONTADORES ANIMADOS (Intersection Observer) ---
+        const statsHero = document.querySelector('.stats-hero');
+        if (statsHero) {
+            const observer = new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting) {
+                    startCounters();
+                    observer.disconnect(); 
+                }
+            }, { threshold: 0.5 });
+            observer.observe(statsHero);
+        }
 
     } catch (error) {
         console.error("Erro na Home:", error);
@@ -89,15 +113,13 @@ async function loadHomeStats(allFaucetsJson) {
         if (!res.ok) throw new Error();
         const stats = await res.json();
 
-        // --- PREENCHER COMENTÁRIOS ---
+        // --- COMENTÁRIOS ---
         const commContainer = document.getElementById('grid-comments');
         if (commContainer && stats.recentComments) {
             commContainer.innerHTML = stats.recentComments.map(c => {
-                // Busca o nome da faucet no seu JSON usando o ID
                 const faucetRef = allFaucetsJson.find(f => f.id == c.faucetId);
                 const nomeExibicao = faucetRef ? faucetRef.nome : "Faucet";
 
-                // Agora o item todo é um link <a>
                 return `
                     <a href="faucet.html?id=${c.faucetId}" class="mini-item comment-link" style="text-decoration: none; color: inherit;">
                         <div class="mini-info">
@@ -109,7 +131,7 @@ async function loadHomeStats(allFaucetsJson) {
             }).join('');
         }
 
-        // --- PREENCHER TOP AVALIADOS (Já estava com link, só mantive) ---
+        // --- TOP AVALIADOS ---
         const topContainer = document.getElementById('grid-top-rated');
         if (topContainer && stats.topRated) {
             topContainer.innerHTML = stats.topRated.map(f => {
@@ -126,22 +148,20 @@ async function loadHomeStats(allFaucetsJson) {
                 `;
             }).join('');
         }
-
     } catch (e) {
         console.log("Erro ao carregar estatísticas do Worker.");
     }
 }
 
-const counters = document.querySelectorAll('.stat-number');
-const speed = 200; // Quanto maior, mais lento
-
+// Lógica dos Contadores
 const startCounters = () => {
+    const counters = document.querySelectorAll('.stat-number');
+    const speed = 200;
     counters.forEach(counter => {
         const updateCount = () => {
             const target = +counter.getAttribute('data-target');
             const count = +counter.innerText;
             const inc = target / speed;
-
             if (count < target) {
                 counter.innerText = Math.ceil(count + inc);
                 setTimeout(updateCount, 15);
@@ -153,43 +173,20 @@ const startCounters = () => {
     });
 };
 
-// Dispara a animação apenas quando a seção aparece na tela
-const observer = new IntersectionObserver((entries) => {
-    if(entries[0].isIntersecting) {
-        startCounters();
-        observer.disconnect(); // Roda apenas uma vez
-    }
-}, { threshold: 0.5 });
-
-observer.observe(document.querySelector('.stats-hero'));
-
-const meusAnuncios = [
-    { img: "alta-performance-moedas-digitais-brazuka.gif", link: "https://go.hotmart.com/T83952619I" },
-    { img: "gif-faucetmaniacos.gif", link: "https://tenteiganhei.blogspot.com/p/curso-faucetmaniacos.html" }
-];
-
-let adIndex = 0;
-
+// Lógica de Rotação de Anúncios
 function rotacionarAnuncios() {
     const container = document.getElementById("ad-content");
     if (!container) return;
 
-    adIndex++;
-    if (adIndex >= meusAnuncios.length) adIndex = 0;
-
-    // Efeito de transição simples
     container.style.opacity = "0";
 
     setTimeout(() => {
         container.innerHTML = `
             <a href="${meusAnuncios[adIndex].link}" target="_blank">
-                <img src="${meusAnuncios[adIndex].img}" class="ad-image">
+                <img src="${meusAnuncios[adIndex].img}" class="ad-image" style="width:100%; height:100%; object-fit:cover;">
             </a>
         `;
         container.style.opacity = "1";
+        adIndex = (adIndex + 1) % meusAnuncios.length;
     }, 500);
 }
-
-// 15 minutos = 15 * 60 * 1000 milissegundos
-const tempoRotacao = 15 * 60 * 1000; 
-setInterval(rotacionarAnuncios, tempoRotacao);
