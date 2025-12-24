@@ -10,6 +10,18 @@
 <body>
 <style>
     /* Estilos para o Formulário de Cadastro */
+
+        .hero-ads {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+            border-radius: 0 0 50px 50px;
+        }
+
+        .hero-ads h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .hero-ads p { opacity: 0.9; font-size: 1.1em; }
+    
     .faucet-form-container {
         max-width: 600px;
         margin: 50px auto;
@@ -122,6 +134,11 @@
         ADS 160x600
     </div>
 
+     <section class="hero-ads">
+            <h1>Cadastre sua Faucet - Central Multi Tarefas - Minerador - Airdrop ou Autofaucet</h1>
+              <p>Após uma breve auditoria da equipe <strong>Brazuka Faucets</strong>, enviaremos uma mensagem de listagem ou rejeição para o e-mail cadastrado.</p>
+        </section>
+    
     <main class="container">
         <div class="faucet-form-container">
             <form action="https://formspree.io/f/mjgbvzbq" method="POST" class="faucet-form">
@@ -132,6 +149,9 @@
 
                 <label for="faucet-url">URL da Faucet *</label>
                 <input type="url" id="faucet-url" name="url" placeholder="https://..." required>
+
+                <label for="faucet-url">E-mail para contato *</label>
+                <input type="text" id="email-contato" name="email" placeholder="email@email..." required>
                 
                 <label for="faucet-moeda">Moeda Principal *</label>
                 <select id="faucet-moeda" name="moeda" required>
