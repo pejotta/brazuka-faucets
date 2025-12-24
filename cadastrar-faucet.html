@@ -163,6 +163,19 @@
                     <label class="recursos-item"><input type="checkbox" name="recursos[]" value="jogos"> Jogos/Dice</label>
                     <label class="recursos-item"><input type="checkbox" name="recursos[]" value="offerwall"> Offerwalls</label>
                 </div>
+
+                <label for="faucet-timer">Intervalo do Timer (Tempo entre claims) *</label>
+                <input type="text" id="faucet-timer" name="timer_intervalo" placeholder="Ex: 5 minutos / Sem timer" required>
+
+                <label>Tipos de Captcha Utilizados:</label>
+                <div class="recursos-group">
+                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="reCAPTCHA"> reCAPTCHA (Google)</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="hCaptcha"> hCaptcha</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Turnstile"> Cloudflare Turnstile</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="IconCaptcha"> IconCaptcha/SolveMedia</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Antibot"> Antibot Links</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Custom"> Captcha Próprio/Texto</label>
+                </div>
                 
                 <label for="faucet-minimo">Mínimo de Saque *</label>
                 <input type="text" id="faucet-minimo" name="minimo_saque" placeholder="Ex: 0.005 USD / 30k Satoshis" required>
