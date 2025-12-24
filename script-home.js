@@ -162,3 +162,35 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 
 observer.observe(document.querySelector('.stats-hero'));
+
+const meusAnuncios = [
+    { img: "curso-faucet-1.gif", link: "https://hotmart.com/link1" },
+    { img: "banner-promocional-2.png", link: "https://hotmart.com/link2" },
+    { img: "anuncio-venda-3.gif", link: "https://hotmart.com/link3" }
+];
+
+let adIndex = 0;
+
+function rotacionarAnuncios() {
+    const container = document.getElementById("ad-content");
+    if (!container) return;
+
+    adIndex++;
+    if (adIndex >= meusAnuncios.length) adIndex = 0;
+
+    // Efeito de transição simples
+    container.style.opacity = "0";
+
+    setTimeout(() => {
+        container.innerHTML = `
+            <a href="${meusAnuncios[adIndex].link}" target="_blank">
+                <img src="${meusAnuncios[adIndex].img}" class="ad-image">
+            </a>
+        `;
+        container.style.opacity = "1";
+    }, 500);
+}
+
+// 15 minutos = 15 * 60 * 1000 milissegundos
+const tempoRotacao = 15 * 60 * 1000; 
+setInterval(rotacionarAnuncios, tempoRotacao);
