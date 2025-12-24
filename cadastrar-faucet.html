@@ -17,6 +17,8 @@
             background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
             color: white;
             border-radius: 0 0 50px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .hero-ads h1 { font-size: 2.5em; margin-bottom: 10px; }
@@ -124,6 +126,20 @@
     @media (max-width: 1000px) {
         .banner-lateral { display: none; }
     }
+
+        /* Estilo extra para destacar os campos dinâmicos */
+    .campo-dinamico {
+        background: #eef5ff;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px dashed #1a73e8;
+        margin-bottom: 20px;
+    }
+    
+    .campo-dinamico label {
+        color: #0d47a1;
+        font-size: 0.85em;
+    }
 </style>
 
     <div class="banner-lateral banner-left">
@@ -135,8 +151,8 @@
     </div>
 
      <section class="hero-ads">
-            <h1>Cadastre sua Faucet - Central Multi Tarefas - Minerador - Airdrop ou Autofaucet</h1>
-              <p>Após uma breve auditoria da equipe <strong>Brazuka Faucets</strong>, enviaremos uma mensagem de listagem ou rejeição para o e-mail cadastrado.</p>
+            <h1>Cadastre sua site</h1>
+              <p>Faucet - Central Multi Tarefas - Minerador - Airdrop ou Autofaucet</p><p>p>Após uma breve auditoria da equipe <strong>Brazuka Faucets</strong>, enviaremos uma mensagem de listagem ou rejeição para o e-mail cadastrado.</p>
         </section>
     
     <main class="container">
@@ -150,21 +166,23 @@
                 <label for="faucet-url">URL da Faucet *</label>
                 <input type="url" id="faucet-url" name="url" placeholder="https://..." required>
 
-                <label for="faucet-url">E-mail para contato *</label>
-                <input type="text" id="email-contato" name="email" placeholder="email@email..." required>
+                <label for="email-contato">E-mail para contato *</label>
+                <input type="email" id="email-contato" name="email" placeholder="email@email..." required>
                 
-                <label for="faucet-moeda">Moeda Principal *</label>
-                <select id="faucet-moeda" name="moeda" required>
-                    <option value="">-- Selecione a Cripto --</option>
-                    <option value="btc">Bitcoin (BTC)</option>
-                    <option value="eth">Ethereum (ETH)</option>
-                    <option value="doge">Dogecoin (DOGE)</option>
-                    <option value="ltc">Litecoin (LTC)</option>
-                    <option value="sol">Solana (SOL)</option>
-                    <option value="trx">Tron (TRX)</option>
-                    <option value="usdt">Tether (USDT)</option>
-                    <option value="central">Central Multimoedas (30+ moedas)</option>
-                </select>
+                <label>Moedas Principais *</label>
+                <div class="recursos-group">
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="btc"> BTC</label>
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="eth"> ETH</label>
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="doge"> DOGE</label>
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="ltc"> LTC</label>
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="trx"> TRX</label>
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="outra" id="check-outra-moeda"> Outra</label>
+                </div>
+
+                <div id="campo-outra-moeda" class="campo-dinamico" style="display: none;">
+                    <label for="input-outra-moeda">Especifique a(s) moeda(s):</label>
+                    <input type="text" id="input-outra-moeda" name="outra_moeda_txt" placeholder="Ex: Solana, Banano, Nano...">
+                </div>
 
                 <label for="faucet-tipo">Classificação Principal *</label>
                 <select id="faucet-tipo" name="tipo_principal" required>
@@ -174,7 +192,7 @@
                     <option value="mineradora">Mineradora (Web/Cloud)</option>
                 </select>
 
-                <label>Recursos Disponíveis (Selecione todos):</label>
+                <label>Recursos Disponíveis:</label>
                 <div class="recursos-group">
                     <label class="recursos-item"><input type="checkbox" name="recursos[]" value="faucet"> Faucet</label>
                     <label class="recursos-item"><input type="checkbox" name="recursos[]" value="ptc"> PTC (Ads)</label>
@@ -184,30 +202,30 @@
                     <label class="recursos-item"><input type="checkbox" name="recursos[]" value="offerwall"> Offerwalls</label>
                 </div>
 
-                <label for="faucet-timer">Intervalo do Timer (Tempo entre claims) *</label>
+                <label for="faucet-timer">Intervalo do Timer *</label>
                 <input type="text" id="faucet-timer" name="timer_intervalo" placeholder="Ex: 5 minutos / Sem timer" required>
 
-                <label>Tipos de Captcha Utilizados:</label>
+                <label>Tipos de Captcha:</label>
                 <div class="recursos-group">
-                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="reCAPTCHA"> reCAPTCHA (Google)</label>
-                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="hCaptcha"> hCaptcha</label>
-                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Turnstile"> Cloudflare Turnstile</label>
-                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="IconCaptcha"> IconCaptcha/SolveMedia</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="reCAPTCHA"> reCAPTCHA</label>
+                    <label class="recursos-item"><input type="checkbox" name="hCaptcha"> hCaptcha</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Turnstile"> Turnstile</label>
                     <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Antibot"> Antibot Links</label>
-                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Custom"> Captcha Próprio/Texto</label>
                 </div>
 
-                <label>Onde é feito o pagamento? (Selecione todos):</label>
+                <label>Onde é feito o pagamento? *</label>
                 <div class="recursos-group">
                     <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="FaucetPay"> FaucetPay</label>                    
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="FaucetPanel"> FaucetPanel</label>                    
                     <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Metamask"> Metamask</label>                                        
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Base"> Base</label>
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Carteira Direta"> Carteira Direta (On-chain)</label>
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Coinbase"> Coinbase</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Carteira Direta"> Carteira Direta</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Payeer"> Payeer</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Cwallet"> Cwallet</label>
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Outros"> Outras (Ex: Binance/OKX)</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="outros" id="check-outro-pagamento"> Outros</label>
+                </div>
+
+                <div id="campo-outro-pagamento" class="campo-dinamico" style="display: none;">
+                    <label for="input-outro-pagamento">Especifique o método de pagamento:</label>
+                    <input type="text" id="input-outro-pagamento" name="outro_pagamento_txt" placeholder="Ex: Binance ID, OKX, etc...">
                 </div>
                 
                 <label for="faucet-minimo">Mínimo de Saque *</label>
@@ -216,7 +234,7 @@
                 <label for="faucet-tempo">Frequência/Tempo de Saque *</label>
                 <input type="text" id="faucet-tempo" name="tempo_saque" placeholder="Ex: Imediato / Semanal" required>
 
-                <label for="faucet-obs">Observações da Auditoria (Opcional)</label>
+                <label for="faucet-obs">Observações (Opcional)</label>
                 <textarea id="faucet-obs" name="observacoes" rows="3" placeholder="Algo suspeito ou algum bônus especial?"></textarea>
                 
                 <div class="cf-turnstile" data-sitekey="0x4AAAAAACIz3XQpjGaXppF0" data-callback="onTurnstileSuccess" data-theme="light"></div>
