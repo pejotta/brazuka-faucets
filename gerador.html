@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de JSON | Brazuka Faucets</title>
+    <title>Gerador de JSON Pro | Brazuka Faucets</title>
     
     <script>
     (function() {
@@ -22,9 +22,8 @@
     </script>
 
     <style>
-        /* CSS ISOLADO DO GERADOR */
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Segoe UI', sans-serif; 
             background: #f0f2f5; 
             padding: 20px; 
             display: flex; 
@@ -37,78 +36,46 @@
             background: #fff; 
             padding: 25px; 
             border-radius: 12px; 
-            width: 450px; 
+            width: 500px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border-top: 5px solid #1a73e8;
+            max-height: 95vh;
+            overflow-y: auto;
         }
 
-        .output-container { 
-            width: 550px; 
-        }
+        .output-container { width: 500px; position: sticky; top: 20px; }
 
-        h2 { color: #1a73e8; margin-top: 0; font-size: 1.5em; display: flex; align-items: center; gap: 10px; }
+        h2 { color: #1a73e8; margin-top: 0; font-size: 1.4em; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; }
+        h3 { font-size: 0.9em; color: #555; text-transform: uppercase; margin: 20px 0 10px; border-left: 3px solid #1a73e8; padding-left: 10px; }
         
         label { display: block; margin: 12px 0 5px; font-weight: bold; font-size: 13px; color: #444; }
         
         input, select, textarea { 
-            width: 100%; 
-            padding: 10px; 
-            border: 1px solid #ddd; 
-            border-radius: 6px; 
-            box-sizing: border-box; 
-            font-size: 14px;
+            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 14px;
         }
 
-        input:focus { border-color: #1a73e8; outline: none; box-shadow: 0 0 5px rgba(26,115,232,0.2); }
-
-        .checkbox-group { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            background: #f8f9fa; 
-            padding: 15px; 
-            border-radius: 8px; 
-            border: 1px solid #eee;
+        .checkbox-grid { 
+            display: grid; grid-template-columns: 1fr 1fr; background: #f8f9fa; padding: 12px; border-radius: 8px; border: 1px solid #eee; gap: 5px;
         }
 
-        .checkbox-item { font-size: 13px; margin: 4px 0; display: flex; align-items: center; gap: 8px; }
+        .checkbox-item { font-size: 12px; display: flex; align-items: center; gap: 6px; color: #555; }
         .checkbox-item input { width: auto; }
 
-        button { 
-            width: 100%; 
-            padding: 15px; 
-            background: #1a73e8; 
-            color: #fff; 
-            border: none; 
-            border-radius: 50px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            margin-top: 20px; 
-            font-size: 1em;
-            transition: 0.3s;
+        .btn-gerar { 
+            width: 100%; padding: 15px; background: #1a73e8; color: #fff; border: none; border-radius: 50px; 
+            cursor: pointer; font-weight: bold; margin-top: 25px; font-size: 1em; transition: 0.3s;
         }
 
-        button:hover { background: #1557b0; transform: translateY(-2px); }
+        .btn-gerar:hover { background: #1557b0; transform: translateY(-2px); }
         
         #json-output { 
-            width: 100%; 
-            height: 520px; 
-            font-family: 'Consolas', monospace; 
-            background: #1e1e1e; 
-            color: #dcdcdc; 
-            padding: 20px; 
-            border-radius: 12px; 
-            border: none; 
-            resize: none;
-            font-size: 13px;
+            width: 100%; height: 550px; font-family: 'Consolas', monospace; background: #1e1e1e; 
+            color: #dcdcdc; padding: 20px; border-radius: 12px; border: none; resize: none; font-size: 13px;
         }
 
-        .copy-btn { background: #27ae60; margin-top: 15px; }
-        .copy-btn:hover { background: #219150; }
+        .copy-btn { background: #27ae60; margin-top: 15px; width: 100%; padding: 12px; color: white; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; }
 
-        @media (max-width: 900px) {
-            body { flex-direction: column; align-items: center; }
-            .form-container, .output-container { width: 95%; }
-        }
+        @media (max-width: 1000px) { body { flex-direction: column; align-items: center; } .form-container, .output-container { width: 95%; } .output-container { position: static; } }
     </style>
 </head>
 <body>
@@ -116,8 +83,9 @@
 <div class="form-container">
     <h2>🕵️ Gerador de Item JSON</h2>
     
-    <label>ID (Confira o último no seu .json)</label>
-    <input type="number" id="id" placeholder="Ex: 47">
+    <h3>Dados Básicos</h3>
+    <label>ID único</label>
+    <input type="number" id="id" placeholder="Confira o último no seu .json">
 
     <label>Nome da Faucet</label>
     <input type="text" id="nome" placeholder="Ex: Doge Express">
@@ -125,67 +93,102 @@
     <label>URL de Referência</label>
     <input type="url" id="url" placeholder="https://...">
 
-    <label>Moeda Principal (slug)</label>
-    <input type="text" id="moeda" placeholder="Ex: doge, btc, central">
+    <label>Moedas Principais (Separe por vírgula)</label>
+    <input type="text" id="moeda" placeholder="Ex: btc, doge, eth">
 
-    <label>Métodos de Pagamento</label>
-    <input type="text" id="pagamento" placeholder="Ex: FaucetPay, Direto">
-
-    <label>Tipo Principal</label>
+    <label>Classificação Principal</label>
     <select id="tipo_principal">
-        <option value="faucet_padrao">Faucet Padrão</option>
+        <option value="faucet_padrao">Faucet Padrão (Manual)</option>
         <option value="autofaucet">Auto Faucet</option>
-        <option value="central_faucets">Central Multitarefas</option>
+        <option value="central_faucets">Central Multimoedas</option>
         <option value="mineradora">Mineradora</option>
     </select>
 
-    <label>Recursos (Badges)</label>
-    <div class="checkbox-group">
-        <div class="checkbox-item"><input type="checkbox" class="recurso" value="faucet"> Faucet</div>
-        <div class="checkbox-item"><input type="checkbox" class="recurso" value="ptc"> PTC</div>
-        <div class="checkbox-item"><input type="checkbox" class="recurso" value="shortlinks"> Shortlinks</div>
-        <div class="checkbox-item"><input type="checkbox" class="recurso" value="staking"> Staking</div>
-        <div class="checkbox-item"><input type="checkbox" class="recurso" value="offerwall"> Offerwalls</div>
-        <div class="checkbox-item"><input type="checkbox" class="recurso" value="jogos"> Jogos</div>
-        <div class="checkbox-item"><input type="checkbox" class="recurso" value="bonus_diario"> Bônus Diário</div>
-        <div class="checkbox-item"><input type="checkbox" class="recurso" value="auto_claim"> Auto Claim</div>
-        <div class="checkbox-item"><input type="checkbox" class="recurso" value="sem_curtador"> Sem Encurtador</div>
+    <h3>Recursos e Funcionalidades</h3>
+    <div class="checkbox-grid">
+        <label class="checkbox-item"><input type="checkbox" class="recurso" value="faucet"> Faucet</label>
+        <label class="checkbox-item"><input type="checkbox" class="recurso" value="ptc"> PTC (Ads)</label>
+        <label class="checkbox-item"><input type="checkbox" class="recurso" value="shortlinks"> Shortlinks</label>
+        <label class="checkbox-item"><input type="checkbox" class="recurso" value="staking"> Staking</label>
+        <label class="checkbox-item"><input type="checkbox" class="recurso" value="jogos"> Jogos/Dice</label>
+        <label class="checkbox-item"><input type="checkbox" class="recurso" value="offerwall"> Offerwalls</label>
+        <label class="checkbox-item"><input type="checkbox" class="recurso" value="bonus_diario"> Bônus Diário</label>
+        <label class="checkbox-item"><input type="checkbox" class="recurso" value="auto_claim"> Auto Claim</label>
     </div>
 
-    <label>Status Inicial</label>
-    <select id="status">
-        <option value="paying">Paga Regularmente</option>
-        <option value="pending">Em Análise / Pendente</option>
-        <option value="scam">SCAM / Não Paga</option>
-    </select>
-    
-    <label>Mínimo de Saque</label>
-    <input type="text" id="minimo" placeholder="Ex: Sem mínimo">
+    <h3>Configurações do Timer e Captcha</h3>
+    <label>Intervalo do Timer</label>
+    <input type="text" id="intervalo" placeholder="Ex: 5 minutos / Sem timer">
 
-    <label>Tempo de Saque</label>
+    <label>Captchas Utilizados</label>
+    <div class="checkbox-grid">
+        <label class="checkbox-item"><input type="checkbox" class="captcha-item" value="reCAPTCHA"> reCAPTCHA</label>
+        <label class="checkbox-item"><input type="checkbox" class="captcha-item" value="hCaptcha"> hCaptcha</label>
+        <label class="checkbox-item"><input type="checkbox" class="captcha-item" value="Cloudflare"> Cloudflare</label>
+        <label class="checkbox-item"><input type="checkbox" class="captcha-item" value="Icon/SolveMedia"> Icon/SolveMedia</label>
+        <label class="checkbox-item"><input type="checkbox" class="captcha-item" value="Antibot Links"> Antibot Links</label>
+        <label class="checkbox-item"><input type="checkbox" class="captcha-item" value="Proprio"> Captcha Próprio</label>
+    </div>
+
+    <h3>Pagamento e Status</h3>
+    <label>Onde é feito o pagamento?</label>
+    <div class="checkbox-grid">
+        <label class="checkbox-item"><input type="checkbox" class="pagto-item" value="FaucetPay"> FaucetPay</label>
+        <label class="checkbox-item"><input type="checkbox" class="pagto-item" value="Metamask"> Metamask</label>
+        <label class="checkbox-item"><input type="checkbox" class="pagto-item" value="Carteira Direta"> Carteira Direta</label>
+        <label class="checkbox-item"><input type="checkbox" class="pagto-item" value="Payeer"> Payeer</label>
+        <label class="checkbox-item"><input type="checkbox" class="pagto-item" value="Cwallet"> Cwallet</label>
+        <label class="checkbox-item"><input type="checkbox" class="pagto-item" value="Coinbase"> Coinbase</label>
+    </div>
+
+    <label>Mínimo de Saque</label>
+    <input type="text" id="minimo" placeholder="Ex: 0.005 USD">
+
+    <label>Frequência de Saque</label>
     <input type="text" id="tempo" placeholder="Ex: Imediato">
 
-    <label>Destaque?</label>
-    <select id="destaque">
-        <option value="false">Não</option>
-        <option value="true">Sim (Estrela)</option>
+    <label>Status do Brazuka</label>
+    <select id="status">
+        <option value="paying">Paga Regularmente ✅</option>
+        <option value="pending">Em Análise / Pendente ⚠️</option>
+        <option value="scam">SCAM / Não Paga ❌</option>
     </select>
 
-    <button onclick="gerarJSON()">🚀 GERAR CÓDIGO JSON</button>
+    <h3>Configurações de Exibição</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div>
+            <label>Destaque (Estrela)?</label>
+            <select id="destaque">
+                <option value="false">Não</option>
+                <option value="true">Sim</option>
+            </select>
+        </div>
+        <div>
+            <label>Patrocinado?</label>
+            <select id="patrocinado">
+                <option value="false">Não</option>
+                <option value="true">Sim</option>
+            </select>
+        </div>
+    </div>
+
+    <label>Observações do Auditor (Opcional)</label>
+    <textarea id="obs" rows="2" placeholder="Algo suspeito ou bônus especial?"></textarea>
+
+    <button class="btn-gerar" onclick="gerarJSON()">🚀 GERAR CÓDIGO JSON</button>
 </div>
 
 <div class="output-container">
     <h2>📄 Resultado para Copiar</h2>
-    <textarea id="json-output" readonly placeholder="O código aparecerá aqui..."></textarea>
+    <textarea id="json-output" readonly placeholder="O código JSON aparecerá aqui..."></textarea>
     <button class="copy-btn" onclick="copiarTexto()">📋 Copiar Código</button>
-    <p style="text-align: center; font-size: 12px; color: #666; margin-top: 10px;">
-        * Lembre-se de adicionar a vírgula entre os itens no seu .json!
-    </p>
 </div>
 
 <script>
 function gerarJSON() {
     const recursos = Array.from(document.querySelectorAll('.recurso:checked')).map(cb => cb.value);
+    const captchas = Array.from(document.querySelectorAll('.captcha-item:checked')).map(cb => cb.value);
+    const pagamentos = Array.from(document.querySelectorAll('.pagto-item:checked')).map(cb => cb.value);
     
     const moedaInput = document.getElementById('moeda').value;
     const moedaProcessada = moedaInput.includes(',') 
@@ -197,14 +200,17 @@ function gerarJSON() {
         nome: document.getElementById('nome').value,
         url: document.getElementById('url').value,
         moeda: moedaProcessada,
-        pagamento: document.getElementById('pagamento').value,
+        pagamento: pagamentos.join(', '), // Transformando em string amigável
         tipo_principal: document.getElementById('tipo_principal').value,
         recursos: recursos,
+        intervalo: document.getElementById('intervalo').value,
+        captcha_tipos: captchas,
         minimo_saque: document.getElementById('minimo').value,
         tempo_saque: document.getElementById('tempo').value,
         status: document.getElementById('status').value,
         destaque: document.getElementById('destaque').value === "true",
-        patrocinado: false
+        patrocinado: document.getElementById('patrocinado').value === "true",
+        observacoes: document.getElementById('obs').value
     };
 
     const jsonString = JSON.stringify(obj, null, 2);
