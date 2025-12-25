@@ -38,6 +38,17 @@ body {
     align-items: center;
 }
 
+.hero-ads {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+            border-radius: 0 0 50px 50px;
+        }
+
+        .hero-ads h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .hero-ads p { opacity: 0.9; font-size: 1.1em; }
+
 .logo {
     font-size: 1.5em;
     font-weight: bold;
