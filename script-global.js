@@ -138,3 +138,23 @@ setInterval(() => {
         moveSlide(1);
     }
 }, 15000);
+
+// Função para atualizar SEO dinamicamente com o nome CORRETO
+function atualizarSEO(titulo, descricao) {
+    document.title = titulo + " | Brazuka Faucets"; // <-- Agora sim, Pejotta!
+    
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+        metaDescription = document.createElement('meta');
+        metaDescription.name = "description";
+        document.head.appendChild(metaDescription);
+    }
+    metaDescription.content = descricao;
+}
+
+// Exemplos de uso nas outras páginas
+if (window.location.pathname.includes("cadastrar")) {
+    atualizarSEO("Cadastrar Faucet", "Envie sua faucet para o Brazuka Faucets e ajude a comunidade a crescer.");
+} else if (window.location.pathname.includes("anuncie")) {
+    atualizarSEO("Anuncie Conosco", "Anuncie no Brazuka Faucets e alcance o público certo de criptomoedas.");
+}
