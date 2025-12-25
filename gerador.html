@@ -1,7 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <script>
+    (function() {
+        const SENHA_MESTRA = "Umabrazukanova2025historia"; // ALTERE SUA SENHA AQUI
+        let acesso = sessionStorage.getItem('autenticado');
+
+        if (acesso !== 'true') {
+            let tentativa = prompt("Acesso Restrito! Digite a senha de Auditor:");
+            if (tentativa === SENHA_MESTRA) {
+                sessionStorage.setItem('autenticado', 'true');
+            } else {
+                alert("Senha incorreta, amigão! 🚫");
+                window.location.href = "index.html";
+            }
+        }
+    })();
+</script>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
     <title>Gerador de JSON | Brazuka Faucets</title>
     <style>
         body { font-family: sans-serif; background: #f0f2f5; padding: 20px; display: flex; gap: 20px; }
@@ -126,6 +143,6 @@ function copiarTexto() {
     alert("Código copiado! Só colar no seu .json agora.");
 }
 </script>
-
+<script src="script-global.js"></script>
 </body>
 </html>
