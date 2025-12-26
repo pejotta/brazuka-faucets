@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        const response = await fetch('faucets_data.json');
+        // Puxando agora diretamente do nosso Banco de Dados
+        const response = await fetch(`${WORKER_URL}/get-all-faucets`);
         const faucets = await response.json();
         const faucet = faucets.find(f => f.id == faucetId);
 
@@ -23,14 +24,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             initCommentsSystem(faucetId);
             showRecommended(faucets, faucet); 
             
-            // --- O PULO DO GATO: ATIVANDO O REPORT ---
             initReportSystem(faucet); 
             
         } else {
-            document.body.innerHTML = "<h1 style='text-align:center; padding-top:50px;'>Faucet não encontrada!</h1>";
+            document.body.innerHTML = "<h1 style='text-align:center; padding-top:50px;'>Ops! Item não encontrado.</h1>";
         }
     } catch (error) {
-        console.error("Erro ao carregar detalhes:", error);
+        console.error("Erro na comunicação com o Banco de Dados.");
     }
 });
 
@@ -47,7 +47,7 @@ function showRecommended(allFaucets, currentFaucet) {
     }).slice(0, 4);
 
     if (related.length === 0) {
-        container.innerHTML = '<p>Explore nossas outras categorias para ganhar mais!</p>';
+        container.innerHTML = '<p>Continue explorando para ganhar mais!</p>';
         return;
     }
 
@@ -101,7 +101,7 @@ function fillPageData(faucet) {
     }
 }
 
-// 2. Busca dados globais no Cloudflare KV
+// 2. Busca dados dinâmicos no Banco de Dados
 async function loadWorkerData(faucetId) {
     try {
         const response = await fetch(`${WORKER_URL}/get-data?id=${faucetId}`);
@@ -109,7 +109,7 @@ async function loadWorkerData(faucetId) {
         const data = await response.json();
         if (data.totalVotos > 0) {
             document.getElementById('rating-status').textContent = `Média: ${data.media} (${data.totalVotos} votos)`;
-            const meuVoto = localStorage.getItem(`voto_faucet_${faucetId}`);
+            const meuVoto = localStorage.getItem(`voto_f_id_${faucetId}`);
             updateStarsVisual(meuVoto ? parseInt(meuVoto) : Math.round(data.media));
         }
         if (data.comentarios && data.comentarios.length > 0) {
@@ -119,7 +119,7 @@ async function loadWorkerData(faucetId) {
                 data.comentarios.forEach(c => renderComment(c));
             }
         }
-    } catch (e) { console.log("Worker sem dados."); }
+    } catch (e) { console.log("Aguardando atualizações."); }
 }
 
 // 3. Sistema de Voto
@@ -128,7 +128,7 @@ function initInteractiveRating(faucetId) {
     const statusText = document.getElementById('rating-status');
     stars.forEach(star => {
         star.addEventListener('click', async () => {
-            if (localStorage.getItem(`voto_faucet_${faucetId}`)) {
+            if (localStorage.getItem(`voto_f_id_${faucetId}`)) {
                 alert("Pejotta, você já avaliou essa faucet! 😉");
                 return;
             }
@@ -141,7 +141,7 @@ function initInteractiveRating(faucetId) {
                 });
                 const resData = await response.json();
                 if (response.ok) {
-                    localStorage.setItem(`voto_faucet_${faucetId}`, val);
+                    localStorage.setItem(`voto_f_id_${faucetId}`, val);
                     updateStarsVisual(val);
                     statusText.textContent = `Média: ${resData.media} (${resData.total} votos)`;
                     alert("Obrigado pelo seu voto!");
@@ -182,7 +182,7 @@ function initCommentsSystem(faucetId) {
                 renderComment(commentData);
                 form.reset();
             }
-        } catch (err) { alert('Erro ao enviar.'); }
+        } catch (err) { alert('Erro ao processar envio.'); }
     });
 }
 
@@ -198,14 +198,14 @@ function renderComment(c) {
 // 5. Compartilhamento
 function setupShareButtons(faucetNome) {
     const pageUrl = window.location.href;
-    const message = `Ei, descobri essa faucet no Brazuka Faucets: `;
+    const message = `Dá uma olhada nessa faucet: `;
     const links = {
         'share-wa': `https://api.whatsapp.com/send?text=${encodeURIComponent(message + pageUrl)}`,
         'share-tg': `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(message)}`,
         'share-fb': `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`,
         'share-tw': `https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}`,
         'share-rd': `https://www.reddit.com/submit?url=${encodeURIComponent(pageUrl)}`,
-        'share-ml': `mailto:?subject=Faucets&body=${encodeURIComponent(pageUrl)}`
+        'share-ml': `mailto:?subject=Dica de Faucet&body=${encodeURIComponent(pageUrl)}`
     };
     for (const [id, url] of Object.entries(links)) {
         const el = document.getElementById(id);
@@ -213,12 +213,11 @@ function setupShareButtons(faucetNome) {
     }
 }
 
-// 6. SISTEMA DE REPORT (FORMSPREE)
+// 6. Report
 function initReportSystem(faucet) {
     const btn = document.getElementById('report-btn');
     const modal = document.getElementById('report-modal');
     
-    // Campos do Formspree
     const hiddenId = document.getElementById('hidden-faucet-id');
     const hiddenNome = document.getElementById('hidden-faucet-nome');
     const subject = document.getElementById('report-subject');
@@ -226,21 +225,18 @@ function initReportSystem(faucet) {
     if(btn && modal) {
         btn.onclick = (e) => {
             e.preventDefault();
-            // Preenche os dados automaticamente
             if(hiddenId) hiddenId.value = faucet.id;
             if(hiddenNome) hiddenNome.value = faucet.nome;
-            if(subject) subject.value = `[Report] - ${faucet.nome}`;
-            
+            if(subject) subject.value = `[Inconsistência] - ${faucet.nome}`;
             modal.style.display = 'flex';
         };
     }
 
-    // Listener para fechar o modal e avisar o envio
     const reportForm = document.getElementById('report-form');
     if (reportForm) {
         reportForm.onsubmit = () => {
-            alert("Valeu por avisar! Report enviado. Vou checar essa faucet! 👊");
-            setTimeout(closeReport, 500); // Fecha o modal após meio segundo
+            alert("Recebido! Vamos analisar as informações. 👊");
+            setTimeout(closeReport, 500); 
         };
     }
 }
