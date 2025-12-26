@@ -240,6 +240,7 @@
                     document.getElementById('f_nome').value = f.nome || '';
                     document.getElementById('f_url').value = f.url || '';
                     document.getElementById('f_moedas').value = Array.isArray(f.moeda) ? f.moeda.join(', ') : f.moeda;
+                    document.getElementById('f_data').value = f.data_cadastro || new Date().toLocaleDateString('pt-BR');
                     document.getElementById('f_timer').value = f.intervalo || '';
                     document.getElementById('f_minimo').value = f.minimo_saque || '';
                     document.getElementById('f_tempo').value = f.tempo_saque || '';
@@ -304,7 +305,7 @@
                 status: document.getElementById('f_status').value,
                 destaque: document.getElementById('f_destaque').value === "true",
                 patrocinado: document.getElementById('f_patrocinado').value === "true",
-                data_cadastro: new Date().toLocaleDateString('pt-BR')
+                data_cadastro: document.getElementById('f_data').value || new Date().toLocaleDateString('pt-BR')
             };
 
             document.getElementById('json-output').value = JSON.stringify(ultimoObjetoGerado, null, 2);
