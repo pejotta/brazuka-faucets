@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de JSON Administrativo | Brazuka Faucets</title>
+    <title>Brazuka Command Center | Gerador KV</title>
     
     <script>
     (function() {
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
-        :root { --primary: #1a73e8; --dark-blue: #0d47a1; }
+        :root { --primary: #1a73e8; --dark-blue: #0d47a1; --success: #27ae60; --cloud: #00a1ff; }
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; display: flex; flex-direction: column; align-items: center; }
         
         .hero-ads {
@@ -57,20 +57,30 @@
         .check-item { display: flex; align-items: center; font-size: 0.85em; cursor: pointer; }
         .check-item input { width: auto; margin-right: 8px; }
 
+        .btn-group { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 20px; }
+
         .btn-gerar {
-            width: 100%; background: var(--primary); color: white; padding: 18px;
+            background: var(--primary); color: white; padding: 18px;
             border: none; border-radius: 50px; font-size: 1.1em; font-weight: bold;
-            cursor: pointer; margin-top: 30px; transition: 0.3s;
+            cursor: pointer; transition: 0.3s;
         }
-        .btn-gerar:hover { background: #0d60d8; transform: translateY(-2px); }
+
+        .btn-cloudflare {
+            background: var(--cloud); color: white; padding: 18px;
+            border: none; border-radius: 50px; font-size: 1.1em; font-weight: bold;
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        
+        .btn-cloudflare:disabled { background: #ccc; cursor: not-allowed; }
+        .btn-cloudflare:hover:not(:disabled) { background: #0081cc; transform: translateY(-2px); }
 
         #json-output {
-            width: 100%; height: 600px; background: #1e1e1e; color: #76ff03;
+            width: 100%; height: 500px; background: #1e1e1e; color: #76ff03;
             padding: 20px; border-radius: 15px; font-family: 'Consolas', monospace;
             font-size: 12px; border: none; box-sizing: border-box; resize: none;
         }
         .copy-btn {
-            width: 100%; background: #27ae60; color: white; padding: 12px;
+            width: 100%; background: var(--success); color: white; padding: 12px;
             border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;
         }
 
@@ -80,15 +90,15 @@
 <body>
 
     <section class="hero-ads">
-        <h1>Gerador de JSON Administrativo</h1>
-        <p>Olá Pejotta! Transforme os dados da auditoria em código para o data.json.</p>
+        <h1>Brazuka Command Center</h1>
+        <p>Olá Pejotta! Gerencie o banco de dados do site em tempo real.</p>
     </section>
 
     <div class="main-wrapper">
         <div class="faucet-form-container">
-            <h2><i class="fa-solid fa-code"></i> Dados da Faucet</h2>
+            <h2><i class="fa-solid fa-server"></i> Painel da Faucet</h2>
             
-            <label>ID Próximo</label>
+            <label>ID da Faucet (Deve ser único)</label>
             <input type="number" id="f_id" placeholder="Ex: 105">
 
             <label>Nome da Faucet</label>
@@ -98,9 +108,9 @@
             <input type="url" id="f_url" placeholder="https://...">
 
             <label>Moedas (Separe por vírgula)</label>
-            <input type="text" id="f_moedas" placeholder="btc, eth, doge, banano">
+            <input type="text" id="f_moedas" placeholder="btc, eth, doge">
 
-            <h3>Classificação Principal</h3>
+            <h3>Classificação</h3>
             <div class="checkbox-grid">
                 <label class="check-item"><input type="checkbox" class="tipo-p" value="Faucet Padrão"> Faucet Padrão</label>
                 <label class="check-item"><input type="checkbox" class="tipo-p" value="Autofaucet"> Auto Faucet</label>
@@ -108,14 +118,13 @@
                 <label class="check-item"><input type="checkbox" class="tipo-p" value="Mineradora"> Mineradora</label>
             </div>
 
-            <h3>Recursos Disponíveis</h3>
+            <h3>Recursos</h3>
             <div class="checkbox-grid">
                 <label class="check-item"><input type="checkbox" class="recurso" value="faucet"> Faucet</label>
                 <label class="check-item"><input type="checkbox" class="recurso" value="ptc"> PTC</label>
                 <label class="check-item"><input type="checkbox" class="recurso" value="shortlinks"> Shortlinks</label>
                 <label class="check-item"><input type="checkbox" class="recurso" value="surveys"> Surveys</label>
                 <label class="check-item"><input type="checkbox" class="recurso" value="staking"> Staking</label>
-                <label class="check-item"><input type="checkbox" class="recurso" value="jogos"> Jogos</label>
                 <label class="check-item"><input type="checkbox" class="recurso" value="offerwall"> Offerwalls</label>
             </div>
 
@@ -123,24 +132,11 @@
             <label>Intervalo do Timer</label>
             <input type="text" id="f_timer" placeholder="Ex: 5 minutos">
 
-            <label>Captchas Utilizados</label>
-            <div class="checkbox-grid">
-                <label class="check-item"><input type="checkbox" class="captcha-c" value="reCAPTCHA"> reCAPTCHA</label>
-                <label class="check-item"><input type="checkbox" class="captcha-c" value="hCaptcha"> hCaptcha</label>
-                <label class="check-item"><input type="checkbox" class="captcha-c" value="Turnstile"> Turnstile</label>
-                <label class="check-item"><input type="checkbox" class="captcha-c" value="IconCaptcha"> IconCaptcha</label>
-                <label class="check-item"><input type="checkbox" class="captcha-c" value="Antibot"> Antibot Links</label>
-                <label class="check-item"><input type="checkbox" class="captcha-c" value="Custom"> Próprio</label>
-            </div>
-
             <label>Onde Paga?</label>
             <div class="checkbox-grid">
                 <label class="check-item"><input type="checkbox" class="pagto-c" value="FaucetPay"> FaucetPay</label>
                 <label class="check-item"><input type="checkbox" class="pagto-c" value="Metamask"> Metamask</label>
                 <label class="check-item"><input type="checkbox" class="pagto-c" value="Binance"> Binance</label>
-                <label class="check-item"><input type="checkbox" class="pagto-c" value="Coinbase"> Coinbase</label>
-                <label class="check-item"><input type="checkbox" class="pagto-c" value="Cwallet"> Cwallet</label>
-                <label class="check-item"><input type="checkbox" class="pagto-c" value="Payeer"> Payeer</label>
                 <label class="check-item"><input type="checkbox" class="pagto-c" value="Carteira Direta"> Direta</label>
             </div>
 
@@ -155,48 +151,40 @@
                 </div>
             </div>
 
-            <h3>Status e Ranking</h3>
+            <h3>Status e Destaque</h3>
             <select id="f_status">
                 <option value="paying">Paga Regularmente ✅</option>
                 <option value="pending">Em Análise ⚠️</option>
                 <option value="scam">SCAM / Não Paga ❌</option>
             </select>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
-                <div>
-                    <label>Destaque</label>
-                <select id="f_destaque"><option value="false">Normal</option><option value="true">Destaque ⭐</option></select>
-                </div>
-                <div>
-                    <label>Patrocinado</label>
-                <select id="f_patrocinado"><option value="false">Grátis</option><option value="true">VIP 💎</option></select>
-                </div>
+            <div class="btn-group">
+                <button class="btn-gerar" onclick="gerarJSON()">1. VISUALIZAR JSON</button>
+                <button id="btnCloud" class="btn-cloudflare" onclick="enviarParaCloudflare()" disabled>
+                    <i class="fa-solid fa-cloud-arrow-up"></i> 2. SALVAR NO CLOUDFLARE KV
+                </button>
             </div>
-
-            <label>Observações</label>
-            <textarea id="f_obs" rows="2"></textarea>
-
-            <button class="btn-gerar" onclick="gerarJSON()">🚀 GERAR ITEM JSON</button>
         </div>
 
         <div class="output-wrapper">
-            <textarea id="json-output" readonly></textarea>
-            <button class="copy-btn" onclick="copiarTexto()">📋 COPIAR CÓDIGO</button>
+            <textarea id="json-output" placeholder="O código JSON aparecerá aqui..." readonly></textarea>
+            <button class="copy-btn" onclick="copiarTexto()">📋 COPIAR PARA BACKUP</button>
         </div>
     </div>
 
     <script>
+        let ultimoObjetoGerado = null;
+        // INSIRA A URL DA SUA WORKER AQUI:
+        const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev/";
+
         function gerarJSON() {
-            // Correção dos seletores: Agora buscando pelas classes corretas
             const tipos = Array.from(document.querySelectorAll('.tipo-p:checked')).map(c => c.value);
             const recursos = Array.from(document.querySelectorAll('.recurso:checked')).map(c => c.value);
-            const captchas = Array.from(document.querySelectorAll('.captcha-c:checked')).map(c => c.value);
             const pagtos = Array.from(document.querySelectorAll('.pagto-c:checked')).map(c => c.value);
-            
             const moedasInput = document.getElementById('f_moedas').value;
             const moedas = moedasInput ? moedasInput.split(',').map(m => m.trim().toLowerCase()) : [];
 
-            const obj = {
+            ultimoObjetoGerado = {
                 id: parseInt(document.getElementById('f_id').value) || 0,
                 nome: document.getElementById('f_nome').value,
                 url: document.getElementById('f_url').value,
@@ -205,17 +193,45 @@
                 tipo_principal: tipos.join(' e '),
                 recursos: recursos,
                 intervalo: document.getElementById('f_timer').value,
-                captcha: captchas.join(' / '), // Unificando para o formato que você usa no data.json
                 minimo_saque: document.getElementById('f_minimo').value,
                 tempo_saque: document.getElementById('f_tempo').value,
                 status: document.getElementById('f_status').value,
-                destaque: document.getElementById('f_destaque').value === "true",
-                patrocinado: document.getElementById('f_patrocinado').value === "true",
-                data_cadastro: new Date().toLocaleDateString('pt-BR'),
-                observacoes: document.getElementById('f_obs').value
+                destaque: false,
+                patrocinado: false,
+                data_cadastro: new Date().toLocaleDateString('pt-BR')
             };
 
-            document.getElementById('json-output').value = JSON.stringify(obj, null, 2) + ",";
+            document.getElementById('json-output').value = JSON.stringify(ultimoObjetoGerado, null, 2);
+            document.getElementById('btnCloud').disabled = false;
+        }
+
+        async function enviarParaCloudflare() {
+            if (!ultimoObjetoGerado) return;
+            
+            const btn = document.getElementById('btnCloud');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ENVIANDO...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`${URL_WORKER}/admin-save-faucet`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(ultimoObjetoGerado)
+                });
+
+                const res = await response.json();
+                if (res.success) {
+                    alert("✅ MARAVILHA! Site atualizado no KV com sucesso.");
+                } else {
+                    alert("❌ Erro: " + res.error);
+                }
+            } catch (err) {
+                alert("🚨 Erro de conexão com a Worker!");
+                console.error(err);
+            } finally {
+                btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 2. SALVAR NO CLOUDFLARE KV';
+                btn.disabled = false;
+            }
         }
 
         function copiarTexto() {
@@ -223,7 +239,7 @@
             if(!out.value) return;
             out.select();
             document.execCommand("copy");
-            alert("Feito, Pejotta! JSON na área de transferência.");
+            alert("Copiado! Guarde no seu backup se quiser.");
         }
     </script>
 </body>
