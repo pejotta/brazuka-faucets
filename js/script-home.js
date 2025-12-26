@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     setInterval(rotacionarAnuncios, 15 * 60 * 1000); 
 
     try {
-        // Puxando tudo diretamente do nosso Banco de Dados seguro
-        const response = await fetch(`${WORKER_URL}/get-all-faucets`);
+        // Puxando tudo diretamente do nosso Banco de Dados seguro (Cloudflare)
+        const response = await fetch(`${WORKER_URL}/get-all-faucets?t=${new Date().getTime()}`);
         const data = await response.json();
 
         // --- 1. PREENCHER AS CATEGORIAS DA HOME ---
@@ -25,25 +25,53 @@ document.addEventListener('DOMContentLoaded', async () => {
             const container = document.getElementById(`grid-${moeda}`);
             if (!container) return;
 
-            const filtered = data.filter(f => {
+            // Filtra todos os itens dessa categoria específica
+            const allInCategory = data.filter(f => {
                 if (Array.isArray(f.moeda)) return f.moeda.includes(moeda);
                 return f.moeda === moeda;
-            }).slice(0, 5);
+            });
+
+            // Separa os VIPs (Patrocinados ou Destaques)
+            const vips = allInCategory.filter(f => 
+                f.patrocinado === true || f.patrocinado === "true" || 
+                f.destaque === true || f.destaque === "true"
+            );
+
+            // Separa os Normais
+            const normais = allInCategory.filter(f => 
+                !(f.patrocinado === true || f.patrocinado === "true" || 
+                  f.destaque === true || f.destaque === "true")
+            );
+
+            // Embaralha apenas os normais para rotacionar no refresh
+            const normaisEmbaralhados = normais.sort(() => Math.random() - 0.5);
+
+            // Ordena os VIPs: Patrocinados primeiro, depois Destaques
+            vips.sort((a, b) => {
+                const aPatro = (a.patrocinado === true || a.patrocinado === "true");
+                const bPatro = (b.patrocinado === true || b.patrocinado === "true");
+                if (aPatro && !bPatro) return -1;
+                if (!aPatro && bPatro) return 1;
+                return 0;
+            });
+
+            // Junta tudo e pega os 5 primeiros
+            const finalLista = [...vips, ...normaisEmbaralhados].slice(0, 5);
 
             container.innerHTML = ''; 
 
-            if (filtered.length === 0) {
+            if (finalLista.length === 0) {
                 container.innerHTML = '<p style="color:#777; padding:10px;">Novas oportunidades em breve!</p>';
                 return;
             }
 
-            filtered.forEach(faucet => {
+            finalLista.forEach(faucet => {
                 let tagsHTML = '';
-                if (faucet.destaque === true || faucet.destaque === "true") {
-                    tagsHTML += `<div class="tag-badge tag-destaque"><i class="fas fa-star"></i></div>`;
-                }
+                // Prioridade visual para a tag de Patrocinado
                 if (faucet.patrocinado === true || faucet.patrocinado === "true") {
-                    tagsHTML += `<div class="tag-badge tag-patrocinado"><i class="fas fa-ad"></i></div>`;
+                    tagsHTML = `<div class="tag-badge tag-patrocinado"><i class="fas fa-ad"></i></div>`;
+                } else if (faucet.destaque === true || faucet.destaque === "true") {
+                    tagsHTML = `<div class="tag-badge tag-destaque"><i class="fas fa-star"></i></div>`;
                 }
 
                 const domain = faucet.url.replace(/^(https?:\/\/)/, '').split('/')[0];
@@ -87,6 +115,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         loadHomeStats(data);
 
+        // Ativa os contadores quando o usuário chega na seção de estatísticas
         const statsHero = document.querySelector('.stats-hero');
         if (statsHero) {
             const observer = new IntersectionObserver((entries) => {
@@ -99,7 +128,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
     } catch (error) {
-        console.error("Conexão com Banco de Dados indisponível.");
+        console.error("Erro ao carregar dados do Banco de Dados.");
     }
 });
 
@@ -143,7 +172,7 @@ async function loadHomeStats(allFaucetsJson) {
             }).join('');
         }
     } catch (e) {
-        console.log("Atualizando métricas...");
+        console.log("Métricas em atualização...");
     }
 }
 
