@@ -774,30 +774,5 @@
     "data_cadastro": "20/12/2025",
     "intervalo": "36 minutos",
     "captcha": "Hcaptcha"
-  },
-  {
-  "id": 47,
-  "nome": "Fire Faucet",
-  "url": "https://firefaucet.win/ref/254335",
-  "moeda": ["central","central"],
-  "pagamento": "",
-  "tipo_principal": "Autofaucet",
-  "recursos": [
-    "faucet",
-    "ptc",
-    "shortlinks",
-    "surveys",
-    "offerwall",
-    "bonus_diario",
-    "auto_claim"],
-  "intervalo": "Automático",
-  "captcha": ["reCaptcha", "HCpatcha"],
-  "minimo_saque": "$2.5 USD",
-  "tempo_saque": "Imediato",
-  "status": "paying",
-  "destaque": false,
-  "patrocinado": false,
-  "observacoes": "A dica do auditor é utilizar todas os recursos disponíveis e juntar muitos pontos para ganhar mais no autoclaim."
-  "data_cadastro": "25/12/2025",
-}
+  }
 ]
