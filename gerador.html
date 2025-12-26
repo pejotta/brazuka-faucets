@@ -91,14 +91,14 @@
 
     <section class="hero-ads">
         <h1>Brazuka Command Center</h1>
-        <p>Olá Pejotta! Gerencie o banco de dados do site em tempo real.</p>
+        <p>Olá Pejotta! Gerencie o banco de dados em tempo real.</p>
     </section>
 
     <div class="main-wrapper">
         <div class="faucet-form-container">
             <h2><i class="fa-solid fa-server"></i> Painel da Faucet</h2>
             
-            <label>ID da Faucet (Deve ser único)</label>
+            <label>ID da Faucet</label>
             <input type="number" id="f_id" placeholder="Ex: 105">
 
             <label>Nome da Faucet</label>
@@ -125,18 +125,32 @@
                 <label class="check-item"><input type="checkbox" class="recurso" value="shortlinks"> Shortlinks</label>
                 <label class="check-item"><input type="checkbox" class="recurso" value="surveys"> Surveys</label>
                 <label class="check-item"><input type="checkbox" class="recurso" value="staking"> Staking</label>
+                <label class="check-item"><input type="checkbox" class="recurso" value="jogos"> Jogos</label>
                 <label class="check-item"><input type="checkbox" class="recurso" value="offerwall"> Offerwalls</label>
             </div>
 
             <h3>Segurança e Pagamento</h3>
             <label>Intervalo do Timer</label>
-            <input type="text" id="f_timer" placeholder="Ex: 5 minutos">
+            <input type="text" id="f_timer" placeholder="Ex: 60 minutos">
+
+            <label>Captchas Utilizados</label>
+            <div class="checkbox-grid">
+                <label class="check-item"><input type="checkbox" class="captcha-c" value="reCAPTCHA"> reCAPTCHA</label>
+                <label class="check-item"><input type="checkbox" class="captcha-c" value="hCaptcha"> hCaptcha</label>
+                <label class="check-item"><input type="checkbox" class="captcha-c" value="Turnstile"> Turnstile</label>
+                <label class="check-item"><input type="checkbox" class="captcha-c" value="IconCaptcha"> IconCaptcha</label>
+                <label class="check-item"><input type="checkbox" class="captcha-c" value="Antibot"> Antibot</label>
+                <label class="check-item"><input type="checkbox" class="captcha-c" value="Custom"> Próprio</label>
+            </div>
 
             <label>Onde Paga?</label>
             <div class="checkbox-grid">
                 <label class="check-item"><input type="checkbox" class="pagto-c" value="FaucetPay"> FaucetPay</label>
                 <label class="check-item"><input type="checkbox" class="pagto-c" value="Metamask"> Metamask</label>
                 <label class="check-item"><input type="checkbox" class="pagto-c" value="Binance"> Binance</label>
+                <label class="check-item"><input type="checkbox" class="pagto-c" value="Coinbase"> Coinbase</label>
+                <label class="check-item"><input type="checkbox" class="pagto-c" value="Cwallet"> Cwallet</label>
+                <label class="check-item"><input type="checkbox" class="pagto-c" value="Payeer"> Payeer</label>
                 <label class="check-item"><input type="checkbox" class="pagto-c" value="Carteira Direta"> Direta</label>
             </div>
 
@@ -158,6 +172,11 @@
                 <option value="scam">SCAM / Não Paga ❌</option>
             </select>
 
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+                <select id="f_destaque"><option value="false">Normal</option><option value="true">Destaque ⭐</option></select>
+                <select id="f_patrocinado"><option value="false">Grátis</option><option value="true">VIP 💎</option></select>
+            </div>
+
             <div class="btn-group">
                 <button class="btn-gerar" onclick="gerarJSON()">1. VISUALIZAR JSON</button>
                 <button id="btnCloud" class="btn-cloudflare" onclick="enviarParaCloudflare()" disabled>
@@ -175,12 +194,14 @@
     <script>
         let ultimoObjetoGerado = null;
         // INSIRA A URL DA SUA WORKER AQUI:
-        const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev/";
+        const URL_WORKER = "SUBSTITUA_PELA_URL_DA_SUA_WORKER";
 
         function gerarJSON() {
             const tipos = Array.from(document.querySelectorAll('.tipo-p:checked')).map(c => c.value);
             const recursos = Array.from(document.querySelectorAll('.recurso:checked')).map(c => c.value);
             const pagtos = Array.from(document.querySelectorAll('.pagto-c:checked')).map(c => c.value);
+            const captchas = Array.from(document.querySelectorAll('.captcha-c:checked')).map(c => c.value);
+            
             const moedasInput = document.getElementById('f_moedas').value;
             const moedas = moedasInput ? moedasInput.split(',').map(m => m.trim().toLowerCase()) : [];
 
@@ -193,11 +214,12 @@
                 tipo_principal: tipos.join(' e '),
                 recursos: recursos,
                 intervalo: document.getElementById('f_timer').value,
+                captcha: captchas.join(' / '),
                 minimo_saque: document.getElementById('f_minimo').value,
                 tempo_saque: document.getElementById('f_tempo').value,
                 status: document.getElementById('f_status').value,
-                destaque: false,
-                patrocinado: false,
+                destaque: document.getElementById('f_destaque').value === "true",
+                patrocinado: document.getElementById('f_patrocinado').value === "true",
                 data_cadastro: new Date().toLocaleDateString('pt-BR')
             };
 
@@ -207,7 +229,6 @@
 
         async function enviarParaCloudflare() {
             if (!ultimoObjetoGerado) return;
-            
             const btn = document.getElementById('btnCloud');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ENVIANDO...';
             btn.disabled = true;
@@ -239,7 +260,7 @@
             if(!out.value) return;
             out.select();
             document.execCommand("copy");
-            alert("Copiado! Guarde no seu backup se quiser.");
+            alert("Copiado! Backup garantido.");
         }
     </script>
 </body>
