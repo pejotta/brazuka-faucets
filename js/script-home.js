@@ -7,21 +7,18 @@ const meusAnuncios = [
     { img: "gif-faucetmaniacos.gif", link: "https://tenteiganhei.blogspot.com/p/curso-faucetmaniacos.html" }
 ];
 
-// Sorteia um índice inicial aleatório para não começar sempre com o mesmo ao atualizar a página
 let adIndex = Math.floor(Math.random() * meusAnuncios.length);
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Inicia o rodízio imediatamente (com o sorteado)
     rotacionarAnuncios();
-    // Configura para trocar a cada 15 minutos
     setInterval(rotacionarAnuncios, 15 * 60 * 1000); 
 
     try {
-        const response = await fetch('faucets_data.json');
+        // Puxando tudo diretamente do nosso Banco de Dados seguro
+        const response = await fetch(`${WORKER_URL}/get-all-faucets`);
         const data = await response.json();
 
         // --- 1. PREENCHER AS CATEGORIAS DA HOME ---
-        // Adicionadas categorias: airdrop e ipo
         const moedasHome = ['btc', 'eth', 'doge', 'trx', 'central', 'minerador', 'autofaucet', 'airdrop', 'ipo'];
 
         moedasHome.forEach(moeda => {
@@ -36,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             container.innerHTML = ''; 
 
             if (filtered.length === 0) {
-                container.innerHTML = '<p style="color:#777; padding:10px;">Em breve novas oportunidades aqui!</p>';
+                container.innerHTML = '<p style="color:#777; padding:10px;">Novas oportunidades em breve!</p>';
                 return;
             }
 
@@ -102,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
     } catch (error) {
-        console.error("Erro na Home:", error);
+        console.error("Conexão com Banco de Dados indisponível.");
     }
 });
 
@@ -118,7 +115,7 @@ async function loadHomeStats(allFaucetsJson) {
         if (commContainer && stats.recentComments) {
             commContainer.innerHTML = stats.recentComments.map(c => {
                 const faucetRef = allFaucetsJson.find(f => f.id == c.faucetId);
-                const nomeExibicao = faucetRef ? faucetRef.nome : "Faucet";
+                const nomeExibicao = faucetRef ? faucetRef.nome : "Oportunidade";
                 return `
                     <a href="faucet.html?id=${c.faucetId}" class="mini-item comment-link" style="text-decoration: none; color: inherit;">
                         <div class="mini-info">
@@ -134,7 +131,7 @@ async function loadHomeStats(allFaucetsJson) {
         if (topContainer && stats.topRated) {
             topContainer.innerHTML = stats.topRated.map(f => {
                 const faucetRef = allFaucetsJson.find(item => item.id == f.id);
-                const nomeReal = faucetRef ? faucetRef.nome : `Faucet #${f.id}`;
+                const nomeReal = faucetRef ? faucetRef.nome : `Item #${f.id}`;
                 return `
                     <a href="faucet.html?id=${f.id}" class="mini-item">
                         <div class="mini-info">
@@ -146,7 +143,7 @@ async function loadHomeStats(allFaucetsJson) {
             }).join('');
         }
     } catch (e) {
-        console.log("Erro ao carregar estatísticas do Worker.");
+        console.log("Atualizando métricas...");
     }
 }
 
@@ -182,7 +179,6 @@ function rotacionarAnuncios() {
             </a>
         `;
         container.style.opacity = "1";
-        // Avança para o próximo índice (volta ao zero se chegar no fim)
         adIndex = (adIndex + 1) % meusAnuncios.length;
     }, 500);
 }
