@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!tbody) return;
 
     try {
-        // 1. Puxa tudo de uma vez: Faucets e Estatísticas Globais (Notas)
+        // 1. Puxa tudo de uma vez
         const [faucetsRes, statsRes] = await Promise.all([
             fetch(`${WORKER_URL}/get-all-faucets`),
             fetch(`${WORKER_URL}/get-global-stats`)
@@ -17,16 +17,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         const faucets = await faucetsRes.json();
         const globalStats = await statsRes.json();
 
-        // Filtra pela moeda da página
+        // 2. Filtro Inteligente (O que você queria!)
         const filtered = faucets.filter(f => {
-            if (Array.isArray(f.moeda)) return f.moeda.includes(targetCoin);
-            return f.moeda === targetCoin;
+            if (!targetCoin) return true;
+
+            // Criamos uma "super lista" de etiquetas da faucet
+            const tagsDaFaucet = [
+                ...(Array.isArray(f.moeda) ? f.moeda : [f.moeda]),
+                f.tipo_principal ? f.tipo_principal.toLowerCase() : "",
+                ...(Array.isArray(f.recursos) ? f.recursos : [])
+            ].map(t => String(t).toLowerCase());
+
+            // Verifica se a categoria da página (ex: 'autofaucet') está nas tags
+            return tagsDaFaucet.some(tag => tag.includes(targetCoin.toLowerCase()));
         });
 
-        // 2. Passa as notas globais para a função de renderizar
+        // 3. Renderiza a tabela inicial
         await renderTable(filtered, globalStats.topRated || []);
 
-        // Filtros por Categoria
+        // 4. Sistema de Filtros por Categoria (dentro da página atual)
         const filterBtn = document.getElementById('apply-filters');
         if (filterBtn) {
             filterBtn.addEventListener('click', async () => {
@@ -42,31 +51,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
     } catch (e) {
-        console.error("Conexão com Banco de Dados indisponível.");
+        console.error("Erro na conexão:", e);
         tbody.innerHTML = '<tr><td colspan="7">Sistema em manutenção temporária.</td></tr>';
     }
-
-    // Pega a "moeda" alvo da página (que pode ser 'btc', 'autofaucet', 'central', etc)
-const targetCoin = document.body.getAttribute('data-coin'); 
-
-// Filtra de forma "Amigável"
-const filtered = faucets.filter(f => {
-    // 1. Cria uma lista única com tudo que essa faucet é/tem
-    // Vamos juntar moedas, tipo_principal e recursos num lugar só para pesquisar
-    const tagsDaFaucet = [
-        ...(Array.isArray(f.moeda) ? f.moeda : [f.moeda]),
-        f.tipo_principal ? f.tipo_principal.toLowerCase() : "",
-        ...(Array.isArray(f.recursos) ? f.recursos : [])
-    ].map(t => t.toLowerCase()); // Tudo em minúsculo para não dar erro
-
-    // 2. Verifica se o que a página pede (targetCoin) está nessa lista
-    // Se a página pede 'autofaucet' e a faucet tem 'autofaucet' nas tags, ela aparece!
-    return tagsDaFaucet.some(tag => tag.includes(targetCoin.toLowerCase()));
-});
-    
 });
 
-// Sistema de Busca
+// Sistema de Busca (Permanece igual)
 const searchInput = document.getElementById('search-faucet');
 if (searchInput) {
     searchInput.addEventListener('input', function(e) {
@@ -79,6 +69,7 @@ if (searchInput) {
     });
 }
 
+// Função de Renderização (Permanece igual)
 async function renderTable(data, allRatings) {
     const tbody = document.getElementById('faucets-tbody');
     if (!tbody) return;
@@ -88,24 +79,13 @@ async function renderTable(data, allRatings) {
         return;
     }
 
-    // Mapeia os dados sem precisar de novos fetchs (MUITO MAIS RÁPIDO)
     const rows = data.map(f => {
-        // Busca a nota da faucet no array de ratings que já carregamos
         const ratingInfo = allRatings.find(r => r.id == f.id);
-        
         let notaExibicao = ratingInfo ? ratingInfo.media : 0;
-        let votosReais = ratingInfo ? (ratingInfo.votos || 0) : 0; // Ajuste conforme seu worker retorna
-
-        let avaliacaoHTML = '';
-        if (notaExibicao > 0) {
-            avaliacaoHTML = `
-                <div>
-                    <i class="fas fa-star" style="color: gold;"></i> 
-                    <strong>${parseFloat(notaExibicao).toFixed(1)}</strong>
-                </div>`;
-        } else {
-            avaliacaoHTML = `<span style="font-size: 0.8em; color: #007bff; font-style: italic;">Avalie!</span>`;
-        }
+        
+        let avaliacaoHTML = notaExibicao > 0 
+            ? `<div><i class="fas fa-star" style="color: gold;"></i> <strong>${parseFloat(notaExibicao).toFixed(1)}</strong></div>`
+            : `<span style="font-size: 0.8em; color: #007bff; font-style: italic;">Avalie!</span>`;
 
         return `
             <tr>
