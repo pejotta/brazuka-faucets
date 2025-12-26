@@ -11,8 +11,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        // Puxando agora diretamente do nosso Banco de Dados
-        const response = await fetch(`${WORKER_URL}/get-all-faucets`);
+        // IMPLEMENTAÇÃO: Cache Busting com Timestamp (?t=...)
+        // Isso força o navegador a buscar os dados MAIS RECENTES do Banco de Dados
+        const response = await fetch(`${WORKER_URL}/get-all-faucets?t=${new Date().getTime()}`);
         const faucets = await response.json();
         const faucet = faucets.find(f => f.id == faucetId);
 
@@ -23,7 +24,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             initInteractiveRating(faucetId);
             initCommentsSystem(faucetId);
             showRecommended(faucets, faucet); 
-            
             initReportSystem(faucet); 
             
         } else {
@@ -33,6 +33,41 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error("Erro na comunicação com o Banco de Dados.");
     }
 });
+
+// 1. Preenche os dados fixos (Atualizado para o novo Banco de Dados)
+function fillPageData(faucet) {
+    document.title = `${faucet.nome} | Brazuka Faucets`;
+    document.getElementById('faucet-name').textContent = faucet.nome;
+
+    const moedaTexto = Array.isArray(faucet.moeda) ? faucet.moeda.join(' / ') : faucet.moeda;
+    document.getElementById('faucet-coin').textContent = moedaTexto.toUpperCase();
+
+    document.getElementById('faucet-type').textContent = faucet.tipo_principal || 'Faucet Padrão';
+    document.getElementById('faucet-min').textContent = faucet.minimo_saque || '---';
+    document.getElementById('faucet-time').textContent = faucet.tempo_saque || '---';
+    document.getElementById('faucet-visit-link').href = faucet.url;
+    document.getElementById('faucet-payment').textContent = faucet.pagamento || 'Não especificado';
+    document.getElementById('faucet-interval').textContent = faucet.intervalo || 'N/A';
+    document.getElementById('faucet-captcha').textContent = faucet.captcha || 'N/A';
+
+    const statusTag = document.getElementById('faucet-status');
+    statusTag.textContent = faucet.status === 'paying' ? 'PAGA REGULARMENTE' : (faucet.status === 'pending' ? 'PENDENTE' : 'SCAM/FECHADA');
+    statusTag.className = `status-tag ${faucet.status} large-tag`;
+
+    // SISTEMA DE RECURSOS ATUALIZADO
+    const recursosContainer = document.getElementById('recursos-auditados'); 
+    if (recursosContainer) {
+        if (faucet.recursos && faucet.recursos.length > 0) {
+            recursosContainer.innerHTML = faucet.recursos.map(rec => {
+                // Deixa a primeira letra maiúscula para ficar bonitão
+                const nomeLimpo = rec.charAt(0).toUpperCase() + rec.slice(1).replace('_', ' ');
+                return `<span class="badge-recurso">${nomeLimpo}</span>`;
+            }).join('');
+        } else {
+            recursosContainer.innerHTML = '<span style="color:#999; font-size:0.9em;">Nenhum recurso listado.</span>';
+        }
+    }
+}
 
 // FUNÇÃO: Mostrar Faucets Recomendadas
 function showRecommended(allFaucets, currentFaucet) {
