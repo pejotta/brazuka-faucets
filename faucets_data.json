@@ -774,5 +774,31 @@
     "data_cadastro": "20/12/2025",
     "intervalo": "36 minutos",
     "captcha": "Hcaptcha"
-  }
+  },
+  {
+  "id": 47,
+  "nome": "Fire Faucet",
+  "url": "https://firefaucet.win/ref/254335",
+  "moeda": [
+    "central",
+    "autofaucet"
+  ],
+  "pagamento": "FaucetPay, Binance, Carteira Direta",
+  "tipo_principal": "Autofaucet e Central Multitarefas",
+  "recursos": [
+    "faucet",
+    "ptc",
+    "shortlinks",
+    "offerwall"
+  ],
+  "intervalo": "1 minuto",
+  "captcha": "reCAPTCHA / hCaptcha",
+  "minimo_saque": "2.5 USD",
+  "tempo_saque": "Imediato",
+  "status": "paying",
+  "destaque": false,
+  "patrocinado": false,
+  "data_cadastro": "25/12/2025",
+  "observacoes": "A plataforma possui um limite de saque diário de $10 dólares."
+}
 ]
