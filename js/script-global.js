@@ -1,24 +1,24 @@
-// script-global.js - O Zelador do Portal (Atualizado)
+// script-global.js - O Zelador do Portal (Versão Ultra Clean)
 
 async function loadEverything() {
+    // 1. Configura a identidade visual
     setFavicon();
     
+    // 2. Carrega o Header/Menu
+    // Importante: Verifique se o caminho do template mudou para templates/ ou se continua na raiz
     await loadTemplate('menu_template.html', 'header-placeholder', 'afterbegin');
     initMobileMenu();
 
-    // 1. Carrega o footer
+    // 3. Carrega o Footer e inicia os Widgets (Tradutor e Contador)
     await loadTemplate('footer_template.html', 'footer-placeholder', 'beforeend');
-    
-    // 2. AGORA SIM: Liga os widgets que estavam "desligados"
     initFooterWidgets();
 
-    loadAd('top-ad-placeholder', 'top_ad.html');
-    loadAd('bottom-ad-placeholder', 'bottom_ad.html');
+    // NOTA: Removidas as funções loadAd de top_ad e bottom_ad, 
+    // pois o ads-manager.js agora cuida disso via slots.
 }
 
 function initFooterWidgets() {
     // --- LÓGICA DO GOOGLE TRANSLATE ---
-    // Definimos a função de inicialização na janela global
     window.googleTranslateElementInit = function() {
         new google.translate.TranslateElement({
             pageLanguage: 'pt', 
@@ -26,7 +26,6 @@ function initFooterWidgets() {
         }, 'google_translate_element');
     };
 
-    // Criamos o script do Google e injetamos no corpo da página
     const gtScript = document.createElement('script');
     gtScript.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
     document.body.appendChild(gtScript);
@@ -34,11 +33,9 @@ function initFooterWidgets() {
     // --- LÓGICA DO WHOS AMUNG US ---
     const wauPlaceholder = document.getElementById('wau-placeholder');
     if (wauPlaceholder) {
-        // Configuramos a variável do widget
         window._wau = window._wau || [];
         window._wau.push(["classic", "z19kbip6mo", "tqi"]);
 
-        // Criamos o script do contador
         const wauScript = document.createElement('script');
         wauScript.src = "https://waust.at/c.js";
         wauScript.async = true;
@@ -46,12 +43,11 @@ function initFooterWidgets() {
     }
 }
 
-// ... restante das suas funções (loadTemplate, initMobileMenu, etc) ...
-
 // Função auxiliar para carregar arquivos HTML externos
 async function loadTemplate(file, id, position) {
     try {
-        const res = await fetch(file);
+        // Cache busting para templates também, para evitar menus antigos
+        const res = await fetch(`${file}?v=${new Date().getTime()}`);
         if (!res.ok) throw new Error(`Arquivo ${file} não encontrado`);
         const html = await res.text();
         const placeholder = document.getElementById(id);
@@ -76,7 +72,6 @@ function initMobileMenu() {
             e.preventDefault();
             nav.classList.toggle('active');
             
-            // Troca o ícone de bars para X
             const icon = menuBtn.querySelector('i');
             if (nav.classList.contains('active')) {
                 icon.classList.replace('fa-bars', 'fa-xmark');
@@ -84,13 +79,10 @@ function initMobileMenu() {
                 icon.classList.replace('fa-xmark', 'fa-bars');
             }
         });
-    } else {
-        // Log para te ajudar a debugar se o ID sumir
-        console.warn("Aviso: Elementos do menu mobile não encontrados no DOM.");
     }
 }
 
-// --- Funções Auxiliares (Favicon e Ads) ---
+// --- Ajuste do Favicon (Onde o filho chora e a mãe não vê) ---
 function setFavicon() {
     let link = document.querySelector("link[rel~='icon']");
     if (!link) {
@@ -98,25 +90,11 @@ function setFavicon() {
         link.rel = 'icon';
         document.head.appendChild(link);
     }
-    link.href = 'assets/assets/logo-brazuka.png'; 
+    // Corrigido: Estava 'assets/assets/logo-brazuka.png'
+    link.href = 'assets/logo-brazuka.png'; 
 }
 
-async function loadAd(id, file) {
-    const el = document.getElementById(id);
-    if (el) {
-        try {
-            const res = await fetch(file);
-            if (res.ok) {
-                const html = await res.text();
-                el.innerHTML = html;
-            }
-        } catch (e) { 
-            console.error(`Erro ao carregar Ad ${file}:`, e); 
-        }
-    }
-}
-
-// --- Lógica do Carrossel ---
+// --- LÓGICA DO CARROSSEL ---
 let currentSlide = 0;
 function moveSlide(direction) {
     const slides = document.querySelectorAll('.slide');
@@ -139,9 +117,9 @@ setInterval(() => {
     }
 }, 15000);
 
-// Função para atualizar SEO dinamicamente com o nome CORRETO
+// Função SEO
 function atualizarSEO(titulo, descricao) {
-    document.title = titulo + " | Brazuka Faucets"; // <-- Agora sim, Pejotta!
+    document.title = titulo + " | Brazuka Faucets";
     
     let metaDescription = document.querySelector('meta[name="description"]');
     if (!metaDescription) {
@@ -152,9 +130,9 @@ function atualizarSEO(titulo, descricao) {
     metaDescription.content = descricao;
 }
 
-// Exemplos de uso nas outras páginas
+// Execução de SEO por página
 if (window.location.pathname.includes("cadastrar")) {
-    atualizarSEO("Cadastrar Faucet", "Envie sua faucet para o Brazuka Faucets e ajude a comunidade a crescer.");
+    atualizarSEO("Cadastrar Faucet", "Envie sua faucet para o Brazuka Faucets.");
 } else if (window.location.pathname.includes("anuncie")) {
-    atualizarSEO("Anuncie Conosco", "Anuncie no Brazuka Faucets e alcance o público certo de criptomoedas.");
+    atualizarSEO("Anuncie Conosco", "Anuncie no Brazuka Faucets.");
 }
