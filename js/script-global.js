@@ -136,3 +136,14 @@ if (window.location.pathname.includes("cadastrar")) {
 } else if (window.location.pathname.includes("anuncie")) {
     atualizarSEO("Anuncie Conosco", "Anuncie no Brazuka Faucets.");
 }
+
+// Comando para remover o Preloader após o carregamento completo
+window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        // Dá um tempinho de 500ms para garantir uma transição suave
+        setTimeout(() => {
+            preloader.classList.add('fade-out');
+        }, 500);
+    }
+});
