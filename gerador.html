@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brazuka Command Center | Gerador KV</title>
+    <title>Brazuka Command Center | Gerador Banco de Dados</title>
     
     <script>
     (function() {
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
-        :root { --primary: #1a73e8; --dark-blue: #0d47a1; --success: #27ae60; --cloud: #00a1ff; }
+        :root { --primary: #1a73e8; --dark-blue: #0d47a1; --success: #27ae60; --cloud: #00a1ff; --warning: #f39c12; }
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; display: flex; flex-direction: column; align-items: center; }
         
         .hero-ads {
@@ -49,6 +49,14 @@
         input, select, textarea { 
             width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95em; box-sizing: border-box;
         }
+
+        .id-group { display: flex; gap: 10px; align-items: flex-end; }
+        .btn-buscar {
+            background: var(--warning); color: white; border: none; padding: 12px 20px;
+            border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s;
+            display: flex; align-items: center; gap: 8px; height: 45px;
+        }
+        .btn-buscar:hover { background: #e67e22; }
 
         .checkbox-grid {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px;
@@ -91,15 +99,20 @@
 
     <section class="hero-ads">
         <h1>Brazuka Command Center</h1>
-        <p>Olá Pejotta! Gerencie o banco de dados em tempo real.</p>
+        <p>Olá Pejotta! Gerencie o Banco de Dados em tempo real.</p>
     </section>
 
     <div class="main-wrapper">
         <div class="faucet-form-container">
             <h2><i class="fa-solid fa-server"></i> Painel da Faucet</h2>
             
-            <label>ID da Faucet</label>
-            <input type="number" id="f_id" placeholder="Ex: 105">
+            <label>ID da Faucet (Para editar ou criar)</label>
+            <div class="id-group">
+                <input type="number" id="f_id" placeholder="Ex: 105">
+                <button type="button" class="btn-buscar" onclick="buscarFaucetsNoBanco()">
+                    <i class="fa-solid fa-magnifying-glass"></i> CARREGAR
+                </button>
+            </div>
 
             <label>Nome da Faucet</label>
             <input type="text" id="f_nome" placeholder="Ex: Brazuka Claimer">
@@ -175,18 +188,18 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
                 <div>
                     <label>Destacar</label>
-                <select id="f_destaque"><option value="false">Normal</option><option value="true">Destaque ⭐</option></select>
-                     </div>
+                    <select id="f_destaque"><option value="false">Normal</option><option value="true">Destaque ⭐</option></select>
+                </div>
                 <div>
                     <label>Patrocinado</label>
-                <select id="f_patrocinado"><option value="false">Grátis</option><option value="true">VIP 💎</option></select>
-            </div>
+                    <select id="f_patrocinado"><option value="false">Grátis</option><option value="true">VIP 💎</option></select>
                 </div>
+            </div>
 
             <div class="btn-group">
                 <button class="btn-gerar" onclick="gerarJSON()">1. VISUALIZAR JSON</button>
                 <button id="btnCloud" class="btn-cloudflare" onclick="enviarParaCloudflare()" disabled>
-                    <i class="fa-solid fa-cloud-arrow-up"></i> 2. SALVAR NO CLOUDFLARE KV
+                    <i class="fa-solid fa-cloud-arrow-up"></i> 2. SALVAR NO BANCO DE DADOS
                 </button>
             </div>
         </div>
@@ -200,7 +213,64 @@
     <script>
         let ultimoObjetoGerado = null;
         // INSIRA A URL DA SUA WORKER AQUI:
-        const URL_WORKER = "SUBSTITUA_PELA_URL_DA_SUA_WORKER";
+        const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
+
+        async function buscarFaucetsNoBanco() {
+            const id = document.getElementById('f_id').value;
+            if (!id) return alert("Pejotta, digite o ID primeiro para eu buscar!");
+
+            const btnBusca = document.querySelector('.btn-buscar');
+            btnBusca.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+            try {
+                const response = await fetch(`${URL_WORKER}/get-all-faucets`);
+                const faucets = await response.json();
+                const f = faucets.find(item => item.id == id);
+
+                if (f) {
+                    // Preenchimento de campos de texto
+                    document.getElementById('f_nome').value = f.nome || '';
+                    document.getElementById('f_url').value = f.url || '';
+                    document.getElementById('f_moedas').value = Array.isArray(f.moeda) ? f.moeda.join(', ') : f.moeda;
+                    document.getElementById('f_timer').value = f.intervalo || '';
+                    document.getElementById('f_minimo').value = f.minimo_saque || '';
+                    document.getElementById('f_tempo').value = f.tempo_saque || '';
+                    document.getElementById('f_status').value = f.status || 'paying';
+                    document.getElementById('f_destaque').value = String(f.destaque);
+                    document.getElementById('f_patrocinado').value = String(f.patrocinado);
+
+                    // Lógica para marcar Checkboxes
+                    const marcarChecks = (seletor, valorString) => {
+                        const listaValores = valorString ? valorString.split(/[,/]/).map(v => v.trim()) : [];
+                        document.querySelectorAll(seletor).forEach(cb => {
+                            cb.checked = listaValores.includes(cb.value);
+                        });
+                    };
+
+                    // Marca as categorias (Tipos)
+                    const listaTipos = f.tipo_principal ? f.tipo_principal.split(' e ').map(v => v.trim()) : [];
+                    document.querySelectorAll('.tipo-p').forEach(cb => cb.checked = listaTipos.includes(cb.value));
+
+                    // Marca os recursos (que já é um array)
+                    document.querySelectorAll('.recurso').forEach(cb => {
+                        cb.checked = f.recursos && f.recursos.includes(cb.value);
+                    });
+
+                    // Marca os outros
+                    marcarChecks('.captcha-c', f.captcha);
+                    marcarChecks('.pagto-c', f.pagamento);
+
+                    alert("✅ Dados de '" + f.nome + "' carregados! Pode editar agora.");
+                } else {
+                    alert("❌ Faucet não encontrada com esse ID no Banco de Dados.");
+                }
+            } catch (err) {
+                alert("🚨 Erro ao conectar com o Banco de Dados!");
+                console.error(err);
+            } finally {
+                btnBusca.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> CARREGAR';
+            }
+        }
 
         function gerarJSON() {
             const tipos = Array.from(document.querySelectorAll('.tipo-p:checked')).map(c => c.value);
@@ -248,7 +318,7 @@
 
                 const res = await response.json();
                 if (res.success) {
-                    alert("✅ MARAVILHA! Site atualizado no KV com sucesso.");
+                    alert("✅ MARAVILHA! Banco de Dados atualizado com sucesso.");
                 } else {
                     alert("❌ Erro: " + res.error);
                 }
@@ -256,7 +326,7 @@
                 alert("🚨 Erro de conexão com a Worker!");
                 console.error(err);
             } finally {
-                btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 2. SALVAR NO CLOUDFLARE KV';
+                btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 2. SALVAR NO BANCO DE DADOS';
                 btn.disabled = false;
             }
         }
