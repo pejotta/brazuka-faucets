@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!tbody) return;
 
     try {
-        // 1. Puxa tudo de uma vez
         const [faucetsRes, statsRes] = await Promise.all([
             fetch(`${WORKER_URL}/get-all-faucets`),
             fetch(`${WORKER_URL}/get-global-stats`)
@@ -17,59 +16,46 @@ document.addEventListener('DOMContentLoaded', async () => {
         const faucets = await faucetsRes.json();
         const globalStats = await statsRes.json();
 
-        // 2. Filtro Inteligente (O que você queria!)
+        // FILTRO TURBO: Procura o targetCoin em TUDO da faucet
         const filtered = faucets.filter(f => {
             if (!targetCoin) return true;
+            
+            const busca = targetCoin.toLowerCase().trim();
 
-            // Criamos uma "super lista" de etiquetas da faucet
-            const tagsDaFaucet = [
-                ...(Array.isArray(f.moeda) ? f.moeda : [f.moeda]),
-                f.tipo_principal ? f.tipo_principal.toLowerCase() : "",
-                ...(Array.isArray(f.recursos) ? f.recursos : [])
-            ].map(t => String(t).toLowerCase());
+            // Transforma TUDO da faucet em uma grande sopa de letras (String)
+            // Vamos olhar moedas, tipo_principal e recursos
+            const moedasStr = Array.isArray(f.moeda) ? f.moeda.join(' ') : String(f.moeda || "");
+            const recursosStr = Array.isArray(f.recursos) ? f.recursos.join(' ') : String(f.recursos || "");
+            const tipoStr = String(f.tipo_principal || "");
 
-            // Verifica se a categoria da página (ex: 'autofaucet') está nas tags
-            return tagsDaFaucet.some(tag => tag.includes(targetCoin.toLowerCase()));
+            const tudoJunto = `${moedasStr} ${recursosStr} ${tipoStr}`.toLowerCase();
+
+            // Se o que a página pede (ex: 'autofaucet') estiver em QUALQUER lugar disso:
+            return tudoJunto.includes(busca);
         });
 
-        // 3. Renderiza a tabela inicial
         await renderTable(filtered, globalStats.topRated || []);
 
-        // 4. Sistema de Filtros por Categoria (dentro da página atual)
+        // Filtros por Categoria (PTC, Faucet, etc)
         const filterBtn = document.getElementById('apply-filters');
         if (filterBtn) {
             filterBtn.addEventListener('click', async () => {
                 const tipoValue = document.getElementById('filter-tipo').value;
                 const finalData = filtered.filter(f => {
                     if (tipoValue === 'all') return true;
-                    const noTipo = f.tipo_principal && f.tipo_principal.toLowerCase().includes(tipoValue);
-                    const noRecurso = f.recursos && f.recursos.includes(tipoValue);
-                    return noTipo || noRecurso;
+                    const tudoF = `${f.tipo_principal} ${f.recursos ? f.recursos.join(' ') : ''}`.toLowerCase();
+                    return tudoF.includes(tipoValue.toLowerCase());
                 });
                 await renderTable(finalData, globalStats.topRated || []);
             });
         }
 
     } catch (e) {
-        console.error("Erro na conexão:", e);
-        tbody.innerHTML = '<tr><td colspan="7">Sistema em manutenção temporária.</td></tr>';
+        console.error("Erro:", e);
+        tbody.innerHTML = '<tr><td colspan="7">Erro ao carregar Banco de Dados.</td></tr>';
     }
 });
 
-// Sistema de Busca (Permanece igual)
-const searchInput = document.getElementById('search-faucet');
-if (searchInput) {
-    searchInput.addEventListener('input', function(e) {
-        const term = e.target.value.toLowerCase();
-        const rows = document.querySelectorAll('#faucets-tbody tr');
-        rows.forEach(row => {
-            const name = row.querySelector('td:first-child').textContent.toLowerCase();
-            row.style.display = name.includes(term) ? '' : 'none';
-        });
-    });
-}
-
-// Função de Renderização (Permanece igual)
 async function renderTable(data, allRatings) {
     const tbody = document.getElementById('faucets-tbody');
     if (!tbody) return;
