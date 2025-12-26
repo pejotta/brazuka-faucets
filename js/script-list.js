@@ -1,4 +1,3 @@
-// CONFIGURAÇÃO
 const WORKER_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -16,52 +15,64 @@ document.addEventListener('DOMContentLoaded', async () => {
         const faucets = await faucetsRes.json();
         const globalStats = await statsRes.json();
 
-        // FILTRO TURBO: Procura o targetCoin em TUDO da faucet
+        // LOG DE DEPURAÇÃO (Abre o F12 no navegador para ver isso)
+        console.log("Moeda Alvo da Página:", targetCoin);
+        console.log("Primeira Faucet do Banco:", faucets[0]);
+
+        // FILTRO TOTAL - Se 'autofaucet' estiver em QUALQUER lugar da Faucet, ela entra.
         const filtered = faucets.filter(f => {
             if (!targetCoin) return true;
             
+            // Transforma o objeto da faucet inteiro em uma string gigante
+            // Isso ignora se o campo chama 'moeda', 'recurso' ou 'tipo'
+            const textoDaFaucet = JSON.stringify(f).toLowerCase();
             const busca = targetCoin.toLowerCase().trim();
 
-            // Transforma TUDO da faucet em uma grande sopa de letras (String)
-            // Vamos olhar moedas, tipo_principal e recursos
-            const moedasStr = Array.isArray(f.moeda) ? f.moeda.join(' ') : String(f.moeda || "");
-            const recursosStr = Array.isArray(f.recursos) ? f.recursos.join(' ') : String(f.recursos || "");
-            const tipoStr = String(f.tipo_principal || "");
-
-            const tudoJunto = `${moedasStr} ${recursosStr} ${tipoStr}`.toLowerCase();
-
-            // Se o que a página pede (ex: 'autofaucet') estiver em QUALQUER lugar disso:
-            return tudoJunto.includes(busca);
+            return textoDaFaucet.includes(busca);
         });
+
+        console.log("Faucets encontradas após o filtro:", filtered.length);
 
         await renderTable(filtered, globalStats.topRated || []);
 
-        // Filtros por Categoria (PTC, Faucet, etc)
+        // Filtros Rápidos (PTC, etc)
         const filterBtn = document.getElementById('apply-filters');
         if (filterBtn) {
             filterBtn.addEventListener('click', async () => {
                 const tipoValue = document.getElementById('filter-tipo').value;
                 const finalData = filtered.filter(f => {
                     if (tipoValue === 'all') return true;
-                    const tudoF = `${f.tipo_principal} ${f.recursos ? f.recursos.join(' ') : ''}`.toLowerCase();
-                    return tudoF.includes(tipoValue.toLowerCase());
+                    return JSON.stringify(f).toLowerCase().includes(tipoValue.toLowerCase());
                 });
                 await renderTable(finalData, globalStats.topRated || []);
             });
         }
 
     } catch (e) {
-        console.error("Erro:", e);
+        console.error("Erro fatal:", e);
         tbody.innerHTML = '<tr><td colspan="7">Erro ao carregar Banco de Dados.</td></tr>';
     }
 });
+
+// Sistema de Busca por Texto
+const searchInput = document.getElementById('search-faucet');
+if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+        const term = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('#faucets-tbody tr');
+        rows.forEach(row => {
+            const name = row.querySelector('td:first-child').textContent.toLowerCase();
+            row.style.display = name.includes(term) ? '' : 'none';
+        });
+    });
+}
 
 async function renderTable(data, allRatings) {
     const tbody = document.getElementById('faucets-tbody');
     if (!tbody) return;
 
     if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7">Nenhum item encontrado nesta categoria.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7">Nenhuma faucet encontrada com o termo "' + document.body.getAttribute('data-coin') + '".</td></tr>';
         return;
     }
 
