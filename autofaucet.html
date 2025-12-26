@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de AutoFaucets | Brazuka Faucets</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body data-coin="autofaucet"> 
+    <script src="script-list.js"></script> 
+
+    <main class="container">
+        <h1>Todas as AutoFaucets</h1>
+
+         <div class="ad-slot-top"></div>
+
+       <section class="filter-controls">
+    <input type="text" id="search-faucet" placeholder="🔍 Buscar por nome...">
+
+    <label>Tipo:</label>
+    <select id="filter-tipo">
+        <option value="all">Todos</option>
+        <option value="padrao">Faucet Padrão</option>
+        <option value="auto">Auto Faucet</option>
+    </select>
+
+    <label>Avaliação:</label>
+    <select id="filter-avaliacao">
+        <option value="0">Qualquer</option>
+        <option value="4">4 Estrelas +</option>
+        <option value="3">3 Estrelas +</option>
+        <option value="2">2 Estrelas +</option>
+    </select>
+    
+    <label>Pagamento:</label>
+    <select id="filter-pagamento">
+        <option value="all">Qualquer</option>
+        <option value="faucetpay">FaucetPay</option>
+        <option value="direct">Direto</option>
+    </select>
+    
+    <button id="apply-filters">Aplicar Filtros</button>
+</section>
+        
+        <div class="table-responsive">
+            <table id="faucets-table" class="faucet-table">
+                <thead>
+                    <tr>
+                        <th>Nome / URL</th>
+                        <th>Tipo</th>
+                        <th>Min. Saque</th>
+                        <th>Tempo Saque</th>
+                        <th>Avaliação</th>
+                        <th>Status</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="faucets-tbody">
+                    <tr><td colspan="7" style="text-align: center;">Carregando faucets...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+           <div class="ad-slot-mid"></div>
+
+    </main>
+
+    <script src="script-list.js"></script> 
+    <script type="text/javascript">...</script>
+    <script src="ads-manager.js"></script>
+    <script src="script-global.js"></script>
+    
+</body>
+</html>
