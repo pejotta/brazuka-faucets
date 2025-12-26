@@ -45,6 +45,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error("Conexão com Banco de Dados indisponível.");
         tbody.innerHTML = '<tr><td colspan="7">Sistema em manutenção temporária.</td></tr>';
     }
+
+    // Pega a "moeda" alvo da página (que pode ser 'btc', 'autofaucet', 'central', etc)
+const targetCoin = document.body.getAttribute('data-coin'); 
+
+// Filtra de forma "Amigável"
+const filtered = faucets.filter(f => {
+    // 1. Cria uma lista única com tudo que essa faucet é/tem
+    // Vamos juntar moedas, tipo_principal e recursos num lugar só para pesquisar
+    const tagsDaFaucet = [
+        ...(Array.isArray(f.moeda) ? f.moeda : [f.moeda]),
+        f.tipo_principal ? f.tipo_principal.toLowerCase() : "",
+        ...(Array.isArray(f.recursos) ? f.recursos : [])
+    ].map(t => t.toLowerCase()); // Tudo em minúsculo para não dar erro
+
+    // 2. Verifica se o que a página pede (targetCoin) está nessa lista
+    // Se a página pede 'autofaucet' e a faucet tem 'autofaucet' nas tags, ela aparece!
+    return tagsDaFaucet.some(tag => tag.includes(targetCoin.toLowerCase()));
+});
+    
 });
 
 // Sistema de Busca
