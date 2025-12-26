@@ -789,7 +789,9 @@
     "faucet",
     "ptc",
     "shortlinks",
-    "offerwall"
+    "offerwall",
+    "surveys",
+    "autoclaim"
   ],
   "intervalo": "1 minuto",
   "captcha": "reCAPTCHA / hCaptcha",
