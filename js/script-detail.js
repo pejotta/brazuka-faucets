@@ -95,7 +95,7 @@ function initInteractiveRating(faucetId) {
     stars.forEach(star => {
         star.addEventListener('click', async () => {
             if (localStorage.getItem(`voto_f_id_${faucetId}`)) {
-                alert("Pejotta, você já avaliou essa faucet! 😉");
+                alert("Calma calabreso, você já avaliou essa faucet! 😉");
                 return;
             }
             const val = parseInt(star.getAttribute('data-value'));
