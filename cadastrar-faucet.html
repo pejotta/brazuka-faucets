@@ -6,284 +6,199 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <meta http-equiv="content-language" content="pt-BR" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastre sua Faucet | Brazuka Faucets</title>
-    <meta name="description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas. Analisamos as melhores opções para você ganhar BTC, LTC, DOGE e muito mais com segurança." />
+    <meta name="description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas." />
     <meta name="author" content="Pejotta" />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://brazuka-faucets.pages.dev" />
-
-    <meta property="og:title" content="Brazuka Faucets | As Melhores Faucets Auditadas" />
-    <meta property="og:type" content="article" />
-    <meta property="og:description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas. Analisamos as melhores opções para você ganhar BTC, LTC, DOGE e muito mais com segurança." />
-    <meta property="og:locale" content="pt_BR" />
-    <meta property="og:image" content="https://brazuka-faucets.pages.dev/brazuka-faucets-share-image.png" />
-    <meta property="og:url" content="https://brazuka-faucets.pages.dev" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Brazuka Faucets | As Melhores Faucets Auditadas" />
-    <meta name="twitter:description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas. Analisamos as melhores opções para você ganhar BTC, LTC, DOGE e muito mais com segurança." />
-    <meta name="twitter:image" content="https://brazuka-faucets.pages.dev/brazuka-faucets-share-image.png" />
     <meta name="theme-color" content="#1a73e8">
     
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-11KQEGEBZ3"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-11KQEGEBZ3');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-11KQEGEBZ3');
     </script>
-</head>
-<body>
-<style>
-    /* Estilos para o Formulário de Cadastro */
 
+    <style>
         .hero-ads {
-            text-align: center;
-            padding: 60px 20px;
+            text-align: center; padding: 60px 20px;
             background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
-            color: white;
-            border-radius: 0 0 50px 50px;
-            max-width: 1200px;
-            margin: 0 auto;
+            color: white; border-radius: 0 0 50px 50px; max-width: 1200px; margin: 0 auto;
         }
-
         .hero-ads h1 { font-size: 2.5em; margin-bottom: 10px; }
         .hero-ads p { opacity: 0.9; font-size: 1.1em; }
-    
-    .faucet-form-container {
-        max-width: 600px;
-        margin: 50px auto;
-        background: #ffffff;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        position: relative;
-        z-index: 2;
-    }
-
-    .faucet-form h2 {
-        color: #1a73e8;
-        margin-bottom: 25px;
-        text-align: center;
-        font-size: 1.6em;
-    }
-
-    .faucet-form label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-        color: #333;
-        font-size: 0.95em;
-    }
-
-    .faucet-form input, 
-    .faucet-form select, 
-    .faucet-form textarea {
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 20px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 1em;
-        transition: border-color 0.3s, box-shadow 0.3s;
-    }
-
-    /* Estilo para os Checkboxes de Recursos */
-    .recursos-group {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 20px;
-        background: #f9f9f9;
-        padding: 15px;
-        border-radius: 8px;
-    }
-    .recursos-item {
-        display: flex;
-        align-items: center;
-        font-size: 0.9em;
-        font-weight: normal !important;
-    }
-    .recursos-item input {
-        width: auto;
-        margin-bottom: 0;
-        margin-right: 8px;
-    }
-
-    .faucet-form button {
-        width: 100%;
-        background-color: #1a73e8;
-        color: white;
-        padding: 15px;
-        border: none;
-        border-radius: 8px;
-        font-size: 1.1em;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s, transform 0.2s;
-    }
-
-    .faucet-form button:hover {
-        background-color: #0d60d8;
-        transform: translateY(-2px);
-    }
-
-    /* Banners Laterais Fixos */
-    .banner-lateral {
-        position: fixed;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 160px;
-        height: 600px;
-        background-color: #eee;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid #ddd;
-        font-size: 12px;
-        color: #666;
-        text-align: center;
-        z-index: 1;
-    }
-    .banner-left { left: 20px; }
-    .banner-right { right: 20px; }
-
-    /* Responsividade para sumir os banners em telas pequenas */
-    @media (max-width: 1000px) {
-        .banner-lateral { display: none; }
-    }
-
-        /* Estilo extra para destacar os campos dinâmicos */
-    .campo-dinamico {
-        background: #eef5ff;
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px dashed #1a73e8;
-        margin-bottom: 20px;
-    }
-    
-    .campo-dinamico label {
-        color: #0d47a1;
-        font-size: 0.85em;
-    }
-</style>
+        
+        .faucet-form-container {
+            max-width: 600px; margin: 50px auto; background: #ffffff;
+            padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative; z-index: 2;
+        }
+        .faucet-form h2 { color: #1a73e8; margin-bottom: 25px; text-align: center; font-size: 1.6em; }
+        .faucet-form label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; font-size: 0.95em; }
+        .faucet-form input, .faucet-form select, .faucet-form textarea {
+            width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 1em; box-sizing: border-box;
+        }
+        .recursos-group {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            margin-bottom: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px;
+        }
+        .recursos-item { display: flex; align-items: center; font-size: 0.9em; font-weight: normal !important; }
+        .recursos-item input { width: auto; margin-bottom: 0; margin-right: 8px; }
+        .faucet-form button {
+            width: 100%; background-color: #1a73e8; color: white; padding: 15px;
+            border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+        }
+        .faucet-form button:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .banner-lateral {
+            position: fixed; top: 50%; transform: translateY(-50%);
+            width: 160px; height: 600px; background-color: #eee;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid #ddd; font-size: 12px; color: #666; z-index: 1;
+        }
+        .banner-left { left: 20px; } .banner-right { right: 20px; }
+        .campo-dinamico { background: #eef5ff; padding: 10px; border-radius: 8px; border: 1px dashed #1a73e8; margin-bottom: 20px; }
+        
+        @media (max-width: 1000px) { .banner-lateral { display: none; } }
+    </style>
+</head>
+<body>
 
     <div class="banner-lateral banner-left">
-        <a href="https://faucetpay.io/?r=31765" target="_blank"><img src="https://cdn.faucetpay.io/banners/gif/160x600.gif" alt="" width="160" height="600"/></a>
+        <a href="https://faucetpay.io/?r=31765" target="_blank"><img src="https://cdn.faucetpay.io/banners/gif/160x600.gif" width="160" height="600"/></a>
     </div>
 
     <div class="banner-lateral banner-right">
-        <a href="https://faucetpay.io/?r=31765" target="_blank"><img src="https://cdn.faucetpay.io/banners/gif/160x600.gif" alt="" width="160" height="600"/></a>
+        <a href="https://faucetpay.io/?r=31765" target="_blank"><img src="https://cdn.faucetpay.io/banners/gif/160x600.gif" width="160" height="600"/></a>
     </div>
 
-     <section class="hero-ads">
-            <h1>Cadastre seu site</h1>
-              <p>Faucet - Central Multi Tarefas - Minerador - Airdrop ou Autofaucet.</p><p>Após uma breve auditoria da equipe <strong>Brazuka Faucets</strong>, enviaremos uma mensagem de listagem ou rejeição para o e-mail cadastrado.</p><br/><p><strong>IMPORTANTE!</strong>: Você pode cadastrar qualquer faucet com seu link de indicação.</p>
-        </section>
+    <section class="hero-ads">
+        <h1>Cadastre seu site</h1>
+        <p>Airdrop, Faucet, Mineradora ou Autofaucet.</p>
+        <p><strong>IMPORTANTE!</strong>: Aceitamos links de indicação.</p>
+    </section>
     
     <main class="container">
         <div class="faucet-form-container">
             <form action="https://formspree.io/f/mjgbvzbq" method="POST" class="faucet-form">
-    <h2><i class="fa-solid fa-magnifying-glass-chart"></i> Auditoria de Nova Faucet</h2>
-    
-    <label for="faucet-nome">Nome da Faucet *</label>
-    <input type="text" id="faucet-nome" name="nome" placeholder="Ex: Brazuka Claimer" required>
+                <h2><i class="fa-solid fa-magnifying-glass-chart"></i> Auditoria de Nova Faucet</h2>
+                
+                <label>Nome da Faucet *</label>
+                <input type="text" name="nome" placeholder="Ex: Brazuka Claimer" required>
 
-    <label for="faucet-url">URL da Faucet *</label>
-    <input type="url" id="faucet-url" name="url" placeholder="https://..." required>
+                <label>URL da Faucet *</label>
+                <input type="url" name="url" placeholder="https://..." required>
 
-    <label for="email-contato">E-mail para contato *</label>
-    <input type="email" id="email-contato" name="email" placeholder="email@email..." required>
-    
-    <label>Moedas Principais *</label>
-    <div class="recursos-group">
-        <label class="recursos-item"><input type="checkbox" name="moeda[]" value="btc"> BTC</label>
-        <label class="recursos-item"><input type="checkbox" name="moeda[]" value="eth"> ETH</label>
-        <label class="recursos-item"><input type="checkbox" name="moeda[]" value="doge"> DOGE</label>
-        <label class="recursos-item"><input type="checkbox" name="moeda[]" value="ltc"> LTC</label>
-        <label class="recursos-item"><input type="checkbox" name="moeda[]" value="sol"> SOL</label>
-        <label class="recursos-item"><input type="checkbox" name="moeda[]" value="trx"> TRX</label>
-        <label class="recursos-item"><input type="checkbox" name="moeda[]" value="usdt"> USDT</label>
-        <label class="recursos-item"><input type="checkbox" name="moeda[]" value="central"> Central Multimoedas</label>
-        <label class="recursos-item"><input type="checkbox" name="moeda[]" value="outra" id="check-outra-moeda"> Outra</label>
-    </div>
+                <label>E-mail para contato *</label>
+                <input type="email" name="email" placeholder="seu-email@exemplo.com" required>
+                
+                <label>Moedas Principais *</label>
+                <div class="recursos-group">
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="btc"> BTC</label>
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="eth"> ETH</label>
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="doge"> DOGE</label>
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="ltc"> LTC</label>
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="sol"> SOL</label>
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="trx"> TRX</label>
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="usdt"> USDT</label>
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="central"> Central Multimoedas</label>
+                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="outra" id="check-outra-moeda"> Outra</label>
+                </div>
 
-    <div id="campo-outra-moeda" class="campo-dinamico" style="display: none; background: #eef5ff; padding: 10px; border-radius: 8px; border: 1px dashed #1a73e8; margin-bottom: 20px;">
-        <label for="input-outra-moeda">Especifique a moeda:</label>
-        <input type="text" id="input-outra-moeda" name="outra_moeda_txt" placeholder="Ex: Solana, Banano...">
-    </div>
+                <div id="campo-outra-moeda" class="campo-dinamico" style="display: none;">
+                    <label>Especifique a moeda:</label>
+                    <input type="text" id="input-outra-moeda" name="outra_moeda_txt" placeholder="Ex: Solana, Banano...">
+                </div>
 
-    <label for="faucet-tipo">Classificação Principal *</label>
-    <select id="faucet-tipo" name="tipo_principal" required>
-        <option value="faucet_padrao">Faucet Padrão (Manual)</option>
-        <option value="autofaucet">Auto Faucet</option>
-        <option value="central_faucets">Central de Faucets / Multi-tarefas</option>
-        <option value="mineradora">Mineradora (Web/Cloud)</option>
-    </select>
+                <label>Classificação Principal *</label>
+                <select name="tipo_principal" required>
+                    <option value="faucet_padrao">Faucet Padrão (Manual)</option>
+                    <option value="autofaucet">Auto Faucet</option>
+                    <option value="central_faucets">Central de Faucets / Multi-tarefas</option>
+                    <option value="mineradora">Mineradora (Web/Cloud)</option>
+                </select>
 
-    <label>Recursos Disponíveis:</label>
-    <div class="recursos-group">
-        <label class="recursos-item"><input type="checkbox" name="recursos[]" value="faucet"> Faucet</label>
-        <label class="recursos-item"><input type="checkbox" name="recursos[]" value="ptc"> PTC (Ads)</label>
-        <label class="recursos-item"><input type="checkbox" name="recursos[]" value="shortlinks"> Shortlinks</label>        
-        <label class="recursos-item"><input type="checkbox" name="recursos[]" value="surveys"> Surveys (Pesquisas)</label>
-        <label class="recursos-item"><input type="checkbox" name="recursos[]" value="staking"> Staking</label>
-        <label class="recursos-item"><input type="checkbox" name="recursos[]" value="jogos"> Jogos/Dice</label>
-        <label class="recursos-item"><input type="checkbox" name="recursos[]" value="offerwall"> Offerwalls</label>
-    </div>
+                <label>Recursos Disponíveis:</label>
+                <div class="recursos-group">
+                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="faucet"> Faucet</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="ptc"> PTC (Ads)</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="shortlinks"> Shortlinks</label>        
+                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="surveys"> Surveys (Pesquisas)</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="staking"> Staking</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="jogos"> Jogos/Dice</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="offerwall"> Offerwalls</label>
+                </div>
 
-    <label for="faucet-timer">Intervalo do Timer *</label>
-    <input type="text" id="faucet-timer" name="timer_intervalo" placeholder="Ex: 5 minutos / Sem timer" required>
+                <label>Intervalo do Timer *</label>
+                <input type="text" name="timer_intervalo" placeholder="Ex: 5 minutos / Sem timer" required>
 
-    <label>Tipos de Captcha Utilizados:</label>
-    <div class="recursos-group">
-        <label class="recursos-item"><input type="checkbox" name="captchas[]" value="reCAPTCHA"> reCAPTCHA</label>
-        <label class="recursos-item"><input type="checkbox" name="captchas[]" value="hCaptcha"> hCaptcha</label>
-        <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Turnstile"> Cloudflare Turnstile</label>
-        <label class="recursos-item"><input type="checkbox" name="captchas[]" value="IconCaptcha"> Icon/SolveMedia</label>
-        <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Antibot"> Antibot Links</label>
-        <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Custom"> Captcha Próprio</label>
-    </div>
+                <label>Tipos de Captcha Utilizados:</label>
+                <div class="recursos-group">
+                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="reCAPTCHA"> reCAPTCHA</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="hCaptcha"> hCaptcha</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Turnstile"> Turnstile</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="IconCaptcha"> IconCaptcha</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Antibot"> Antibot Links</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Custom"> Captcha Próprio</label>
+                </div>
 
-    <label>Onde é feito o pagamento? *</label>
-    <div class="recursos-group">
-        <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="FaucetPay"> FaucetPay</label>                    
-        <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="FaucetPanel"> FaucetPanel</label>                    
-        <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Metamask"> Metamask</label>                                        
-        <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Base"> Base</label>
-        <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Carteira Direta"> Carteira Direta</label>
-        <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Coinbase"> Coinbase</label>
-        <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Payeer"> Payeer</label>
-        <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Cwallet"> Cwallet</label>
-        <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Binance"> Binance</label>
-        <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="OKX"> OKX</label>
-        <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Phantom"> Phantom</label>
-        <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="outros" id="check-outro-pagamento"> Outros</label>
-    </div>
+                <label>Onde é feito o pagamento? *</label>
+                <div class="recursos-group">
+                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="FaucetPay"> FaucetPay</label>                    
+                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="FaucetPanel"> FaucetPanel</label>                    
+                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Metamask"> Metamask</label>                                        
+                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Base"> Base</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Carteira Direta"> Carteira Direta</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Coinbase"> Coinbase</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Payeer"> Payeer</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Cwallet"> Cwallet</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Binance"> Binance</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="OKX"> OKX</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Phantom"> Phantom</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="outros" id="check-outro-pagamento"> Outros</label>
+                </div>
 
-    <div id="campo-outro-pagamento" class="campo-dinamico" style="display: none; background: #eef5ff; padding: 10px; border-radius: 8px; border: 1px dashed #1a73e8; margin-bottom: 20px;">
-        <label for="input-outro-pagamento">Especifique o método:</label>
-        <input type="text" id="input-outro-pagamento" name="outro_pagamento_txt" placeholder="Ex: Binance ID, OKX...">
-    </div>
-    
-    <label for="faucet-minimo">Mínimo de Saque *</label>
-    <input type="text" id="faucet-minimo" name="minimo_saque" placeholder="Ex: 0.005 USD" required>
-    
-    <label for="faucet-tempo">Frequência/Tempo de Saque *</label>
-    <input type="text" id="faucet-tempo" name="tempo_saque" placeholder="Ex: Imediato" required>
+                <div id="campo-outro-pagamento" class="campo-dinamico" style="display: none;">
+                    <label>Especifique o método:</label>
+                    <input type="text" id="input-outro-pagamento" name="outro_pagamento_txt">
+                </div>
+                
+                <label>Mínimo de Saque *</label>
+                <input type="text" name="minimo_saque" placeholder="Ex: 0.005 USD" required>
+                
+                <label>Frequência/Tempo de Saque *</label>
+                <input type="text" name="tempo_saque" placeholder="Ex: Imediato" required>
 
-    <label for="faucet-obs">Observações (Opcional)</label>
-    <textarea id="faucet-obs" name="observacoes" rows="3" placeholder="Algo suspeito ou bônus?"></textarea>
-    
-    <div class="cf-turnstile" data-sitekey="0x4AAAAAACIz3XQpjGaXppF0" data-callback="onTurnstileSuccess" data-theme="light"></div>
-    <button type="submit" id="btn-cadastrar">🚀 Enviar para Auditoria</button>
-</form>
+                <label>Observações (Opcional)</label>
+                <textarea name="observacoes" rows="3"></textarea>
+                
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAACIz3XQpjGaXppF0" data-callback="onTurnstileSuccess"></div>
+                <button type="submit" id="btn-cadastrar" disabled>🚀 Enviar para Auditoria</button>
+            </form>
         </div>
     </main>
 
-    <script src="script-global.js"></script>
-    <script src="cadastrar.js"></script>
+    <script>
+        const btn = document.getElementById('btn-cadastrar');
+        window.onTurnstileSuccess = (token) => {
+            btn.disabled = false;
+        };
+
+        function toggleOutro(checkId, containerId, inputId) {
+            const check = document.getElementById(checkId);
+            const container = document.getElementById(containerId);
+            const input = document.getElementById(inputId);
+            check.addEventListener('change', function() {
+                container.style.display = this.checked ? 'block' : 'none';
+                if(this.checked) input.setAttribute('required', 'required');
+                else input.removeAttribute('required');
+            });
+        }
+        toggleOutro('check-outra-moeda', 'campo-outra-moeda', 'input-outra-moeda');
+        toggleOutro('check-outro-pagamento', 'campo-outro-pagamento', 'input-outro-pagamento');
+    </script>
 </body>
 </html>
