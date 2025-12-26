@@ -91,11 +91,12 @@
 
 /* Tags de Status */
 .large-tag {
-    font-size: 0.9em;
+    font-size: 1em;
     padding: 6px 12px;
-    border-radius: 20px;
+    border-radius: 5px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.1em;
+    position: relative;
 }
 
 /* Seção de Comentários - Melhorada */
@@ -131,10 +132,6 @@
 
 .comment-form input:focus, .comment-form textarea:focus {
     border-color: #1a73e8;
-}
-
-.status-tag {
-    position: relative;
 }
 
 .submit-comment-btn {
