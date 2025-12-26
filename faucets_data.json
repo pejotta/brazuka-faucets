@@ -791,7 +791,7 @@
     "bonus_diario",
     "auto_claim"],
   "intervalo": "Automático",
-  "captcha_tipos": ["reCaptcha", "HCpatcha"],
+  "captcha": ["reCaptcha", "HCpatcha"],
   "minimo_saque": "$2.5 USD",
   "tempo_saque": "Imediato",
   "status": "paying",
@@ -799,5 +799,5 @@
   "patrocinado": false,
   "observacoes": "A dica do auditor é utilizar todas os recursos disponíveis e juntar muitos pontos para ganhar mais no autoclaim."
   "data_cadastro": "25/12/2025",
-},
+}
 ]
