@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <url>
+    <loc>https://brazuka-faucets.pages.dev/</loc>
+    <lastmod>2025-12-26</lastmod>
+    <priority>1.00</priority>
+  </url>
+
+  <url>
+    <loc>https://brazuka-faucets.pages.dev/guia-do-iniciante</loc>
+    <lastmod>2025-12-26</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://brazuka-faucets.pages.dev/cadastrar-faucet.html</loc>
+    <lastmod>2025-12-26</lastmod>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://brazuka-faucets.pages.dev/anuncie.html</loc>
+    <lastmod>2025-12-26</lastmod>
+    <priority>0.85</priority>
+  </url>
+
+  <url><loc>https://brazuka-faucets.pages.dev/todas-as-moedas</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/bitcoin</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/ethereum</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/dogecoin</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/tron</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/litecoin</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/bitcoin-cash</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/dash</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/digibyte</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/tether</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/feyorra</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/zcash</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/binance-coin</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/solana</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/ripple</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/polygon</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/cardano</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/toncoin</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/usd-coin</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/monero</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/taraxa</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/official-trump</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/pepe</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+
+  <url>
+    <loc>https://brazuka-faucets.pages.dev/faucet?id=1</loc>
+    <lastmod>2025-12-26</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url><loc>https://brazuka-faucets.pages.dev/contato.html</loc><lastmod>2025-12-26</lastmod><priority>0.50</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/sobre.html</loc><lastmod>2025-12-26</lastmod><priority>0.50</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/privacidade.html</loc><lastmod>2025-12-26</lastmod><priority>0.30</priority></url>
+  <url><loc>https://brazuka-faucets.pages.dev/termos.html</loc><lastmod>2025-12-26</lastmod><priority>0.30</priority></url>
+
+</urlset>
