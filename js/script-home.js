@@ -3,8 +3,8 @@ const WORKER_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
 // --- ARRAY DE ANÚNCIOS (900x250px) ---
 const meusAnuncios = [
-    { img: "assets/alta-performance-moedas-digitais-brazuka.gif", link: "https://go.hotmart.com/T83952619I" },
-    { img: "assets/gif-faucetmaniacos.gif", link: "https://tenteiganhei.blogspot.com/p/curso-faucetmaniacos.html" }
+    { img: "alta-performance-moedas-digitais-brazuka.gif", link: "https://go.hotmart.com/T83952619I" },
+    { img: "gif-faucetmaniacos.gif", link: "https://tenteiganhei.blogspot.com/p/curso-faucetmaniacos.html" }
 ];
 
 let adIndex = Math.floor(Math.random() * meusAnuncios.length);
