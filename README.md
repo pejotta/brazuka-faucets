@@ -1,6 +1,6 @@
 # 🌀 Brazuka Faucets 🚀
 
-![Logo Brazuka](assets/logo-brazuka.png)
+![Logo Brazuka](assets/assets/logo-brazuka.png)
 
 > O hub definitivo para quem quer ganhar criptomoedas de forma gratuita e auditada.
 

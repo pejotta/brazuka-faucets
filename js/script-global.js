@@ -98,7 +98,7 @@ function setFavicon() {
         link.rel = 'icon';
         document.head.appendChild(link);
     }
-    link.href = 'assets/logo-brazuka.png'; 
+    link.href = 'assets/assets/logo-brazuka.png'; 
 }
 
 async function loadAd(id, file) {

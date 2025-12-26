@@ -33,8 +33,8 @@ function renderCoins() {
         const coinSlug = m.nome.toLowerCase().replace(/\s+/g, '-');
         const coinLink = `${coinSlug}.html`;
         
-        // Agora TODAS usam o logo-brazuka.png
-        const iconHTML = `<img src="logo-brazuka.png" alt="Brazuka" style="width: 42px; height: 42px; object-fit: contain;">`;
+        // Agora TODAS usam o assets/logo-brazuka.png
+        const iconHTML = `<img src="assets/logo-brazuka.png" alt="Brazuka" style="width: 42px; height: 42px; object-fit: contain;">`;
 
         return `
             <a href="${coinLink}" class="coin-item">
