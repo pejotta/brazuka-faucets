@@ -129,19 +129,28 @@
 
             <label>Captchas</label>
             <div class="checkbox-grid">
-                <label class="check-item"><input type="checkbox" class="captcha" value="reCAPTCHA"> reCAPTCHA</label>
-                <label class="check-item"><input type="checkbox" class="captcha" value="hCaptcha"> hCaptcha</label>
-                <label class="check-item"><input type="checkbox" class="captcha" value="Cloudflare"> Cloudflare</label>
-                <label class="check-item"><input type="checkbox" class="captcha" value="SolveMedia"> SolveMedia</label>
+            <label class="check-item"><input type="checkbox" name="captcha" value="reCAPTCHA"> reCAPTCHA</label>
+            <label class="check-item"><input type="checkbox" name="captcha" value="hCaptcha"> hCaptcha</label>
+            <label class="check-item"><input type="checkbox" name="captcha" value="Turnstile"> Cloudflare Turnstile</label>
+            <label class="check-item"><input type="checkbox" name="captcha" value="IconCaptcha"> Icon/SolveMedia</label>
+            <label class="check-item"><input type="checkbox" name="captcha" value="Antibot"> Antibot Links</label>
+            <label class="check-item"><input type="checkbox" name="captcha" value="Custom"> Captcha Próprio</label>
             </div>
 
             <label>Métodos de Pagamento</label>
             <div class="checkbox-grid">
-                <label class="check-item"><input type="checkbox" class="pagto" value="FaucetPay"> FaucetPay</label>
-                <label class="check-item"><input type="checkbox" class="pagto" value="Metamask"> Metamask</label>
-                <label class="check-item"><input type="checkbox" class="pagto" value="Carteira Direta"> Direta</label>
-                <label class="check-item"><input type="checkbox" class="pagto" value="Payeer"> Payeer</label>
-            </div>
+        <label class="check-item"><input type="checkbox" name="pagto" value="FaucetPay"> FaucetPay</label>                    
+        <label class="check-item"><input type="checkbox" name="pagto" value="FaucetPanel"> FaucetPanel</label>                    
+        <label class="check-item"><input type="checkbox" name="pagto" value="Metamask"> Metamask</label>                                        
+        <label class="check-item"><input type="checkbox" name="pagto" value="Base"> Base</label>
+        <label class="check-item"><input type="checkbox" name="pagto" value="Coinbase"> Coinbase</label>
+        <label class="check-item"><input type="checkbox" name="pagto" value="Payeer"> Payeer</label>
+        <label class="check-item"><input type="checkbox" name="pagto" value="Cwallet"> Cwallet</label>
+        <label class="check-item"><input type="checkbox" name="pagto" value="Binance"> Binance</label>
+        <label class="check-item"><input type="checkbox" name="pagto" value="OKX"> OKX</label>
+        <label class="check-item"><input type="checkbox" name="pagto" value="Phantom"> Phantom</label>               
+        <label class="check-item"><input type="checkbox" name="pagto" value="Carteira Direta"> Carteira Direta</label>
+    </div>
 
             <label>Mínimo de Saque</label>
             <input type="text" id="f_minimo" placeholder="Ex: 0.01 USD">
