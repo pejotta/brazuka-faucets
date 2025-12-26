@@ -168,6 +168,73 @@
     </style>
 </head>
 <body>
+<div id="preloader">
+    <div class="loader-content">
+        <img src="assets/logo-brazuka.png" alt="Brazuka Faucets" class="loader-logo">
+        <div class="loader-bar"></div>
+    </div>
+</div>
+
+<style>
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff; /* Ajuste para a cor do seu fundo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Fica acima de tudo */
+    transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+.loader-content {
+    text-align: center;
+}
+
+.loader-logo {
+    width: 80px;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.loader-bar {
+    width: 100px;
+    height: 4px;
+    background: #f0f0f0;
+    margin: 20px auto;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.loader-bar::after {
+    content: '';
+    position: absolute;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #27ae60; /* Verde Brazuka */
+    animation: loading 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.9); opacity: 0.7; }
+    50% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+@keyframes loading {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+#preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+</style>
 
     <section class="hero-ads">
         <h1>🚀 Anuncie no Brazuka Faucets</h1>
