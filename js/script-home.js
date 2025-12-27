@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <p class="url">${domain}</p>
                         </div>
                         <span class="status-tag ${faucet.status}">
-                            ${faucet.status === 'paying' ? 'Paga' : 'Análise'}
+                            ${faucet.status === 'paying' ? 'Paga' : 'pending' ? 'Análise' : 'scam' ? 'SCAM' }
                         </span>
                     </a>
                 `;
