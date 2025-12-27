@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortlinks | Brazuka Faucets</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --success: #27ae60;
+        }
+
+        /* Estilos específicos para esta página */
+        .wallet-section {
+            background: #fff;
+            max-width: 600px;
+            margin: -40px auto 40px; /* Sobe um pouco para sobrepor a Hero */
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 1px solid #eee;
+            position: relative;
+            z-index: 10;
+        }
+
+        .wallet-input {
+            width: 90%;
+            max-width: 400px;
+            padding: 15px;
+            border: 2px solid #e1e4e8;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-top: 15px;
+            outline: none;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .wallet-input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(26,115,232,0.1); }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .link-card {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            border: 1px solid #eee;
+            text-align: center;
+            transition: 0.3s ease;
+        }
+
+        .link-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+        }
+
+        .reward-badge {
+            background: #e8f0fe;
+            color: var(--success);
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+
+        .btn-claim {
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-claim:hover { background: #1557b0; filter: brightness(1.1); }
+
+        .info-small { font-size: 0.8em; color: #888; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <header class="hero-ads">
+        <div class="container" style="padding: 60px 20px; text-align: center;">
+            <h1>🔗 Multiplicador de Ganhos</h1>
+            <p>Complete os desafios rápidos e receba direto na sua FaucetPay.</p>
+            
+            <div id="ad-content" style="margin-top: 30px; min-height: 150px; background: rgba(255,255,255,0.1); border-radius: 15px; display: flex; align-items: center; justify-content: center; border: 2px dashed rgba(255,255,255,0.3);">
+                <span style="color: white; opacity: 0.6;">[ Espaço para Publicidade ]</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section class="wallet-section">
+            <div style="background: var(--primary); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: -60px auto 20px; border: 5px solid #fff;">
+                <i class="fas fa-wallet" style="color: white; font-size: 1.5em;"></i>
+            </div>
+            <h3>Sua Carteira FaucetPay</h3>
+            <p>Precisamos dela para saber para onde enviar seus ganhos!</p>
+            <input type="text" id="user-wallet" class="wallet-input" placeholder="Cole seu endereço BTC/TRX/DOGE aqui...">
+        </section>
+
+        <div class="links-grid">
+            
+            <div class="link-card">
+                <i class="fas fa-bolt" style="font-size: 2em; color: #f1c40f;"></i>
+                <h3>Link Rápido #1</h3>
+                <div class="reward-badge">0.05 TRX</div>
+                <p class="info-small">Tempo estimado: 30 seg</p>
+                <a href="#" class="btn-claim">ABRIR LINK</a>
+                <p class="info-small">Disponível: 10/10</p>
+            </div>
+
+            <div class="link-card">
+                <i class="fas fa-rocket" style="font-size: 2em; color: #e67e22;"></i>
+                <h3>Turbo Link #2</h3>
+                <div class="reward-badge">0.12 TRX</div>
+                <p class="info-small">Tempo estimado: 45 seg</p>
+                <a href="#" class="btn-claim" style="background: #e67e22;">ABRIR LINK</a>
+                <p class="info-small">Disponível: 5/5</p>
+            </div>
+
+            <div class="link-card">
+                <i class="fas fa-star" style="font-size: 2em; color: #9b59b6;"></i>
+                <h3>Premium Link #3</h3>
+                <div class="reward-badge">0.03 DOGE</div>
+                <p class="info-small">Tempo estimado: 40 seg</p>
+                <a href="#" class="btn-claim">ABRIR LINK</a>
+                <p class="info-small">Disponível: 3/3</p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="js/script-global.js"></script>
+    <script src="js/ads-manager.js"></script>
+</body>
+</html>
