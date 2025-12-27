@@ -852,3 +852,31 @@ body {
     padding: 10px;
     margin-top: -7px;
 }
+/* Efeito para os Patrocinados (Azul) */
+.faucet-card.card-patrocinado {
+    border: 1px solid rgba(26, 115, 232, 0.1); /* Borda bem clarinha em repouso */
+}
+
+.faucet-card.card-patrocinado:hover {
+    border-color: #1a73e8 !important;
+    box-shadow: 0 0 15px rgba(26, 115, 232, 0.3);
+    transform: translateY(-5px);
+}
+
+/* Efeito para os Destaques (Dourado) */
+.faucet-card.card-destaque {
+    border: 1px solid rgba(255, 215, 0, 0.1); /* Borda bem clarinha em repouso */
+}
+
+.faucet-card.card-destaque:hover {
+    border-color: #ffd700 !important; /* Gold */
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    transform: translateY(-5px);
+}
+
+/* Efeito para os Normais (Apenas Sombra) */
+.faucet-card:not(.card-patrocinado):not(.card-destaque):hover {
+    border-color: transparent;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+}
