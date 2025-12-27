@@ -65,11 +65,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-            finalLista.forEach(faucet => {
+           finalLista.forEach(faucet => {
                 let tagsHTML = '';
-                let destaqueClass = ''; // Variável para a borda especial
+                let destaqueClass = ''; 
 
-                // Define a Tag e a Classe de Borda dinâmica
                 if (faucet.patrocinado === true || faucet.patrocinado === "true") {
                     tagsHTML = `<div class="tag-badge tag-patrocinado"><i class="fas fa-ad"></i></div>`;
                     destaqueClass = 'card-patrocinado';
@@ -80,6 +79,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 const domain = faucet.url.replace(/^(https?:\/\/)/, '').split('/')[0];
                 const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+
+                // --- CORREÇÃO DAS TAGS AQUI ---
+                const statusLabels = {
+                    'paying': 'Paga',
+                    'pending': 'Análise',
+                    'scam': 'SCAM'
+                };
+                const statusTexto = statusLabels[faucet.status] || 'Análise'; 
+                // ------------------------------
 
                 const card = `
                     <a href="faucet.html?id=${faucet.id}" class="faucet-card ${destaqueClass}">
@@ -94,7 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <p class="url">${domain}</p>
                         </div>
                         <span class="status-tag ${faucet.status}">
-                            ${faucet.status === 'paying' ? 'Paga' : 'pending' ? 'Análise' : 'scam' ? 'SCAM' }
+                            ${statusTexto}
                         </span>
                     </a>
                 `;
