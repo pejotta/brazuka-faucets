@@ -67,18 +67,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             finalLista.forEach(faucet => {
                 let tagsHTML = '';
-                // Prioridade visual para a tag de Patrocinado
+                let destaqueClass = ''; // Variável para a borda especial
+
+                // Define a Tag e a Classe de Borda dinâmica
                 if (faucet.patrocinado === true || faucet.patrocinado === "true") {
                     tagsHTML = `<div class="tag-badge tag-patrocinado"><i class="fas fa-ad"></i></div>`;
+                    destaqueClass = 'card-patrocinado';
                 } else if (faucet.destaque === true || faucet.destaque === "true") {
                     tagsHTML = `<div class="tag-badge tag-destaque"><i class="fas fa-star"></i></div>`;
+                    destaqueClass = 'card-destaque';
                 }
 
                 const domain = faucet.url.replace(/^(https?:\/\/)/, '').split('/')[0];
                 const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
 
                 const card = `
-                    <a href="faucet.html?id=${faucet.id}" class="faucet-card">
+                    <a href="faucet.html?id=${faucet.id}" class="faucet-card ${destaqueClass}">
                         ${tagsHTML}
                         <div class="faucet-icon">
                             <img src="${faviconUrl}" alt="${faucet.nome}" 
@@ -115,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         loadHomeStats(data);
 
-        // Ativa os contadores quando o usuário chega na seção de estatísticas
+        // Ativa os contadores
         const statsHero = document.querySelector('.stats-hero');
         if (statsHero) {
             const observer = new IntersectionObserver((entries) => {
