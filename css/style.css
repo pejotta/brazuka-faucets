@@ -266,7 +266,7 @@ body {
 }
 
 .paying { background-color: #4CAF50; } /* Verde Paga */
-.auto { background-color: #ff9800; } /* Laranja Auto */
+.pending { background-color: #ff9800; } /* Laranja Auto */
 .scam { background-color: #f44336; } /* Vermelho Scam/Fechada */
 
 .view-more {
