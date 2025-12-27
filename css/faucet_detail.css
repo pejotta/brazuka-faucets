@@ -345,3 +345,68 @@
 .btn-cancel:hover {
     background-color: #ddd;
 }
+.tools-needed {
+    margin: 30px 0;
+    padding: 20px;
+    background: #fdfdfd;
+    border-radius: 15px;
+    border: 1px solid #eee;
+}
+
+.tools-title {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tools-grid-detail {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.tool-mini-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: white;
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.tool-mini-card:hover {
+    border-color: #1a73e8;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.tool-mini-card img {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+}
+
+.tool-text h4 {
+    font-size: 0.9em;
+    margin: 0;
+    color: #1a73e8;
+}
+
+.tool-text p {
+    font-size: 0.75em;
+    margin: 2px 0 0;
+    color: #777;
+}
+
+.tool-mini-card i {
+    margin-left: auto;
+    font-size: 0.8em;
+    color: #ccc;
+}
