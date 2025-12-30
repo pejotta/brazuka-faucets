@@ -33,7 +33,7 @@ O repositório está organizado de forma a facilitar o deploy e a indexação pe
 
 Se você é dono de uma faucet ou encontrou uma que paga direitinho:
 
-1. Acesse a página [Cadastrar Faucet](https://brazuka-faucets.pages.dev/cadastrar-faucet.html).
+1. Acesse a página [Cadastrar Faucet](https://www.brazukafaucets.com.br/cadastrar-faucet.html).
 2. Preencha os dados da auditoria.
 3. O administrador irá validar os dados e atualizar o `faucets_data.json`.
 
