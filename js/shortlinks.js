@@ -1,4 +1,4 @@
-// O endereço real do seu Worker
+// O endereço real do seu Worker que você me passou
 const API_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
 function getActiveWallet() {
@@ -10,11 +10,11 @@ function getActiveWallet() {
 document.addEventListener('DOMContentLoaded', () => {
     const savedWallet = localStorage.getItem('brazuka_wallet');
     
-    // Alerta de sucesso após o pagamento
+    // Verifica se voltou de um pagamento com sucesso
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('status') === 'success') {
         const amt = urlParams.get('amt');
-        alert(`🚀 Show de bola, Pejotta! ${amt} DOGE foram enviados para sua FaucetPay!`);
+        alert(`🎉 Sucesso! Enviamos ${amt} DOGE para sua FaucetPay.`);
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 
@@ -29,7 +29,7 @@ async function startShortlink(linkId) {
     const wallet = getActiveWallet();
 
     if (!wallet || wallet.length < 5) {
-        alert("Ei, coloca uma carteira ou e-mail válido aí antes!");
+        alert("Por favor, insira um endereço de carteira válido.");
         return;
     }
 
@@ -50,8 +50,7 @@ async function startShortlink(linkId) {
             alert(data.message || "Erro ao processar link.");
         }
     } catch (err) {
-        console.error("Erro de conexão com o Worker:", err);
-        alert("Ops! O Worker não respondeu. Verifique se ele está ligado.");
+        console.error("Erro ao conectar no Banco de Dados:", err);
     }
 }
 
@@ -60,21 +59,24 @@ async function checkUser(manualWallet = null) {
     
     if (wallet && wallet.length > 5) {
         try {
+            // Agora chamando o endereço correto do Worker
             const response = await fetch(`${API_URL}/get-user-stats?wallet=${wallet}`);
             const data = await response.json();
             
-            // Se o usuário já existe, mostra os dados dele
             if (data.success) {
                 showDashboard(wallet, data.stats);
             } else {
-                // Se o usuário é novo, abre o painel zerado para ele não ficar travado
+                // Se o usuário for novo (erro 404), abre o painel zerado
                 showDashboard(wallet, { clicks: 0, balance: 0 });
             }
             localStorage.setItem('brazuka_wallet', wallet);
         } catch (e) { 
-            // Em caso de erro de conexão, ainda assim tentamos mostrar o painel zerado
+            console.log("Usuário novo, abrindo painel padrão.");
+            // Garante que o painel abra mesmo se a busca falhar
             showDashboard(wallet, { clicks: 0, balance: 0 });
         }
+    } else {
+        alert("Digite um e-mail ou carteira válida!");
     }
 }
 
