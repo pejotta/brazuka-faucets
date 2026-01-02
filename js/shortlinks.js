@@ -121,16 +121,26 @@ async function showDashboard(wallet, stats) {
     }
 
     // --- BUSCA SALDO REAL DA TORNEIRA ---
-    try {
-        // Criaremos essa rota no seu Worker para pegar o saldo via API da FaucetPay
-        const response = await fetch(`${API_URL}/get-faucet-balance`);
-        const data = await response.json();
-        if (data.balance) {
-            document.getElementById('faucet-balance-display').innerText = parseFloat(data.balance).toFixed(2);
+try {
+    const response = await fetch(`${API_URL}/get-faucet-balance`);
+    const data = await response.json();
+    
+    if (data.balance) {
+        // Se a API retornar em Satoshis (ex: 13724617), dividimos por 100.000.000
+        // Se já retornar em DOGE (ex: 0.1372), o parseFloat resolve.
+        let valorReal = parseFloat(data.balance);
+        
+        // Se o valor for um número inteiro muito grande, é Satoshi
+        if (valorReal > 1000) { 
+            valorReal = valorReal / 100000000; 
         }
-    } catch (e) {
-        document.getElementById('faucet-balance-display').innerText = "Indisponível";
+
+        // Usamos toFixed(4) para aparecer o 0.1372 certinho
+        document.getElementById('faucet-balance-display').innerText = valorReal.toFixed(4);
     }
+} catch (e) {
+    document.getElementById('faucet-balance-display').innerText = "Indisponível";
+}
 
     // --- LÓGICA DE LIMITES DIÁRIOS ---
     const limites = { "link_1": 10, "link_2": 5, "link_3": 3 };
