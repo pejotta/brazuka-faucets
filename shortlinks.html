@@ -175,7 +175,7 @@
             <div id="login-view">
                 <h3>Sua Carteira FaucetPay</h3>
                 <p>Insira seu e-mail ou endereço para começar!</p>
-                <input type="text" id="user-wallet" class="wallet-input" placeholder="E-mail ou Carteira FaucetPay..." oninput="checkUser()">
+                <input type="text" id="user-wallet" class="wallet-input" placeholder="E-mail ou Carteira FaucetPay..." onclick="checkUser()">
                 <br>
                 <button class="btn-login" onclick="checkUser()">ACESSAR PAINEL</button>
             </div>
@@ -208,7 +208,7 @@
                 <h3>Link Rápido #1</h3>
                 <div class="reward-badge">0.05 DOGE</div>
                 <p class="info-small">Tempo estimado: 30 seg</p>
-                <button onclick="startShortlink('link_1')" class="btn-claim">ABRIR LINK</button>
+                <button id="btn_link_1" onclick="startShortlink('link_1')" class="btn-claim">ABRIR LINK</button>
                 <p id="link_1_status" class="info-small">Disponível: 10/10</p> </div>
 
             <div class="link-card">
@@ -216,7 +216,7 @@
                 <h3>Turbo Link #2</h3>
                 <div class="reward-badge">0.10 DOGE</div>
                 <p class="info-small">Tempo estimado: 45 seg</p>
-                <button onclick="startShortlink('link_2')" class="btn-claim" style="background: #e67e22;">ABRIR LINK</button>
+                <button id="btn_link_2" onclick="startShortlink('link_2')" class="btn-claim" style="background: #e67e22;">ABRIR LINK</button>
                 <p id="link_2_status" class="info-small">Disponível: 5/5</p>
             </div>
 
@@ -225,7 +225,7 @@
                 <h3>Premium Link #3</h3>
                 <div class="reward-badge">0.50 DOGE</div>
                 <p class="info-small">Tempo estimado: 40 seg</p>
-                <button onclick="startShortlink('link_3')" class="btn-claim" style="background: #9b59b6;">ABRIR LINK</button>
+                <button id="btn_link_3" onclick="startShortlink('link_3')" class="btn-claim" style="background: #9b59b6;">ABRIR LINK</button>
                 <p id="link_3_status" class="info-small">Disponível: 3/3</p>
             </div>
         </div>
