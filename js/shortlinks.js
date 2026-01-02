@@ -1,6 +1,6 @@
 // Função para buscar a carteira salva ou o valor do input
 function getActiveWallet() {
-    const inputWallet = document.getElementById('user-wallet').value;
+    const inputWallet = document.getElementById('user-wallet')?.value;
     const savedWallet = localStorage.getItem('brazuka_wallet');
     return inputWallet || savedWallet || null;
 }
@@ -8,31 +8,40 @@ function getActiveWallet() {
 // Carrega a carteira ao abrir a página
 document.addEventListener('DOMContentLoaded', () => {
     const savedWallet = localStorage.getItem('brazuka_wallet');
+    
+    // Verifica se voltou de um pagamento com sucesso
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('status') === 'success') {
+        const amt = urlParams.get('amt');
+        alert(`🎉 Sucesso! Enviamos ${amt} DOGE para sua FaucetPay.`);
+        // Limpa a URL para não ficar repetindo o alerta se der F5
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
     if (savedWallet) {
         const inputField = document.getElementById('user-wallet');
         if (inputField) {
             inputField.value = savedWallet;
-            // Opcional: Mostrar uma mensagem amigável usando a carteira
-            console.log(`Sessão ativa para: ${savedWallet.substring(0, 6)}...`);
         }
+        // Se já tem carteira salva, já busca os dados no Banco de Dados automaticamente
+        checkUser(savedWallet);
     }
 });
 
 async function startShortlink(linkId) {
-    const wallet = document.getElementById('user-wallet').value;
+    const wallet = getActiveWallet();
 
     if (!wallet || wallet.length < 10) {
         alert("Por favor, insira um endereço de carteira válido para continuar.");
         return;
     }
 
-    // Salva a carteira para "logar" o usuário automaticamente nas próximas vezes
     localStorage.setItem('brazuka_wallet', wallet);
 
     try {
-        // Envia para o Worker registrar o início do desafio no Banco de Dados
         const response = await fetch(`https://api.brazukafaucets.com.br/start-link`, {
             method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 link_id: linkId,
                 wallet: wallet
@@ -44,6 +53,7 @@ async function startShortlink(linkId) {
         if (data.url) {
             window.location.href = data.url;
         } else {
+            // Aqui entra a mensagem do FREEZE caso o usuário tente clicar rápido demais
             alert(data.message || "Erro ao processar link.");
         }
     } catch (err) {
@@ -51,9 +61,11 @@ async function startShortlink(linkId) {
     }
 }
 
-async function checkUser() {
-    const wallet = document.getElementById('user-wallet').value;
-    if (wallet.length > 5) { // Começa a buscar após 5 caracteres
+// Modifiquei para aceitar uma carteira opcional como argumento
+async function checkUser(manualWallet = null) {
+    const wallet = manualWallet || document.getElementById('user-wallet').value;
+    
+    if (wallet && wallet.length > 5) {
         try {
             const response = await fetch(`https://api.brazukafaucets.com.br/get-user-stats?wallet=${wallet}`);
             const data = await response.json();
@@ -62,16 +74,23 @@ async function checkUser() {
                 showDashboard(wallet, data.stats);
                 localStorage.setItem('brazuka_wallet', wallet);
             }
-        } catch (e) { console.log("Usuário novo ou erro na busca."); }
+        } catch (e) { 
+            console.log("Usuário novo ou ainda não registrado no Banco de Dados."); 
+        }
     }
 }
 
 function showDashboard(wallet, stats) {
-    document.getElementById('login-view').style.display = 'none';
-    document.getElementById('dashboard-view').style.display = 'block';
-    document.getElementById('display-wallet').innerText = wallet;
-    document.getElementById('stat-clicks').innerText = stats.clicks || 0;
-    document.getElementById('stat-balance').innerText = (stats.balance || 0).toFixed(4);
+    const loginView = document.getElementById('login-view');
+    const dashView = document.getElementById('dashboard-view');
+    
+    if (loginView && dashView) {
+        loginView.style.display = 'none';
+        dashView.style.display = 'block';
+        document.getElementById('display-wallet').innerText = wallet;
+        document.getElementById('stat-clicks').innerText = stats.clicks || 0;
+        document.getElementById('stat-balance').innerText = (stats.balance || 0).toFixed(4);
+    }
 }
 
 function logout() {
