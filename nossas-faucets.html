@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <link rel="icon" type="image/png" href="/assets/logo-brazuka.png" sizes="32x32">
     <link rel="shortcut icon" href="/assets/logo-brazuka.png">
     <link rel="apple-touch-icon" href="/assets/logo-brazuka.png">
@@ -92,7 +93,7 @@
                 
                 <div style="width: 300px; height: 250px; background: #eee; margin: 20px auto; display: flex; align-items: center; justify-content: center;">[AD 300x250]</div>
 
-                <div id="turnstile-container" style="display: flex; justify-content: center; margin: 20px 0;"></div>
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAACIz3XQpjGaXppF0" data-callback="onTurnstileSuccess"></div>
 
                 <button id="btn-finish-claim" disabled onclick="redirectToShortlink()" style="background: #27ae60; color: white; border: none; padding: 20px 40px; border-radius: 10px; font-weight: bold; cursor: not-allowed; opacity: 0.5;">PEGAR TOKENS</button>
             </div>
