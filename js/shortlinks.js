@@ -170,3 +170,45 @@ function logout() {
     localStorage.removeItem('brazuka_wallet');
     location.reload();
 }
+
+async function atualizarContadores() {
+    const wallet = localStorage.getItem('userWallet'); // Ou onde você guarda a carteira
+    if (!wallet) return;
+
+    try {
+        const response = await fetch(`https://brazuka-faucets.moneynanet-yt.workers.dev/get-user-stats?wallet=${wallet}`);
+        const data = await response.json();
+
+        if (data.success && data.stats) {
+            const stats = data.stats;
+            const dailyClicks = stats.daily_clicks || {};
+
+            // Defina aqui os mesmos limites que estão no Worker
+            const limites = { "link_1": 10, "link_2": 5, "link_3": 3 };
+
+            // Atualiza cada contador na tela
+            for (let id in limites) {
+                const realizados = dailyClicks[id] || 0;
+                const disponiveis = limites[id] - realizados;
+                const statusElement = document.getElementById(`${id}_status`);
+                const btnElement = document.getElementById(`btn_${id}`);
+
+                if (statusElement) {
+                    statusElement.innerText = `Disponível: ${disponiveis}/${limites[id]}`;
+                }
+
+                // Se acabar os cliques, desativa o botão
+                if (disponiveis <= 0 && btnElement) {
+                    btnElement.disabled = true;
+                    btnElement.innerText = "LIMITE ATINGIDO";
+                    btnElement.style.background = "#7f8c8d";
+                }
+            }
+        }
+    } catch (err) {
+        console.error("Erro ao atualizar contadores:", err);
+    }
+}
+
+// Chama a função ao carregar a página
+window.onload = atualizarContadores;
