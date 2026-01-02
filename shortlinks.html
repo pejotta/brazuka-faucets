@@ -110,13 +110,31 @@
     <main class="container">
         
         <section class="wallet-section">
-            <div style="background: var(--primary); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: -60px auto 20px; border: 5px solid #fff;">
-                <i class="fas fa-wallet" style="color: white; font-size: 1.5em;"></i>
+    <div style="background: var(--primary); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: -60px auto 20px; border: 5px solid #fff;">
+        <i class="fas fa-wallet" style="color: white; font-size: 1.5em;"></i>
+    </div>
+    
+    <div id="login-view">
+        <h3>Sua Carteira FaucetPay</h3>
+        <p>Insira seu e-mail ou endereço para começar!</p>
+        <input type="text" id="user-wallet" class="wallet-input" placeholder="E-mail ou Carteira FaucetPay..." oninput="checkUser()">
+    </div>
+
+    <div id="dashboard-view" style="display: none;">
+        <h4 id="display-wallet" style="color: var(--primary); font-size: 0.9em; margin-bottom: 15px;">...</h4>
+        <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 15px; border-radius: 12px;">
+            <div>
+                <small style="display:block; color: #666;">Cliques Hoje</small>
+                <strong id="stat-clicks" style="font-size: 1.2em;">0</strong>
             </div>
-            <h3>Sua Carteira FaucetPay</h3>
-            <p>Precisamos dela para saber para onde enviar seus ganhos!</p>
-            <input type="text" id="user-wallet" class="wallet-input" placeholder="Cole seu endereço BTC/TRX/DOGE aqui...">
-        </section>
+            <div style="border-left: 1px solid #ddd; padding-left: 20px;">
+                <small style="display:block; color: #666;">Saldo Pendente</small>
+                <strong id="stat-balance" style="font-size: 1.2em; color: var(--success);">0.00</strong>
+            </div>
+        </div>
+        <button onclick="logout()" style="margin-top: 15px; background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 0.8em;"><i class="fas fa-sign-out-alt"></i> Trocar conta</button>
+    </div>
+</section>
 
         <div class="links-grid">
             
