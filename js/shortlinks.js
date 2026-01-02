@@ -1,4 +1,4 @@
-// O endereço real do seu Worker com o hífen que resolveu o problema!
+// O endereço real do seu Worker
 const API_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
 function getActiveWallet() {
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (urlParams.get('status') === 'success') {
         const amt = urlParams.get('amt');
         alert(`🎉 Sucesso! Enviamos ${amt} DOGE para sua FaucetPay.`);
-        // Limpa a URL para não ficar repetindo o alerta no refresh
+        // Limpa a URL para não ficar repetindo o alerta
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 
@@ -74,7 +74,7 @@ function activateLock() {
             clearInterval(countdown);
             mainContainer.classList.remove('blur-active');
             overlay.style.display = 'none';
-            // Recarrega os dados do Banco de Dados após o tempo
+            // Recarrega os dados reais do Banco de Dados após o tempo
             checkUser(); 
         }
     }, 1000);
@@ -85,7 +85,8 @@ async function checkUser(manualWallet = null) {
     
     if (wallet && wallet.length > 5) {
         try {
-            const response = await fetch(`${API_URL}/get-user-stats?wallet=${wallet}`);
+            // Adicionado timestamp (t=) para evitar cache do navegador e pegar dado novo do Banco de Dados
+            const response = await fetch(`${API_URL}/get-user-stats?wallet=${wallet}&t=${Date.now()}`);
             const data = await response.json();
             
             if (data.success) {
@@ -95,7 +96,7 @@ async function checkUser(manualWallet = null) {
             }
             localStorage.setItem('brazuka_wallet', wallet);
         } catch (e) { 
-            showDashboard(wallet, { clicks: 0, balance: 0, daily_clicks: {} });
+            console.error("Erro ao buscar stats:", e);
         }
     } else {
         alert("Digite um e-mail ou carteira válida!");
@@ -135,7 +136,7 @@ async function showDashboard(wallet, stats) {
     const clicks = stats.daily_clicks || {};
     const hoje = new Date().toLocaleDateString('pt-BR');
 
-    // AJUSTE: Verifica se o reset diário bate com a data de hoje
+    // Verifica se o reset diário no Banco de Dados bate com a data de hoje
     const isNovoDia = stats.last_reset !== hoje;
 
     Object.keys(limites).forEach(id => {
@@ -143,23 +144,24 @@ async function showDashboard(wallet, stats) {
         const restantes = limites[id] - feitos;
         
         const statusEl = document.getElementById(`${id}_status`);
+        const btn = document.getElementById(`btn_${id}`);
+
         if (statusEl) {
             statusEl.innerText = `Disponível: ${restantes}/${limites[id]}`;
-            
-            const card = statusEl.closest('.link-card');
-            const btn = card ? card.querySelector('button') : null;
             
             if (btn) {
                 if (restantes <= 0) {
                     btn.disabled = true;
                     btn.innerText = "Limite Atingido";
-                    btn.style.background = "#ccc";
+                    btn.style.background = "#7f8c8d";
                     btn.style.cursor = "not-allowed";
                 } else {
                     btn.disabled = false;
                     btn.innerText = "ABRIR LINK";
-                    // Mantém a cor original baseada no ID (se aplicável)
                     btn.style.cursor = "pointer";
+                    // Restaura a cor original de acordo com o botão
+                    if(id === 'link_2') btn.style.background = "#e67e22";
+                    if(id === 'link_3') btn.style.background = "#9b59b6";
                 }
             }
         }
@@ -170,45 +172,3 @@ function logout() {
     localStorage.removeItem('brazuka_wallet');
     location.reload();
 }
-
-async function atualizarContadores() {
-    const wallet = localStorage.getItem('userWallet'); // Ou onde você guarda a carteira
-    if (!wallet) return;
-
-    try {
-        const response = await fetch(`https://brazuka-faucets.moneynanet-yt.workers.dev/get-user-stats?wallet=${wallet}`);
-        const data = await response.json();
-
-        if (data.success && data.stats) {
-            const stats = data.stats;
-            const dailyClicks = stats.daily_clicks || {};
-
-            // Defina aqui os mesmos limites que estão no Worker
-            const limites = { "link_1": 10, "link_2": 5, "link_3": 3 };
-
-            // Atualiza cada contador na tela
-            for (let id in limites) {
-                const realizados = dailyClicks[id] || 0;
-                const disponiveis = limites[id] - realizados;
-                const statusElement = document.getElementById(`${id}_status`);
-                const btnElement = document.getElementById(`btn_${id}`);
-
-                if (statusElement) {
-                    statusElement.innerText = `Disponível: ${disponiveis}/${limites[id]}`;
-                }
-
-                // Se acabar os cliques, desativa o botão
-                if (disponiveis <= 0 && btnElement) {
-                    btnElement.disabled = true;
-                    btnElement.innerText = "LIMITE ATINGIDO";
-                    btnElement.style.background = "#7f8c8d";
-                }
-            }
-        }
-    } catch (err) {
-        console.error("Erro ao atualizar contadores:", err);
-    }
-}
-
-// Chama a função ao carregar a página
-window.onload = atualizarContadores;
