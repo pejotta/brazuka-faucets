@@ -116,10 +116,44 @@
         .btn-claim:hover { filter: brightness(1.1); transform: scale(1.02); }
 
         .info-small { font-size: 0.8em; color: #888; margin-top: 10px; }
+
+        /* Container que será borrado */
+.blur-active {
+    filter: blur(8px);
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Overlay com o contador */
+#lock-overlay {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    text-align: center;
+    border: 2px solid var(--primary);
+}
+
+#lock-overlay h2 { color: var(--primary); margin-bottom: 10px; }
+#timer-display { font-size: 2em; font-weight: bold; color: var(--danger); }
+        
     </style>
 </head>
 <body>
-
+<div id="lock-overlay">
+    <i class="fas fa-clock fa-3x" style="color: var(--primary); margin-bottom: 15px;"></i>
+    <h2>Desafio em Andamento!</h2>
+    <p>Conclua o link na outra aba para liberar novos ganhos.</p>
+    <div id="timer-display">60s</div>
+    <p class="info-small">O painel será liberado automaticamente após o tempo acabar.</p>
+</div>
+    
     <header class="hero-ads">
         <div class="container" style="padding: 60px 20px; text-align: center;">
             <h1>🔗 Multiplicador de Ganhos</h1>
