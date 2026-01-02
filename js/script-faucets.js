@@ -56,8 +56,14 @@ async function atualizarSaldosTorneira() {
             const response = await fetch(`${API_URL}/get-faucet-balance?coin=${moeda}`);
             const data = await response.json();
             const el = document.getElementById(`balance-${moeda.toLowerCase()}`);
-            if (el) {
-                el.innerText = parseFloat(data.balance).toFixed(4);
+            
+            if (el && data.balance) {
+                // ANALISTA: A FaucetPay retorna em Satoshis. 
+                // Dividimos por 100.000.000 para exibir o valor real da moeda.
+                const saldoReal = parseFloat(data.balance) / 100000000;
+                
+                // Exibe com 8 casas decimais para TON não sumir
+                el.innerText = saldoReal.toFixed(8);
             }
         } catch (e) {
             console.error(`Erro ao buscar saldo de ${moeda}:`, e);
