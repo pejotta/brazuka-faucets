@@ -1,29 +1,26 @@
-// Função para buscar a carteira salva ou o valor do input
+// O endereço real do seu Worker
+const API_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
+
 function getActiveWallet() {
     const inputWallet = document.getElementById('user-wallet')?.value;
     const savedWallet = localStorage.getItem('brazuka_wallet');
     return inputWallet || savedWallet || null;
 }
 
-// Carrega a carteira ao abrir a página
 document.addEventListener('DOMContentLoaded', () => {
     const savedWallet = localStorage.getItem('brazuka_wallet');
     
-    // Verifica se voltou de um pagamento com sucesso
+    // Alerta de sucesso após o pagamento
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('status') === 'success') {
         const amt = urlParams.get('amt');
-        alert(`🎉 Sucesso! Enviamos ${amt} DOGE para sua FaucetPay.`);
-        // Limpa a URL para não ficar repetindo o alerta se der F5
+        alert(`🚀 Show de bola, Pejotta! ${amt} DOGE foram enviados para sua FaucetPay!`);
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 
     if (savedWallet) {
         const inputField = document.getElementById('user-wallet');
-        if (inputField) {
-            inputField.value = savedWallet;
-        }
-        // Se já tem carteira salva, já busca os dados no Banco de Dados automaticamente
+        if (inputField) inputField.value = savedWallet;
         checkUser(savedWallet);
     }
 });
@@ -31,21 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
 async function startShortlink(linkId) {
     const wallet = getActiveWallet();
 
-    if (!wallet || wallet.length < 10) {
-        alert("Por favor, insira um endereço de carteira válido para continuar.");
+    if (!wallet || wallet.length < 5) {
+        alert("Ei, coloca uma carteira ou e-mail válido aí antes!");
         return;
     }
 
     localStorage.setItem('brazuka_wallet', wallet);
 
     try {
-        const response = await fetch(`https://api.brazukafaucets.com.br/start-link`, {
+        const response = await fetch(`${API_URL}/start-link`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                link_id: linkId,
-                wallet: wallet
-            })
+            body: JSON.stringify({ link_id: linkId, wallet: wallet })
         });
 
         const data = await response.json();
@@ -53,29 +47,33 @@ async function startShortlink(linkId) {
         if (data.url) {
             window.location.href = data.url;
         } else {
-            // Aqui entra a mensagem do FREEZE caso o usuário tente clicar rápido demais
             alert(data.message || "Erro ao processar link.");
         }
     } catch (err) {
-        console.error("Falha na conexão com o Banco de Dados.", err);
+        console.error("Erro de conexão com o Worker:", err);
+        alert("Ops! O Worker não respondeu. Verifique se ele está ligado.");
     }
 }
 
-// Modifiquei para aceitar uma carteira opcional como argumento
 async function checkUser(manualWallet = null) {
     const wallet = manualWallet || document.getElementById('user-wallet').value;
     
     if (wallet && wallet.length > 5) {
         try {
-            const response = await fetch(`https://api.brazukafaucets.com.br/get-user-stats?wallet=${wallet}`);
+            const response = await fetch(`${API_URL}/get-user-stats?wallet=${wallet}`);
             const data = await response.json();
             
+            // Se o usuário já existe, mostra os dados dele
             if (data.success) {
                 showDashboard(wallet, data.stats);
-                localStorage.setItem('brazuka_wallet', wallet);
+            } else {
+                // Se o usuário é novo, abre o painel zerado para ele não ficar travado
+                showDashboard(wallet, { clicks: 0, balance: 0 });
             }
+            localStorage.setItem('brazuka_wallet', wallet);
         } catch (e) { 
-            console.log("Usuário novo ou ainda não registrado no Banco de Dados."); 
+            // Em caso de erro de conexão, ainda assim tentamos mostrar o painel zerado
+            showDashboard(wallet, { clicks: 0, balance: 0 });
         }
     }
 }
