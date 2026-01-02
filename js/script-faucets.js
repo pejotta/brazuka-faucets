@@ -41,6 +41,24 @@ async function checkUser(manualWallet = null) {
     }
 }
 
+async function atualizarSaldosTorneira() {
+    const moedas = ['TRX', 'TON'];
+    
+    for (const moeda of moedas) {
+        try {
+            const response = await fetch(`${API_URL}/get-faucet-balance?coin=${moeda}`);
+            const data = await response.json();
+            const el = document.getElementById(`balance-${moeda.toLowerCase()}`);
+            if (el) {
+                // Se o saldo for muito grande (em satoshis), dividimos, mas a API FP costuma já mandar formatado
+                el.innerText = parseFloat(data.balance).toFixed(4);
+            }
+        } catch (e) {
+            console.error(`Erro ao buscar saldo de ${moeda}:`, e);
+        }
+    }
+}
+
 async function openClaimModal(coin) {
     const wallet = localStorage.getItem('brazuka_wallet');
     
