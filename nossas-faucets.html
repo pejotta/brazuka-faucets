@@ -44,23 +44,68 @@
     </header>
 
     <main class="container">
-        <div class="faucet-grid-internal">
-            
-            <div class="internal-card">
-                <div class="coin-icon-large" style="color: #ff0013;"><i class="fas fa-coins"></i></div>
-                <h3>Torneira TRON (TRX)</h3>
-                <p>Ganhe 0.001 TRX a cada 10 minutos.</p>
-                <a href="#" class="btn-go" style="background: #ff0013; display: block; margin-top: 20px; padding: 15px; color: white; border-radius: 10px; text-decoration: none; font-weight: bold;">REIVINDICAR TRX</a>
-            </div>
+       <div id="login-view" class="container" style="max-width: 500px; margin-top: 50px;">
+    <div class="internal-card">
+        <div class="coin-icon-large" style="color: #2980b9;"><i class="fas fa-wallet"></i></div>
+        <h3>Sua Carteira FaucetPay</h3>
+        <p>Insira seu e-mail para começar!</p>
+        <input type="email" id="user-wallet" placeholder="E-mail FaucetPay..." style="width: 100%; padding: 15px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 15px;">
+        <button onclick="checkUser()" class="btn-go" style="width: 100%; background: #27ae60; border: none; color: white; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: bold;">ACESSAR PAINEL</button>
+        <a href="https://faucetpay.io/?r=YOUR_REFERRAL_ID" target="_blank" style="display: block; margin-top: 15px; text-decoration: none; color: #7f8c8d; font-size: 0.9em;">Crie sua conta FaucetPay</a>
+    </div>
+</div>
 
-            <div class="internal-card">
-                <div class="coin-icon-large" style="color: #ba9f33;"><i class="fas fa-dog"></i></div>
-                <h3>Torneira Dogecoin</h3>
-                <p>Ganhe 0.001 DOGE a cada 10 minutos.</p>
-                <a href="#" class="btn-go" style="background: #ba9f33; display: block; margin-top: 20px; padding: 15px; color: white; border-radius: 10px; text-decoration: none; font-weight: bold;">REIVINDICAR DOGE</a>
-            </div>
+<div id="dashboard-view" class="container" style="display: none; margin-top: 20px;">
+    <div class="internal-card" style="margin-bottom: 30px; display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
+        <div><strong>Carteira:</strong> <span id="display-wallet">...</span></div>
+        <div><strong>Claims TRX:</strong> <span id="stat-trx">0</span></div>
+        <div><strong>Claims TON:</strong> <span id="stat-ton">0</span></div>
+        <button onclick="logout()" style="background: #e74c3c; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer;">Sair</button>
+    </div>
 
+    <div class="faucet-grid-internal">
+        <div class="internal-card">
+            <div class="coin-icon-large" style="color: #ff0013;"><i class="fas fa-coins"></i></div>
+            <h3>Torneira TRX</h3>
+            <p>Saldo: <span id="balance-trx">0.00</span> TRX</p>
+            <button onclick="openClaimModal('trx')" class="btn-go" style="background: #ff0013; width: 100%; border: none; padding: 15px; color: white; border-radius: 10px; font-weight: bold; cursor: pointer;">REIVINDICAR TRX</button>
         </div>
+
+        <div class="internal-card">
+            <div class="coin-icon-large" style="color: #0088cc;"><i class="fas fa-gem"></i></div>
+            <h3>Torneira TON</h3>
+            <p>Saldo: <span id="balance-ton">0.00</span> TON</p>
+            <button onclick="openClaimModal('ton')" class="btn-go" style="background: #0088cc; width: 100%; border: none; padding: 15px; color: white; border-radius: 10px; font-weight: bold; cursor: pointer;">REIVINDICAR TON</button>
+        </div>
+    </div>
+</div>
+
+<div id="claim-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; overflow-y: auto;">
+    <div style="background: white; max-width: 800px; margin: 20px auto; padding: 20px; border-radius: 15px; position: relative;">
+        <span onclick="closeModal()" style="position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer;">&times;</span>
+        
+        <div style="width: 728px; height: 90px; background: #eee; margin: 10px auto; display: flex; align-items: center; justify-content: center;">[AD 728x90]</div>
+
+        <div style="display: flex; gap: 15px;">
+            <div style="width: 160px; height: 600px; background: #eee; display: flex; align-items: center; justify-content: center;">[AD 160x600]</div>
+            
+            <div style="flex: 1; text-align: center;">
+                <h2 id="modal-title">Reivindicar Moeda</h2>
+                <p>Resolva o captcha para continuar.</p>
+                
+                <div style="width: 300px; height: 250px; background: #eee; margin: 20px auto; display: flex; align-items: center; justify-content: center;">[AD 300x250]</div>
+
+                <div id="turnstile-container" style="display: flex; justify-content: center; margin: 20px 0;"></div>
+
+                <button id="btn-finish-claim" disabled onclick="redirectToShortlink()" style="background: #27ae60; color: white; border: none; padding: 20px 40px; border-radius: 10px; font-weight: bold; cursor: not-allowed; opacity: 0.5;">PEGAR TOKENS</button>
+            </div>
+
+            <div style="width: 160px; height: 600px; background: #eee; display: flex; align-items: center; justify-content: center;">[AD 160x600]</div>
+        </div>
+
+        <div style="width: 728px; height: 90px; background: #eee; margin: 20px auto; display: flex; align-items: center; justify-content: center;">[AD 728x90]</div>
+    </div>
+</div>
     </main>
 
     <script src="js/script-global.js"></script>
