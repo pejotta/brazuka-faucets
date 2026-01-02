@@ -13,13 +13,14 @@
         :root {
             --primary: #1a73e8;
             --success: #27ae60;
+            --danger: #e74c3c;
         }
 
         /* Estilos específicos para esta página */
         .wallet-section {
             background: #fff;
             max-width: 600px;
-            margin: -40px auto 40px; /* Sobe um pouco para sobrepor a Hero */
+            margin: -40px auto 40px;
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
@@ -43,6 +44,20 @@
         }
 
         .wallet-input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(26,115,232,0.1); }
+
+        .btn-login {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-login:hover { transform: scale(1.05); filter: brightness(1.1); }
 
         .links-grid {
             display: grid;
@@ -87,6 +102,8 @@
             display: block;
             margin-top: 20px;
             transition: 0.3s;
+            cursor: pointer;
+            border: none;
         }
 
         .btn-claim:hover { background: #1557b0; filter: brightness(1.1); }
@@ -110,31 +127,37 @@
     <main class="container">
         
         <section class="wallet-section">
-    <div style="background: var(--primary); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: -60px auto 20px; border: 5px solid #fff;">
-        <i class="fas fa-wallet" style="color: white; font-size: 1.5em;"></i>
-    </div>
-    
-    <div id="login-view">
-        <h3>Sua Carteira FaucetPay</h3>
-        <p>Insira seu e-mail ou endereço para começar!</p>
-        <input type="text" id="user-wallet" class="wallet-input" placeholder="E-mail ou Carteira FaucetPay..." oninput="checkUser()">
-    </div>
+            <div style="background: var(--primary); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: -60px auto 20px; border: 5px solid #fff;">
+                <i class="fas fa-wallet" style="color: white; font-size: 1.5em;"></i>
+            </div>
+            
+            <div id="login-view">
+                <h3>Sua Carteira FaucetPay</h3>
+                <p>Insira seu e-mail ou endereço para começar!</p>
+                <input type="text" id="user-wallet" class="wallet-input" placeholder="E-mail ou Carteira FaucetPay..." oninput="checkUser()">
+                <br>
+                <button class="btn-login" onclick="checkUser()">ACESSAR PAINEL</button>
+            </div>
 
-    <div id="dashboard-view" style="display: none;">
-        <h4 id="display-wallet" style="color: var(--primary); font-size: 0.9em; margin-bottom: 15px;">...</h4>
-        <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 15px; border-radius: 12px;">
-            <div>
-                <small style="display:block; color: #666;">Cliques Hoje</small>
-                <strong id="stat-clicks" style="font-size: 1.2em;">0</strong>
+            <div id="dashboard-view" style="display: none;">
+                <h4 style="margin-bottom: 5px;">Bem-vindo de volta!</h4>
+                <small id="display-wallet" style="color: var(--primary); font-weight: bold; word-break: break-all;">...</small>
+                
+                <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 15px; border-radius: 12px; margin-top: 20px;">
+                    <div>
+                        <small style="display:block; color: #666;">Meus Cliques</small>
+                        <strong id="stat-clicks" style="font-size: 1.2em;">0</strong>
+                    </div>
+                    <div style="border-left: 1px solid #ddd; padding-left: 20px;">
+                        <small style="display:block; color: #666;">Total Recebido</small>
+                        <strong id="stat-balance" style="font-size: 1.2em; color: var(--success);">0.00</strong> <small>DOGE</small>
+                    </div>
+                </div>
+                <button onclick="logout()" style="margin-top: 15px; background: none; border: none; color: var(--danger); cursor: pointer; font-size: 0.8em; font-weight: bold;">
+                    <i class="fas fa-sign-out-alt"></i> TROCAR CONTA / SAIR
+                </button>
             </div>
-            <div style="border-left: 1px solid #ddd; padding-left: 20px;">
-                <small style="display:block; color: #666;">Saldo Pendente</small>
-                <strong id="stat-balance" style="font-size: 1.2em; color: var(--success);">0.00</strong>
-            </div>
-        </div>
-        <button onclick="logout()" style="margin-top: 15px; background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 0.8em;"><i class="fas fa-sign-out-alt"></i> Trocar conta</button>
-    </div>
-</section>
+        </section>
 
         <div class="links-grid">
             
@@ -143,8 +166,8 @@
                 <h3>Link Rápido #1</h3>
                 <div class="reward-badge">0.10 DOGE</div>
                 <p class="info-small">Tempo estimado: 30 seg</p>
-                <a href="#" class="btn-claim">ABRIR LINK</a>
-                <p class="info-small">Disponível: 10/10</p>
+                <button onclick="startShortlink('link_1')" class="btn-claim">ABRIR LINK</button>
+                <p class="info-small">Status: Ativo ✅</p>
             </div>
 
             <div class="link-card">
@@ -152,17 +175,17 @@
                 <h3>Turbo Link #2</h3>
                 <div class="reward-badge">0.20 DOGE</div>
                 <p class="info-small">Tempo estimado: 45 seg</p>
-                <a href="#" class="btn-claim" style="background: #e67e22;">ABRIR LINK</a>
-                <p class="info-small">Disponível: 5/5</p>
+                <button onclick="startShortlink('link_2')" class="btn-claim" style="background: #e67e22;">ABRIR LINK</button>
+                <p class="info-small">Status: Ativo ✅</p>
             </div>
 
             <div class="link-card">
                 <i class="fas fa-star" style="font-size: 2em; color: #9b59b6;"></i>
                 <h3>Premium Link #3</h3>
-                <div class="reward-badge">1 DOGE</div>
+                <div class="reward-badge">1.00 DOGE</div>
                 <p class="info-small">Tempo estimado: 40 seg</p>
-                <a href="#" class="btn-claim">ABRIR LINK</a>
-                <p class="info-small">Disponível: 3/3</p>
+                <button onclick="startShortlink('link_3')" class="btn-claim" style="background: #9b59b6;">ABRIR LINK</button>
+                <p class="info-small">Status: Ativo ✅</p>
             </div>
 
         </div>
