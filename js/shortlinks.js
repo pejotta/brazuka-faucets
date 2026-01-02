@@ -1,4 +1,4 @@
-// O endereço real do seu Worker que você me passou
+// O endereço real do seu Worker com o hífen que resolveu o problema!
 const API_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
 function getActiveWallet() {
@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (urlParams.get('status') === 'success') {
         const amt = urlParams.get('amt');
         alert(`🎉 Sucesso! Enviamos ${amt} DOGE para sua FaucetPay.`);
+        // Limpa a URL para não ficar repetindo o alerta no refresh
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 
@@ -42,16 +43,14 @@ async function startShortlink(linkId) {
         const data = await response.json();
 
         if (data.url) {
-            // 1. Abre o encurtador em uma nova aba
             window.open(data.url, '_blank');
-
-            // 2. Ativa o Blur e o Overlay no painel principal
             activateLock();
         } else {
             alert(data.message || "Link em manutenção, tente outro!");
         }
     } catch (err) {
         console.error("Erro ao iniciar link:", err);
+        alert("Ocorreu um erro ao conectar com o servidor.");
     }
 }
 
@@ -60,10 +59,12 @@ function activateLock() {
     const overlay = document.getElementById('lock-overlay');
     const timerDisplay = document.getElementById('timer-display');
     
+    if(!mainContainer || !overlay) return;
+
     mainContainer.classList.add('blur-active');
     overlay.style.display = 'block';
     
-    let timeLeft = 60; // Tempo de bloqueio (ex: 60 segundos)
+    let timeLeft = 60; 
     
     const countdown = setInterval(() => {
         timeLeft--;
@@ -73,7 +74,7 @@ function activateLock() {
             clearInterval(countdown);
             mainContainer.classList.remove('blur-active');
             overlay.style.display = 'none';
-            // Recarrega os dados do Banco de Dados para ver se o saldo caiu
+            // Recarrega os dados do Banco de Dados após o tempo
             checkUser(); 
         }
     }, 1000);
@@ -84,21 +85,17 @@ async function checkUser(manualWallet = null) {
     
     if (wallet && wallet.length > 5) {
         try {
-            // Agora chamando o endereço correto do Worker
             const response = await fetch(`${API_URL}/get-user-stats?wallet=${wallet}`);
             const data = await response.json();
             
             if (data.success) {
                 showDashboard(wallet, data.stats);
             } else {
-                // Se o usuário for novo (erro 404), abre o painel zerado
-                showDashboard(wallet, { clicks: 0, balance: 0 });
+                showDashboard(wallet, { clicks: 0, balance: 0, daily_clicks: {} });
             }
             localStorage.setItem('brazuka_wallet', wallet);
         } catch (e) { 
-            console.log("Usuário novo, abrindo painel padrão.");
-            // Garante que o painel abra mesmo se a busca falhar
-            showDashboard(wallet, { clicks: 0, balance: 0 });
+            showDashboard(wallet, { clicks: 0, balance: 0, daily_clicks: {} });
         }
     } else {
         alert("Digite um e-mail ou carteira válida!");
@@ -113,7 +110,7 @@ async function showDashboard(wallet, stats) {
     if (loginView && dashView) {
         loginView.style.display = 'none';
         dashView.style.display = 'block';
-        if (faucetDiv) faucetDiv.style.display = 'block'; // Mostra o saldo da torneira
+        if (faucetDiv) faucetDiv.style.display = 'block';
         
         document.getElementById('display-wallet').innerText = wallet;
         document.getElementById('stat-clicks').innerText = stats.clicks || 0;
@@ -121,33 +118,24 @@ async function showDashboard(wallet, stats) {
     }
 
     // --- BUSCA SALDO REAL DA TORNEIRA ---
-try {
-    const response = await fetch(`${API_URL}/get-faucet-balance`);
-    const data = await response.json();
-    
-    if (data.balance) {
-        // Se a API retornar em Satoshis (ex: 13724617), dividimos por 100.000.000
-        // Se já retornar em DOGE (ex: 0.1372), o parseFloat resolve.
-        let valorReal = parseFloat(data.balance);
-        
-        // Se o valor for um número inteiro muito grande, é Satoshi
-        if (valorReal > 1000) { 
-            valorReal = valorReal / 100000000; 
+    try {
+        const response = await fetch(`${API_URL}/get-faucet-balance`);
+        const data = await response.json();
+        if (data.balance) {
+            let valorReal = parseFloat(data.balance);
+            if (valorReal > 1000) valorReal = valorReal / 100000000; 
+            document.getElementById('faucet-balance-display').innerText = valorReal.toFixed(4);
         }
-
-        // Usamos toFixed(4) para aparecer o 0.1372 certinho
-        document.getElementById('faucet-balance-display').innerText = valorReal.toFixed(4);
+    } catch (e) {
+        document.getElementById('faucet-balance-display').innerText = "Indisponível";
     }
-} catch (e) {
-    document.getElementById('faucet-balance-display').innerText = "Indisponível";
-}
 
     // --- LÓGICA DE LIMITES DIÁRIOS ---
     const limites = { "link_1": 10, "link_2": 5, "link_3": 3 };
     const clicks = stats.daily_clicks || {};
     const hoje = new Date().toLocaleDateString('pt-BR');
 
-    // Se mudou o dia no Banco de Dados, o JS mostra tudo cheio
+    // AJUSTE: Verifica se o reset diário bate com a data de hoje
     const isNovoDia = stats.last_reset !== hoje;
 
     Object.keys(limites).forEach(id => {
@@ -158,18 +146,21 @@ try {
         if (statusEl) {
             statusEl.innerText = `Disponível: ${restantes}/${limites[id]}`;
             
-            // Localiza o botão dentro do card pai
-            const btn = statusEl.closest('.link-card').querySelector('button');
+            const card = statusEl.closest('.link-card');
+            const btn = card ? card.querySelector('button') : null;
             
-            if (restantes <= 0) {
-                btn.disabled = true;
-                btn.innerText = "Limite Atingido";
-                btn.style.background = "#ccc";
-                btn.style.cursor = "not-allowed";
-            } else {
-                // Reseta o botão caso mude o dia sem dar refresh
-                btn.disabled = false;
-                btn.style.cursor = "pointer";
+            if (btn) {
+                if (restantes <= 0) {
+                    btn.disabled = true;
+                    btn.innerText = "Limite Atingido";
+                    btn.style.background = "#ccc";
+                    btn.style.cursor = "not-allowed";
+                } else {
+                    btn.disabled = false;
+                    btn.innerText = "ABRIR LINK";
+                    // Mantém a cor original baseada no ID (se aplicável)
+                    btn.style.cursor = "pointer";
+                }
             }
         }
     });
