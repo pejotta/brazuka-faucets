@@ -105,40 +105,61 @@ async function checkUser(manualWallet = null) {
     }
 }
 
-function showDashboard(wallet, stats) {
+async function showDashboard(wallet, stats) {
     const loginView = document.getElementById('login-view');
     const dashView = document.getElementById('dashboard-view');
+    const faucetDiv = document.getElementById('faucet-liquidity');
     
     if (loginView && dashView) {
         loginView.style.display = 'none';
         dashView.style.display = 'block';
+        if (faucetDiv) faucetDiv.style.display = 'block'; // Mostra o saldo da torneira
+        
         document.getElementById('display-wallet').innerText = wallet;
         document.getElementById('stat-clicks').innerText = stats.clicks || 0;
         document.getElementById('stat-balance').innerText = (stats.balance || 0).toFixed(4);
     }
 
+    // --- BUSCA SALDO REAL DA TORNEIRA ---
+    try {
+        // Criaremos essa rota no seu Worker para pegar o saldo via API da FaucetPay
+        const response = await fetch(`${API_URL}/get-faucet-balance`);
+        const data = await response.json();
+        if (data.balance) {
+            document.getElementById('faucet-balance-display').innerText = parseFloat(data.balance).toFixed(2);
+        }
+    } catch (e) {
+        document.getElementById('faucet-balance-display').innerText = "Indisponível";
+    }
+
+    // --- LÓGICA DE LIMITES DIÁRIOS ---
     const limites = { "link_1": 10, "link_2": 5, "link_3": 3 };
     const clicks = stats.daily_clicks || {};
     const hoje = new Date().toLocaleDateString('pt-BR');
 
-    // Se mudou o dia no banco, o JS mostra tudo cheio
+    // Se mudou o dia no Banco de Dados, o JS mostra tudo cheio
     const isNovoDia = stats.last_reset !== hoje;
 
     Object.keys(limites).forEach(id => {
         const feitos = isNovoDia ? 0 : (clicks[id] || 0);
         const restantes = limites[id] - feitos;
         
-        // Procura o elemento de status abaixo do botão (ex: link_1_status)
         const statusEl = document.getElementById(`${id}_status`);
         if (statusEl) {
             statusEl.innerText = `Disponível: ${restantes}/${limites[id]}`;
             
-            // Se acabar, desativa o botão
+            // Localiza o botão dentro do card pai
+            const btn = statusEl.closest('.link-card').querySelector('button');
+            
             if (restantes <= 0) {
-                const btn = statusEl.parentNode.querySelector('button');
                 btn.disabled = true;
                 btn.innerText = "Limite Atingido";
                 btn.style.background = "#ccc";
+                btn.style.cursor = "not-allowed";
+            } else {
+                // Reseta o botão caso mude o dia sem dar refresh
+                btn.disabled = false;
+                btn.style.cursor = "pointer";
             }
         }
     });
