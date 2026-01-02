@@ -95,3 +95,33 @@ function logout() {
     localStorage.removeItem('brazuka_wallet');
     location.reload();
 }
+// Função chamada automaticamente quando o captcha é resolvido
+function onTurnstileSuccess(token) {
+    const btn = document.getElementById('btn-finish-claim');
+    btn.disabled = false;
+    btn.innerText = "PEGAR TOKENS";
+    btn.style.cursor = 'pointer';
+    btn.style.opacity = '1';
+    
+    // Guardamos o token para validar no Worker se quiser uma camada extra de segurança
+    window.turnstileToken = token;
+}
+
+// Resetar o captcha quando fechar ou abrir o modal
+function openClaimModal(coin) {
+    // ... código anterior de check-cooldown ...
+    
+    currentCoin = coin;
+    document.getElementById('modal-title').innerText = `Reivindicar ${coin.toUpperCase()}`;
+    document.getElementById('claim-modal').style.display = 'block';
+    
+    // Reseta o botão para esperar o novo captcha
+    const btn = document.getElementById('btn-finish-claim');
+    btn.disabled = true;
+    btn.innerText = "Aguarde o Captcha...";
+    
+    // Se o Turnstile já foi carregado, reseta ele para uma nova verificação
+    if (window.turnstile) {
+        turnstile.reset();
+    }
+}
