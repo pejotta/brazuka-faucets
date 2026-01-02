@@ -64,20 +64,30 @@
 
     <div class="faucet-grid-internal">
     <div class="internal-card">
-        <div style="font-weight: bold; color: #27ae60; margin-bottom: 10px;">GANHE 0.001 TRX</div>
-        <div class="coin-icon-large" style="color: #ff0013;">
-            <iconify-icon icon="logos:tron"></iconify-icon>
+        <div style="font-weight: bold; color: #27ae60; margin-bottom: 5px; font-size: 0.9em;">
+            <i class="fas fa-gift"></i> GANHE 0.001 TRX
+        </div>
+        <div class="coin-icon-large" style="color: #ff0013; margin: 15px 0;">
+            <iconify-icon icon="logos:tron" style="font-size: 50px;"></iconify-icon>
         </div>
         <h3>Torneira TRX</h3>
+        <p style="font-size: 0.85em; color: #666;">
+            Saldo da Torneira: <span id="balance-trx" style="font-weight: bold; color: #333;">...</span> TRX
+        </p>
         <button onclick="openClaimModal('trx')" class="btn-go" style="background: #ff0013; width: 100%; border: none; padding: 15px; color: white; border-radius: 10px; font-weight: bold; cursor: pointer;">REIVINDICAR TRX</button>
     </div>
 
     <div class="internal-card">
-        <div style="font-weight: bold; color: #27ae60; margin-bottom: 10px;">GANHE 0.00000005 TON</div>
-        <div class="coin-icon-large" style="color: #0088cc;">
-            <iconify-icon icon="logos:toncoin"></iconify-icon>
+        <div style="font-weight: bold; color: #27ae60; margin-bottom: 5px; font-size: 0.9em;">
+            <i class="fas fa-gift"></i> GANHE 0.00000005 TON
+        </div>
+        <div class="coin-icon-large" style="color: #0088cc; margin: 15px 0;">
+            <iconify-icon icon="logos:toncoin" style="font-size: 50px;"></iconify-icon>
         </div>
         <h3>Torneira TON</h3>
+        <p style="font-size: 0.85em; color: #666;">
+            Saldo da Torneira: <span id="balance-ton" style="font-weight: bold; color: #333;">...</span> TON
+        </p>
         <button onclick="openClaimModal('ton')" class="btn-go" style="background: #0088cc; width: 100%; border: none; padding: 15px; color: white; border-radius: 10px; font-weight: bold; cursor: pointer;">REIVINDICAR TON</button>
     </div>
 </div>
