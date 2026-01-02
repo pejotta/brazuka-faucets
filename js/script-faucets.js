@@ -125,3 +125,33 @@ function openClaimModal(coin) {
         turnstile.reset();
     }
 }
+async function checkUser(manualWallet = null) {
+    const wallet = manualWallet || document.getElementById('user-wallet').value;
+    if (!wallet || wallet.length < 5) return;
+
+    try {
+        // O t=${Date.now()} evita que o navegador mostre saldo velho do cache
+        const response = await fetch(`${API_URL}/get-user-stats?wallet=${wallet}&t=${Date.now()}`);
+        const data = await response.json();
+        
+        if (data.success) {
+            localStorage.setItem('brazuka_wallet', wallet);
+            document.getElementById('login-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'block';
+            document.getElementById('display-wallet').innerText = wallet;
+            
+            // --- AQUI ESTAVA FALTANDO ---
+            // Se você tiver um elemento com ID 'stat-balance' no topo, ele volta a aparecer
+            const balanceEl = document.getElementById('stat-balance');
+            if (balanceEl) {
+                balanceEl.innerText = (data.stats.balance || 0).toFixed(4);
+            }
+
+            // Atualiza contadores específicos das Faucets
+            document.getElementById('stat-trx').innerText = data.stats.claims_trx || 0;
+            document.getElementById('stat-ton').innerText = data.stats.claims_ton || 0;
+        }
+    } catch (e) {
+        console.error("Erro ao buscar dados do Banco de Dados:", e);
+    }
+}
