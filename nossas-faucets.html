@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <link rel="icon" type="image/png" href="/assets/logo-brazuka.png" sizes="32x32">
     <link rel="shortcut icon" href="/assets/logo-brazuka.png">
     <link rel="apple-touch-icon" href="/assets/logo-brazuka.png">
@@ -62,20 +63,26 @@
     </div>
 
     <div class="faucet-grid-internal">
-        <div class="internal-card">
-            <div class="coin-icon-large" style="color: #ff0013;"><i class="fas fa-coins"></i></div>
-            <h3>Torneira TRX</h3>
-            <p>Saldo: <span id="balance-trx">0.00</span> TRX</p>
-            <button onclick="openClaimModal('trx')" class="btn-go" style="background: #ff0013; width: 100%; border: none; padding: 15px; color: white; border-radius: 10px; font-weight: bold; cursor: pointer;">REIVINDICAR TRX</button>
+    <div class="internal-card">
+        <div style="font-weight: bold; color: #27ae60; margin-bottom: 10px;">GANHE 0.001 TRX</div>
+        <div class="coin-icon-large" style="color: #ff0013;">
+            <iconify-icon icon="logos:tron"></iconify-icon>
         </div>
-
-        <div class="internal-card">
-            <div class="coin-icon-large" style="color: #0088cc;"><i class="fas fa-gem"></i></div>
-            <h3>Torneira TON</h3>
-            <p>Saldo: <span id="balance-ton">0.00</span> TON</p>
-            <button onclick="openClaimModal('ton')" class="btn-go" style="background: #0088cc; width: 100%; border: none; padding: 15px; color: white; border-radius: 10px; font-weight: bold; cursor: pointer;">REIVINDICAR TON</button>
-        </div>
+        <h3>Torneira TRX</h3>
+        <p>Claims realizados: <span id="stat-trx">0</span></p>
+        <button onclick="openClaimModal('trx')" class="btn-go" style="background: #ff0013; width: 100%; border: none; padding: 15px; color: white; border-radius: 10px; font-weight: bold; cursor: pointer;">REIVINDICAR TRX</button>
     </div>
+
+    <div class="internal-card">
+        <div style="font-weight: bold; color: #27ae60; margin-bottom: 10px;">GANHE 0.00000005 TON</div>
+        <div class="coin-icon-large" style="color: #0088cc;">
+            <iconify-icon icon="logos:toncoin"></iconify-icon>
+        </div>
+        <h3>Torneira TON</h3>
+        <p>Claims realizados: <span id="stat-ton">0</span></p>
+        <button onclick="openClaimModal('ton')" class="btn-go" style="background: #0088cc; width: 100%; border: none; padding: 15px; color: white; border-radius: 10px; font-weight: bold; cursor: pointer;">REIVINDICAR TON</button>
+    </div>
+</div>
 </div>
 
 <div id="claim-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; overflow-y: auto;">
