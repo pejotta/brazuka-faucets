@@ -50,3 +50,31 @@ async function startShortlink(linkId) {
         console.error("Falha na conexão com o Banco de Dados.", err);
     }
 }
+
+async function checkUser() {
+    const wallet = document.getElementById('user-wallet').value;
+    if (wallet.length > 5) { // Começa a buscar após 5 caracteres
+        try {
+            const response = await fetch(`https://api.brazukafaucets.com.br/get-user-stats?wallet=${wallet}`);
+            const data = await response.json();
+            
+            if (data.success) {
+                showDashboard(wallet, data.stats);
+                localStorage.setItem('brazuka_wallet', wallet);
+            }
+        } catch (e) { console.log("Usuário novo ou erro na busca."); }
+    }
+}
+
+function showDashboard(wallet, stats) {
+    document.getElementById('login-view').style.display = 'none';
+    document.getElementById('dashboard-view').style.display = 'block';
+    document.getElementById('display-wallet').innerText = wallet;
+    document.getElementById('stat-clicks').innerText = stats.clicks || 0;
+    document.getElementById('stat-balance').innerText = (stats.balance || 0).toFixed(4);
+}
+
+function logout() {
+    localStorage.removeItem('brazuka_wallet');
+    location.reload();
+}
