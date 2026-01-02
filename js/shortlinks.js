@@ -27,13 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function startShortlink(linkId) {
     const wallet = getActiveWallet();
-
     if (!wallet || wallet.length < 5) {
-        alert("Por favor, insira um endereço de carteira válido.");
+        alert("Ei, coloca seu e-mail ou carteira primeiro!");
         return;
     }
-
-    localStorage.setItem('brazuka_wallet', wallet);
 
     try {
         const response = await fetch(`${API_URL}/start-link`, {
@@ -45,13 +42,41 @@ async function startShortlink(linkId) {
         const data = await response.json();
 
         if (data.url) {
-            window.location.href = data.url;
+            // 1. Abre o encurtador em uma nova aba
+            window.open(data.url, '_blank');
+
+            // 2. Ativa o Blur e o Overlay no painel principal
+            activateLock();
         } else {
-            alert(data.message || "Erro ao processar link.");
+            alert(data.message || "Link em manutenção, tente outro!");
         }
     } catch (err) {
-        console.error("Erro ao conectar no Banco de Dados:", err);
+        console.error("Erro ao iniciar link:", err);
     }
+}
+
+function activateLock() {
+    const mainContainer = document.querySelector('main');
+    const overlay = document.getElementById('lock-overlay');
+    const timerDisplay = document.getElementById('timer-display');
+    
+    mainContainer.classList.add('blur-active');
+    overlay.style.display = 'block';
+    
+    let timeLeft = 60; // Tempo de bloqueio (ex: 60 segundos)
+    
+    const countdown = setInterval(() => {
+        timeLeft--;
+        timerDisplay.innerText = timeLeft + "s";
+        
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            mainContainer.classList.remove('blur-active');
+            overlay.style.display = 'none';
+            // Recarrega os dados do Banco de Dados para ver se o saldo caiu
+            checkUser(); 
+        }
+    }, 1000);
 }
 
 async function checkUser(manualWallet = null) {
@@ -91,6 +116,32 @@ function showDashboard(wallet, stats) {
         document.getElementById('stat-clicks').innerText = stats.clicks || 0;
         document.getElementById('stat-balance').innerText = (stats.balance || 0).toFixed(4);
     }
+
+    const limites = { "link_1": 10, "link_2": 5, "link_3": 3 };
+    const clicks = stats.daily_clicks || {};
+    const hoje = new Date().toLocaleDateString('pt-BR');
+
+    // Se mudou o dia no banco, o JS mostra tudo cheio
+    const isNovoDia = stats.last_reset !== hoje;
+
+    Object.keys(limites).forEach(id => {
+        const feitos = isNovoDia ? 0 : (clicks[id] || 0);
+        const restantes = limites[id] - feitos;
+        
+        // Procura o elemento de status abaixo do botão (ex: link_1_status)
+        const statusEl = document.getElementById(`${id}_status`);
+        if (statusEl) {
+            statusEl.innerText = `Disponível: ${restantes}/${limites[id]}`;
+            
+            // Se acabar, desativa o botão
+            if (restantes <= 0) {
+                const btn = statusEl.parentNode.querySelector('button');
+                btn.disabled = true;
+                btn.innerText = "Limite Atingido";
+                btn.style.background = "#ccc";
+            }
+        }
+    });
 }
 
 function logout() {
