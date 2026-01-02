@@ -15,6 +15,9 @@ const BRAZUKA_ADS = {
             '<iframe src="https://ad2bitcoin.com/ad.php?ref=pejottatg&width=300" marginwidth="0" marginheight="0" width="300" height="250" scrolling="no" border="0" frameborder="0"></iframe>',
             '<a href="https://faucetpay.io/?r=31765" target="_blank"><img src="https://cdn.faucetpay.io/banners/gif/300x250.gif" alt="" width="300" height="250"/></a>',
             '<a href="https://viefaucet.com?r=64ccee302edd5e5772d58744" target="_blank"><img src="https://viefaucet.com/banners/300x250.gif" /></a>'
+        ],
+        pageGain: [
+            '<div id="frame" style="width: 970px;margin: auto;z-index: 99998;height: auto"><iframe data-aa="2422990" src="//ad.a-ads.com/2422990/?size=970x250" style="border:0; padding:0; width:970px; height:250px; overflow:hidden;display: block;margin: auto"></iframe></div>'
         ]
     },
 
@@ -27,6 +30,9 @@ const BRAZUKA_ADS = {
 
         // Renderiza a Sidebar (Aleatório)
         this.injectRandom('.ad-slot-sidebar', this.pools.sidebar);
+        
+        // Renderiza a Sidebar (Aleatório)
+        this.injectRandom('.ad-slot-pagegain', this.pools.pageGain);
     },
 
     injectRandom(selector, adPool) {
