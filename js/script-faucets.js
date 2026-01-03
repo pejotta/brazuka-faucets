@@ -160,13 +160,26 @@ async function carregarDadosExtras() {
         if (tabela) {
             tabela.innerHTML = ''; // ANALISTA: Corrigido de 'tela' para 'tabela'
             pagamentos.forEach(pago => {
-                const row = `
-                    <tr>
-                        <td>${mascararEmail(pago.email)}</td>
-                        <td>${(pago.amount / 100000000).toFixed(8)}</td>
-                        <td><img src="https://cryptologos.cc/logos/${pago.coin.toLowerCase()}-${pago.coin.toLowerCase()}-logo.svg?v=040" width="20"> ${pago.coin}</td>
-                        <td>${formatarData(pago.timestamp)}</td>
-                    </tr>`;
+            const logoMap = {
+    'TRX': 'tron-trx-logo.svg',
+    'TON': 'toncoin-ton-logo.svg',
+    'DOGE': 'dogecoin-doge-logo.svg'
+};
+
+const logoFile = logoMap[pago.coin.toUpperCase()] || `${pago.coin.toLowerCase()}-logo.svg`;
+
+const row = `
+    <tr>
+        <td>${mascararEmail(pago.email)}</td>
+        <td>${(pago.amount / 100000000).toFixed(8)}</td>
+        <td>
+            <img src="https://cryptologos.cc/logos/${logoFile}?v=040" 
+                 width="20" 
+                 onerror="this.src='https://via.placeholder.com/20?text=$'"> 
+            ${pago.coin}
+        </td>
+        <td>${formatarData(pago.timestamp)}</td>
+    </tr>`;
                 tabela.innerHTML += row;
             });
         }
