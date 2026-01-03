@@ -129,3 +129,55 @@ function logout() {
     localStorage.removeItem('brazuka_wallet');
     location.reload();
 }
+// Função para buscar e exibir os últimos pagamentos e o ranking
+async function carregarDadosExtras() {
+    try {
+        // 1. Busca os últimos pagamentos (Ajuste a URL conforme seu Worker)
+        const resPagamentos = await fetch(`${API_URL}/get-recent-payouts`);
+        const pagamentos = await resPagamentos.json();
+        
+        const tabela = document.getElementById('payout-rows');
+        tela.innerHTML = ''; // Limpa o teste
+
+        pagamentos.forEach(pago => {
+            const row = `
+                <tr>
+                    <td>${mascararEmail(pago.email)}</td>
+                    <td>${(pago.amount / 100000000).toFixed(8)}</td>
+                    <td><img src="https://cryptologos.cc/logos/${pago.coin.toLowerCase()}-${pago.coin.toLowerCase()}-logo.svg?v=040" width="20"> ${pago.coin}</td>
+                    <td>${formatarData(pago.timestamp)}</td>
+                </tr>`;
+            tabela.innerHTML += row;
+        });
+
+        // 2. Busca o Ranking (Ajuste a URL conforme seu Worker)
+        const resRanking = await fetch(`${API_URL}/get-leaderboard`);
+        const ranking = await resRanking.json();
+        
+        const listaRanking = document.getElementById('leaderboard-list');
+        listaRanking.innerHTML = ''; // Limpa o teste
+
+        ranking.forEach((user, index) => {
+            const item = `<li><strong>${mascararEmail(user.email)}</strong> - ${user.claims} Claims</li>`;
+            listaRanking.innerHTML += item;
+        });
+
+    } catch (error) {
+        console.error("Erro ao carregar dados extras:", error);
+    }
+}
+
+// Função de Analista: Esconde o e-mail para evitar SPAM nos seus usuários
+function mascararEmail(email) {
+    const [user, domain] = email.split('@');
+    return user.substring(0, 5) + '***@' + domain;
+}
+
+// Formata a data para algo amigável
+function formatarData(timestamp) {
+    const data = new Date(timestamp);
+    return data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+
+// Chama a função assim que o painel for exibido
+// No seu checkUser(), dentro do 'if login sucesso', adicione: carregarDadosExtras();
