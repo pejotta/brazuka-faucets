@@ -100,19 +100,30 @@
         </table>
     </div>
 
-    <script>
-        function mudarTab(tipo, btn) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const label = document.getElementById('label-valor');
-            
-            if(tipo === 'indicadores') label.innerText = "Amigos Ativos";
-            else if(tipo === 'claimers') label.innerText = "Total de Claims";
-            else label.innerText = "Links Completos";
+   <script>
+    function mudarTab(tipo, btn) {
+        // Remove active de todos
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
 
-            // ANALISTA: Aqui entrará o fetch para o Banco de Dados (Worker)
-            console.log("Consultando o Banco de Dados para: " + tipo); [cite: 2025-12-26]
+        const titulo = document.getElementById('titulo-ranking');
+        const label = document.getElementById('label-valor');
+
+        // ANALISTA: Ajusta os textos de acordo com o ranking
+        if(tipo === 'indicadores') {
+            titulo.innerText = "Ranking de Indicadores";
+            label.innerText = "Amigos Ativos";
+        } else if(tipo === 'claimers') {
+            titulo.innerText = "Ranking de Faucets (TRX/TON)";
+            label.innerText = "Total de Claims";
+        } else {
+            titulo.innerText = "Ranking de Shortlinks (DOGE)";
+            label.innerText = "Links Completos";
         }
-    </script>
+        
+        // Aqui depois chamaremos a função para buscar no Banco de Dados
+        console.log("Buscando dados de " + tipo + " no Banco de Dados...");
+    }
+</script>
 </body>
 </html>
