@@ -147,3 +147,13 @@ window.addEventListener('load', () => {
         }, 500);
     }
 });
+
+// ANALISTA: Captura o padrinho pela URL (?ref=email@faucetpay.com)
+const urlParams = new URLSearchParams(window.location.search);
+const ref = urlParams.get('ref');
+
+if (ref) {
+    // Salva no navegador do novo usuário para usar no momento do claim
+    localStorage.setItem('brazuka_ref', ref);
+    console.log("Padrinho detectado e salvo:", ref);
+}
