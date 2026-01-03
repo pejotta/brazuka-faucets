@@ -16,7 +16,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
-            margin: -20px auto 50px;
+            margin: 20px auto 50px;
         }
         .internal-card {
             background: white;
@@ -28,7 +28,13 @@
             transition: 0.3s;
         }
         .internal-card:hover { transform: translateY(-10px); border-color: #27ae60; }
-        .coin-icon-large { font-size: 3.5em; margin-bottom: 15px; }
+        .coin-logo { width: 60px; height: 60px; margin-bottom: 15px; }
+        
+        /* Estilos para a Tabela e Seções Extras */
+        .extra-section { background: white; padding: 25px; border-radius: 20px; margin-bottom: 30px; border: 1px solid #eee; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { background: #2c3e50; color: white; padding: 12px; text-align: center; }
+        td { padding: 12px; border-bottom: 1px solid #eee; text-align: center; }
     </style>
 </head>
 <body>
@@ -43,86 +49,126 @@
     </header>
 
     <main class="container">
-       <div id="login-view" class="container" style="max-width: 500px; margin-top: -70px;">
-    <div class="internal-card">
-        <div class="coin-icon-large" style="color: #2980b9;"><i class="fas fa-wallet"></i></div>
-        <h3>Sua Carteira FaucetPay</h3>
-        <p>Insira seu e-mail para começar!</p>
-        <input type="email" id="user-wallet" placeholder="E-mail FaucetPay..." style="width: 100%; padding: 15px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 15px;">
-        <button onclick="checkUser()" class="btn-go" style="width: 100%; background: #27ae60; border: none; color: white; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: bold;">ACESSAR PAINEL</button>
-        <a href="https://faucetpay.io/?r=brazuka" target="_blank" style="display: block; margin-top: 15px; text-decoration: none; color: #7f8c8d; font-size: 0.9em;">Crie sua conta FaucetPay</a>
-    </div>
-</div>
-
-<div id="dashboard-view" class="container" style="display: none; margin-top: -70px;">
-    <div class="internal-card" style="margin-bottom: 30px; display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
-        <div><strong>Carteira:</strong> <span id="display-wallet">...</span></div>
-        <div><strong>Claims TRX:</strong> <span id="stat-trx">0</span></div>
-        <div><strong>Claims TON:</strong> <span id="stat-ton">0</span></div>
-        <button onclick="logout()" style="background: #e74c3c; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer;">Sair</button>
-    </div>
-
-    <div class="faucet-grid-internal">
-    <div class="internal-card">
-        <div style="font-weight: bold; color: #27ae60; margin-bottom: 5px; font-size: 0.9em;">
-            <i class="fas fa-gift"></i> GANHE 0.001 TRX
+        <div id="login-view" class="container" style="max-width: 500px; margin-top: -70px;">
+            <div class="internal-card">
+                <div style="font-size: 3.5em; color: #2980b9; margin-bottom: 15px;"><i class="fas fa-wallet"></i></div>
+                <h3>Sua Carteira FaucetPay</h3>
+                <p>Insira seu e-mail para começar!</p>
+                <input type="email" id="user-wallet" placeholder="E-mail FaucetPay..." style="width: 100%; padding: 15px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 15px;">
+                <button onclick="checkUser()" class="btn-go" style="width: 100%; background: #27ae60; border: none; color: white; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: bold;">ACESSAR PAINEL</button>
+                <a href="https://faucetpay.io/?r=brazuka" target="_blank" style="display: block; margin-top: 15px; text-decoration: none; color: #7f8c8d; font-size: 0.9em;">Crie sua conta FaucetPay</a>
+            </div>
         </div>
-        <div class="coin-icon-large" style="color: #ff0013; margin: 15px 0;">
-            <iconify-icon icon="logos:tron" style="font-size: 50px;"></iconify-icon>
-        </div>
-        <h3>Torneira TRX</h3>
-        <p style="font-size: 0.85em; color: #666;">
-            Saldo da Torneira: <span id="balance-trx" style="font-weight: bold; color: #333;">...</span> TRX
-        </p>
-        <button onclick="openClaimModal('trx')" class="btn-go" style="background: #ff0013; width: 100%; border: none; padding: 15px; color: white; border-radius: 10px; font-weight: bold; cursor: pointer;">REIVINDICAR TRX</button>
-    </div>
 
-    <div class="internal-card">
-        <div style="font-weight: bold; color: #27ae60; margin-bottom: 5px; font-size: 0.9em;">
-            <i class="fas fa-gift"></i> GANHE 0.00000005 TON
-        </div>
-        <div class="coin-icon-large" style="color: #0088cc; margin: 15px 0;">
-            <iconify-icon icon="logos:toncoin" style="font-size: 50px;"></iconify-icon>
-        </div>
-        <h3>Torneira TON</h3>
-        <p style="font-size: 0.85em; color: #666;">
-            Saldo da Torneira: <span id="balance-ton" style="font-weight: bold; color: #333;">...</span> TON
-        </p>
-        <button onclick="openClaimModal('ton')" class="btn-go" style="background: #0088cc; width: 100%; border: none; padding: 15px; color: white; border-radius: 10px; font-weight: bold; cursor: pointer;">REIVINDICAR TON</button>
-    </div>
-</div>
-</div>
-
-<div id="claim-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; overflow-y: auto;">
-    <div style="background: white; max-width: 800px; margin: 20px auto; padding: 20px; border-radius: 15px; position: relative;">
-        <span onclick="closeModal()" style="position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer;">&times;</span>
-        
-        <div style="width: 728px; height: 90px; background: #eee; margin: 10px auto; display: flex; align-items: center; justify-content: center;">[AD 728x90]</div>
-
-        <div style="display: flex; gap: 15px;">
-            <div style="width: 160px; height: 600px; background: #eee; display: flex; align-items: center; justify-content: center;">[AD 160x600]</div>
-            
-            <div style="flex: 1; text-align: center;">
-                <h2 id="modal-title">Reivindicar Moeda</h2>
-                <p>Resolva o captcha para continuar.</p>
-                
-                <div style="width: 300px; height: 250px; background: #eee; margin: 20px auto; display: flex; align-items: center; justify-content: center;">[AD 300x250]</div>
-
-                <div class="cf-turnstile" data-sitekey="0x4AAAAAACIz3XQpjGaXppF0" data-callback="onTurnstileSuccess"></div>
-
-                <button id="btn-finish-claim" disabled onclick="redirectToShortlink()" style="background: #27ae60; color: white; border: none; padding: 20px 40px; border-radius: 10px; font-weight: bold; cursor: not-allowed; opacity: 0.5;">PEGAR TOKENS</button>
+        <div id="dashboard-view" class="container" style="display: none; margin-top: -70px;">
+            <div class="internal-card" style="margin-bottom: 30px; display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 15px;">
+                <div><strong><i class="fas fa-user"></i> Carteira:</strong> <span id="display-wallet">...</span></div>
+                <div><strong><i class="fas fa-chart-line"></i> TRX:</strong> <span id="stat-trx">0</span></div>
+                <div><strong><i class="fas fa-chart-line"></i> TON:</strong> <span id="stat-ton">0</span></div>
+                <button onclick="logout()" style="background: #e74c3c; color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;">Sair</button>
             </div>
 
-            <div style="width: 160px; height: 600px; background: #eee; display: flex; align-items: center; justify-content: center;">[AD 160x600]</div>
+            <div class="faucet-grid-internal">
+                <div class="internal-card">
+                    <div style="font-weight: bold; color: #27ae60; margin-bottom: 10px;">
+                        <i class="fas fa-gift"></i> GANHE 0.001 TRX
+                    </div>
+                    <img src="https://cryptologos.cc/logos/tron-trx-logo.svg?v=040" alt="TRX Logo" class="coin-logo">
+                    <h3>Torneira TRX</h3>
+                    <p style="font-size: 0.85em; color: #666; margin-bottom: 20px;">
+                        Saldo da Torneira: <span id="balance-trx" style="font-weight: bold; color: #333;">...</span> TRX
+                    </p>
+                    <button onclick="openClaimModal('trx')" class="btn-go" style="background: #ff0013; width: 100%; border: none; padding: 15px; color: white; border-radius: 10px; font-weight: bold; cursor: pointer;">REIVINDICAR TRX</button>
+                </div>
+
+                <div class="internal-card">
+                    <div style="font-weight: bold; color: #27ae60; margin-bottom: 10px;">
+                        <i class="fas fa-gift"></i> GANHE 0.00000005 TON
+                    </div>
+                    <img src="https://cryptologos.cc/logos/toncoin-ton-logo.svg?v=040" alt="TON Logo" class="coin-logo">
+                    <h3>Torneira TON</h3>
+                    <p style="font-size: 0.85em; color: #666; margin-bottom: 20px;">
+                        Saldo da Torneira: <span id="balance-ton" style="font-weight: bold; color: #333;">...</span> TON
+                    </p>
+                    <button onclick="openClaimModal('ton')" class="btn-go" style="background: #0088cc; width: 100%; border: none; padding: 15px; color: white; border-radius: 10px; font-weight: bold; cursor: pointer;">REIVINDICAR TON</button>
+                </div>
+            </div>
+
+            <section class="extra-section" id="payouts">
+                <h3 style="text-align: center;"><i class="fas fa-check-circle"></i> Últimos Pagamentos</h3>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Usuário</th>
+                                <th>Valor</th>
+                                <th>Moeda</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payout-rows">
+                            <tr>
+                                <td>paulo***@hotmail.com</td>
+                                <td>0.00100000</td>
+                                <td>TRX</td>
+                                <td>Agora mesmo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="extra-section" id="ranking" style="border-left: 5px solid #f1c40f;">
+                <h4 style="margin-top: 0;"><i class="fas fa-trophy"></i> Top Brazukas da Semana</h4>
+                <ol id="leaderboard-list" style="padding-left: 20px; line-height: 2;">
+                    <li><strong>paulo.tan***</strong> - 150 Claims</li>
+                    <li>usuari***@gmail.com - 120 Claims</li>
+                </ol>
+            </section>
+
+            <section class="extra-section" id="faq">
+                <h3><i class="fas fa-question-circle"></i> Perguntas Frequentes</h3>
+                <details style="margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+                    <summary style="font-weight: bold;">Quanto tempo preciso esperar?</summary>
+                    <p style="padding-top: 10px;">O intervalo é de 20 minutos para cada moeda.</p>
+                </details>
+                <details style="margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+                    <summary style="font-weight: bold;">Posso usar VPN?</summary>
+                    <p style="padding-top: 10px; color: #c0392b;">Não. O uso de VPN ou Proxy causa banimento.</p>
+                </details>
+            </section>
         </div>
 
-        <div style="width: 728px; height: 90px; background: #eee; margin: 20px auto; display: flex; align-items: center; justify-content: center;">[AD 728x90]</div>
-    </div>
-</div>
+        <div id="claim-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; overflow-y: auto;">
+            <div style="background: white; max-width: 850px; margin: 20px auto; padding: 20px; border-radius: 15px; position: relative;">
+                <span onclick="closeModal()" style="position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer;">&times;</span>
+                
+                <div style="text-align: center;">
+                    <div style="width: 728px; height: 90px; background: #eee; margin: 10px auto; display: flex; align-items: center; justify-content: center;">[ANÚNCIO 728x90]</div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 20px;">
+                        <div style="width: 160px; height: 600px; background: #eee; display: flex; align-items: center; justify-content: center;">[160x600]</div>
+                        
+                        <div style="flex: 1;">
+                            <h2 id="modal-title">Reivindicar Moeda</h2>
+                            <p>Resolva o captcha para continuar.</p>
+                            <div style="width: 300px; height: 250px; background: #eee; margin: 20px auto; display: flex; align-items: center; justify-content: center;">[300x250]</div>
+                            
+                            <div class="cf-turnstile" data-sitekey="0x4AAAAAACIz3XQpjGaXppF0" data-callback="onTurnstileSuccess"></div>
+                            
+                            <button id="btn-finish-claim" disabled onclick="redirectToShortlink()" style="background: #27ae60; color: white; border: none; padding: 20px 40px; border-radius: 10px; font-weight: bold; cursor: not-allowed; opacity: 0.5; margin-top: 20px; width: 100%;">PEGAR TOKENS</button>
+                        </div>
+
+                        <div style="width: 160px; height: 600px; background: #eee; display: flex; align-items: center; justify-content: center;">[160x600]</div>
+                    </div>
+
+                    <div style="width: 728px; height: 90px; background: #eee; margin: 20px auto; display: flex; align-items: center; justify-content: center;">[ANÚNCIO 728x90]</div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script src="js/script-global.js"></script>
     <script src="js/script-faucets.js"></script>
-    <script src="js/ads-manager.js"></script>
 </body>
 </html>
