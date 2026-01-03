@@ -1,113 +1,118 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <link rel="icon" type="image/png" href="/assets/logo-brazuka.png" sizes="32x32">
+    <link rel="shortcut icon" href="/assets/logo-brazuka.png">
+    <link rel="apple-touch-icon" href="/assets/logo-brazuka.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rankings - Brazuka Faucets</title>
-    <link rel="stylesheet" href="css/style.css"> <style>
-        :root {
-            --ouro: #ffd700;
-            --prata: #c0c0c0;
-            --bronze: #cd7f32;
-            --brazuka-blue: #1a73e8;
+    <title>Rankings | Brazuka Faucets</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta http-equiv="content-language" content="pt-BR" />
+    <meta name="description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas. Analisamos as melhores opções para você ganhar BTC, LTC, DOGE e muito mais com segurança." />
+    <meta name="author" content="Pejotta" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.brazukafaucets.com.br" />
+
+    <meta property="og:title" content="Brazuka Faucets | As Melhores Faucets Auditadas" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas. Analisamos as melhores opções para você ganhar BTC, LTC, DOGE e muito mais com segurança." />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:image" content="https://www.brazukafaucets.com.br/assets/brazuka-faucets-share-image.png" />
+    <meta property="og:url" content="https://www.brazukafaucets.com.br" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Brazuka Faucets | As Melhores Faucets Auditadas" />
+    <meta name="twitter:description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas. Analisamos as melhores opções para você ganhar BTC, LTC, DOGE e muito mais com segurança." />
+    <meta name="twitter:image" content="https://www.brazukafaucets.com.br/assets/brazuka-faucets-share-image.png" />
+    <meta name="theme-color" content="#1a73e8">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-11KQEGEBZ3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-11KQEGEBZ3');
+    </script>
+    <style>
+        /* O Estilo que você mandou (Padrão do Site) */
+        .hero-ads {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+            border-radius: 0 0 100px 100px;
+            margin-bottom: 40px;
         }
-        .ranking-container { max-width: 800px; margin: 20px auto; padding: 15px; font-family: sans-serif; }
-        .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .hero-ads h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .hero-ads p { opacity: 0.9; font-size: 1.1em; }
+
+        /* Ajustes do Ranking */
+        :root { --ouro: #ffd700; --prata: #c0c0c0; --bronze: #cd7f32; }
+        .ranking-container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
         .tab-btn { 
-            padding: 12px 20px; border: none; border-radius: 25px; 
-            background: #eee; cursor: pointer; font-weight: bold; transition: 0.3s;
+            padding: 12px 25px; border: 2px solid #1a73e8; border-radius: 50px; 
+            background: white; color: #1a73e8; cursor: pointer; font-weight: bold; transition: 0.3s;
         }
-        .tab-btn.active { background: var(--brazuka-blue); color: white; }
+        .tab-btn.active { background: #1a73e8; color: white; }
         
-        .ranking-table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .ranking-table th { background: var(--brazuka-blue); color: white; padding: 15px; text-align: left; }
-        .ranking-table td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+        .ranking-table { width: 100%; border-collapse: collapse; background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .ranking-table th { background: #f8f9fa; color: #333; padding: 20px; text-align: left; border-bottom: 2px solid #eee; }
+        .ranking-table td { padding: 15px 20px; border-bottom: 1px solid #eee; font-size: 1.1em; }
         
-        /* Estilo das Medalhas */
-        .pos-1 { color: var(--ouro); font-weight: bold; font-size: 1.2rem; }
-        .pos-2 { color: var(--prata); font-weight: bold; }
-        .pos-3 { color: var(--bronze); font-weight: bold; }
-        
-        .user-name { font-weight: 500; color: #333; }
-        .val-destaque { font-weight: bold; color: var(--brazuka-blue); }
-        
-        .banner-premio { 
-            background: linear-gradient(90deg, #f39c12, #e67e22); 
-            color: white; padding: 15px; border-radius: 10px; 
-            text-align: center; margin-bottom: 20px; 
-        }
+        .pos-1 { color: var(--ouro); font-weight: bold; font-size: 1.3em; }
+        .val-destaque { font-weight: bold; color: #1a73e8; text-align: right; }
     </style>
 </head>
 <body>
 
-<div class="ranking-container">
-    <div class="banner-premio">
-        <h3>🎁 Premiação Mensal</h3>
-        <p>O Top 3 de cada ranking ganha bônus direto na FaucetPay no dia 01!</p>
+    <section class="hero-ads">
+        <h1>🏆 Hall da Fama</h1>
+        <p>Os maiores caçadores de recompensas do Brazuka Faucets em um só lugar.</p>
+    </section>
+
+    <div class="ranking-container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="mudarTab('indicadores', this)">📢 Indicadores</button>
+            <button class="tab-btn" onclick="mudarTab('claimers', this)">🚰 Faucets</button>
+            <button class="tab-btn" onclick="mudarTab('shortlinks', this)">🔗 Shortlinks</button>
+        </div>
+
+        <table class="ranking-table">
+            <thead>
+                <tr>
+                    <th style="width: 80px;">Posição</th>
+                    <th>Usuário</th>
+                    <th id="label-valor" style="text-align: right;">Amigos Ativos</th>
+                </tr>
+            </thead>
+            <tbody id="corpo-tabela">
+                <tr>
+                    <td class="pos-1">🥇 1º</td>
+                    <td>pej***@gmail.com</td>
+                    <td class="val-destaque">150</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="mudarTab('indicadores', this)">📢 Convites</button>
-        <button class="tab-btn" onclick="mudarTab('claimers', this)">🚰 Faucets</button>
-        <button class="tab-btn" onclick="mudarTab('shortlinks', this)">🔗 Shortlinks</button>
-    </div>
+    <script>
+        function mudarTab(tipo, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const label = document.getElementById('label-valor');
+            
+            if(tipo === 'indicadores') label.innerText = "Amigos Ativos";
+            else if(tipo === 'claimers') label.innerText = "Total de Claims";
+            else label.innerText = "Links Completos";
 
-    <h2 id="titulo-ranking" style="text-align: center; color: #333;">Ranking de Indicadores</h2>
-
-    <table class="ranking-table">
-        <thead>
-            <tr>
-                <th style="width: 50px;">#</th>
-                <th>Usuário</th>
-                <th id="label-valor">Amigos Ativos</th>
-            </tr>
-        </thead>
-        <tbody id="lista-ranking">
-            <tr>
-                <td class="pos-1">🥇 1º</td>
-                <td class="user-name">pej***@gmail.com</td>
-                <td class="val-destaque">150</td>
-            </tr>
-            <tr>
-                <td class="pos-2">🥈 2º</td>
-                <td class="user-name">jose***@hotmail.com</td>
-                <td class="val-destaque">89</td>
-            </tr>
-            <tr>
-                <td class="pos-3">🥉 3º</td>
-                <td class="user-name">crypto***@gmail.com</td>
-                <td class="val-destaque">45</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<script>
-    function mudarTab(tipo, btn) {
-        // Remove active de todos
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const titulo = document.getElementById('titulo-ranking');
-        const label = document.getElementById('label-valor');
-
-        // ANALISTA: Ajusta os textos de acordo com o ranking
-        if(tipo === 'indicadores') {
-            titulo.innerText = "Ranking de Indicadores";
-            label.innerText = "Amigos Ativos";
-        } else if(tipo === 'claimers') {
-            titulo.innerText = "Ranking de Faucets (TRX/TON)";
-            label.innerText = "Total de Claims";
-        } else {
-            titulo.innerText = "Ranking de Shortlinks (DOGE)";
-            label.innerText = "Links Completos";
+            // ANALISTA: Aqui entrará o fetch para o Banco de Dados (Worker)
+            console.log("Consultando o Banco de Dados para: " + tipo); [cite: 2025-12-26]
         }
-        
-        // Aqui depois chamaremos a função para buscar no Banco de Dados
-        console.log("Buscando dados de " + tipo + " no Banco de Dados...");
-    }
-</script>
-    <script src="script-global.js"></script>
-    <script src="ads-manager.js"></script>
+    </script>
 </body>
 </html>
