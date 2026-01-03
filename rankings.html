@@ -1,23 +1,113 @@
-<section class="ranking-page">
-    <h2>🏆 Rankings Brazuka</h2>
-    
-    <div class="tabs-container">
-        <button onclick="mudarRanking('indicadores')">📢 Convites</button>
-        <button onclick="mudarRanking('claimers')">🚰 Faucets</button>
-        <button onclick="mudarRanking('shortlinks')">🔗 Shortlinks</button>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rankings - Brazuka Faucets</title>
+    <link rel="stylesheet" href="css/style.css"> <style>
+        :root {
+            --ouro: #ffd700;
+            --prata: #c0c0c0;
+            --bronze: #cd7f32;
+            --brazuka-blue: #1a73e8;
+        }
+        .ranking-container { max-width: 800px; margin: 20px auto; padding: 15px; font-family: sans-serif; }
+        .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { 
+            padding: 12px 20px; border: none; border-radius: 25px; 
+            background: #eee; cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+        .tab-btn.active { background: var(--brazuka-blue); color: white; }
+        
+        .ranking-table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .ranking-table th { background: var(--brazuka-blue); color: white; padding: 15px; text-align: left; }
+        .ranking-table td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+        
+        /* Estilo das Medalhas */
+        .pos-1 { color: var(--ouro); font-weight: bold; font-size: 1.2rem; }
+        .pos-2 { color: var(--prata); font-weight: bold; }
+        .pos-3 { color: var(--bronze); font-weight: bold; }
+        
+        .user-name { font-weight: 500; color: #333; }
+        .val-destaque { font-weight: bold; color: var(--brazuka-blue); }
+        
+        .banner-premio { 
+            background: linear-gradient(90deg, #f39c12, #e67e22); 
+            color: white; padding: 15px; border-radius: 10px; 
+            text-align: center; margin-bottom: 20px; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="ranking-container">
+    <div class="banner-premio">
+        <h3>🎁 Premiação Mensal</h3>
+        <p>O Top 3 de cada ranking ganha bônus direto na FaucetPay no dia 01!</p>
     </div>
 
-    <div id="ranking-display">
-        <table id="tabela-ranking">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Usuário</th>
-                    <th id="coluna-valor">Pontos</th>
-                </tr>
-            </thead>
-            <tbody id="corpo-tabela">
-                </tbody>
-        </table>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="mudarTab('indicadores', this)">📢 Convites</button>
+        <button class="tab-btn" onclick="mudarTab('claimers', this)">🚰 Faucets</button>
+        <button class="tab-btn" onclick="mudarTab('shortlinks', this)">🔗 Shortlinks</button>
     </div>
-</section>
+
+    <h2 id="titulo-ranking" style="text-align: center; color: #333;">Ranking de Indicadores</h2>
+
+    <table class="ranking-table">
+        <thead>
+            <tr>
+                <th style="width: 50px;">#</th>
+                <th>Usuário</th>
+                <th id="label-valor">Amigos Ativos</th>
+            </tr>
+        </thead>
+        <tbody id="lista-ranking">
+            <tr>
+                <td class="pos-1">🥇 1º</td>
+                <td class="user-name">pej***@gmail.com</td>
+                <td class="val-destaque">150</td>
+            </tr>
+            <tr>
+                <td class="pos-2">🥈 2º</td>
+                <td class="user-name">jose***@hotmail.com</td>
+                <td class="val-destaque">89</td>
+            </tr>
+            <tr>
+                <td class="pos-3">🥉 3º</td>
+                <td class="user-name">crypto***@gmail.com</td>
+                <td class="val-destaque">45</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function mudarTab(tipo, btn) {
+        // Remove active de todos
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const titulo = document.getElementById('titulo-ranking');
+        const label = document.getElementById('label-valor');
+
+        // ANALISTA: Ajusta os textos de acordo com o ranking
+        if(tipo === 'indicadores') {
+            titulo.innerText = "Ranking de Indicadores";
+            label.innerText = "Amigos Ativos";
+        } else if(tipo === 'claimers') {
+            titulo.innerText = "Ranking de Faucets (TRX/TON)";
+            label.innerText = "Total de Claims";
+        } else {
+            titulo.innerText = "Ranking de Shortlinks (DOGE)";
+            label.innerText = "Links Completos";
+        }
+        
+        // Aqui depois chamaremos a função para buscar no Banco de Dados
+        console.log("Buscando dados de " + tipo + " no Banco de Dados...");
+    }
+</script>
+    <script src="script-global.js"></script>
+    <script src="ads-manager.js"></script>
+</body>
+</html>
