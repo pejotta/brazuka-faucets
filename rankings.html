@@ -76,6 +76,10 @@
     </section>
 
     <div class="ranking-container">
+        <div class="banner-premio">
+        <h3>🎁 Premiação Mensal</h3>
+        <p>O Top 3 de cada ranking ganha bônus direto na FaucetPay no dia 01!</p>
+    </div>
         <div class="tabs">
             <button class="tab-btn active" onclick="mudarTab('indicadores', this)">📢 Indicadores</button>
             <button class="tab-btn" onclick="mudarTab('claimers', this)">🚰 Faucets</button>
@@ -83,21 +87,31 @@
         </div>
 
         <table class="ranking-table">
-            <thead>
-                <tr>
-                    <th style="width: 80px;">Posição</th>
-                    <th>Usuário</th>
-                    <th id="label-valor" style="text-align: right;">Amigos Ativos</th>
-                </tr>
-            </thead>
-            <tbody id="corpo-tabela">
-                <tr>
-                    <td class="pos-1">🥇 1º</td>
-                    <td>pej***@gmail.com</td>
-                    <td class="val-destaque">150</td>
-                </tr>
-            </tbody>
-        </table>
+        <thead>
+            <tr>
+                <th style="width: 50px;">#</th>
+                <th>Usuário</th>
+                <th id="label-valor">Amigos Ativos</th>
+            </tr>
+        </thead>
+        <tbody id="lista-ranking">
+            <tr>
+                <td class="pos-1">🥇 1º</td>
+                <td class="user-name">pej***@gmail.com</td>
+                <td class="val-destaque">150</td>
+            </tr>
+            <tr>
+                <td class="pos-2">🥈 2º</td>
+                <td class="user-name">jose***@hotmail.com</td>
+                <td class="val-destaque">89</td>
+            </tr>
+            <tr>
+                <td class="pos-3">🥉 3º</td>
+                <td class="user-name">crypto***@gmail.com</td>
+                <td class="val-destaque">45</td>
+            </tr>
+        </tbody>
+    </table>
     </div>
 
    <script>
