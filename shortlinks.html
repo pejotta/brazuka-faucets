@@ -261,7 +261,14 @@
     flex-direction: column;">
                 <h3>Sua Carteira FaucetPay</h3>
                 <p>Insira seu e-mail ou endereço para começar!</p>
-                <input type="text" id="user-wallet" class="wallet-input" placeholder="E-mail ou Carteira FaucetPay..." onclick="checkUser()">
+                <input 
+  type="text" 
+  id="user-wallet" 
+  autocomplete="off" 
+  spellcheck="false" 
+  novalidate
+  placeholder="Digite sua carteira ou e-mail"
+>
                 <br>
                 <button class="btn-login" onclick="checkUser()">ACESSAR PAINEL</button>
                 <a class="btn-signup" href="https://faucetpay.io/?r=brazuka" target="_blank">CRIE SUA CONTA FAUCETPAY</a>
