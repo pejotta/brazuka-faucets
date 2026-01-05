@@ -131,34 +131,36 @@ async function showDashboard(wallet, stats) {
         document.getElementById('faucet-balance-display').innerText = "Indisponível";
     }
 
-    // --- LÓGICA DE LIMITES DIÁRIOS (VERSÃO ANALISTA CORRIGIDA) ---
+    // --- LÓGICA DE LIMITES DIÁRIOS (IDÊNTICA AO PRINT) ---
     const limites = { "link_1": 10, "link_2": 5, "link_3": 3 };
-    
-    // O analista diz: O Worker já reseta os dados. 
-    // Se o dado chegou aqui, ele já está atualizado pelo Banco de Dados.
-    const clicks = stats.daily_clicks || {};
+    const clicksFeitos = stats.daily_clicks || {};
 
     Object.keys(limites).forEach(id => {
-        const feitos = clicks[id] || 0; // Pegamos o que o Banco de Dados mandou
-        const restantes = limites[id] - feitos;
+        const total = limites[id];
+        const realizados = clicksFeitos[id] || 0;
+        
+        // No seu print, se o cara fez 3 de 5, aparece "Disponível: 2/5"
+        // Então a conta é: Total - Realizados
+        const disponiveis = total - realizados;
         
         const statusEl = document.getElementById(`${id}_status`);
         const btn = document.getElementById(`btn_${id}`);
 
         if (statusEl) {
-            statusEl.innerText = `Disponível: ${restantes}/${limites[id]}`;
+            // Isso aqui vai renderizar o "Disponível: X/Y" do seu print
+            statusEl.innerText = `Disponível: ${disponiveis}/${total}`;
             
             if (btn) {
-                if (restantes <= 0) {
+                if (disponiveis <= 0) {
                     btn.disabled = true;
                     btn.innerText = "Limite Atingido";
-                    btn.style.background = "#7f8c8d";
+                    btn.style.background = "#7f8c8d"; // Cor cinza do print
                     btn.style.cursor = "not-allowed";
                 } else {
                     btn.disabled = false;
                     btn.innerText = "ABRIR LINK";
                     btn.style.cursor = "pointer";
-                    // Restaura as cores originais do Pejotta
+                    // Cores vibrantes do seu print
                     if(id === 'link_1') btn.style.background = "#f1c40f"; 
                     if(id === 'link_2') btn.style.background = "#e67e22";
                     if(id === 'link_3') btn.style.background = "#9b59b6";
