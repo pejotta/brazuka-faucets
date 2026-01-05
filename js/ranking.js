@@ -64,7 +64,7 @@ function mascararEmail(email) {
 
 // Inicia o site carregando o primeiro ranking automaticamente
 document.addEventListener('DOMContentLoaded', () => {
-    carregarDadosRanking('indicadores');
+    carregarDadosRanking('claimers');
 });
 
 // Carregar e-mail salvo ao abrir a página
