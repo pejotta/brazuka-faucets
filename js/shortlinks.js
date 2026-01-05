@@ -131,17 +131,15 @@ async function showDashboard(wallet, stats) {
         document.getElementById('faucet-balance-display').innerText = "Indisponível";
     }
 
-    // --- LÓGICA DE LIMITES DIÁRIOS (VERSÃO FINAL SEM ERRO) ---
+    // --- LÓGICA DE LIMITES DIÁRIOS (VERSÃO ANALISTA CORRIGIDA) ---
     const limites = { "link_1": 10, "link_2": 5, "link_3": 3 };
+    
+    // O analista diz: O Worker já reseta os dados. 
+    // Se o dado chegou aqui, ele já está atualizado pelo Banco de Dados.
     const clicks = stats.daily_clicks || {};
-    const hoje = new Date().toLocaleDateString('pt-BR');
-
-    // AJUSTE: Se last_reset não existir, tratamos como se fosse hoje para mostrar os cliques
-    const lastReset = stats.last_reset || hoje; 
-    const isNovoDia = lastReset !== hoje;
 
     Object.keys(limites).forEach(id => {
-        const feitos = isNovoDia ? 0 : (clicks[id] || 0);
+        const feitos = clicks[id] || 0; // Pegamos o que o Banco de Dados mandou
         const restantes = limites[id] - feitos;
         
         const statusEl = document.getElementById(`${id}_status`);
@@ -160,7 +158,8 @@ async function showDashboard(wallet, stats) {
                     btn.disabled = false;
                     btn.innerText = "ABRIR LINK";
                     btn.style.cursor = "pointer";
-                    if(id === 'link_1') btn.style.background = "#f1c40f"; // Cor amarela do Link 1
+                    // Restaura as cores originais do Pejotta
+                    if(id === 'link_1') btn.style.background = "#f1c40f"; 
                     if(id === 'link_2') btn.style.background = "#e67e22";
                     if(id === 'link_3') btn.style.background = "#9b59b6";
                 }
