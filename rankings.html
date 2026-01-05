@@ -41,39 +41,37 @@
     gtag('config', 'G-11KQEGEBZ3');
     </script>
     <style>
+        :root {
+            --ouro: #ffd700;
+            --prata: #c0c0c0;
+            --bronze: #cd7f32;
+            --brazuka-blue: #1a73e8;
+        }
+        .ranking-container { max-width: 800px; margin: 20px auto; padding: 15px; font-family: sans-serif; }
+        .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { 
+            padding: 12px 20px; border: none; border-radius: 25px; 
+            background: #eee; cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+        .tab-btn.active { background: var(--brazuka-blue); color: white; }
+        
+        .ranking-table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .ranking-table th { background: var(--brazuka-blue); color: white; padding: 15px; text-align: left; }
+        .ranking-table td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+        
+        /* Estilo das Medalhas */
+        .pos-1 { color: var(--ouro); font-weight: bold; font-size: 1.2rem; }
+        .pos-2 { color: var(--prata); font-weight: bold; }
+        .pos-3 { color: var(--bronze); font-weight: bold; }
+        
+        .user-name { font-weight: 500; color: #333; }
+        .val-destaque { font-weight: bold; color: var(--brazuka-blue); }
+        
         .banner-premio { 
             background: linear-gradient(90deg, #f39c12, #e67e22); 
             color: white; padding: 15px; border-radius: 10px; 
-            text-align: center; margin-bottom: 20px;
-
-        /* O Estilo que você mandou (Padrão do Site) */
-        .hero-ads {
-            text-align: center;
-            padding: 60px 20px;
-            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
-            color: white;
-            border-radius: 0 0 100px 100px;
-            margin-bottom: 40px;
+            text-align: center; margin-bottom: 20px; 
         }
-        .hero-ads h1 { font-size: 2.5em; margin-bottom: 10px; }
-        .hero-ads p { opacity: 0.9; font-size: 1.1em; }
-
-        /* Ajustes do Ranking */
-        :root { --ouro: #ffd700; --prata: #c0c0c0; --bronze: #cd7f32; }
-        .ranking-container { max-width: 900px; margin: 0 auto; padding: 20px; }
-        .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
-        .tab-btn { 
-            padding: 12px 25px; border: 2px solid #1a73e8; border-radius: 50px; 
-            background: white; color: #1a73e8; cursor: pointer; font-weight: bold; transition: 0.3s;
-        }
-        .tab-btn.active { background: #1a73e8; color: white; }
-        
-        .ranking-table { width: 100%; border-collapse: collapse; background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .ranking-table th { background: #f8f9fa; color: #333; padding: 20px; text-align: left; border-bottom: 2px solid #eee; }
-        .ranking-table td { padding: 15px 20px; border-bottom: 1px solid #eee; font-size: 1.1em; }
-        
-        .pos-1 { color: var(--ouro); font-weight: bold; font-size: 1.3em; }
-        .val-destaque { font-weight: bold; color: #1a73e8; text-align: right; }
     </style>
 </head>
 <body>
