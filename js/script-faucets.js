@@ -2,15 +2,20 @@ let currentCoin = '';
 const API_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const emailLogado = localStorage.getItem('brazuka_user_email');
-    if (emailLogado) {
-        // Preenche automaticamente o campo de carteira/e-mail
-        const campoCarteira = document.querySelector('#wallet-input'); // Ajuste o ID conforme seu HTML
-        if (campoCarteira) campoCarteira.value = emailLogado;
-        console.log("Login automático realizado via Global ID");
+    // 1. Tenta pegar o e-mail global ou o local
+    const emailGlobal = localStorage.getItem('brazuka_user_email');
+    const savedWallet = localStorage.getItem('brazuka_wallet') || emailGlobal;
+
+    if (savedWallet) {
+        // Preenche o campo visual se ele existir
+        const campoCarteira = document.querySelector('#user-wallet') || document.querySelector('#wallet-input'); 
+        if (campoCarteira) campoCarteira.value = savedWallet;
+        
+        console.log("Login automático detectado: " + savedWallet);
+        checkUser(savedWallet); // Já loga o cara direto!
     }
-});
     
+    // 2. Checa se voltou de um pagamento com sucesso
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('status') === 'success') {
         const coin = urlParams.get('coin')?.toUpperCase();
@@ -18,11 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(`🎉 Sucesso! ${amt} ${coin} foi enviado para sua FaucetPay!`);
         window.history.replaceState({}, document.title, window.location.pathname);
     }
-
-    if (savedWallet) {
-        checkUser(savedWallet);
-    }
-});
+}); // <-- AQUI FECHA O DOMCONTENTLOADED CORRETAMENTE
 
 // FUNÇÃO DE LOGIN E DASHBOARD
 async function checkUser(manualWallet = null) {
@@ -34,7 +35,10 @@ async function checkUser(manualWallet = null) {
         const data = await response.json();
         
         if (data.success) {
+            // Salva em ambos para garantir a integração total [cite: 2026-01-02]
             localStorage.setItem('brazuka_wallet', wallet);
+            localStorage.setItem('brazuka_user_email', wallet);
+
             document.getElementById('login-view').style.display = 'none';
             document.getElementById('dashboard-view').style.display = 'block';
             document.getElementById('display-wallet').innerText = wallet;
@@ -43,10 +47,9 @@ async function checkUser(manualWallet = null) {
             document.getElementById('stat-trx').innerText = data.stats.claims_trx || 0;
             document.getElementById('stat-ton').innerText = data.stats.claims_ton || 0;
 
-            // ANALISTA: Chama todas as atualizações de uma vez
             atualizarSaldosTorneira();
             carregarDadosExtras();
-            aplicarCooldownBotoes(); // Ativa o cronômetro nos botões
+            aplicarCooldownBotoes(); 
         }
     } catch (e) {
         console.error("Erro ao buscar dados do Banco de Dados:", e);
