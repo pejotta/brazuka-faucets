@@ -551,7 +551,7 @@ body {
 
 /* Garante que imagens e iframes não quebrem o layout */
 .ad-slot-top img, .ad-slot-mid img, .ad-slot-sidebar img, 
-.ad-slot-top iframe, .ad-slot-sidebar iframe {
+.ad-slot-top iframe, .ad-slot-sidebar iframe, .ad-slot-pagegain img, .ad-slot-pagegain iframe {
     max-width: 100%;
     display: block;
     margin: 0 auto;         /* Centraliza o banner em si */
