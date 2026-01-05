@@ -1,20 +1,41 @@
+// ANALISTA: Centralizando a lógica para evitar erros e facilitar manutenção [cite: 2026-01-02]
 const API_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
-async function carregarRanking(tipo = 'indicadores') {
+// Função principal que decide qual ranking carregar
+async function mudarTab(tipo, btn) {
+    // 1. Estética: Troca a cor do botão ativo
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // 2. Interface: Ajusta o título da coluna de valor
+    const label = document.getElementById('label-valor');
+    if(tipo === 'indicadores') label.innerText = "Amigos Ativos";
+    else if(tipo === 'claimers') label.innerText = "Total de Claims";
+    else label.innerText = "Links Completos";
+
+    // 3. Dados: Busca no Banco de Dados [cite: 2025-12-26]
+    await carregarDadosRanking(tipo);
+}
+
+async function carregarDadosRanking(tipo) {
     const corpoTabela = document.getElementById('corpo-tabela');
-    corpoTabela.innerHTML = '<tr><td colspan="3" style="text-align:center;">Carregando caçadores...</td></tr>';
+    corpoTabela.innerHTML = '<tr><td colspan="3" style="text-align:center;">🔍 Consultando Banco de Dados...</td></tr>';
 
     try {
-        // ANALISTA: Rota que busca os Top 10 de cada categoria no Banco de Dados
         const response = await fetch(`${API_URL}/get-rankings?tipo=${tipo}`);
         const dados = await response.json();
 
-        corpoTabela.innerHTML = ''; // Limpa o carregando
+        corpoTabela.innerHTML = ''; 
+
+        if (dados.length === 0) {
+            corpoTabela.innerHTML = '<tr><td colspan="3" style="text-align:center;">Ninguém no ranking ainda. Seja o primeiro! 🚀</td></tr>';
+            return;
+        }
 
         dados.forEach((user, index) => {
             const row = document.createElement('tr');
             
-            // Define a medalha para o Top 3
+            // Lógica das medalhas
             let posicao = `${index + 1}º`;
             let classePos = "";
             if(index === 0) { posicao = "🥇 1º"; classePos = "pos-1"; }
@@ -23,22 +44,25 @@ async function carregarRanking(tipo = 'indicadores') {
 
             row.innerHTML = `
                 <td class="${classePos}">${posicao}</td>
-                <td class="user-name">${mascararEmail(user.email)}</td>
+                <td>${mascararEmail(user.email)}</td>
                 <td class="val-destaque">${user.score}</td>
             `;
             corpoTabela.appendChild(row);
         });
     } catch (error) {
-        corpoTabela.innerHTML = '<tr><td colspan="3" style="text-align:center; color:red;">Erro ao carregar dados.</td></tr>';
+        console.error("Erro no ranking:", error);
+        corpoTabela.innerHTML = '<tr><td colspan="3" style="text-align:center; color:red;">⚠️ Falha ao carregar ranking.</td></tr>';
     }
 }
 
-// Função para proteger a privacidade dos seus usuários
+// Protege a privacidade para não expor e-mails dos usuários [cite: 2026-01-02]
 function mascararEmail(email) {
-    if (!email.includes('@')) return email;
+    if (!email || !email.includes('@')) return "Usuário Anônimo";
     const [usuario, dominio] = email.split('@');
     return usuario.substring(0, 3) + '***@' + dominio;
 }
 
-// Inicia carregando o ranking de indicadores por padrão
-document.addEventListener('DOMContentLoaded', () => carregarRanking('indicadores'));
+// Inicia o site carregando o primeiro ranking automaticamente
+document.addEventListener('DOMContentLoaded', () => {
+    carregarDadosRanking('indicadores');
+});
