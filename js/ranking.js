@@ -76,33 +76,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function mostrarStatus(texto, tipo) {
+    const msgDiv = document.getElementById('status-msg');
+    msgDiv.innerText = texto;
+    
+    // Remove classes antigas e adiciona a nova
+    msgDiv.className = 'status-msg ' + tipo;
+    
+    // Some após 3 segundos
+    setTimeout(() => {
+        msgDiv.style.opacity = '0';
+    }, 3000);
+}
+
 function gerarLinkRef() {
     const email = document.getElementById('ref-email').value.trim().toLowerCase();
+    
     if (!email || !email.includes('@')) {
-        alert("Opa! Digita o e-mail da FaucetPay certinho para o sistema te reconhecer. 🚀");
+        mostrarStatus("❌ Digite um e-mail válido da FaucetPay", "msg-erro");
         return;
     }
 
-    // 1. Salva no Banco de Dados do navegador para Login Global [cite: 2025-12-26]
     localStorage.setItem('brazuka_user_email', email);
-
-    // 2. Gera o link com e-mail limpo como você pediu
     const linkFinal = `https://www.brazukafaucets.com.br/?ref=${email}`;
     
     document.getElementById('link-gerado').value = linkFinal;
     document.getElementById('display-link').style.display = 'flex';
     
-    // 3. Comunica com a Extensão (se ela estiver ouvindo)
-    window.postMessage({ type: "BRAZUKA_LOGIN", email: email }, "*");
-
-    console.log("Usuário logado globalmente como: " + email);
+    // Mensagem embutida em vez de alerta!
+    mostrarStatus("✅ Link gerado e login realizado!", "msg-sucesso");
 }
 
 function copiarLinkRef() {
     const copyText = document.getElementById("link-gerado");
     copyText.select();
-    copyText.setSelectionRange(0, 99999); // Mobile
+    copyText.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(copyText.value);
     
-    alert("Link copiado! Agora é só espalhar e subir no ranking! 🚀");
+    // Outra mensagem embutida!
+    mostrarStatus("📋 Link copiado para a área de transferência!", "msg-copiado");
 }
