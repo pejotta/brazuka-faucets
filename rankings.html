@@ -99,6 +99,18 @@
 #link-gerado { 
     flex: 1; border: none; background: transparent; color: #555; font-size: 0.9rem; outline: none;
 }
+        .status-msg {
+    font-size: 0.85rem;
+    margin-top: 10px;
+    height: 20px; /* Mantém o espaço para não dar "pulo" no layout */
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+    opacity: 0; /* Começa invisível */
+}
+
+.msg-sucesso { color: #28a745; opacity: 1; }
+.msg-erro { color: #dc3545; opacity: 1; }
+.msg-copiado { color: var(--brazuka-blue); opacity: 1; }
     </style>
 </head>
 <body>
@@ -113,8 +125,13 @@
     <p>Adicione seu e-mail FaucetPay, gere seu link e seja o Top 1!</p>
     
     <div class="ref-input-group">
-        <input type="text" id="ref-email" placeholder="Seu e-mail FaucetPay" autocomplete="off" spellcheck="false">
-        <button onclick="gerarLinkRef()" id="btn-gerar">GERAR LINK</button>
+    <input type="text" id="ref-email" placeholder="Seu e-mail FaucetPay" autocomplete="off">
+    <button onclick="gerarLinkRef()" id="btn-gerar">GERAR LINK</button>
+</div>
+
+<div id="status-msg" class="status-msg"></div>
+
+<div id="display-link" style="display: none;">
     </div>
     
     <div id="display-link" style="display: none;">
