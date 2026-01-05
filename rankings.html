@@ -120,31 +120,29 @@
         <p>Os maiores caçadores de recompensas do Brazuka Faucets em um só lugar.</p>
     </section>
 
-    <div class="ref-box">
-    <h4>🚀 Convide e Suba no Ranking</h4>
-    <p>Adicione seu e-mail FaucetPay, gere seu link e seja o Top 1!</p>
-    
-    <div class="ref-input-group">
-    <input type="text" id="ref-email" placeholder="Seu e-mail FaucetPay" autocomplete="off">
-    <button onclick="gerarLinkRef()" id="btn-gerar">GERAR LINK</button>
-</div>
-
-<div id="status-msg" class="status-msg"></div>
-
-<div id="display-link" style="display: none;">
-    </div>
-    
-    <div id="display-link" style="display: none;">
-        <input type="text" id="link-gerado" readonly>
-        <button onclick="copiarLinkRef()"><i class="fas fa-copy"></i></button>
-    </div>
-</div>
-    
     <div class="ranking-container">
+        <div class="ref-box">
+            <h4>🚀 Convide e Suba no Ranking</h4>
+            <p>Adicione seu e-mail FaucetPay, gere seu link e seja o Top 1!</p>
+            
+            <div class="ref-input-group">
+                <input type="text" id="ref-email" placeholder="Seu e-mail FaucetPay" autocomplete="off">
+                <button onclick="gerarLinkRef()" id="btn-gerar">GERAR LINK</button>
+            </div>
+
+            <div id="status-msg" class="status-msg"></div>
+
+            <div id="display-link" style="display: none;">
+                <input type="text" id="link-gerado" readonly>
+                <button onclick="copiarLinkRef()"><i class="fas fa-copy"></i></button>
+            </div>
+        </div>
+
         <div class="banner-premio">
-        <h3>🎁 Premiação Mensal</h3>
-        <p>O Top 3 de cada ranking ganha bônus direto na FaucetPay no dia 01!</p>
-    </div>
+            <h3>🎁 Premiação Mensal</h3>
+            <p>O Top 3 de cada ranking ganha bônus direto na FaucetPay no dia 01!</p>
+        </div>
+
         <div class="tabs">
             <button class="tab-btn active" onclick="mudarTab('indicadores', this)">📢 Indicadores</button>
             <button class="tab-btn" onclick="mudarTab('claimers', this)">🚰 Faucets</button>
