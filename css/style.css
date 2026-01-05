@@ -520,7 +520,7 @@ body {
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* Container do anúncio para garantir centralização */
-.ad-slot-top, .ad-slot-mid, .ad-slot-sidebar, .ad-slot.pagegain {
+.ad-slot-top, .ad-slot-mid, .ad-slot-sidebar, .ad-slot-pagegain {
     display: flex;
     flex-direction: column;
     align-items: center;
