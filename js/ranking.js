@@ -66,3 +66,42 @@ function mascararEmail(email) {
 document.addEventListener('DOMContentLoaded', () => {
     carregarDadosRanking('indicadores');
 });
+
+// Carregar e-mail salvo ao abrir a página
+document.addEventListener('DOMContentLoaded', () => {
+    const salvo = localStorage.getItem('brazuka_ref_email');
+    if (salvo) {
+        document.getElementById('ref-email').value = salvo;
+        gerarLinkRef(); // Já mostra o link se já existir
+    }
+});
+
+function gerarLinkRef() {
+    const email = document.getElementById('ref-email').value.trim();
+    if (!email || !email.includes('@')) {
+        alert("Ei Pejotta, avisa pro cara digitar um e-mail válido! 😂");
+        return;
+    }
+
+    // Salva no Banco de Dados local do navegador [cite: 2025-12-26]
+    localStorage.setItem('brazuka_ref_email', email);
+
+    // Gera o link (ajuste a URL para a sua Home ou Faucet)
+    const linkFinal = `https://www.brazukafaucets.com.br/?ref=${btoa(email)}`;
+    
+    document.getElementById('link-gerado').value = linkFinal;
+    document.getElementById('display-link').style.display = 'flex';
+    
+    const btnGerar = document.getElementById('btn-gerar');
+    btnGerar.innerText = "ATUALIZADO!";
+    setTimeout(() => btnGerar.innerText = "GERAR LINK", 2000);
+}
+
+function copiarLinkRef() {
+    const copyText = document.getElementById("link-gerado");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); // Mobile
+    navigator.clipboard.writeText(copyText.value);
+    
+    alert("Link copiado! Agora é só espalhar e subir no ranking! 🚀");
+}
