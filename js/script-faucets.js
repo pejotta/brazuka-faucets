@@ -2,7 +2,14 @@ let currentCoin = '';
 const API_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const savedWallet = localStorage.getItem('brazuka_wallet');
+    const emailLogado = localStorage.getItem('brazuka_user_email');
+    if (emailLogado) {
+        // Preenche automaticamente o campo de carteira/e-mail
+        const campoCarteira = document.querySelector('#wallet-input'); // Ajuste o ID conforme seu HTML
+        if (campoCarteira) campoCarteira.value = emailLogado;
+        console.log("Login automático realizado via Global ID");
+    }
+});
     
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('status') === 'success') {
