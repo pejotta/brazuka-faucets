@@ -72,6 +72,32 @@
             color: white; padding: 15px; border-radius: 10px; 
             text-align: center; margin-bottom: 20px; 
         }
+
+        .ref-box {
+    background: #fff;
+    border: 2px dashed var(--brazuka-blue);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.ref-box h4 { margin-top: 0; color: var(--brazuka-blue); }
+.ref-input-group { display: flex; gap: 10px; margin-top: 15px; }
+.ref-input-group input { 
+    flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; outline: none;
+}
+.ref-input-group button { 
+    background: var(--brazuka-blue); color: white; border: none; 
+    padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;
+}
+#display-link { 
+    margin-top: 15px; display: flex; gap: 5px; background: #f0f7ff; 
+    padding: 10px; border-radius: 5px; border: 1px solid #cce3ff;
+}
+#link-gerado { 
+    flex: 1; border: none; background: transparent; color: #555; font-size: 0.9rem; outline: none;
+}
     </style>
 </head>
 <body>
@@ -81,6 +107,21 @@
         <p>Os maiores caçadores de recompensas do Brazuka Faucets em um só lugar.</p>
     </section>
 
+    <div class="ref-box">
+    <h4>🚀 Convide e Suba no Ranking</h4>
+    <p>Adicione seu e-mail FaucetPay, gere seu link e seja o Top 1!</p>
+    
+    <div class="ref-input-group">
+        <input type="text" id="ref-email" placeholder="Seu e-mail FaucetPay" autocomplete="off" spellcheck="false">
+        <button onclick="gerarLinkRef()" id="btn-gerar">GERAR LINK</button>
+    </div>
+    
+    <div id="display-link" style="display: none;">
+        <input type="text" id="link-gerado" readonly>
+        <button onclick="copiarLinkRef()"><i class="fas fa-copy"></i></button>
+    </div>
+</div>
+    
     <div class="ranking-container">
         <div class="banner-premio">
         <h3>🎁 Premiação Mensal</h3>
