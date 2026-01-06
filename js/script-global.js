@@ -157,3 +157,40 @@ if (ref) {
     localStorage.setItem('brazuka_ref', ref);
     console.log("Padrinho detectado e salvo:", ref);
 }
+async function carregarTicker() {
+    const tickerTrack = document.getElementById('ticker-track');
+    if (!tickerTrack) return;
+
+    try {
+        // Opção 1: Buscar do seu Banco de Dados/Worker
+        // const response = await fetch('https://seu-worker.dev/get-latest-posts');
+        // const posts = await response.json();
+
+        // Opção 2: Lista Manual (Mais rápido para você agora)
+        const posts = [
+            { title: "Nova Faucet de TON adicionada! Ganhe agora.", link: "nossas-faucets.html" },
+            { title: "Como evitar banimentos em Shortlinks - Leia o Guia.", link: "guia-do-iniciante.html" },
+            { title: "Top 10 melhores carteiras para 2026.", link: "#" },
+            { title: "Participe do nosso ranking semanal e ganhe bônus.", link: "ranking.html" }
+        ];
+
+        tickerTrack.innerHTML = ''; // Limpa o "Carregando"
+
+        // Multiplicamos os itens para a rolagem parecer infinita
+        const listaPosts = [...posts, ...posts]; 
+
+        listaPosts.forEach(post => {
+            const item = document.createElement('a');
+            item.href = post.link;
+            item.className = 'ticker-item';
+            item.innerHTML = `<i class="fa-solid fa-circle-dot" style="font-size: 8px; margin-right: 8px; color: #1a73e8;"></i> ${post.title}`;
+            tickerTrack.appendChild(item);
+        });
+
+    } catch (error) {
+        console.error("Erro ao carregar ticker:", error);
+    }
+}
+
+// Inicia o ticker
+document.addEventListener('DOMContentLoaded', carregarTicker);
