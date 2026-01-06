@@ -90,24 +90,33 @@ function activateLock() {
 
 // 5. Verificar Usuário no Banco de Dados
 async function checkUser(manualWallet = null) {
-    const inputEl = document.getElementById('user-wallet');
+    // ANALISTA: Tenta encontrar o campo de e-mail por todos os IDs que você já usou
+    const inputEl = document.getElementById('user-wallet') || 
+                    document.getElementById('wallet-input') || 
+                    document.getElementById('walletAddr');
+    
     const wallet = manualWallet || (inputEl ? inputEl.value : null);
     
+    console.log("Tentando login com:", wallet); // Para você ver no console (F12)
+
     if (wallet && wallet.length > 5) {
         try {
-            // Timestamp para evitar cache e forçar dado novo do Banco de Dados [cite: 2025-12-26]
+            // Sincroniza logo as chaves antes do fetch para garantir
+            localStorage.setItem(STORAGE_KEY, wallet);
+            localStorage.setItem('brazuka_user_email', wallet);
+
             const response = await fetch(`${API_URL}/get-user-stats?wallet=${wallet}&t=${Date.now()}`);
             const data = await response.json();
             
             if (data.success) {
                 showDashboard(wallet, data.stats);
             } else {
-                // Se o Worker falhar mas o usuário digitou algo, mostramos dash zerado
+                // ANALISTA: Se o Worker retornar success:false, o auto-create do Worker (que ajustamos)
+                // deveria ter resolvido. Se chegar aqui, forçamos a exibição do dash zerado.
                 showDashboard(wallet, { clicks: 0, balance: 0, daily_clicks: {} });
             }
-            localStorage.setItem(STORAGE_KEY, wallet);
         } catch (e) { 
-            console.error("Erro ao buscar stats:", e);
+            console.error("Erro ao conectar no Banco de Dados:", e);
         }
     } else {
         alert("Digite um e-mail ou carteira válida!");
