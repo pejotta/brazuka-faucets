@@ -158,34 +158,37 @@ if (ref) {
 }
 async function carregarTicker() {
     const tickerTrack = document.getElementById('ticker-track');
-    if (!tickerTrack || typeof TICKER_CONFIG === 'undefined') return;
+    
+    // ANALISTA: Se o placeholder ainda não existir (menu ainda carregando), 
+    // tentamos novamente em 500ms
+    if (!tickerTrack) {
+        setTimeout(carregarTicker, 500);
+        return;
+    }
+
+    // Verifica se os dados fixos foram carregados
+    const fixos = (typeof TICKER_CONFIG !== 'undefined') ? TICKER_CONFIG.mensagensFixas : [];
 
     try {
         const response = await fetch(`https://brazuka-faucets.moneynanet-yt.workers.dev/get-ticker?t=${Date.now()}`);
         const faucetsDinamicas = response.ok ? await response.json() : [];
 
-        // Transforma os dados do banco usando as definições do ticker-data.js
-        const faucetsFormatadas = faucetsDinamicas
-            .reverse()
-            .slice(0, TICKER_CONFIG.settings.maxFaucetsDinamicas)
-            .map(f => ({
-                title: `${TICKER_CONFIG.settings.prefixoNovaFaucet} ${f.nome || f.name} disponível!`,
-                link: f.link || `faucet-details.html?id=${f.id}`
-            }));
+        // Transforma o que veio do banco
+        const faucetsFormatadas = faucetsDinamicas.reverse().slice(0, 5).map(f => ({
+            title: `🔥 NOVA: ${f.nome || f.name} disponível!`,
+            link: f.link || `faucet-details.html?id=${f.id}`
+        }));
 
-        // Une as fixas do ficheiro externo com as dinâmicas do banco
-        const listaFinal = [...TICKER_CONFIG.mensagensFixas, ...faucetsFormatadas];
+        const listaFinal = [...fixos, ...faucetsFormatadas];
+
+        if (listaFinal.length === 0) return; // Se não tem nada, não faz nada
 
         tickerTrack.innerHTML = ''; 
-
-        // Multiplica por 3 para garantir o scroll contínuo
-        [...listaFinal, ...listaFinal, ...listaFinal].forEach(post => {
+        [...listaFinal, ...listaFinal].forEach(post => {
             const item = document.createElement('a');
             item.href = post.link;
             item.className = 'ticker-item';
-            
-            let icone = post.title.includes("NOVA") ? "fa-fire" : "fa-bullhorn";
-            item.innerHTML = `<i class="fa-solid ${icone}" style="font-size: 10px; margin-right: 8px; color: #1a73e8;"></i> ${post.title}`;
+            item.innerHTML = `<i class="fa-solid fa-bullhorn" style="font-size: 10px; margin-right: 8px; color: #1a73e8;"></i> ${post.title}`;
             tickerTrack.appendChild(item);
         });
 
