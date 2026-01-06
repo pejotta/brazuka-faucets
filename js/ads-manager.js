@@ -28,7 +28,7 @@ const BRAZUKA_ADS = {
             '<a href="https://betfury.io/?r=LUCKYUser4777343" target="_blank"><img src="https://bfstatic.io/pictures/BFG/gif/160x600.gif" alt="betfury.com" /></a>'
         ],
         modalCenter: [
-            '<a href="https://betboom.bet.br/registration/base/?referral_code=887efc52-8b5c-4ef6-99ed-f6155378625e" target="_blank"><img title="A sua SORTE está na BETBOOM.bet.br - Casa autorizada pelo Governo Federal" src="https://hojepr.com/wp-content/uploads/2024/06/fortune_tiger-jogo-do-tigrinho-gif-1.gif" alt="A sua SORTE está na BETBOOM.bet.br - Casa autorizada pelo Governo Federal"'
+            '<a href="https://betboom.bet.br/registration/base/?referral_code=887efc52-8b5c-4ef6-99ed-f6155378625e" target="_blank"><img title="A sua SORTE está na BETBOOM.bet.br - Casa autorizada pelo Governo Federal" src="https://hojepr.com/wp-content/uploads/2024/06/fortune_tiger-jogo-do-tigrinho-gif-1.gif" alt="A sua SORTE está na BETBOOM.bet.br - Casa autorizada pelo Governo Federal"></a>'
         ],
         pageCadastro: [
             '<a href="https://faucetpay.io/?r=31765" target="_blank"><img src="https://cdn.faucetpay.io/banners/gif/160x600.gif" width="160" height="600"/></a>'
