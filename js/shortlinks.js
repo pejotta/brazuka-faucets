@@ -69,7 +69,7 @@ async function startShortlink(linkId) {
 
 // 4. Bloqueio visual e Timer de 60s
 function activateLock() {
-    const mainContainer = document.querySelector('main');
+    const mainContainer = document.getElementById('content-to-blur'); 
     const overlay = document.getElementById('lock-overlay');
     const timerDisplay = document.getElementById('timer-display');
     
