@@ -11,19 +11,25 @@ function getActiveWallet() {
 
 // 2. Inicialização ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
-    // Tenta recuperar o e-mail de qualquer chave anterior para migração
-    const emailLogado = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('brazuka_user_email');
-    
-    if (emailLogado) {
-        localStorage.setItem(STORAGE_KEY, emailLogado);
-        const inputField = document.getElementById('user-wallet');
-        if (inputField) inputField.value = emailLogado;
+    // ANALISTA: Espera 300ms para garantir que o HTML desenhou tudo
+    setTimeout(() => {
+        const emailLogado = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('brazuka_user_email');
         
-        console.log("Sincronizando Banco de Dados para: " + emailLogado); [cite: 2025-12-26]
-        checkUser(emailLogado);
-    }
+        if (emailLogado) {
+            localStorage.setItem(STORAGE_KEY, emailLogado);
+            const inputField = document.getElementById('user-wallet');
+            if (inputField) inputField.value = emailLogado;
+            
+            console.log("Login automático detectado no Banco de Dados: " + emailLogado); [cite: 2025-12-26]
+            checkUser(emailLogado);
+        }
 
-    // Verifica se voltou de um pagamento com sucesso (URL Params)
+        // Fecha o preloader se ele ainda estiver lá (ajuda na UX)
+        const preloader = document.getElementById('preloader');
+        if (preloader) preloader.classList.add('fade-out');
+    }, 300);
+
+    // Verifica se voltou de um pagamento
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('status') === 'success') {
         const amt = urlParams.get('amt');
