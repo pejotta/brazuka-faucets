@@ -1,38 +1,38 @@
-// O endereço real do seu Worker
+// ANALISTA: Configurações Gerais e Padronização
 const API_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
+const STORAGE_KEY = 'brazuka_wallet'; // Chave única para o Banco de Dados local [cite: 2025-12-26]
 
+// 1. Função para pegar o e-mail ativo (Input ou Cache)
 function getActiveWallet() {
     const inputWallet = document.getElementById('user-wallet')?.value;
-    const savedWallet = localStorage.getItem('brazuka_wallet');
+    const savedWallet = localStorage.getItem(STORAGE_KEY);
     return inputWallet || savedWallet || null;
 }
 
+// 2. Inicialização ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
-    const emailLogado = localStorage.getItem('brazuka_user_email');
-    if (emailLogado) {
-        // Preenche automaticamente o campo de carteira/e-mail
-        const campoCarteira = document.querySelector('#wallet-input'); // Ajuste o ID conforme seu HTML
-        if (campoCarteira) campoCarteira.value = emailLogado;
-        console.log("Login automático realizado via Global ID");
-    }
-});
+    // Tenta recuperar o e-mail de qualquer chave anterior para migração
+    const emailLogado = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('brazuka_user_email');
     
-    // Verifica se voltou de um pagamento com sucesso
+    if (emailLogado) {
+        localStorage.setItem(STORAGE_KEY, emailLogado);
+        const inputField = document.getElementById('user-wallet');
+        if (inputField) inputField.value = emailLogado;
+        
+        console.log("Sincronizando Banco de Dados para: " + emailLogado); [cite: 2025-12-26]
+        checkUser(emailLogado);
+    }
+
+    // Verifica se voltou de um pagamento com sucesso (URL Params)
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('status') === 'success') {
         const amt = urlParams.get('amt');
         alert(`🎉 Sucesso! Enviamos ${amt} DOGE para sua FaucetPay.`);
-        // Limpa a URL para não ficar repetindo o alerta
         window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
-    if (savedWallet) {
-        const inputField = document.getElementById('user-wallet');
-        if (inputField) inputField.value = savedWallet;
-        checkUser(savedWallet);
     }
 });
 
+// 3. Iniciar o Shortlink (POST para o Worker)
 async function startShortlink(linkId) {
     const wallet = getActiveWallet();
     if (!wallet || wallet.length < 5) {
@@ -61,6 +61,7 @@ async function startShortlink(linkId) {
     }
 }
 
+// 4. Bloqueio visual e Timer de 60s
 function activateLock() {
     const mainContainer = document.querySelector('main');
     const overlay = document.getElementById('lock-overlay');
@@ -75,33 +76,36 @@ function activateLock() {
     
     const countdown = setInterval(() => {
         timeLeft--;
-        timerDisplay.innerText = timeLeft + "s";
+        if(timerDisplay) timerDisplay.innerText = timeLeft + "s";
         
         if (timeLeft <= 0) {
             clearInterval(countdown);
             mainContainer.classList.remove('blur-active');
             overlay.style.display = 'none';
-            // Recarrega os dados reais do Banco de Dados após o tempo
+            // Recarrega os dados reais após o tempo
             checkUser(); 
         }
     }, 1000);
 }
 
+// 5. Verificar Usuário no Banco de Dados
 async function checkUser(manualWallet = null) {
-    const wallet = manualWallet || document.getElementById('user-wallet').value;
+    const inputEl = document.getElementById('user-wallet');
+    const wallet = manualWallet || (inputEl ? inputEl.value : null);
     
     if (wallet && wallet.length > 5) {
         try {
-            // Adicionado timestamp (t=) para evitar cache do navegador e pegar dado novo do Banco de Dados
+            // Timestamp para evitar cache e forçar dado novo do Banco de Dados [cite: 2025-12-26]
             const response = await fetch(`${API_URL}/get-user-stats?wallet=${wallet}&t=${Date.now()}`);
             const data = await response.json();
             
             if (data.success) {
                 showDashboard(wallet, data.stats);
             } else {
+                // Se o Worker falhar mas o usuário digitou algo, mostramos dash zerado
                 showDashboard(wallet, { clicks: 0, balance: 0, daily_clicks: {} });
             }
-            localStorage.setItem('brazuka_wallet', wallet);
+            localStorage.setItem(STORAGE_KEY, wallet);
         } catch (e) { 
             console.error("Erro ao buscar stats:", e);
         }
@@ -110,6 +114,7 @@ async function checkUser(manualWallet = null) {
     }
 }
 
+// 6. Mostrar Painel (Dashboard)
 async function showDashboard(wallet, stats) {
     const loginView = document.getElementById('login-view');
     const dashView = document.getElementById('dashboard-view');
@@ -120,64 +125,64 @@ async function showDashboard(wallet, stats) {
         dashView.style.display = 'block';
         if (faucetDiv) faucetDiv.style.display = 'block';
         
-        document.getElementById('display-wallet').innerText = wallet;
-        document.getElementById('stat-clicks').innerText = stats.clicks || 0;
-        document.getElementById('stat-balance').innerText = (stats.balance || 0).toFixed(4);
+        const displayWallet = document.getElementById('display-wallet');
+        const statClicks = document.getElementById('stat-clicks');
+        const statBalance = document.getElementById('stat-balance');
+
+        if(displayWallet) displayWallet.innerText = wallet;
+        if(statClicks) statClicks.innerText = stats.clicks || 0;
+        if(statBalance) statBalance.innerText = (stats.balance || 0).toFixed(4);
     }
 
-    // --- BUSCA SALDO REAL DA TORNEIRA ---
+    // Busca saldo real da FaucetPay via Worker
     try {
         const response = await fetch(`${API_URL}/get-faucet-balance`);
         const data = await response.json();
-        if (data.balance) {
+        const balanceDisplay = document.getElementById('faucet-balance-display');
+        if (data.balance && balanceDisplay) {
             let valorReal = parseFloat(data.balance);
             if (valorReal > 1000) valorReal = valorReal / 100000000; 
-            document.getElementById('faucet-balance-display').innerText = valorReal.toFixed(4);
+            balanceDisplay.innerText = valorReal.toFixed(4);
         }
     } catch (e) {
-        document.getElementById('faucet-balance-display').innerText = "Indisponível";
+        if(document.getElementById('faucet-balance-display')) 
+            document.getElementById('faucet-balance-display').innerText = "---";
     }
 
-    // --- LÓGICA DE LIMITES DIÁRIOS (IDÊNTICA AO PRINT) ---
+    // Lógica de Limites Diários
     const limites = { "link_1": 10, "link_2": 5, "link_3": 3 };
     const clicksFeitos = stats.daily_clicks || {};
 
     Object.keys(limites).forEach(id => {
         const total = limites[id];
         const realizados = clicksFeitos[id] || 0;
-        
-        // No seu print, se o cara fez 3 de 5, aparece "Disponível: 2/5"
-        // Então a conta é: Total - Realizados
         const disponiveis = total - realizados;
         
         const statusEl = document.getElementById(`${id}_status`);
         const btn = document.getElementById(`btn_${id}`);
 
         if (statusEl) {
-            // Isso aqui vai renderizar o "Disponível: X/Y" do seu print
             statusEl.innerText = `Disponível: ${disponiveis}/${total}`;
-            
             if (btn) {
                 if (disponiveis <= 0) {
                     btn.disabled = true;
-                    btn.innerText = "Limite Atingido";
-                    btn.style.background = "#7f8c8d"; // Cor cinza do print
+                    btn.innerText = "LIMITE ATINGIDO";
+                    btn.style.background = "#7f8c8d";
                     btn.style.cursor = "not-allowed";
                 } else {
                     btn.disabled = false;
                     btn.innerText = "ABRIR LINK";
                     btn.style.cursor = "pointer";
-                    // Cores vibrantes do seu print
-                    if(id === 'link_1') btn.style.background = "#f1c40f"; 
-                    if(id === 'link_2') btn.style.background = "#e67e22";
-                    if(id === 'link_3') btn.style.background = "#9b59b6";
                 }
             }
         }
     });
 }
 
+// 7. Função de Logout (Limpa todas as chaves possíveis)
 function logout() {
+    localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem('brazuka_wallet');
+    localStorage.removeItem('brazuka_user_email');
     location.reload();
 }
