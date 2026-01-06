@@ -5,16 +5,15 @@ async function loadEverything() {
     setFavicon();
     
     // 2. Carrega o Header/Menu
-    // Importante: Verifique se o caminho do template mudou para templates/ ou se continua na raiz
     await loadTemplate('menu_template.html', 'header-placeholder', 'afterbegin');
     initMobileMenu();
+    
+    // ANALISTA: Chama o ticker SÓ DEPOIS que o menu_template foi injetado [cite: 2026-01-02]
+    carregarTicker(); 
 
-    // 3. Carrega o Footer e inicia os Widgets (Tradutor e Contador)
+    // 3. Carrega o Footer e inicia os Widgets
     await loadTemplate('footer_template.html', 'footer-placeholder', 'beforeend');
     initFooterWidgets();
-
-    // NOTA: Removidas as funções loadAd de top_ad e bottom_ad, 
-    // pois o ads-manager.js agora cuida disso via slots.
 }
 
 function initFooterWidgets() {
