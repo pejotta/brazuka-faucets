@@ -156,51 +156,33 @@ if (ref) {
     localStorage.setItem('brazuka_ref', ref);
     console.log("Padrinho detectado e salvo:", ref);
 }
-async function carregarTicker() {
+function carregarTicker() {
     const tickerTrack = document.getElementById('ticker-track');
-    if (!tickerTrack) return;
+    // Se não achar o elemento ou os dados, para aqui sem erro
+    if (!tickerTrack || typeof TICKER_CONFIG === 'undefined') return;
 
-    // 1. Pega as mensagens do ticker-data.js
-    const fixos = (typeof TICKER_CONFIG !== 'undefined') ? TICKER_CONFIG.mensagensFixas : [];
+    // Pega as mensagens do seu mural (ticker-data.js)
+    const mensagens = TICKER_CONFIG.mensagensFixas;
 
-    try {
-        // 2. Busca no Worker
-        const response = await fetch(`https://brazuka-faucets.moneynanet-yt.workers.dev/get-ticker?t=${Date.now()}`);
-        let faucetsDinamicas = response.ok ? await response.json() : [];
+    if (mensagens.length === 0) return;
 
-        // 3. LÓGICA DE RANDOMIZAÇÃO (Embaralha as faucets do banco)
-        faucetsDinamicas = faucetsDinamicas.sort(() => Math.random() - 0.5);
+    tickerTrack.innerHTML = ''; 
 
-        // 4. Formata as faucets (pegando as 10 primeiras já embaralhadas)
-        const faucetsFormatadas = faucetsDinamicas.slice(0, 10).map(f => ({
-            title: `🔥 NOVA: ${f.nome || f.name} - Ganhe agora!`,
-            link: f.link || `faucet-details.html?id=${f.id}`
-        }));
+    // ANALISTA: Multiplicamos a lista para o scroll ser fluido e infinito
+    const listaExibicao = [...mensagens, ...mensagens, ...mensagens];
 
-        // 5. MISTURA TUDO (Fixas + Dinâmicas embaralhadas)
-        // Se quiser que seja tudo aleatório, use .sort() no listaFinal também
-        const listaFinal = [...fixos, ...faucetsFormatadas].sort(() => Math.random() - 0.5);
+    listaExibicao.forEach(item => {
+        const link = document.createElement('a');
+        link.href = item.link;
+        link.className = 'ticker-item';
+        
+        // Mantive a lógica de ícone: se tiver fogo ou troféu no texto, ele destaca
+        let icone = "fa-bullhorn";
+        if (item.title.includes("🔥")) icone = "fa-fire";
+        if (item.title.includes("🏆")) icone = "fa-trophy";
+        if (item.title.includes("💡")) icone = "fa-lightbulb";
 
-        if (listaFinal.length === 0) return;
-
-        tickerTrack.innerHTML = ''; 
-
-        // 6. Multiplica para o loop não ter "buracos" brancos
-        const loopInfinito = [...listaFinal, ...listaFinal, ...listaFinal];
-
-        loopInfinito.forEach(post => {
-            const item = document.createElement('a');
-            item.href = post.link;
-            item.className = 'ticker-item';
-            
-            // Ícone dinâmico: se tiver "NOVA" no título, usa fogo, senão usa megafone
-            const icone = post.title.includes("NOVA") ? "fa-fire" : "fa-bullhorn";
-            
-            item.innerHTML = `<i class="fa-solid ${icone}" style="font-size: 10px; margin-right: 8px; color: #1a73e8;"></i> ${post.title}`;
-            tickerTrack.appendChild(item);
-        });
-
-    } catch (error) {
-        console.error("Erro ao carregar ticker misto:", error);
-    }
+        link.innerHTML = `<i class="fa-solid ${icone}" style="font-size: 10px; margin-right: 8px; color: #1a73e8;"></i> ${item.title}`;
+        tickerTrack.appendChild(link);
+    });
 }
