@@ -923,7 +923,7 @@ body {
     display: flex;
     white-space: nowrap;
     padding-left: 100%; /* Começa fora da tela */
-    animation: ticker-scroll 30s linear infinite;
+    animation: ticker-scroll 90s linear infinite;
 }
 
 .ticker-track:hover {
