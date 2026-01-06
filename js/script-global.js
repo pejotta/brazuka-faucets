@@ -161,35 +161,39 @@ async function carregarTicker() {
     if (!tickerTrack) return;
 
     try {
-        // Opção 1: Buscar do seu Banco de Dados/Worker
-        // const response = await fetch('https://seu-worker.dev/get-latest-posts');
-        // const posts = await response.json();
+        const response = await fetch(`https://brazuka-faucets.moneynanet-yt.workers.dev/get-ticker?t=${Date.now()}`);
+        const faucetsDinamicas = response.ok ? await response.json() : [];
 
-        // Opção 2: Lista Manual (Mais rápido para você agora)
-        const posts = [
-            { title: "Nova Faucet de TON adicionada! Ganhe agora.", link: "nossas-faucets.html" },
-            { title: "Como evitar banimentos em Shortlinks - Leia o Guia.", link: "guia-do-iniciante.html" },
-            { title: "Top 10 melhores carteiras para 2026.", link: "#" },
-            { title: "Participe do nosso ranking semanal e ganhe bônus.", link: "ranking.html" }
+        // --- CENTRAL DE MENSAGENS (Edite só aqui!) ---
+        const mensagensFixas = [
+            { title: "🚀 Bem-vindo ao Brazuka Faucets - O portal dos ganhos!", link: "index.html" },
+            { title: "🏆 Participe do Ranking e ganhe bônus semanais!", link: "ranking.html" },
+            { title: "💡 DICA: Use e-mail da FaucetPay para receber na hora.", link: "guia-do-iniciante.html" }
         ];
 
-        tickerTrack.innerHTML = ''; // Limpa o "Carregando"
+        // Transforma as faucets do banco no formato do ticker
+        const faucetsFormatadas = faucetsDinamicas.reverse().slice(0, 5).map(f => ({
+            title: `🔥 NOVA: ${f.nome || f.name} disponível!`,
+            link: f.link || `faucet-details.html?id=${f.id}`
+        }));
 
-        // Multiplicamos os itens para a rolagem parecer infinita
-        const listaPosts = [...posts, ...posts]; 
+        // Une tudo: Mensagens fixas + Faucets novas
+        const listaFinal = [...mensagensFixas, ...faucetsFormatadas];
 
-        listaPosts.forEach(post => {
+        tickerTrack.innerHTML = ''; 
+
+        // Loop infinito visual (3x a lista)
+        [...listaFinal, ...listaFinal, ...listaFinal].forEach(post => {
             const item = document.createElement('a');
             item.href = post.link;
             item.className = 'ticker-item';
-            item.innerHTML = `<i class="fa-solid fa-circle-dot" style="font-size: 8px; margin-right: 8px; color: #1a73e8;"></i> ${post.title}`;
+            
+            let icone = post.title.includes("NOVA") ? "fa-fire" : "fa-bullhorn";
+            item.innerHTML = `<i class="fa-solid ${icone}" style="font-size: 10px; margin-right: 8px; color: #1a73e8;"></i> ${post.title}`;
             tickerTrack.appendChild(item);
         });
 
     } catch (error) {
-        console.error("Erro ao carregar ticker:", error);
+        console.error("Erro no ticker:", error);
     }
 }
-
-// Inicia o ticker
-document.addEventListener('DOMContentLoaded', carregarTicker);
