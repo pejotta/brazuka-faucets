@@ -158,41 +158,49 @@ if (ref) {
 }
 async function carregarTicker() {
     const tickerTrack = document.getElementById('ticker-track');
-    
-    // ANALISTA: Se o placeholder ainda não existir (menu ainda carregando), 
-    // tentamos novamente em 500ms
-    if (!tickerTrack) {
-        setTimeout(carregarTicker, 500);
-        return;
-    }
+    if (!tickerTrack) return;
 
-    // Verifica se os dados fixos foram carregados
+    // 1. Pega as mensagens do ticker-data.js
     const fixos = (typeof TICKER_CONFIG !== 'undefined') ? TICKER_CONFIG.mensagensFixas : [];
 
     try {
+        // 2. Busca no Worker
         const response = await fetch(`https://brazuka-faucets.moneynanet-yt.workers.dev/get-ticker?t=${Date.now()}`);
-        const faucetsDinamicas = response.ok ? await response.json() : [];
+        let faucetsDinamicas = response.ok ? await response.json() : [];
 
-        // Transforma o que veio do banco
-        const faucetsFormatadas = faucetsDinamicas.reverse().slice(0, 5).map(f => ({
-            title: `🔥 NOVA: ${f.nome || f.name} disponível!`,
+        // 3. LÓGICA DE RANDOMIZAÇÃO (Embaralha as faucets do banco)
+        faucetsDinamicas = faucetsDinamicas.sort(() => Math.random() - 0.5);
+
+        // 4. Formata as faucets (pegando as 10 primeiras já embaralhadas)
+        const faucetsFormatadas = faucetsDinamicas.slice(0, 10).map(f => ({
+            title: `🔥 NOVA: ${f.nome || f.name} - Ganhe agora!`,
             link: f.link || `faucet-details.html?id=${f.id}`
         }));
 
-        const listaFinal = [...fixos, ...faucetsFormatadas];
+        // 5. MISTURA TUDO (Fixas + Dinâmicas embaralhadas)
+        // Se quiser que seja tudo aleatório, use .sort() no listaFinal também
+        const listaFinal = [...fixos, ...faucetsFormatadas].sort(() => Math.random() - 0.5);
 
-        if (listaFinal.length === 0) return; // Se não tem nada, não faz nada
+        if (listaFinal.length === 0) return;
 
         tickerTrack.innerHTML = ''; 
-        [...listaFinal, ...listaFinal].forEach(post => {
+
+        // 6. Multiplica para o loop não ter "buracos" brancos
+        const loopInfinito = [...listaFinal, ...listaFinal, ...listaFinal];
+
+        loopInfinito.forEach(post => {
             const item = document.createElement('a');
             item.href = post.link;
             item.className = 'ticker-item';
-            item.innerHTML = `<i class="fa-solid fa-bullhorn" style="font-size: 10px; margin-right: 8px; color: #1a73e8;"></i> ${post.title}`;
+            
+            // Ícone dinâmico: se tiver "NOVA" no título, usa fogo, senão usa megafone
+            const icone = post.title.includes("NOVA") ? "fa-fire" : "fa-bullhorn";
+            
+            item.innerHTML = `<i class="fa-solid ${icone}" style="font-size: 10px; margin-right: 8px; color: #1a73e8;"></i> ${post.title}`;
             tickerTrack.appendChild(item);
         });
 
     } catch (error) {
-        console.error("Erro no ticker:", error);
+        console.error("Erro ao carregar ticker misto:", error);
     }
 }
