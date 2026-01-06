@@ -1,28 +1,57 @@
-// ANALISTA: Centralizando a lógica para evitar erros e facilitar manutenção [cite: 2026-01-02]
+// ANALISTA: Centralizando a lógica e integrando o Login Global [cite: 2026-01-02]
 const API_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
-// Função principal que decide qual ranking carregar
+// 1. EVENTO DE INICIALIZAÇÃO ÚNICO
+document.addEventListener('DOMContentLoaded', () => {
+    // A) Gerenciar e-mail e Link de Ref
+    const salvo = localStorage.getItem('brazuka_user_email'); // Padronizado para o Login Global
+    if (salvo) {
+        const campoEmail = document.getElementById('ref-email');
+        if(campoEmail) {
+            campoEmail.value = salvo;
+            gerarLinkRef(); 
+        }
+    }
+
+    // B) Ativar o Ranking de Faucets como padrão
+    const btnFaucets = document.querySelectorAll('.tab-btn')[1]; // Pega o segundo botão (Faucets)
+    if(btnFaucets) {
+        mudarTab('claimers', btnFaucets);
+    } else {
+        carregarDadosRanking('claimers');
+    }
+});
+
+// 2. LÓGICA DAS TABS
 async function mudarTab(tipo, btn) {
-    // 1. Estética: Troca a cor do botão ativo
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    // 2. Interface: Ajusta o título da coluna de valor
     const label = document.getElementById('label-valor');
-    if(tipo === 'indicadores') label.innerText = "Amigos Ativos";
-    else if(tipo === 'claimers') label.innerText = "Total de Claims";
-    else label.innerText = "Links Completos";
+    const titulo = document.getElementById('titulo-ranking'); // ANALISTA: Adicionado para mudar o H1 também
 
-    // 3. Dados: Busca no Banco de Dados [cite: 2025-12-26]
+    if(tipo === 'indicadores') {
+        label.innerText = "Amigos Ativos";
+        if(titulo) titulo.innerText = "Ranking de Indicadores";
+    } else if(tipo === 'claimers') {
+        label.innerText = "Total de Claims";
+        if(titulo) titulo.innerText = "Ranking de Faucets (TRX/TON)";
+    } else {
+        label.innerText = "Links Completos";
+        if(titulo) titulo.innerText = "Ranking de Shortlinks (DOGE)";
+    }
+
     await carregarDadosRanking(tipo);
 }
 
+// 3. BUSCA NO BANCO DE DADOS
 async function carregarDadosRanking(tipo) {
     const corpoTabela = document.getElementById('corpo-tabela');
-    corpoTabela.innerHTML = '<tr><td colspan="3" style="text-align:center;">🔍 Consultando Banco de Dados...</td></tr>';
+    corpoTabela.innerHTML = '<tr><td colspan="3" style="text-align:center;"><i class="fas fa-spinner fa-spin"></i> Consultando Banco de Dados...</td></tr>';
 
     try {
-        const response = await fetch(`${API_URL}/get-rankings?tipo=${tipo}`);
+        // ANALISTA: Adicionado t=Date.now() para evitar cache de rankings antigos
+        const response = await fetch(`${API_URL}/get-rankings?tipo=${tipo}&t=${Date.now()}`);
         const dados = await response.json();
 
         corpoTabela.innerHTML = ''; 
@@ -34,8 +63,6 @@ async function carregarDadosRanking(tipo) {
 
         dados.forEach((user, index) => {
             const row = document.createElement('tr');
-            
-            // Lógica das medalhas
             let posicao = `${index + 1}º`;
             let classePos = "";
             if(index === 0) { posicao = "🥇 1º"; classePos = "pos-1"; }
@@ -55,40 +82,7 @@ async function carregarDadosRanking(tipo) {
     }
 }
 
-// Protege a privacidade para não expor e-mails dos usuários [cite: 2026-01-02]
-function mascararEmail(email) {
-    if (!email || !email.includes('@')) return "Usuário Anônimo";
-    const [usuario, dominio] = email.split('@');
-    return usuario.substring(0, 3) + '***@' + dominio;
-}
-
-// Inicia o site carregando o primeiro ranking automaticamente
-document.addEventListener('DOMContentLoaded', () => {
-    carregarDadosRanking('claimers');
-});
-
-// Carregar e-mail salvo ao abrir a página
-document.addEventListener('DOMContentLoaded', () => {
-    const salvo = localStorage.getItem('brazuka_ref_email');
-    if (salvo) {
-        document.getElementById('ref-email').value = salvo;
-        gerarLinkRef(); // Já mostra o link se já existir
-    }
-});
-
-function mostrarStatus(texto, tipo) {
-    const msgDiv = document.getElementById('status-msg');
-    msgDiv.innerText = texto;
-    
-    // Remove classes antigas e adiciona a nova
-    msgDiv.className = 'status-msg ' + tipo;
-    
-    // Some após 3 segundos
-    setTimeout(() => {
-        msgDiv.style.opacity = '0';
-    }, 3000);
-}
-
+// 4. LÓGICA DE REFERÊNCIA E STATUS
 function gerarLinkRef() {
     const email = document.getElementById('ref-email').value.trim().toLowerCase();
     
@@ -97,13 +91,13 @@ function gerarLinkRef() {
         return;
     }
 
+    // ANALISTA: Salva na chave global que usamos em todo o site [cite: 2026-01-02]
     localStorage.setItem('brazuka_user_email', email);
-    const linkFinal = `https://www.brazukafaucets.com.br/?ref=${email}`;
     
+    const linkFinal = `https://www.brazukafaucets.com.br/?ref=${email}`;
     document.getElementById('link-gerado').value = linkFinal;
     document.getElementById('display-link').style.display = 'flex';
     
-    // Mensagem embutida em vez de alerta!
     mostrarStatus("✅ Link gerado e login realizado!", "msg-sucesso");
 }
 
@@ -112,7 +106,23 @@ function copiarLinkRef() {
     copyText.select();
     copyText.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(copyText.value);
+    mostrarStatus("📋 Link copiado com sucesso!", "msg-copiado");
+}
+
+function mostrarStatus(texto, tipo) {
+    const msgDiv = document.getElementById('status-msg');
+    if(!msgDiv) return;
+    msgDiv.innerText = texto;
+    msgDiv.className = 'status-msg ' + tipo;
+    msgDiv.style.opacity = '1';
     
-    // Outra mensagem embutida!
-    mostrarStatus("📋 Link copiado para a área de transferência!", "msg-copiado");
+    setTimeout(() => {
+        msgDiv.style.opacity = '0';
+    }, 3000);
+}
+
+function mascararEmail(email) {
+    if (!email || !email.includes('@')) return "Usuário Anônimo";
+    const [usuario, dominio] = email.split('@');
+    return usuario.substring(0, 3) + '***@' + dominio;
 }
