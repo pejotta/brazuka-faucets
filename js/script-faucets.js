@@ -2,7 +2,7 @@ let currentCoin = '';
 const API_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Tenta pegar o e-mail global ou o local
+    // 1. Tenta pegar o e-mail global ou o local (Sincronização Analista)
     const emailGlobal = localStorage.getItem('brazuka_user_email');
     const savedWallet = localStorage.getItem('brazuka_wallet') || emailGlobal;
 
@@ -23,29 +23,34 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(`🎉 Sucesso! ${amt} ${coin} foi enviado para sua FaucetPay!`);
         window.history.replaceState({}, document.title, window.location.pathname);
     }
-}); // <-- AQUI FECHA O DOMCONTENTLOADED CORRETAMENTE
+});
 
 // FUNÇÃO DE LOGIN E DASHBOARD
 async function checkUser(manualWallet = null) {
-    const wallet = manualWallet || document.getElementById('user-wallet').value;
+    const inputEl = document.getElementById('user-wallet') || document.getElementById('wallet-input');
+    const wallet = manualWallet || (inputEl ? inputEl.value : null);
+    
     if (!wallet || wallet.length < 5) return;
 
     try {
+        // ANALISTA: Adicionado timestamp para evitar cache do navegador
         const response = await fetch(`${API_URL}/get-user-stats?wallet=${wallet}&t=${Date.now()}`);
         const data = await response.json();
         
         if (data.success) {
-            // Salva em ambos para garantir a integração total [cite: 2026-01-02]
+            // Sincroniza as chaves para o site todo falar a mesma língua [cite: 2026-01-02]
             localStorage.setItem('brazuka_wallet', wallet);
             localStorage.setItem('brazuka_user_email', wallet);
 
-            document.getElementById('login-view').style.display = 'none';
-            document.getElementById('dashboard-view').style.display = 'block';
-            document.getElementById('display-wallet').innerText = wallet;
+            if (document.getElementById('login-view')) document.getElementById('login-view').style.display = 'none';
+            if (document.getElementById('dashboard-view')) document.getElementById('dashboard-view').style.display = 'block';
             
-            // Contadores de Claims
-            document.getElementById('stat-trx').innerText = data.stats.claims_trx || 0;
-            document.getElementById('stat-ton').innerText = data.stats.claims_ton || 0;
+            const displayEl = document.getElementById('display-wallet');
+            if (displayEl) displayEl.innerText = wallet;
+            
+            // Contadores de Claims vindos do Banco de Dados [cite: 2025-12-26]
+            if (document.getElementById('stat-trx')) document.getElementById('stat-trx').innerText = data.stats.claims_trx || 0;
+            if (document.getElementById('stat-ton')) document.getElementById('stat-ton').innerText = data.stats.claims_ton || 0;
 
             atualizarSaldosTorneira();
             carregarDadosExtras();
@@ -56,7 +61,7 @@ async function checkUser(manualWallet = null) {
     }
 }
 
-// BUSCA SALDO REAL DA CONTA NA FAUCETPAY
+// BUSCA SALDO REAL DA CONTA NA FAUCETPAY (Diferentes APIs por moeda)
 async function atualizarSaldosTorneira() {
     const moedas = ['TRX', 'TON'];
     for (const moeda of moedas) {
@@ -66,6 +71,7 @@ async function atualizarSaldosTorneira() {
             const el = document.getElementById(`balance-${moeda.toLowerCase()}`);
             
             if (el && data.balance) {
+                // FaucetPay retorna em Satoshi, dividimos por 10^8
                 const saldoReal = parseFloat(data.balance) / 100000000;
                 el.innerText = saldoReal.toFixed(8);
             }
@@ -75,7 +81,7 @@ async function atualizarSaldosTorneira() {
     }
 }
 
-// CRONÔMETRO REGRESSIVO NOS BOTÕES
+// CRONÔMETRO REGRESSIVO NOS BOTÕES (Cooldown de 20 min)
 async function aplicarCooldownBotoes() {
     const moedas = ['trx', 'ton'];
     const wallet = localStorage.getItem('brazuka_wallet');
@@ -119,26 +125,32 @@ function iniciarContagemRegressiva(btn, minutos, moeda) {
     }, 1000);
 }
 
-// ABRE O MODAL
+// LÓGICA DO MODAL E CAPTCHA
 async function openClaimModal(coin) {
     currentCoin = coin;
-    document.getElementById('modal-title').innerText = `Reivindicar ${coin.toUpperCase()}`;
-    document.getElementById('claim-modal').style.display = 'block';
+    const modalTitle = document.getElementById('modal-title');
+    const modal = document.getElementById('claim-modal');
+    if (modalTitle) modalTitle.innerText = `Reivindicar ${coin.toUpperCase()}`;
+    if (modal) modal.style.display = 'block';
     
     const btn = document.getElementById('btn-finish-claim');
-    btn.disabled = true;
-    btn.innerText = "Aguarde o Captcha...";
-    btn.style.opacity = '0.5';
+    if (btn) {
+        btn.disabled = true;
+        btn.innerText = "Aguarde o Captcha...";
+        btn.style.opacity = '0.5';
+    }
     
     if (window.turnstile) turnstile.reset();
 }
 
 function onTurnstileSuccess(token) {
     const btn = document.getElementById('btn-finish-claim');
-    btn.disabled = false;
-    btn.innerText = "PEGAR TOKENS";
-    btn.style.cursor = 'pointer';
-    btn.style.opacity = '1';
+    if (btn) {
+        btn.disabled = false;
+        btn.innerText = "PEGAR TOKENS";
+        btn.style.cursor = 'pointer';
+        btn.style.opacity = '1';
+    }
 }
 
 function redirectToShortlink() {
@@ -151,58 +163,54 @@ function redirectToShortlink() {
 }
 
 function closeModal() {
-    document.getElementById('claim-modal').style.display = 'none';
+    const modal = document.getElementById('claim-modal');
+    if (modal) modal.style.display = 'none';
 }
 
+// LOGOUT COMPLETO ANALISTA
 function logout() {
     localStorage.removeItem('brazuka_wallet');
+    localStorage.removeItem('brazuka_user_email');
     location.reload();
 }
 
-// CARREGA PAGAMENTOS E RANKING (CORRIGIDO)
+// CARREGA PAGAMENTOS E RANKING (CORRIGIDO PARA O WORKER)
 async function carregarDadosExtras() {
     try {
-        // 1. Pagamentos
+        // 1. Pagamentos Recentes
         const resPagamentos = await fetch(`${API_URL}/get-recent-payouts`);
         const pagamentos = await resPagamentos.json();
         const tabela = document.getElementById('payout-rows');
         
         if (tabela) {
-            tabela.innerHTML = ''; // ANALISTA: Corrigido de 'tela' para 'tabela'
+            tabela.innerHTML = ''; 
             pagamentos.forEach(pago => {
-            const logoMap = {
-    'TRX': 'tron-trx-logo.svg',
-    'TON': 'toncoin-ton-logo.svg',
-    'DOGE': 'dogecoin-doge-logo.svg'
-};
+                const logoMap = { 'TRX': 'tron-trx-logo.svg', 'TON': 'toncoin-ton-logo.svg', 'DOGE': 'dogecoin-doge-logo.svg' };
+                const logoFile = logoMap[pago.coin.toUpperCase()] || `${pago.coin.toLowerCase()}-logo.svg`;
 
-const logoFile = logoMap[pago.coin.toUpperCase()] || `${pago.coin.toLowerCase()}-logo.svg`;
-
-const row = `
-    <tr>
-        <td>${mascararEmail(pago.email)}</td>
-        <td>${(pago.amount / 100000000).toFixed(8)}</td>
-        <td>
-            <img src="https://cryptologos.cc/logos/${logoFile}?v=040" 
-                 width="20" 
-                 onerror="this.src='https://via.placeholder.com/20?text=$'"> 
-            ${pago.coin}
-        </td>
-        <td>${formatarData(pago.timestamp)}</td>
-    </tr>`;
+                const row = `
+                    <tr>
+                        <td>${mascararEmail(pago.email)}</td>
+                        <td>${(pago.amount / 100000000).toFixed(8)}</td>
+                        <td>
+                            <img src="https://cryptologos.cc/logos/${logoFile}?v=040" width="20" onerror="this.src='https://via.placeholder.com/20?text=$'"> 
+                            ${pago.coin}
+                        </td>
+                        <td>${formatarData(pago.timestamp)}</td>
+                    </tr>`;
                 tabela.innerHTML += row;
             });
         }
 
-        // 2. Ranking
-        const resRanking = await fetch(`${API_URL}/get-leaderboard`);
+        // 2. Ranking Dinâmico (Sincronizado com a rota /get-rankings do Worker)
+        const resRanking = await fetch(`${API_URL}/get-rankings?tipo=claimers&limit=5`);
         const ranking = await resRanking.json();
         const listaRanking = document.getElementById('leaderboard-list');
         
         if (listaRanking) {
             listaRanking.innerHTML = '';
-            ranking.forEach(user => {
-                const item = `<li><strong>${mascararEmail(user.email)}</strong> - ${user.claims} Claims</li>`;
+            ranking.forEach((user, index) => {
+                const item = `<li><strong>${index + 1}º ${mascararEmail(user.email)}</strong> - ${user.score} Claims</li>`;
                 listaRanking.innerHTML += item;
             });
         }
@@ -213,7 +221,9 @@ const row = `
 
 function mascararEmail(email) {
     if (!email) return "---";
-    const [user, domain] = email.split('@');
+    const partes = email.split('@');
+    if (partes.length < 2) return email.substring(0, 5) + "...";
+    const [user, domain] = partes;
     return user.substring(0, 4) + '***@' + domain;
 }
 
