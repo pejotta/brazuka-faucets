@@ -1,35 +1,32 @@
 // ANALISTA: Configurações Gerais e Padronização
 const API_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
-const STORAGE_KEY = 'brazuka_wallet'; // Chave única para o Banco de Dados local [cite: 2025-12-26]
+const STORAGE_KEY = 'brazuka_wallet'; // Chave unificada para o Banco de Dados [cite: 2025-12-26]
 
 // 1. Função para pegar o e-mail ativo (Input ou Cache)
 function getActiveWallet() {
     const inputWallet = document.getElementById('user-wallet')?.value;
-    const savedWallet = localStorage.getItem(STORAGE_KEY);
+    const savedWallet = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('brazuka_user_email');
     return inputWallet || savedWallet || null;
 }
 
 // 2. Inicialização ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
-    // ANALISTA: Espera 300ms para garantir que o HTML desenhou tudo
-    setTimeout(() => {
-        const emailLogado = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('brazuka_user_email');
+    // Tenta recuperar o e-mail para login automático
+    const emailLogado = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('brazuka_user_email');
+    
+    if (emailLogado && emailLogado.length > 5) {
+        // Sincroniza as chaves para evitar deslogar entre páginas
+        localStorage.setItem(STORAGE_KEY, emailLogado);
+        localStorage.setItem('brazuka_user_email', emailLogado);
         
-        if (emailLogado) {
-            localStorage.setItem(STORAGE_KEY, emailLogado);
-            const inputField = document.getElementById('user-wallet');
-            if (inputField) inputField.value = emailLogado;
-            
-            console.log("Login automático detectado no Banco de Dados: " + emailLogado); [cite: 2025-12-26]
-            checkUser(emailLogado);
-        }
+        const inputField = document.getElementById('user-wallet');
+        if (inputField) inputField.value = emailLogado;
+        
+        console.log("Analista: Login automático via Banco de Dados -> " + emailLogado);
+        checkUser(emailLogado);
+    }
 
-        // Fecha o preloader se ele ainda estiver lá (ajuda na UX)
-        const preloader = document.getElementById('preloader');
-        if (preloader) preloader.classList.add('fade-out');
-    }, 300);
-
-    // Verifica se voltou de um pagamento
+    // Verifica se voltou de um pagamento com sucesso (URL Params)
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('status') === 'success') {
         const amt = urlParams.get('amt');
@@ -42,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function startShortlink(linkId) {
     const wallet = getActiveWallet();
     if (!wallet || wallet.length < 5) {
-        alert("Ei, coloca seu e-mail ou carteira primeiro!");
+        alert("Ei Pejotta, coloca seu e-mail ou carteira primeiro! 😂");
         return;
     }
 
@@ -69,7 +66,8 @@ async function startShortlink(linkId) {
 
 // 4. Bloqueio visual e Timer de 60s
 function activateLock() {
-    const mainContainer = document.getElementById('content-to-blur'); 
+    // ANALISTA: Selecionando o container correto que você criou no HTML [cite: 2026-01-02]
+    const mainContainer = document.getElementById('content-to-blur');
     const overlay = document.getElementById('lock-overlay');
     const timerDisplay = document.getElementById('timer-display');
     
@@ -88,7 +86,7 @@ function activateLock() {
             clearInterval(countdown);
             mainContainer.classList.remove('blur-active');
             overlay.style.display = 'none';
-            // Recarrega os dados reais após o tempo
+            // Recarrega os dados reais após o tempo para atualizar o saldo
             checkUser(); 
         }
     }, 1000);
@@ -96,18 +94,16 @@ function activateLock() {
 
 // 5. Verificar Usuário no Banco de Dados
 async function checkUser(manualWallet = null) {
-    // ANALISTA: Tenta encontrar o campo de e-mail por todos os IDs que você já usou
+    // Busca o e-mail em qualquer um dos IDs possíveis
     const inputEl = document.getElementById('user-wallet') || 
                     document.getElementById('wallet-input') || 
                     document.getElementById('walletAddr');
     
     const wallet = manualWallet || (inputEl ? inputEl.value : null);
     
-    console.log("Tentando login com:", wallet); // Para você ver no console (F12)
-
     if (wallet && wallet.length > 5) {
         try {
-            // Sincroniza logo as chaves antes do fetch para garantir
+            // Sincroniza chaves antes da chamada
             localStorage.setItem(STORAGE_KEY, wallet);
             localStorage.setItem('brazuka_user_email', wallet);
 
@@ -117,8 +113,7 @@ async function checkUser(manualWallet = null) {
             if (data.success) {
                 showDashboard(wallet, data.stats);
             } else {
-                // ANALISTA: Se o Worker retornar success:false, o auto-create do Worker (que ajustamos)
-                // deveria ter resolvido. Se chegar aqui, forçamos a exibição do dash zerado.
+                // Se o usuário é novo ou deu erro, mostra dashboard zerado (o Worker criará no primeiro claim)
                 showDashboard(wallet, { clicks: 0, balance: 0, daily_clicks: {} });
             }
         } catch (e) { 
@@ -151,12 +146,11 @@ async function showDashboard(wallet, stats) {
 
     // Busca saldo real da FaucetPay via Worker
     try {
-        const response = await fetch(`${API_URL}/get-faucet-balance`);
+        const response = await fetch(`${API_URL}/get-faucet-balance?coin=DOGE`);
         const data = await response.json();
         const balanceDisplay = document.getElementById('faucet-balance-display');
         if (data.balance && balanceDisplay) {
-            let valorReal = parseFloat(data.balance);
-            if (valorReal > 1000) valorReal = valorReal / 100000000; 
+            let valorReal = parseFloat(data.balance) / 100000000;
             balanceDisplay.innerText = valorReal.toFixed(4);
         }
     } catch (e) {
@@ -187,6 +181,7 @@ async function showDashboard(wallet, stats) {
                 } else {
                     btn.disabled = false;
                     btn.innerText = "ABRIR LINK";
+                    btn.style.background = ""; // Volta para a cor original do CSS
                     btn.style.cursor = "pointer";
                 }
             }
@@ -194,7 +189,7 @@ async function showDashboard(wallet, stats) {
     });
 }
 
-// 7. Função de Logout (Limpa todas as chaves possíveis)
+// 7. Função de Logout (Limpa tudo para não ter erro)
 function logout() {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem('brazuka_wallet');
