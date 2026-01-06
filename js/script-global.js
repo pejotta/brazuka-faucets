@@ -158,31 +158,27 @@ if (ref) {
 }
 async function carregarTicker() {
     const tickerTrack = document.getElementById('ticker-track');
-    if (!tickerTrack) return;
+    if (!tickerTrack || typeof TICKER_CONFIG === 'undefined') return;
 
     try {
         const response = await fetch(`https://brazuka-faucets.moneynanet-yt.workers.dev/get-ticker?t=${Date.now()}`);
         const faucetsDinamicas = response.ok ? await response.json() : [];
 
-        // --- CENTRAL DE MENSAGENS (Edite só aqui!) ---
-        const mensagensFixas = [
-            { title: "🚀 Bem-vindo ao Brazuka Faucets - O portal dos ganhos!", link: "index.html" },
-            { title: "🏆 Participe do Ranking e ganhe bônus semanais!", link: "ranking.html" },
-            { title: "💡 DICA: Use e-mail da FaucetPay para receber na hora.", link: "guia-do-iniciante.html" }
-        ];
+        // Transforma os dados do banco usando as definições do ticker-data.js
+        const faucetsFormatadas = faucetsDinamicas
+            .reverse()
+            .slice(0, TICKER_CONFIG.settings.maxFaucetsDinamicas)
+            .map(f => ({
+                title: `${TICKER_CONFIG.settings.prefixoNovaFaucet} ${f.nome || f.name} disponível!`,
+                link: f.link || `faucet-details.html?id=${f.id}`
+            }));
 
-        // Transforma as faucets do banco no formato do ticker
-        const faucetsFormatadas = faucetsDinamicas.reverse().slice(0, 5).map(f => ({
-            title: `🔥 NOVA: ${f.nome || f.name} disponível!`,
-            link: f.link || `faucet-details.html?id=${f.id}`
-        }));
-
-        // Une tudo: Mensagens fixas + Faucets novas
-        const listaFinal = [...mensagensFixas, ...faucetsFormatadas];
+        // Une as fixas do ficheiro externo com as dinâmicas do banco
+        const listaFinal = [...TICKER_CONFIG.mensagensFixas, ...faucetsFormatadas];
 
         tickerTrack.innerHTML = ''; 
 
-        // Loop infinito visual (3x a lista)
+        // Multiplica por 3 para garantir o scroll contínuo
         [...listaFinal, ...listaFinal, ...listaFinal].forEach(post => {
             const item = document.createElement('a');
             item.href = post.link;
