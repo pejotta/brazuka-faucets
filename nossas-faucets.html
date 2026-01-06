@@ -183,9 +183,9 @@
         <div class="modal-content">
             <span onclick="closeModal()" style="position: absolute; right: 20px; top: 15px; font-size: 30px; cursor: pointer;">&times;</span>
             
-            <div class="modal-layout">
-                <div class="ad-lateral" id="ad-modal-left">
-                    <div style="width:160px; height:600px; background:#f9f9f9; border:1px dashed #ccc;"></div>
+            <div class="modal-layout">                
+                    <div style="width:160px; height:600px; background:#f9f9f9; border:1px dashed #ccc;">
+                        <div class="ad-lateral" id="ad-modal-left"></div>
                 </div>
 
                 <div class="modal-main">
@@ -193,15 +193,17 @@
                     <p>Complete o desafio abaixo para liberar seus tokens.</p>
                     
                     <div style="margin: 20px auto; max-width: 300px; height: 250px; background: #f0f0f0; border-radius: 10px;">
-                         </div>
+                         <div id="ad-modal-center">
+                             
+                         </div></div>
 
                     <div class="cf-turnstile" data-sitekey="0x4AAAAAACIz3XQpjGaXppF0" data-callback="onTurnstileSuccess"></div>
 
                     <button id="btn-finish-claim" disabled onclick="redirectToShortlink()">PEGAR TOKENS</button>
                 </div>
 
-                <div class="ad-lateral" id="ad-modal-right">
-                    <div style="width:160px; height:600px; background:#f9f9f9; border:1px dashed #ccc;"></div>
+                 <div style="width:160px; height:600px; background:#f9f9f9; border:1px dashed #ccc;">
+                     <div class="ad-lateral" id="ad-modal-right"></div>
                 </div>
             </div>
         </div>
