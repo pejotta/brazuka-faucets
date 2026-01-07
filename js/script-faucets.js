@@ -228,5 +228,6 @@ function mascararEmail(email) {
 }
 
 function formatarData(timestamp) {
-    return new Date(timestamp).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit' });
+    return new Date(timestamp).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'UTC' });
 }
+
