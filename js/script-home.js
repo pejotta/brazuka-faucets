@@ -1,63 +1,98 @@
 // CONFIGURAÇÃO
 const WORKER_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
-// --- ARRAY DE ANÚNCIOS (900x250px) ---
+// --- CONFIGURAÇÃO DO SLIDER DE CURSOS ---
 const meusAnuncios = [
     { img: "/alta-performance-moedas-digitais-brazuka.gif", link: "https://go.hotmart.com/T83952619I" },
     { img: "/gif-faucetmaniacos.gif", link: "https://tenteiganhei.blogspot.com/p/curso-faucetmaniacos.html" }
 ];
 
 let adIndex = Math.floor(Math.random() * meusAnuncios.length);
+let adTimer;
 
+// Função para renderizar o anúncio com fade
+function renderizarAd(index) {
+    const container = document.getElementById("ad-content");
+    if (!container) return;
+
+    container.style.opacity = "0";
+
+    setTimeout(() => {
+        container.innerHTML = `
+            <a href="${meusAnuncios[index].link}" target="_blank">
+                <img src="${meusAnuncios[index].img}" class="ad-image" style="width:100%; height:250px; object-fit:cover; display:block; border-radius:8px;">
+            </a>
+        `;
+        container.style.opacity = "1";
+    }, 400);
+}
+
+function proximoAd() {
+    adIndex = (adIndex + 1) % meusAnuncios.length;
+    renderizarAd(adIndex);
+    resetarTimer();
+}
+
+function anteriorAd() {
+    adIndex = (adIndex - 1 + meusAnuncios.length) % meusAnuncios.length;
+    renderizarAd(adIndex);
+    resetarTimer();
+}
+
+function resetarTimer() {
+    clearInterval(adTimer);
+    adTimer = setInterval(proximoAd, 15000); // 15 Segundos conforme pedido
+}
+
+// --- INICIALIZAÇÃO PRINCIPAL ---
 document.addEventListener('DOMContentLoaded', async () => {
-    rotacionarAnuncios();
-    setInterval(rotacionarAnuncios, 15 * 60 * 1000); 
+    
+    // 1. Inicializa o Slider de Cursos
+    renderizarAd(adIndex);
+    resetarTimer();
+
+    // Eventos das setas do Slider
+    const btnNext = document.getElementById('ad-next');
+    const btnPrev = document.getElementById('ad-prev');
+    if (btnNext) btnNext.onclick = proximoAd;
+    if (btnPrev) btnPrev.onclick = anteriorAd;
 
     try {
-        // Puxando tudo diretamente do nosso Banco de Dados seguro (Cloudflare)
+        // 2. Carregamento de Dados do Banco de Dados [cite: 2025-12-26]
         const response = await fetch(`${WORKER_URL}/get-all-faucets?t=${new Date().getTime()}`);
         const data = await response.json();
 
-        // --- 1. PREENCHER AS CATEGORIAS DA HOME ---
+        // --- PREENCHER AS CATEGORIAS DA HOME ---
         const moedasHome = ['btc', 'eth', 'doge', 'trx', 'central', 'minerador', 'autofaucet', 'airdrop', 'ipo'];
 
         moedasHome.forEach(moeda => {
             const container = document.getElementById(`grid-${moeda}`);
             if (!container) return;
 
-            // Filtra todos os itens dessa categoria específica
             const allInCategory = data.filter(f => {
                 if (Array.isArray(f.moeda)) return f.moeda.includes(moeda);
                 return f.moeda === moeda;
             });
 
-            // Separa os VIPs (Patrocinados ou Destaques)
             const vips = allInCategory.filter(f => 
                 f.patrocinado === true || f.patrocinado === "true" || 
                 f.destaque === true || f.destaque === "true"
             );
 
-            // Separa os Normais
             const normais = allInCategory.filter(f => 
                 !(f.patrocinado === true || f.patrocinado === "true" || 
                   f.destaque === true || f.destaque === "true")
             );
 
-            // Embaralha apenas os normais para rotacionar no refresh
             const normaisEmbaralhados = normais.sort(() => Math.random() - 0.5);
 
-            // Ordena os VIPs: Patrocinados primeiro, depois Destaques
             vips.sort((a, b) => {
                 const aPatro = (a.patrocinado === true || a.patrocinado === "true");
                 const bPatro = (b.patrocinado === true || b.patrocinado === "true");
-                if (aPatro && !bPatro) return -1;
-                if (!aPatro && bPatro) return 1;
-                return 0;
+                return (aPatro && !bPatro) ? -1 : (!aPatro && bPatro) ? 1 : 0;
             });
 
-            // Junta tudo e pega os 5 primeiros
             const finalLista = [...vips, ...normaisEmbaralhados].slice(0, 5);
-
             container.innerHTML = ''; 
 
             if (finalLista.length === 0) {
@@ -65,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-           finalLista.forEach(faucet => {
+            finalLista.forEach(faucet => {
                 let tagsHTML = '';
                 let destaqueClass = ''; 
 
@@ -80,16 +115,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const domain = faucet.url.replace(/^(https?:\/\/)/, '').split('/')[0];
                 const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
 
-                // --- CORREÇÃO DAS TAGS AQUI ---
-                const statusLabels = {
-                    'paying': 'Paga',
-                    'pending': 'Análise',
-                    'scam': 'SCAM'
-                };
+                const statusLabels = { 'paying': 'Paga', 'pending': 'Análise', 'scam': 'SCAM' };
                 const statusTexto = statusLabels[faucet.status] || 'Análise'; 
-                // ------------------------------
 
-                const card = `
+                container.innerHTML += `
                     <a href="faucet.html?id=${faucet.id}" class="faucet-card ${destaqueClass}">
                         ${tagsHTML}
                         <div class="faucet-icon">
@@ -101,20 +130,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <h3>${faucet.nome}</h3>
                             <p class="url">${domain}</p>
                         </div>
-                        <span class="status-tag ${faucet.status}">
-                            ${statusTexto}
-                        </span>
+                        <span class="status-tag ${faucet.status}">${statusTexto}</span>
                     </a>
                 `;
-                container.innerHTML += card;
             });
         });
 
-        // --- 2. PREENCHER RECÉM ADICIONADOS ---
+        // --- PREENCHER RECÉM ADICIONADOS ---
         const recentContainer = document.getElementById('grid-recent');
         if (recentContainer) {
-            const recentFaucets = [...data].reverse().slice(0, 5);
-            recentContainer.innerHTML = recentFaucets.map(f => `
+            recentContainer.innerHTML = [...data].reverse().slice(0, 5).map(f => `
                 <a href="faucet.html?id=${f.id}" class="mini-item">
                     <img src="https://www.google.com/s2/favicons?domain=${f.url.replace(/^(https?:\/\/)/, '').split('/')[0]}&sz=64" alt="">
                     <div class="mini-info">
@@ -127,7 +152,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         loadHomeStats(data);
 
-        // Ativa os contadores
+        // Ativador do contador visual
         const statsHero = document.querySelector('.stats-hero');
         if (statsHero) {
             const observer = new IntersectionObserver((entries) => {
@@ -144,82 +169,40 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// --- FUNÇÕES AUXILIARES ---
-
+// --- FUNÇÕES DE MÉTRICAS E CONTADORES ---
 async function loadHomeStats(allFaucetsJson) {
     try {
         const res = await fetch(`${WORKER_URL}/get-global-stats`);
-        if (!res.ok) throw new Error();
         const stats = await res.json();
 
         const commContainer = document.getElementById('grid-comments');
         if (commContainer && stats.recentComments) {
             commContainer.innerHTML = stats.recentComments.map(c => {
                 const faucetRef = allFaucetsJson.find(f => f.id == c.faucetId);
-                const nomeExibicao = faucetRef ? faucetRef.nome : "Oportunidade";
                 return `
                     <a href="faucet.html?id=${c.faucetId}" class="mini-item comment-link" style="text-decoration: none; color: inherit;">
                         <div class="mini-info">
-                            <h4>${c.nome} <small>em ${nomeExibicao}</small></h4>
+                            <h4>${c.nome} <small>em ${faucetRef ? faucetRef.nome : "Oportunidade"}</small></h4>
                             <p>"${c.texto.substring(0, 40)}..."</p>
                         </div>
                     </a>
                 `;
             }).join('');
         }
-
-        const topContainer = document.getElementById('grid-top-rated');
-        if (topContainer && stats.topRated) {
-            topContainer.innerHTML = stats.topRated.map(f => {
-                const faucetRef = allFaucetsJson.find(item => item.id == f.id);
-                const nomeReal = faucetRef ? faucetRef.nome : `Item #${f.id}`;
-                return `
-                    <a href="faucet.html?id=${f.id}" class="mini-item">
-                        <div class="mini-info">
-                            <h4>${nomeReal}</h4>
-                            <span class="rating-pill">⭐ ${f.media}</span>
-                        </div>
-                    </a>
-                `;
-            }).join('');
-        }
-    } catch (e) {
-        console.log("Métricas em atualização...");
-    }
+    } catch (e) { console.log("Métricas em atualização..."); }
 }
 
 const startCounters = () => {
-    const counters = document.querySelectorAll('.stat-number');
-    const speed = 200;
-    counters.forEach(counter => {
+    document.querySelectorAll('.stat-number').forEach(counter => {
         const updateCount = () => {
             const target = +counter.getAttribute('data-target');
             const count = +counter.innerText;
-            const inc = target / speed;
+            const inc = target / 200;
             if (count < target) {
                 counter.innerText = Math.ceil(count + inc);
                 setTimeout(updateCount, 15);
-            } else {
-                counter.innerText = target;
-            }
+            } else { counter.innerText = target; }
         };
         updateCount();
     });
 };
-
-function rotacionarAnuncios() {
-    const container = document.getElementById("ad-content");
-    if (!container) return;
-
-    container.style.opacity = "0";
-
-    setTimeout(() => {
-        container.innerHTML = `
-            <a href="${meusAnuncios[adIndex].link}" target="_blank">
-                <img src="${meusAnuncios[adIndex].img}" class="ad-image" style="width:100%; height:100%; object-fit:cover;">
-            </a>
-        `;
-        container.style.opacity = "1";
-        adIndex = (adIndex + 1) % meusAnuncios.length;
-    }, 500);
-}
