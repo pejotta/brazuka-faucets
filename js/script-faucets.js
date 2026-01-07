@@ -228,5 +228,5 @@ function mascararEmail(email) {
 }
 
 function formatarData(timestamp) {
-    return new Date(timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    return new Date(timestamp).toLocaleTimeString('pt-BR', { day: '2-digit', month: '2-digit' });
 }
