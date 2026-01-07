@@ -92,8 +92,8 @@
             /* Tabela vira lista no mobile */
             table, thead, tbody, th, td, tr { display: block; }
             thead tr { position: absolute; top: -9999px; left: -9999px; }
-            tr { border: 1px solid #eee; margin-bottom: 10px; border-radius: 10px; padding: 10px; }
-            td { border: none; position: relative; padding-left: 50%; text-align: left; }
+            tr { border: 1px solid #eee; margin-bottom: 10px; border-radius: 10px; padding: 10px;background: #f0f0f0;}
+            td { border: none; position: relative; }
             td:before {
                 content: attr(data-label);
                 position: absolute; left: 10px; width: 45%;
@@ -143,18 +143,18 @@
 
             <div class="faucet-grid">
                 <div class="internal-card">
+                    <p style="font-size: 1.2em; color: #ff0013;">Saldo: <span id="balance-trx">...</span> TRX</p>
                     <img src="https://cryptologos.cc/logos/tron-trx-logo.svg?v=040" class="coin-logo">
                     <h3>Torneira TRX</h3>
                     <p>Ganhe <strong>0.001 TRX</strong></p>
-                    <p style="font-size: 0.8em; color: #888;">Saldo: <span id="balance-trx">...</span> TRX</p>
                     <button onclick="openClaimModal('trx')" id="btn-trx" style="background: #ff0013; color:white; border:none; width:100%; padding:15px; border-radius:10px; font-weight:bold; cursor:pointer;">REIVINDICAR</button>
                 </div>
 
                 <div class="internal-card">
+                    <p style="font-size: 1.2em; color: #0088cc;">Saldo: <span id="balance-ton">...</span> TON</p>
                     <img src="https://cryptologos.cc/logos/toncoin-ton-logo.svg?v=040" class="coin-logo">
                     <h3>Torneira TON</h3>
-                    <p>Ganhe <strong>0.00000005 TON</strong></p>
-                    <p style="font-size: 0.8em; color: #888;">Saldo: <span id="balance-ton">...</span> TON</p>
+                    <p>Ganhe <strong>0.00000005 TON</strong></p>                    
                     <button onclick="openClaimModal('ton')" id="btn-ton" style="background: #0088cc; color:white; border:none; width:100%; padding:15px; border-radius:10px; font-weight:bold; cursor:pointer;">REIVINDICAR</button>
                 </div>
             </div>
@@ -184,8 +184,8 @@
             <span onclick="closeModal()" style="position: absolute; right: 20px; top: 15px; font-size: 30px; cursor: pointer;">&times;</span>
             
             <div class="modal-layout">                
-                    <div style="width:160px; height:600px; background:#f9f9f9; border:1px dashed #ccc;">
-                        <div class="ad-lateral" id="ad-modal-left"></div>
+                    <div class="ad-lateral" style="width:160px; height:600px; background:#f9f9f9; border:1px dashed #ccc;">
+                        <div id="ad-modal-left"></div>
                 </div>
 
                 <div class="modal-main">
@@ -202,8 +202,8 @@
                     <button id="btn-finish-claim" disabled onclick="redirectToShortlink()">PEGAR TOKENS</button>
                 </div>
 
-                 <div style="width:160px; height:600px; background:#f9f9f9; border:1px dashed #ccc;">
-                     <div class="ad-lateral" id="ad-modal-right"></div>
+                 <div class="ad-lateral" style="width:160px; height:600px; background:#f9f9f9; border:1px dashed #ccc;">
+                     <div id="ad-modal-right"></div>
                 </div>
             </div>
         </div>
