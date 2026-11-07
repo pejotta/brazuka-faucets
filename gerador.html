@@ -109,9 +109,9 @@
         <div class="faucet-form-container">
             <h2><i class="fa-solid fa-server"></i> Painel da Faucet</h2>
             
-            <label>ID da Faucet (Para editar ou criar)</label>
+            <label>ID da Faucet (Para editar ou criar) <span id="info-total-faucets" style="color: var(--primary); font-size: 0.85em; font-weight: normal;"></span></label>
             <div class="id-group">
-                <input type="number" id="f_id" placeholder="Ex: 105">
+                <input type="number" id="f_id" placeholder="Carregando próximo ID...">
                 <button type="button" class="btn-buscar" onclick="buscarFaucetsNoBanco()">
                     <i class="fa-solid fa-magnifying-glass"></i> CARREGAR
                 </button>
@@ -171,7 +171,7 @@
                 <label class="check-item"><input type="checkbox" class="captcha-c" value="Custom"> Próprio</label>
             </div>
 
-            <label>Onde Paga?</label>
+            <h3>Onde Paga?</h3>
             <div class="checkbox-grid">
                 <label class="check-item"><input type="checkbox" class="pagto-c" value="FaucetPay"> FaucetPay</label>
                 <label class="check-item"><input type="checkbox" class="pagto-c" value="Metamask"> Metamask</label>
@@ -233,6 +233,29 @@
         let ultimoObjetoGerado = null;
         // INSIRA A URL DA SUA WORKER AQUI:
         const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
+
+        // Carrega o próximo ID disponível e total de faucets ao iniciar a página
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch(`${URL_WORKER}/get-all-faucets`);
+                const faucets = await response.json();
+                
+                if (Array.isArray(faucets) && faucets.length > 0) {
+                    const ids = faucets.map(item => parseInt(item.id)).filter(id => !isNaN(id));
+                    const maxId = ids.length > 0 ? Math.max(...ids) : 0;
+                    const proximoId = maxId + 1;
+                    
+                    document.getElementById('f_id').value = proximoId;
+                    document.getElementById('info-total-faucets').innerText = `(Total: ${faucets.length} faucets | Próximo ID livre: ${proximoId})`;
+                } else {
+                    document.getElementById('f_id').value = 1;
+                    document.getElementById('info-total-faucets').innerText = `(Banco vazio | Próximo ID: 1)`;
+                }
+            } catch (err) {
+                console.error("Erro ao buscar total de faucets:", err);
+                document.getElementById('f_id').placeholder = "Digite o ID";
+            }
+        });
 
         async function buscarFaucetsNoBanco() {
             const id = document.getElementById('f_id').value;
