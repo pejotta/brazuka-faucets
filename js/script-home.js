@@ -77,17 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const container = document.getElementById(`grid-${moeda}`);
             if (!container) return;
 
-        const allInCategory = data.filter(f => {
-    if (moeda === 'bet') {
-        // Verifica se 'bet' está na moeda (seja array ou string), ou na classificação/recursos
-        const moedaMatch = Array.isArray(f.moeda) ? f.moeda.includes('bet') : (f.moeda && f.moeda.toLowerCase().includes('bet'));
-        const tipoMatch = f.tipo_principal && f.tipo_principal.toLowerCase().includes('bet');
-        const recursoMatch = f.recursos && f.recursos.includes('apostas');
-        
-        return moedaMatch || tipoMatch || recursoMatch;
-    }
-    return Array.isArray(f.moeda) ? f.moeda.includes(moeda) : f.moeda === moeda;
-});
+            const allInCategory = data.filter(f => Array.isArray(f.moeda) ? f.moeda.includes(moeda) : f.moeda === moeda);
             
             // Separa VIPs (Patrocinados e Destaques)
             const vips = allInCategory.filter(f => f.patrocinado == "true" || f.patrocinado === true || f.destaque == "true" || f.destaque === true);
