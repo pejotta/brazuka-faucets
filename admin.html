@@ -8,48 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brazuka Command Center | Painel Administrativo</title>
     
-    <!-- Script de Autenticação Segura via Worker Centralizada -->
-    <script>
-        const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
-
-        async function verificarAutenticacao() {
-            let acesso = sessionStorage.getItem('autenticado');
-            if (acesso === 'true') return; // Já autenticado nesta sessão
-
-            let tentativa = prompt("Acesso Administrativo! Digite a senha mestra:");
-            if (!tentativa) {
-                alert("Acesso negado!");
-                window.location.href = "index.html";
-                return;
-            }
-
-            try {
-                const response = await fetch(`${URL_WORKER}/admin-login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ senha: tentativa })
-                });
-                const res = await response.json();
-
-                if (!res.success) {
-                    alert("Senha incorreta! Acesso negado.");
-                    window.location.href = "index.html";
-                } else {
-                    sessionStorage.setItem('autenticado', 'true');
-                }
-            } catch (err) {
-                alert("Erro ao validar credenciais com o servidor.");
-                window.location.href = "index.html";
-            }
-        }
-        verificarAutenticacao();
-    </script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
         :root { --primary: #1a73e8; --dark-blue: #0d47a1; --success: #27ae60; --cloud: #00a1ff; --warning: #f39c12; --bg: #f0f2f5; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; align-items: center; }
+        
+        /* REGRA DE SEGURANÇA: Oculta o corpo inteiro do painel por padrão até que a senha seja validada */
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; display: none; flex-direction: column; align-items: center; }
         
         .hero-ads {
             text-align: center; width: 90%; padding: 40px 20px;
@@ -151,7 +116,46 @@
     </div>
 
     <script>
+        const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
         let listaEmailsGlobal = [];
+
+        async function verificarAutenticacaoEScarregar() {
+            let acesso = sessionStorage.getItem('autenticado');
+
+            if (acesso !== 'true') {
+                let tentativa = prompt("Acesso Administrativo! Digite a senha mestra:");
+                if (!tentativa) {
+                    alert("Acesso negado!");
+                    window.location.replace("index.html");
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${URL_WORKER}/admin-login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ senha: tentativa })
+                    });
+                    const res = await response.json();
+
+                    if (!res.success) {
+                        alert("Senha incorreta! Acesso negado.");
+                        window.location.replace("index.html");
+                        return;
+                    } else {
+                        sessionStorage.setItem('autenticado', 'true');
+                    }
+                } catch (err) {
+                    alert("Erro ao validar credenciais com o servidor.");
+                    window.location.replace("index.html");
+                    return;
+                }
+            }
+
+            // SE PASSOU DA SENHA: Só agora liberamos a exibição do body e buscamos os dados!
+            document.body.style.display = 'flex';
+            carregarDadosPainel();
+        }
 
         async function carregarDadosPainel() {
             try {
@@ -201,8 +205,8 @@
             });
         }
 
-        // Executa ao carregar o painel
-        carregarDadosPainel();
+        // Inicia o processo de verificação bloqueante
+        verificarAutenticacaoEScarregar();
     </script>
 </body>
 </html>
