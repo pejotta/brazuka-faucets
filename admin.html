@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link rel="icon" type="image/png" href="/assets/logo-brazuka.png" sizes="32x32">
+    <link rel="shortcut icon" href="/assets/logo-brazuka.png">
+    <link rel="apple-touch-icon" href="/assets/logo-brazuka.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brazuka Command Center | Painel Administrativo</title>
+    
+    <!-- Script de Autenticação Segura via Worker Centralizada -->
+    <script>
+        const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
+
+        async function verificarAutenticacao() {
+            let acesso = sessionStorage.getItem('autenticado');
+            if (acesso === 'true') return; // Já autenticado nesta sessão
+
+            let tentativa = prompt("Acesso Administrativo! Digite a senha mestra:");
+            if (!tentativa) {
+                alert("Acesso negado!");
+                window.location.href = "index.html";
+                return;
+            }
+
+            try {
+                const response = await fetch(`${URL_WORKER}/admin-login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ senha: tentativa })
+                });
+                const res = await response.json();
+
+                if (!res.success) {
+                    alert("Senha incorreta! Acesso negado.");
+                    window.location.href = "index.html";
+                } else {
+                    sessionStorage.setItem('autenticado', 'true');
+                }
+            } catch (err) {
+                alert("Erro ao validar credenciais com o servidor.");
+                window.location.href = "index.html";
+            }
+        }
+        verificarAutenticacao();
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root { --primary: #1a73e8; --dark-blue: #0d47a1; --success: #27ae60; --cloud: #00a1ff; --warning: #f39c12; --bg: #f0f2f5; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; align-items: center; }
+        
+        .hero-ads {
+            text-align: center; width: 90%; padding: 40px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark-blue) 100%);
+            color: white; border-radius: 0 0 40px 40px; margin-bottom: 30px;
+        }
+
+        .main-wrapper { max-width: 1200px; width: 95%; display: flex; flex-direction: column; gap: 25px; margin-bottom: 50px; }
+
+        .top-actions { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); flex-wrap: wrap; gap: 15px; }
+        .btn-gerador-link {
+            background: var(--primary); color: white; padding: 12px 25px; border-radius: 30px;
+            text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 10px; transition: 0.3s;
+        }
+        .btn-gerador-link:hover { background: var(--dark-blue); transform: translateY(-2px); }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .stat-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-left: 5px solid var(--primary); }
+        .stat-card h3 { margin: 0 0 10px; color: #666; font-size: 0.9em; text-transform: uppercase; }
+        .stat-card .number { font-size: 1.8em; font-weight: bold; color: #333; }
+
+        .leads-container { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .leads-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; flex-wrap: wrap; gap: 15px; }
+        
+        .btn-copiar { background: var(--success); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .btn-copiar:hover { background: #219653; }
+
+        .table-wrapper { max-height: 400px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9em; }
+        th, td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+        th { background: #fafafa; color: #333; position: sticky; top: 0; }
+        tr:hover { background: #f9f9f9; }
+    </style>
+</head>
+<body>
+
+    <section class="hero-ads">
+        <h1>Brazuka Command Center</h1>
+        <p>Painel de Controle Administrativo, Leads e Banco de Dados</p>
+    </section>
+
+    <div class="main-wrapper">
+        
+        <!-- Ações do Topo / Acesso ao Gerador -->
+        <div class="top-actions">
+            <div>
+                <h2 style="margin:0; color: #333; font-size: 1.2em;"><i class="fa-solid fa-chart-line"></i> Visão Geral do Sistema</h2>
+                <p style="margin: 5px 0 0; color: #666; font-size: 0.9em;">Acesse o gerador de faucets ou gerencie seus leads com segurança.</p>
+            </div>
+            <a href="gerador.html" class="btn-gerador-link">
+                <i class="fa-solid fa-plus-circle"></i> Acessar Gerador de Faucets
+            </a>
+        </div>
+
+        <!-- Cards de Estatísticas -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total de Leads (E-mails)</h3>
+                <div class="number" id="total-emails">Carregando...</div>
+            </div>
+            <div class="stat-card" style="border-left-color: var(--success);">
+                <h3>Total de Faucets no Banco</h3>
+                <div class="number" id="total-faucets">Carregando...</div>
+            </div>
+            <div class="stat-card" style="border-left-color: var(--warning);">
+                <h3>Status do Servidor</h3>
+                <div class="number" style="color: var(--success); font-size: 1.2em; margin-top: 5px;">Online & Protegido ✅</div>
+            </div>
+        </div>
+
+        <!-- Lista de E-mails para E-mail Marketing -->
+        <div class="leads-container">
+            <div class="leads-header">
+                <div>
+                    <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-envelope"></i> Base de E-mails Capturados (Shortlinks & Faucets)</h3>
+                    <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">E-mails sincronizados via dashboard local dos usuários.</p>
+                </div>
+                <button class="btn-copiar" onclick="copiarTodosEmails()">
+                    <i class="fa-solid fa-copy"></i> Copiar Todos para Disparador
+                </button>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>E-mail do Usuário</th>
+                            <th>Origem / Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-emails">
+                        <tr><td colspan="3" style="text-align: center; color: #777;">Carregando e-mails do Banco de Dados KV...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let listaEmailsGlobal = [];
+
+        async function carregarDadosPainel() {
+            try {
+                // 1. Busca os e-mails salvos no KV via Worker
+                const resEmails = await fetch(`${URL_WORKER}/admin-get-emails`);
+                const emailsData = await resEmails.json();
+                
+                if (Array.isArray(emailsData)) {
+                    listaEmailsGlobal = emailsData;
+                    document.getElementById('total-emails').innerText = emailsData.length;
+                    
+                    const tbody = document.getElementById('tabela-emails');
+                    if (emailsData.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #777;">Nenhum e-mail cadastrado no banco ainda.</td></tr>';
+                    } else {
+                        tbody.innerHTML = emailsData.map((item, index) => `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td style="font-weight: 600; color: #1a73e8;">${item.email || item}</td>
+                                <td><span style="background: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 4px; font-size: 0.8em;">Dashboard Local</span></td>
+                            </tr>
+                        `).join('');
+                    }
+                }
+
+                // 2. Busca o total de faucets cadastradas
+                const resFaucets = await fetch(`${URL_WORKER}/get-all-faucets`);
+                const faucetsData = await resFaucets.json();
+                if (Array.isArray(faucetsData)) {
+                    document.getElementById('total-faucets').innerText = faucetsData.length;
+                }
+
+            } catch (err) {
+                console.error("Erro ao carregar dados do painel:", err);
+                document.getElementById('total-emails').innerText = "Erro";
+                document.getElementById('total-faucets').innerText = "Erro";
+            }
+        }
+
+        function copiarTodosEmails() {
+            if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para copiar!");
+            
+            const apenasEmails = listaEmailsGlobal.map(item => item.email || item).join(', ');
+            
+            navigator.clipboard.writeText(apenasEmails).then(() => {
+                alert("✅ Todos os e-mails foram copiados para a área de transferência! Prontos para colar na sua ferramenta de e-mail marketing.");
+            });
+        }
+
+        // Executa ao carregar o painel
+        carregarDadosPainel();
+    </script>
+</body>
+</html>
