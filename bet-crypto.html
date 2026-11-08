@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link rel="icon" type="image/png" href="/assets/logo-brazuka.png" sizes="32x32">
+    <link rel="shortcut icon" href="/assets/logo-brazuka.png">
+    <link rel="apple-touch-icon" href="/assets/logo-brazuka.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Bet Crypto | Brazuka Faucets</title>
+    <link rel="stylesheet" href="css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body data-coin="bet-crypto">
+
+    <main class="container">
+        <h1>Todos as Bets Crypto</h1>
+
+         <div class="ad-slot-top"></div>
+
+       <section class="filter-controls">
+    <input type="text" id="search-faucet" placeholder="🔍 Buscar por nome...">
+
+    <label>Tipo:</label>
+    <select id="filter-tipo">
+        <option value="all">Todos</option>
+        <option value="padrao">Faucet Padrão</option>
+        <option value="auto">Auto Faucet</option>
+    </select>
+
+    <label>Avaliação:</label>
+    <select id="filter-avaliacao">
+        <option value="0">Qualquer</option>
+        <option value="4">4 Estrelas +</option>
+        <option value="3">3 Estrelas +</option>
+        <option value="2">2 Estrelas +</option>
+    </select>
+    
+    <label>Pagamento:</label>
+    <select id="filter-pagamento">
+        <option value="all">Qualquer</option>
+        <option value="faucetpay">FaucetPay</option>
+        <option value="direct">Direto</option>
+    </select>
+    
+    <button id="apply-filters">Aplicar Filtros</button>
+</section>
+        
+        <div class="table-responsive">
+            <table id="faucets-table" class="faucet-table">
+                <thead>
+                    <tr>
+                        <th>Nome / URL</th>
+                        <th>Tipo</th>
+                        <th>Min. Saque</th>
+                        <th>Tempo Saque</th>
+                        <th>Avaliação</th>
+                        <th>Status</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="faucets-tbody">
+                    <tr><td colspan="7" style="text-align: center;">Carregando faucets...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+           <div class="ad-slot-mid"></div>
+
+    </main>
+
+    <script src="js/script-list.js"></script> 
+    <script type="text/javascript">...</script>
+    <script src="js/ads-manager.js"></script>
+    <script src="js/ticker-data.js"></script>
+<script src="js/script-global.js"></script>
+    
+</body>
+</html>
