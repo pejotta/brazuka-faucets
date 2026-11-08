@@ -8,45 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brazuka Command Center | Gerador Banco de Dados</title>
     
-    <!-- Script de Autenticação Segura via Worker -->
-    <script>
-        const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
-
-        async function verificarAutenticacao() {
-            let acesso = sessionStorage.getItem('autenticado');
-            if (acesso === 'true') return; // Já autenticado nesta sessão
-
-            let tentativa = prompt("Acesso Administrativo! Digite a senha:");
-            if (!tentativa) {
-                alert("Acesso negado!");
-                window.location.href = "index.html";
-                return;
-            }
-
-            try {
-                const response = await fetch(`${URL_WORKER}/admin-login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ senha: tentativa })
-                });
-                const res = await response.json();
-
-                if (res.success) {
-                    sessionStorage.setItem('autenticado', 'true');
-                } else {
-                    alert("Senha incorreta! Acesso negado.");
-                    window.location.href = "index.html";
-                }
-            } catch (err) {
-                alert("Erro ao validar credenciais com o servidor.");
-                window.location.href = "index.html";
-            }
-        }
-
-        // Executa a verificação assim que o script carregar
-        verificarAutenticacao();
-    </script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
@@ -54,10 +15,13 @@
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; display: flex; flex-direction: column; align-items: center; }
         
         .hero-ads {
-            text-align: center; width: 90%; padding: 40px 20px;
+            text-align: center; width: 90%; padding: 30px 20px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--dark-blue) 100%);
             color: white; border-radius: 0 0 50px 50px; margin-bottom: 30px;
         }
+
+        .back-nav { position: absolute; left: 20px; top: 20px; color: white; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 0.9em; }
+        .back-nav:hover { text-decoration: underline; }
 
         .main-wrapper { display: flex; gap: 20px; max-width: 1300px; width: 95%; margin-bottom: 50px; }
         
@@ -123,9 +87,10 @@
 </head>
 <body>
 
-    <section class="hero-ads">
+    <section class="hero-ads" style="position: relative;">
+        <a href="admin.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> Voltar ao Painel</a>
         <h1>Brazuka Command Center</h1>
-        <p>Olá Pejotta! Gerencie o Banco de Dados em tempo real.</p>
+        <p>Gerador e Editor de Faucets em Tempo Real</p>
     </section>
 
     <div class="main-wrapper">
@@ -254,9 +219,9 @@
     </div>
 
     <script>
+        const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
         let ultimoObjetoGerado = null;
 
-        // Carrega o próximo ID disponível e total de faucets ao iniciar a página
         window.addEventListener('DOMContentLoaded', async () => {
             try {
                 const response = await fetch(`${URL_WORKER}/get-all-faucets`);
@@ -370,7 +335,7 @@
             btn.disabled = true;
 
             try {
-                const response = await fetch(`${URL_WORKER}/admin-save-faucet`, {
+                const response = statusResponse = await fetch(`${URL_WORKER}/admin-save-faucet`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(ultimoObjetoGerado)
