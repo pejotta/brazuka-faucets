@@ -8,20 +8,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brazuka Command Center | Gerador Banco de Dados</title>
     
+    <!-- Script de Autenticação Segura via Worker -->
     <script>
-    (function() {
-        const SENHA_MESTRA = "Umabrazukanova2025historia"; 
-        let acesso = sessionStorage.getItem('autenticado');
-        if (acesso !== 'true') {
+        const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
+
+        async function verificarAutenticacao() {
+            let acesso = sessionStorage.getItem('autenticado');
+            if (acesso === 'true') return; // Já autenticado nesta sessão
+
             let tentativa = prompt("Acesso Administrativo! Digite a senha:");
-            if (tentativa === SENHA_MESTRA) {
-                sessionStorage.setItem('autenticado', 'true');
-            } else {
+            if (!tentativa) {
                 alert("Acesso negado!");
+                window.location.href = "index.html";
+                return;
+            }
+
+            try {
+                const response = await fetch(`${URL_WORKER}/admin-login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ senha: tentativa })
+                });
+                const res = await response.json();
+
+                if (res.success) {
+                    sessionStorage.setItem('autenticado', 'true');
+                } else {
+                    alert("Senha incorreta! Acesso negado.");
+                    window.location.href = "index.html";
+                }
+            } catch (err) {
+                alert("Erro ao validar credenciais com o servidor.");
                 window.location.href = "index.html";
             }
         }
-    })();
+
+        // Executa a verificação assim que o script carregar
+        verificarAutenticacao();
     </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -231,8 +254,6 @@
 
     <script>
         let ultimoObjetoGerado = null;
-        // INSIRA A URL DA SUA WORKER AQUI:
-        const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 
         // Carrega o próximo ID disponível e total de faucets ao iniciar a página
         window.addEventListener('DOMContentLoaded', async () => {
@@ -270,7 +291,6 @@
                 const f = faucets.find(item => item.id == id);
 
                 if (f) {
-                    // Preenchimento de campos de texto
                     document.getElementById('f_nome').value = f.nome || '';
                     document.getElementById('f_url').value = f.url || '';
                     document.getElementById('f_moedas').value = Array.isArray(f.moeda) ? f.moeda.join(', ') : f.moeda;
@@ -282,7 +302,6 @@
                     document.getElementById('f_destaque').value = String(f.destaque);
                     document.getElementById('f_patrocinado').value = String(f.patrocinado);
 
-                    // Lógica para marcar Checkboxes
                     const marcarChecks = (seletor, valorString) => {
                         const listaValores = valorString ? valorString.split(/[,/]/).map(v => v.trim()) : [];
                         document.querySelectorAll(seletor).forEach(cb => {
@@ -290,16 +309,13 @@
                         });
                     };
 
-                    // Marca as categorias (Tipos)
                     const listaTipos = f.tipo_principal ? f.tipo_principal.split(' e ').map(v => v.trim()) : [];
                     document.querySelectorAll('.tipo-p').forEach(cb => cb.checked = listaTipos.includes(cb.value));
 
-                    // Marca os recursos (que já é um array)
                     document.querySelectorAll('.recurso').forEach(cb => {
                         cb.checked = f.recursos && f.recursos.includes(cb.value);
                     });
 
-                    // Marca os outros
                     marcarChecks('.captcha-c', f.captcha);
                     marcarChecks('.pagto-c', f.pagamento);
 
