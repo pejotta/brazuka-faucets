@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const data = await response.json();
 
         // 1. PREENCHER CATEGORIAS (BTC, ETH, etc)
-        const moedasHome = ['btc', 'eth', 'doge', 'trx', 'central', 'minerador', 'autofaucet', 'airdrop', 'ipo'];
+        const moedasHome = ['btc', 'eth', 'doge', 'trx', 'central', 'minerador', 'autofaucet', 'airdrop', 'ipo', 'bet'];
 
         moedasHome.forEach(moeda => {
             const container = document.getElementById(`grid-${moeda}`);
