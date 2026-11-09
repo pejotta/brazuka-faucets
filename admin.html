@@ -86,7 +86,6 @@
         </div>
 
         <!-- Lista de E-mails para E-mail Marketing -->
-        <!-- Lista de E-mails para E-mail Marketing -->
         <div class="leads-container">
             <div class="leads-header">
                 <div>
@@ -130,7 +129,71 @@
         const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
         let listaEmailsGlobal = [];
 
-        // Função para renderizar a tabela na tela
+        // 1. Função de Autenticação Segura (Bloqueante)
+        async function verificarAutenticacaoEScarregar() {
+            let acesso = sessionStorage.getItem('autenticado');
+
+            if (acesso !== 'true') {
+                let tentativa = prompt("Acesso Administrativo! Digite a senha mestra:");
+                if (!tentativa) {
+                    alert("Acesso negado!");
+                    window.location.replace("index.html");
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${URL_WORKER}/admin-login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ senha: tentativa })
+                    });
+                    const res = await response.json();
+
+                    if (!res.success) {
+                        alert("Senha incorreta! Acesso negado.");
+                        window.location.replace("index.html");
+                        return;
+                    } else {
+                        sessionStorage.setItem('autenticado', 'true');
+                    }
+                } catch (err) {
+                    alert("Erro ao validar credenciais com o servidor.");
+                    window.location.replace("index.html");
+                    return;
+                }
+            }
+
+            // SÓ LIBERA O BODY APÓS PASSAR DA SENHA
+            document.body.style.display = 'flex';
+            carregarDadosPainel();
+        }
+
+        // 2. Busca de Dados na Worker
+        async function carregarDadosPainel() {
+            try {
+                const resEmails = await fetch(`${URL_WORKER}/admin-get-emails`);
+                const emailsData = await resEmails.json();
+                
+                if (Array.isArray(emailsData)) {
+                    listaEmailsGlobal = emailsData;
+                    document.getElementById('total-emails').innerText = emailsData.length;
+                    renderizarTabela(emailsData);
+                }
+
+                const resFaucets = await fetch(`${URL_WORKER}/get-all-faucets`);
+                const faucetsData = await resFaucets.json();
+                if (Array.isArray(faucetsData)) {
+                    document.getElementById('total-faucets').innerText = faucetsData.length;
+                }
+
+            } catch (err) {
+                console.error("Erro ao carregar dados do painel:", err);
+                document.getElementById('total-emails').innerText = "Erro";
+                document.getElementById('total-faucets').innerText = "Erro";
+            }
+        }
+
+        // 3. Renderiza a tabela de e-mails
         function renderizarTabela(dados) {
             const tbody = document.getElementById('tabela-emails');
             if (!dados || dados.length === 0) {
@@ -147,7 +210,7 @@
             `).join('');
         }
 
-        // Função de Pesquisa / Filtro instantâneo
+        // 4. Filtro Instantâneo
         function filtrarTabela() {
             const termo = document.getElementById('filtro-email').value.toLowerCase();
             const filtrados = listaEmailsGlobal.filter(item => {
@@ -157,7 +220,16 @@
             renderizarTabela(filtrados);
         }
 
-        // Função para Exportar e Baixar arquivo CSV
+        // 5. Copiar Todos os E-mails
+        function copiarTodosEmails() {
+            if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para copiar!");
+            const apenasEmails = listaEmailsGlobal.map(item => item.email || item).join(', ');
+            navigator.clipboard.writeText(apenasEmails).then(() => {
+                alert("✅ Todos os e-mails foram copiados para a área de transferência!");
+            });
+        }
+
+        // 6. Exportar para .CSV
         function baixarCSV() {
             if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para exportar!");
 
@@ -174,59 +246,6 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-        }
-
-            // SE PASSOU DA SENHA: Só agora liberamos a exibição do body e buscamos os dados!
-            document.body.style.display = 'flex';
-            carregarDadosPainel();
-        }
-
-        async function carregarDadosPainel() {
-            try {
-                // 1. Busca os e-mails salvos no KV via Worker
-                const resEmails = await fetch(`${URL_WORKER}/admin-get-emails`);
-                const emailsData = await resEmails.json();
-                
-                if (Array.isArray(emailsData)) {
-                    listaEmailsGlobal = emailsData;
-                    document.getElementById('total-emails').innerText = emailsData.length;
-                    
-                    const tbody = document.getElementById('tabela-emails');
-                    if (emailsData.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #777;">Nenhum e-mail cadastrado no banco ainda.</td></tr>';
-                    } else {
-                        tbody.innerHTML = emailsData.map((item, index) => `
-                            <tr>
-                                <td>${index + 1}</td>
-                                <td style="font-weight: 600; color: #1a73e8;">${item.email || item}</td>
-                                <td><span style="background: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 4px; font-size: 0.8em;">Dashboard Local</span></td>
-                            </tr>
-                        `).join('');
-                    }
-                }
-
-                // 2. Busca o total de faucets cadastradas
-                const resFaucets = await fetch(`${URL_WORKER}/get-all-faucets`);
-                const faucetsData = await resFaucets.json();
-                if (Array.isArray(faucetsData)) {
-                    document.getElementById('total-faucets').innerText = faucetsData.length;
-                }
-
-            } catch (err) {
-                console.error("Erro ao carregar dados do painel:", err);
-                document.getElementById('total-emails').innerText = "Erro";
-                document.getElementById('total-faucets').innerText = "Erro";
-            }
-        }
-
-        function copiarTodosEmails() {
-            if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para copiar!");
-            
-            const apenasEmails = listaEmailsGlobal.map(item => item.email || item).join(', ');
-            
-            navigator.clipboard.writeText(apenasEmails).then(() => {
-                alert("✅ Todos os e-mails foram copiados para a área de transferência! Prontos para colar na sua ferramenta de e-mail marketing.");
-            });
         }
 
         // Inicia o processo de verificação bloqueante
