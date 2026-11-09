@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
-        :root { --primary: #1a73e8; --dark-blue: #0d47a1; --success: #27ae60; --cloud: #00a1ff; --warning: #f39c12; --bg: #f0f2f5; }
+        :root { --primary: #1a73e8; --dark-blue: #0d47a1; --success: #27ae60; --cloud: #00a1ff; --warning: #f39c12; --danger: #e74c3c; --bg: #f0f2f5; }
         
-        /* REGRA DE SEGURANÇA: Oculta o corpo inteiro do painel por padrão até que a senha seja validada */
+        /* REGRA DE SEGURANÇA: Oculta o corpo inteiro do painel por padrão */
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; display: none; flex-direction: column; align-items: center; }
         
         .hero-ads {
@@ -36,24 +36,29 @@
         .stat-card h3 { margin: 0 0 10px; color: #666; font-size: 0.9em; text-transform: uppercase; }
         .stat-card .number { font-size: 1.8em; font-weight: bold; color: #333; }
 
-        .leads-container { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .leads-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; flex-wrap: wrap; gap: 15px; }
+        .panel-container { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; flex-wrap: wrap; gap: 15px; }
         
-        .btn-copiar { background: var(--success); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
-        .btn-copiar:hover { background: #219653; }
+        .btn-action { background: var(--success); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .btn-action:hover { opacity: 0.9; }
 
         .table-wrapper { max-height: 400px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9em; }
         th, td { padding: 12px 15px; border-bottom: 1px solid #eee; }
         th { background: #fafafa; color: #333; position: sticky; top: 0; }
         tr:hover { background: #f9f9f9; }
+
+        /* Estilos do Gerenciador de Ads */
+        .ad-item { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+        .ad-code-preview { font-family: monospace; font-size: 0.85em; color: #333; background: #fff; border: 1px solid #ddd; padding: 10px; border-radius: 5px; flex: 1; word-break: break-all; max-height: 60px; overflow-y: auto; }
+        .btn-del { background: var(--danger); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <section class="hero-ads">
         <h1>Brazuka Command Center</h1>
-        <p>Painel de Controle Administrativo, Leads e Banco de Dados</p>
+        <p>Painel de Controle Administrativo, Publicidade e Leads</p>
     </section>
 
     <div class="main-wrapper">
@@ -62,7 +67,7 @@
         <div class="top-actions">
             <div>
                 <h2 style="margin:0; color: #333; font-size: 1.2em;"><i class="fa-solid fa-chart-line"></i> Visão Geral do Sistema</h2>
-                <p style="margin: 5px 0 0; color: #666; font-size: 0.9em;">Acesse o gerador de faucets ou gerencie seus leads com segurança.</p>
+                <p style="margin: 5px 0 0; color: #666; font-size: 0.9em;">Gerencie seus anúncios, acesse o gerador ou exporte leads.</p>
             </div>
             <a href="gerador.html" class="btn-gerador-link">
                 <i class="fa-solid fa-plus-circle"></i> Acessar Gerador de Faucets
@@ -79,24 +84,67 @@
                 <h3>Total de Faucets no Banco</h3>
                 <div class="number" id="total-faucets">Carregando...</div>
             </div>
-            <div class="stat-card" style="border-left-color: var(--warning);">
-                <h3>Status do Servidor</h3>
-                <div class="number" style="color: var(--success); font-size: 1.2em; margin-top: 5px;">Online & Protegido ✅</div>
+            <div class="stat-card" style="border-left-color: var(--cloud);">
+                <h3>Anúncios Ativos</h3>
+                <div class="number" id="total-ads">Carregando...</div>
+            </div>
+        </div>
+
+        <!-- NOVO: Gerenciador de Anúncios (ADS) -->
+        <div class="panel-container">
+            <div class="panel-header">
+                <div>
+                    <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-rectangle-ad"></i> Gerenciador de Anúncios (Brazuka Ads)</h3>
+                    <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Gerencie e rotacione os banners exibidos no seu site em tempo real.</p>
+                </div>
+                <button class="btn-action" onclick="salvarAnunciosNoBanco()" style="background: var(--cloud);">
+                    <i class="fa-solid fa-floppy-disk"></i> Salvar Anúncios no KV
+                </button>
+            </div>
+
+            <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-weight: bold; font-size: 0.9em; display: block; margin-bottom: 5px;">Selecione o Posição/Slot:</label>
+                    <select id="ad-slot-select" onchange="carregarSlotSelecionado()" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
+                        <option value="homeTop">Home - Banner Topo (728x90)</option>
+                        <option value="homeMid">Home - Banner Meio (728x90)</option>
+                        <option value="sidebar">Sidebar - Lateral (300x250)</option>
+                        <option value="pageGain">Página de Ganho (970x250)</option>
+                        <option value="modalLeft">Modal - Esquerda (160x600)</option>
+                        <option value="modalRight">Modal - Direita (160x600)</option>
+                        <option value="modalCenter">Modal - Centro (Principal)</option>
+                        <option value="pageCadastro">Página Cadastro (160x600)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Adicionar Novo Ad -->
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px dashed #ccc;">
+                <label style="font-weight: bold; font-size: 0.85em; display: block; margin-bottom: 5px;">Adicionar Novo Código de Anúncio HTML/Script:</label>
+                <textarea id="novo-ad-codigo" placeholder='Cole o código aqui... Ex: <a href="..."><img src="..."></a>' style="width: 100%; height: 70px; padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-family: monospace; font-size: 0.85em; box-sizing: border-box;"></textarea>
+                <button class="btn-action" onclick="adicionarAnuncioAoSlot()" style="margin-top: 10px; background: var(--primary);">
+                    <i class="fa-solid fa-plus"></i> Adicionar a este Slot
+                </button>
+            </div>
+
+            <!-- Lista de Banners do Slot Atual -->
+            <div id="lista-ads-slot">
+                <!-- Injetado dinamicamente via JS -->
             </div>
         </div>
 
         <!-- Lista de E-mails para E-mail Marketing -->
-        <div class="leads-container">
-            <div class="leads-header">
+        <div class="panel-container">
+            <div class="panel-header">
                 <div>
                     <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-envelope"></i> Base de E-mails Capturados</h3>
                     <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Gerencie, pesquise e exporte sua base de leads com facilidade.</p>
                 </div>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button class="btn-copiar" onclick="copiarTodosEmails()" style="background: var(--primary);">
+                    <button class="btn-action" onclick="copiarTodosEmails()" style="background: var(--primary);">
                         <i class="fa-solid fa-copy"></i> Copiar Todos
                     </button>
-                    <button class="btn-copiar" onclick="baixarCSV()">
+                    <button class="btn-action" onclick="baixarCSV()">
                         <i class="fa-solid fa-file-csv"></i> Baixar .CSV
                     </button>
                 </div>
@@ -128,6 +176,10 @@
     <script>
         const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
         let listaEmailsGlobal = [];
+        let objetoAdsGlobal = {
+            homeTop: [], homeMid: [], sidebar: [], pageGain: [],
+            modalLeft: [], modalRight: [], modalCenter: [], pageCadastro: []
+        };
 
         // 1. Função de Autenticação Segura (Bloqueante)
         async function verificarAutenticacaoEScarregar() {
@@ -163,37 +215,123 @@
                 }
             }
 
-            // SÓ LIBERA O BODY APÓS PASSAR DA SENHA
             document.body.style.display = 'flex';
             carregarDadosPainel();
         }
 
-        // 2. Busca de Dados na Worker
+        // 2. Busca de Dados na Worker (Leads, Faucets e Ads)
         async function carregarDadosPainel() {
             try {
+                // Puxa e-mails
                 const resEmails = await fetch(`${URL_WORKER}/admin-get-emails`);
                 const emailsData = await resEmails.json();
-                
                 if (Array.isArray(emailsData)) {
                     listaEmailsGlobal = emailsData;
                     document.getElementById('total-emails').innerText = emailsData.length;
                     renderizarTabela(emailsData);
                 }
 
+                // Puxa faucets
                 const resFaucets = await fetch(`${URL_WORKER}/get-all-faucets`);
                 const faucetsData = await resFaucets.json();
                 if (Array.isArray(faucetsData)) {
                     document.getElementById('total-faucets').innerText = faucetsData.length;
                 }
 
+                // Puxa Ads do KV
+                const resAds = await fetch(`${URL_WORKER}/admin-get-ads`);
+                const adsData = await resAds.json();
+                if (adsData && typeof adsData === 'object') {
+                    objetoAdsGlobal = { ...objetoAdsGlobal, ...adsData };
+                    atualizarContadorAnuncios();
+                    carregarSlotSelecionado();
+                }
+
             } catch (err) {
                 console.error("Erro ao carregar dados do painel:", err);
-                document.getElementById('total-emails').innerText = "Erro";
-                document.getElementById('total-faucets').innerText = "Erro";
             }
         }
 
-        // 3. Renderiza a tabela de e-mails de forma segura (Blindada)
+        // --- LÓGICA DO GERENCIADOR DE ADS ---
+
+        function atualizarContadorAnuncios() {
+            let total = 0;
+            Object.keys(objetoAdsGlobal).forEach(slot => {
+                if (Array.isArray(objetoAdsGlobal[slot])) {
+                    total += objetoAdsGlobal[slot].length;
+                }
+            });
+            document.getElementById('total-ads').innerText = total;
+        }
+
+        function carregarSlotSelecionado() {
+            const slot = document.getElementById('ad-slot-select').value;
+            const listaContainer = document.getElementById('lista-ads-slot');
+            const adsDoSlot = objetoAdsGlobal[slot] || [];
+
+            if (adsDoSlot.length === 0) {
+                listaContainer.innerHTML = '<p style="color: #777; font-size: 0.9em; text-align: center;">Nenhum anúncio cadastrado para este slot ainda.</p>';
+                return;
+            }
+
+            listaContainer.innerHTML = adsDoSlot.map((codigo, index) => `
+                <div class="ad-item">
+                    <div class="ad-code-preview">${escapeHtml(codigo)}</div>
+                    <button class="btn-del" onclick="removerAnuncioDoSlot(${index})"><i class="fa-solid fa-trash"></i> Excluir</button>
+                </div>
+            `).join('');
+        }
+
+        function adicionarAnuncioAoSlot() {
+            const slot = document.getElementById('ad-slot-select').value;
+            const campoCodigo = document.getElementById('novo-ad-codigo');
+            const codigo = campoCodigo.value.trim();
+
+            if (!codigo) return alert("Cole o código do anúncio primeiro!");
+
+            if (!objetoAdsGlobal[slot]) objetoAdsGlobal[slot] = [];
+            objetoAdsGlobal[slot].push(codigo);
+            campoCodigo.value = "";
+
+            carregarSlotSelecionado();
+            atualizarContadorAnuncios();
+            alert("Anúncio adicionado à lista local! Não se esqueça de clicar em 'Salvar Anúncios no KV'.");
+        }
+
+        function removerAnuncioDoSlot(index) {
+            const slot = document.getElementById('ad-slot-select').value;
+            if (objetoAdsGlobal[slot] && objetoAdsGlobal[slot][index] !== undefined) {
+                objetoAdsGlobal[slot].splice(index, 1);
+                carregarSlotSelecionado();
+                atualizarContadorAnuncios();
+            }
+        }
+
+        async function salvarAnunciosNoBanco() {
+            try {
+                const response = await fetch(`${URL_WORKER}/admin-save-ads`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(objetoAdsGlobal)
+                });
+                const res = await response.json();
+                if (res.success) {
+                    alert("✅ Excelente! Todos os anúncios foram atualizados e salvos no Banco de Dados Cloudflare.");
+                } else {
+                    alert("❌ Erro ao salvar: " + res.error);
+                }
+            } catch (err) {
+                alert("🚨 Erro de conexão ao salvar anúncios!");
+                console.error(err);
+            }
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // --- LÓGICA DE LEADS ---
+
         function renderizarTabela(dados) {
             const tbody = document.getElementById('tabela-emails');
             if (!tbody) return;
@@ -221,58 +359,36 @@
             }).join('');
         }
 
-        // 4. Filtro Instantâneo Blindado
         function filtrarTabela() {
             const campoFiltro = document.getElementById('filtro-email');
             if (!campoFiltro) return;
 
             const termo = (campoFiltro.value || "").toLowerCase().trim();
-            
             const filtrados = listaEmailsGlobal.filter(item => {
                 if (!item) return false;
-                
-                let emailStr = "";
-                if (typeof item === 'string') {
-                    emailStr = item;
-                } else if (typeof item === 'object') {
-                    emailStr = item.email || item.wallet || "";
-                }
-
+                let emailStr = typeof item === 'string' ? item : (item.email || item.wallet || "");
                 return emailStr.toLowerCase().includes(termo);
             });
 
             renderizarTabela(filtrados);
         }
 
-        // 5. Copiar Todos os E-mails
         function copiarTodosEmails() {
-            if (listaEmailsGlobal.length === 0) return alert("No há e-mails para copiar!");
-            
-            const apenasEmails = listaEmailsGlobal.map(item => {
-                if (typeof item === 'string') return item;
-                return item.email || item.wallet || "";
-            }).filter(Boolean).join(', ');
+            if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para copiar!");
+            const apenasEmails = listaEmailsGlobal.map(item => typeof item === 'string' ? item : (item.email || item.wallet || "")).filter(Boolean).join(', ');
 
             navigator.clipboard.writeText(apenasEmails).then(() => {
                 alert("✅ Todos os e-mails foram copiados para a área de transferência!");
             });
         }
 
-        // 6. Exportar para .CSV
         function baixarCSV() {
             if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para exportar!");
 
             let csvContent = "data:text/csv;charset=utf-8,Email,Origem\n";
             listaEmailsGlobal.forEach(item => {
-                let email = "";
-                if (typeof item === 'string') {
-                    email = item;
-                } else if (item && typeof item === 'object') {
-                    email = item.email || item.wallet || "";
-                }
-                if (email) {
-                    csvContent += `"${email}","Dashboard Local"\n`;
-                }
+                let email = typeof item === 'string' ? item : (item.email || item.wallet || "");
+                if (email) csvContent += `"${email}","Dashboard Local"\n`;
             });
 
             const encodedUri = encodeURI(csvContent);
@@ -284,7 +400,7 @@
             document.body.removeChild(link);
         }
 
-        // Inicia o processo de verificação bloqueante
+        // Executa a autenticação e carregamento
         verificarAutenticacaoEScarregar();
     </script>
 </body>
