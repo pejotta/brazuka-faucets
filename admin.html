@@ -86,15 +86,26 @@
         </div>
 
         <!-- Lista de E-mails para E-mail Marketing -->
+        <!-- Lista de E-mails para E-mail Marketing -->
         <div class="leads-container">
             <div class="leads-header">
                 <div>
-                    <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-envelope"></i> Base de E-mails Capturados (Shortlinks & Faucets)</h3>
-                    <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">E-mails sincronizados via dashboard local dos usuários.</p>
+                    <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-envelope"></i> Base de E-mails Capturados</h3>
+                    <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Gerencie, pesquise e exporte sua base de leads com facilidade.</p>
                 </div>
-                <button class="btn-copiar" onclick="copiarTodosEmails()">
-                    <i class="fa-solid fa-copy"></i> Copiar Todos para Disparador
-                </button>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn-copiar" onclick="copiarTodosEmails()" style="background: var(--primary);">
+                        <i class="fa-solid fa-copy"></i> Copiar Todos
+                    </button>
+                    <button class="btn-copiar" onclick="baixarCSV()">
+                        <i class="fa-solid fa-file-csv"></i> Baixar .CSV
+                    </button>
+                </div>
+            </div>
+
+            <!-- Barra de Pesquisa de Leads -->
+            <div style="margin-bottom: 20px;">
+                <input type="text" id="filtro-email" placeholder="🔍 Pesquisar e-mail na base..." onkeyup="filtrarTabela()" style="padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; width: 100%; box-sizing: border-box; font-size: 0.9em;">
             </div>
 
             <div class="table-wrapper">
