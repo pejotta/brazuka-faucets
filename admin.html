@@ -52,6 +52,25 @@
         .ad-item { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
         .ad-code-preview { font-family: monospace; font-size: 0.85em; color: #333; background: #fff; border: 1px solid #ddd; padding: 10px; border-radius: 5px; flex: 1; word-break: break-all; max-height: 60px; overflow-y: auto; }
         .btn-del { background: var(--danger); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-painel {
+    background: var(--primary); 
+    color: white; 
+    padding: 12px 25px; 
+    border-radius: 30px;
+    border: none;
+    text-decoration: none; 
+    font-weight: bold; 
+    font-size: 0.9em;
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-painel:hover { 
+    background: var(--dark-blue); 
+    transform: translateY(-2px); 
+}
     </style>
 </head>
 <body>
@@ -64,18 +83,20 @@
     <div class="main-wrapper">
         
         <!-- Ações do Topo / Acesso ao Gerador -->
-        <div class="top-actions">
-            <div>
-                <h2 style="margin:0; color: #333; font-size: 1.2em;"><i class="fa-solid fa-chart-line"></i> Visão Geral do Sistema</h2>
-                <p style="margin: 5px 0 0; color: #666; font-size: 0.9em;">Gerencie seus anúncios, acesse o gerador ou exporte leads.</p>
-            </div>
-            <a href="gerador.html" class="btn-gerador-link">
-                <i class="fa-solid fa-plus-circle"></i> Acessar Gerador de Faucets
-            </a>
-            <button class="btn-action" onclick="baixarBackupKV()" style="background: var(--dark-blue);">
-    <i class="fa-solid fa-download"></i> Baixar Backup Geral (JSON)
-</button>
-        </div>
+<div class="top-actions">
+    <div>
+        <h2 style="margin:0; color: #333; font-size: 1.2em;"><i class="fa-solid fa-chart-line"></i> Visão Geral do Sistema</h2>
+        <p style="margin: 5px 0 0; color: #666; font-size: 0.9em;">Gerencie seus anúncios, acesse o gerador ou exporte leads.</p>
+    </div>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="gerador.html" class="btn-painel">
+            <i class="fa-solid fa-plus-circle"></i> Acessar Gerador de Faucets
+        </a>
+        <button class="btn-painel" onclick="baixarBackupKV()">
+            <i class="fa-solid fa-download"></i> Baixar Backup Geral (JSON)
+        </button>
+    </div>
+</div>
 
         <!-- Cards de Estatísticas -->
         <div class="stats-grid">
