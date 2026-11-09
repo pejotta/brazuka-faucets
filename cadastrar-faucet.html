@@ -14,7 +14,7 @@
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <meta http-equiv="content-language" content="pt-BR" />
     <title>Cadastre seu site | Brazuka Faucets</title>
-    <meta name="description" content="Brazuka Faucets: Cadastre sua Faucet, Airdrop, Mineradora ou Bet Crypto na nossa lista oficial." />
+    <meta name="description" content="Brazuka Faucets: Cadastre sua Faucet, Airdrop, Mineradora, Bet Crypto ou Pré-venda na nossa lista oficial." />
     <meta name="author" content="Pejotta" />
     <meta name="theme-color" content="#1a73e8">
     
@@ -85,7 +85,7 @@
 
     <section class="hero-ads">
         <h1>Cadastre seu site</h1>
-        <p>Airdrop, Faucet, Mineradora, Bet Crypto ou Autofaucet.</p>
+        <p>Airdrop, Faucet, Mineradora, Bet Crypto, IPO ou Autofaucet.</p>
         <p><strong>IMPORTANTE!</strong>: Aceitamos links de indicação.</p>
     </section>
     
@@ -96,12 +96,12 @@
                 
                 <!-- Sua Chave da Web3Forms -->
                 <input type="hidden" name="access_key" value="cada1ec3-4069-4b49-b426-dd2b5c53081a">
-                <input type="hidden" name="subject" value="🚀 Novo Cadastro de Faucet - Brazuka Faucets">
+                <input type="hidden" name="subject" value="🚀 Novo Cadastro / Auditoria - Brazuka Faucets">
                 <input type="hidden" name="from_name" value="Brazuka Faucets Form">
 
-                <h2><i class="fa-solid fa-magnifying-glass-chart"></i> Auditoria de Nova Faucet</h2>
+                <h2><i class="fa-solid fa-magnifying-glass-chart"></i> Auditoria de Nova Plataforma</h2>
                 
-                <label>Nome do Site / Faucet *</label>
+                <label>Nome do Site / Projeto *</label>
                 <input type="text" name="nome" placeholder="Ex: Brazuka Claimer" required>
 
                 <label>URL / Link de Indicação *</label>
@@ -137,16 +137,18 @@
                 <select name="tipo_principal" required>
                     <option value="faucet_padrao">Faucet Padrão (Manual)</option>
                     <option value="autofaucet">Auto Faucet</option>
-                    <option value="bet">Bet Crypto</option>
+                    <option value="bet">Bet Crypto / Cassino</option>
                     <option value="jogo">Jogo</option>
                     <option value="central_faucets">Central de Faucets / Multi-tarefas</option>
                     <option value="mineradora">Mineradora (Web/Cloud)</option>
                     <option value="airdrop">Airdrop</option>
+                    <option value="ipo">IPO / Pré-venda de Token</option>
                 </select>
 
                 <label>Recursos Disponíveis:</label>
                 <div class="recursos-group">
                     <label class="recursos-item"><input type="checkbox" name="recursos" value="Faucet"> Faucet</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Apostas / Gambling"> Apostas / Gambling</label>
                     <label class="recursos-item"><input type="checkbox" name="recursos" value="Bônus Diário"> Bônus Diário</label>
                     <label class="recursos-item"><input type="checkbox" name="recursos" value="PTC (Ads)"> PTC (Ads)</label>
                     <label class="recursos-item"><input type="checkbox" name="recursos" value="Ver Vídeos"> Ver Vídeos</label>
@@ -164,7 +166,7 @@
                 </div>
 
                 <label>Intervalo do Timer *</label>
-                <input type="text" name="timer_intervalo" placeholder="Ex: 5 minutos / Sem timer" required>
+                <input type="text" name="timer_intervalo" placeholder="Ex: 5 minutos / Sem timer / N/A" required>
 
                 <label>Tipos de Captcha Utilizados:</label>
                 <div class="recursos-group">
@@ -173,7 +175,7 @@
                     <label class="recursos-item"><input type="checkbox" name="captchas" value="Turnstile"> Turnstile</label>
                     <label class="recursos-item"><input type="checkbox" name="captchas" value="IconCaptcha"> IconCaptcha</label>
                     <label class="recursos-item"><input type="checkbox" name="captchas" value="Antibot Links"> Antibot Links</label>
-                    <label class="recursos-item"><input type="checkbox" name="captchas" value="Captcha Próprio"> Captcha Próprio</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas" value="Nenhum"> Nenhum / Web3</label>
                 </div>
 
                 <label>Onde é feito o pagamento? *</label>
@@ -199,10 +201,10 @@
                 </div>
                 
                 <label>Mínimo de Saque *</label>
-                <input type="text" name="minimo_saque" placeholder="Ex: 0.005 USD" required>
+                <input type="text" name="minimo_saque" placeholder="Ex: 0.005 USD / N/A" required>
                 
                 <label>Frequência/Tempo de Saque *</label>
-                <input type="text" name="tempo_saque" placeholder="Ex: Imediato" required>
+                <input type="text" name="tempo_saque" placeholder="Ex: Imediato / Manual" required>
 
                 <label>Observações (Opcional)</label>
                 <textarea name="observacoes" rows="3"></textarea>
