@@ -114,6 +114,28 @@
             </div>
         </div>
 
+        <section class="admin-section" style="margin-top: 30px; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+    <h2 style="color: #1a73e8; margin-bottom: 15px;"><i class="fa-solid fa-chart-pie"></i> Relatório de Analytics (Cliques & Marketing)</h2>
+    <p style="color: #666; margin-bottom: 20px;">Acompanhe em tempo real o desempenho de tráfego das suas faucets e banners de anúncios.</p>
+    
+    <div style="overflow-x: auto;">
+        <table id="tabela-analytics" style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="background: #f8f9fa; border-bottom: 2px solid #ddd;">
+                    <th style="padding: 12px;">Tipo de Elemento</th>
+                    <th style="padding: 12px;">Identificador / Nome</th>
+                    <th style="padding: 12px; text-align: right;">Total de Cliques</th>
+                </tr>
+            </thead>
+            <tbody id="analytics-tbody">
+                <tr>
+                    <td colspan="3" style="padding: 15px; text-align: center; color: #666;">Carregando dados de analytics...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+        
         <!-- NOVO: Gerenciador de Anúncios (ADS) -->
         <div class="panel-container">
             <div class="panel-header">
@@ -450,6 +472,48 @@ async function baixarBackupKV() {
         alert("❌ Erro ao realizar o backup do banco de dados.");
     }
 }
+
+        // Função para carregar e exibir os dados de Analytics no Painel
+async function carregarAnalyticsAdmin() {
+    try {
+        const response = await fetch(`${URL_WORKER}/admin-get-analytics`);
+        if (!response.ok) throw new Error("Erro ao buscar dados de analytics.");
+
+        const data = await response.json();
+        const tbody = document.getElementById('analytics-tbody');
+        tbody.innerHTML = '';
+
+        const keys = Object.keys(data);
+        if (keys.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" style="padding: 15px; text-align: center; color: #666;">Nenhum clique registrado ainda.</td></tr>`;
+            return;
+        }
+
+        // Exemplo de chave salva no KV: "analytics:faucet:1" ou "analytics:banner:ad-modal-left"
+        keys.forEach(key => {
+            const partes = key.replace('analytics:', '').split(':');
+            const tipo = partes[0] || 'geral';
+            const idItem = partes.slice(1).join(':') || 'desconhecido';
+            const totalCliques = data[key];
+
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = '1px solid #eee';
+            tr.innerHTML = `
+                <td style="padding: 12px; text-transform: uppercase; font-weight: bold; font-size: 0.85em; color: #555;">${tipo}</td>
+                <td style="padding: 12px; color: #333;">${idItem}</td>
+                <td style="padding: 12px; text-align: right; font-weight: bold; color: #1a73e8;">${totalCliques.toLocaleString()}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById('analytics-tbody').innerHTML = `<tr><td colspan="3" style="padding: 15px; text-align: center; color: red;">Erro ao carregar o relatório.</td></tr>`;
+    }
+}
+
+// Executa ao carregar a página do painel
+document.addEventListener('DOMContentLoaded', carregarAnalyticsAdmin);
 
         // Executa a autenticação e carregamento
         verificarAutenticacaoEScarregar();
