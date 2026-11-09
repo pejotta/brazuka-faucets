@@ -1,3 +1,8 @@
+/**
+ * BRAZUKA ADS MANAGER
+ * Gerenciador de Publicidade de Alta Performance
+ */
+
 const BRAZUKA_ADS = {
     pools: {},
     CACHE_KEY: 'brazuka_ads_cache',
@@ -34,7 +39,7 @@ const BRAZUKA_ADS = {
                     // Atualiza o cache local
                     localStorage.setItem(this.CACHE_KEY, JSON.stringify(data));
 
-                    // Se a tela ainda não tinha anúncios (primeira visita), renderiza agora
+                    // Atualiza as pools e renderiza caso estivesse vazio
                     if (Object.keys(this.pools).length === 0) {
                         this.pools = data;
                         this.render();
@@ -49,26 +54,32 @@ const BRAZUKA_ADS = {
     render() {
         if (!this.pools) return;
 
-        this.injectRandom('.ad-slot-top', this.pools.homeTop || []);
-        this.injectRandom('.ad-slot-mid', this.pools.homeMid || []);
-        this.injectRandom('.ad-slot-sidebar', this.pools.sidebar || []);
-        this.injectRandom('.ad-slot-pagegain', this.pools.pageGain || []);
-        this.injectRandom('#ad-modal-left', this.pools.modalLeft || []);
-        this.injectRandom('#ad-modal-right', this.pools.modalRight || []);
-        this.injectRandom('#ad-modal-center', this.pools.modalCenter || []);
-        this.injectRandom('.ad-slot-cadastro', this.pools.pageCadastro || []);
+        this.injectRandom('.ad-slot-top', this.pools.homeTop || [], 'homeTop');
+        this.injectRandom('.ad-slot-mid', this.pools.homeMid || [], 'homeMid');
+        this.injectRandom('.ad-slot-sidebar', this.pools.sidebar || [], 'sidebar');
+        this.injectRandom('.ad-slot-pagegain', this.pools.pageGain || [], 'pageGain');
+        this.injectRandom('#ad-modal-left', this.pools.modalLeft || [], 'modalLeft');
+        this.injectRandom('#ad-modal-right', this.pools.modalRight || [], 'modalRight');
+        this.injectRandom('#ad-modal-center', this.pools.modalCenter || [], 'modalCenter');
+        this.injectRandom('.ad-slot-cadastro', this.pools.pageCadastro || [], 'pageCadastro');
     },
 
-    injectRandom(selector, adPool) {
+    injectRandom(selector, adPool, slotName) {
         const slots = document.querySelectorAll(selector);
         if (slots.length === 0 || !Array.isArray(adPool) || adPool.length === 0) return;
 
         slots.forEach(slot => {
-            // Evita re-injetar se o banner já estiver lá e for o mesmo
             const randomIndex = Math.floor(Math.random() * adPool.length);
             const adContent = adPool[randomIndex];
 
             slot.innerHTML = `<span class="ad-label">Publicidade</span>` + adContent;
+
+            // Rastreia cliques automaticamente no Analytics
+            slot.addEventListener('click', () => {
+                if (typeof registrarClique === 'function') {
+                    registrarClique('banner', slotName);
+                }
+            });
 
             // Re-executa scripts de anúncios se houver
             const scripts = slot.querySelectorAll("script");
@@ -82,7 +93,7 @@ const BRAZUKA_ADS = {
     }
 };
 
-// Executa a inicialização de forma ultra-rápida sem travar o evento principal da página
+// Executa a inicialização de forma ultra-rápida
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => BRAZUKA_ADS.init());
 } else {
