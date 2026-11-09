@@ -5,16 +5,16 @@
     <link rel="shortcut icon" href="/assets/logo-brazuka.png">
     <link rel="apple-touch-icon" href="/assets/logo-brazuka.png">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <meta http-equiv="content-language" content="pt-BR" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastre seu site | Brazuka Faucets</title>
-    <meta name="description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas." />
+    <meta name="description" content="Brazuka Faucets: Cadastre sua Faucet, Airdrop, Mineradora ou Bet Crypto na nossa lista oficial." />
     <meta name="author" content="Pejotta" />
     <meta name="theme-color" content="#1a73e8">
     
@@ -50,30 +50,31 @@
             display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
             margin-bottom: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px;
         }
-        .recursos-item { display: flex; align-items: center; font-size: 0.9em; font-weight: normal !important; }
+        .recursos-item { display: flex; align-items: center; font-size: 0.9em; font-weight: normal !important; margin-bottom: 0 !important; }
         .recursos-item input { width: auto; margin-bottom: 0; margin-right: 8px; }
         .faucet-form button {
             width: 100%; background-color: #1a73e8; color: white; padding: 15px;
             border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold;
             cursor: pointer; transition: 0.3s;
         }
+        .faucet-form button:hover:not(:disabled) { background-color: #0d47a1; }
         .faucet-form button:disabled { opacity: 0.5; cursor: not-allowed; }
         
         .banner-lateral {
             position: fixed; top: 50%; transform: translateY(-50%);
-            width: 160px; height: 600px; background-color: #eee;
+            width: 160px; height: 600px; z-index: 1;
             display: flex; align-items: center; justify-content: center;
-            border: 1px solid #ddd; font-size: 12px; color: #666; z-index: 1;
         }
-        .banner-left { left: 20px; } .banner-right { right: 20px; }
+        .banner-left { left: 20px; } 
+        .banner-right { right: 20px; }
         .campo-dinamico { background: #eef5ff; padding: 10px; border-radius: 8px; border: 1px dashed #1a73e8; margin-bottom: 20px; }
         
-        @media (max-width: 1000px) { .banner-lateral { display: none; } }
+        @media (max-width: 1200px) { .banner-lateral { display: none; } }
     </style>
 </head>
 <body>
- 
 
+    <!-- Banners Laterais Esquerdo e Direito (Gerenciados pelo ads-manager.js) -->
     <div class="banner-lateral banner-left">
         <div id="ad-modal-left"></div>
     </div>
@@ -84,19 +85,26 @@
 
     <section class="hero-ads">
         <h1>Cadastre seu site</h1>
-        <p>Airdrop, Faucet, Mineradora ou Autofaucet.</p>
+        <p>Airdrop, Faucet, Mineradora, Bet Crypto ou Autofaucet.</p>
         <p><strong>IMPORTANTE!</strong>: Aceitamos links de indicação.</p>
     </section>
     
     <main class="container">
         <div class="faucet-form-container">
-            <form action="https://formspree.io/f/mjgbvzbq" method="POST" class="faucet-form">
+            <!-- Formulário Integrado ao Web3Forms -->
+            <form action="https://api.web3forms.com/submit" method="POST" class="faucet-form">
+                
+                <!-- Sua Chave da Web3Forms -->
+                <input type="hidden" name="access_key" value="cada1ec3-4069-4b49-b426-dd2b5c53081a">
+                <input type="hidden" name="subject" value="🚀 Novo Cadastro de Faucet - Brazuka Faucets">
+                <input type="hidden" name="from_name" value="Brazuka Faucets Form">
+
                 <h2><i class="fa-solid fa-magnifying-glass-chart"></i> Auditoria de Nova Faucet</h2>
                 
-                <label>Nome da Faucet *</label>
+                <label>Nome do Site / Faucet *</label>
                 <input type="text" name="nome" placeholder="Ex: Brazuka Claimer" required>
 
-                <label>URL da Faucet *</label>
+                <label>URL / Link de Indicação *</label>
                 <input type="url" name="url" placeholder="https://..." required>
 
                 <label>E-mail para contato *</label>
@@ -104,20 +112,20 @@
                 
                 <label>Moedas Principais *</label>
                 <div class="recursos-group">
-                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="btc"> BTC</label>
-                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="eth"> ETH</label>
-                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="doge"> DOGE</label>
-                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="ltc"> LTC</label>
-                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="sol"> SOL</label>
-                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="trx"> TRX</label>
-                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="bnb"> BNB</label>
-                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="zer"> ZER</label>
-                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="usdt"> USDT</label>
-                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="xrp"> XRP</label>
-                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="ada"> ADA</label>
-                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="pol"> POL</label>
-                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="central"> Central Multimoedas</label>
-                    <label class="recursos-item"><input type="checkbox" name="moeda[]" value="outra" id="check-outra-moeda"> Outra</label>
+                    <label class="recursos-item"><input type="checkbox" name="moedas" value="BTC"> BTC</label>
+                    <label class="recursos-item"><input type="checkbox" name="moedas" value="ETH"> ETH</label>
+                    <label class="recursos-item"><input type="checkbox" name="moedas" value="DOGE"> DOGE</label>
+                    <label class="recursos-item"><input type="checkbox" name="moedas" value="LTC"> LTC</label>
+                    <label class="recursos-item"><input type="checkbox" name="moedas" value="SOL"> SOL</label>
+                    <label class="recursos-item"><input type="checkbox" name="moedas" value="TRX"> TRX</label>
+                    <label class="recursos-item"><input type="checkbox" name="moedas" value="BNB"> BNB</label>
+                    <label class="recursos-item"><input type="checkbox" name="moedas" value="ZER"> ZER</label>
+                    <label class="recursos-item"><input type="checkbox" name="moedas" value="USDT"> USDT</label>
+                    <label class="recursos-item"><input type="checkbox" name="moedas" value="XRP"> XRP</label>
+                    <label class="recursos-item"><input type="checkbox" name="moedas" value="ADA"> ADA</label>
+                    <label class="recursos-item"><input type="checkbox" name="moedas" value="POL"> POL</label>
+                    <label class="recursos-item"><input type="checkbox" name="moedas" value="Central Multimoedas"> Central Multimoedas</label>
+                    <label class="recursos-item"><input type="checkbox" name="moedas" value="Outra" id="check-outra-moeda"> Outra</label>
                 </div>
 
                 <div id="campo-outra-moeda" class="campo-dinamico" style="display: none;">
@@ -129,28 +137,30 @@
                 <select name="tipo_principal" required>
                     <option value="faucet_padrao">Faucet Padrão (Manual)</option>
                     <option value="autofaucet">Auto Faucet</option>
+                    <option value="bet">Bet Crypto</option>
                     <option value="jogo">Jogo</option>
                     <option value="central_faucets">Central de Faucets / Multi-tarefas</option>
                     <option value="mineradora">Mineradora (Web/Cloud)</option>
+                    <option value="airdrop">Airdrop</option>
                 </select>
 
                 <label>Recursos Disponíveis:</label>
                 <div class="recursos-group">
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="faucet"> Faucet</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="bonus"> Bônus Diário</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="ptc"> PTC (Ads)</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="videos"> Ver Vídeos</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="concurso"> Concurso/Contest</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="mineracao"> Mineração</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="shortlinks"> Shortlinks</label>        
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="surveys"> Surveys (Pesquisas)</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="staking"> Staking</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="jobs"> Trabalhos</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="surfads"> SurfAds</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="microtasks"> Micro Tarefas</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="jogos"> Jogos/Dice</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="offerwall"> Offerwalls</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos[]" value="referencias"> Referências/Afiliados</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Faucet"> Faucet</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Bônus Diário"> Bônus Diário</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="PTC (Ads)"> PTC (Ads)</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Ver Vídeos"> Ver Vídeos</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Concurso/Contest"> Concurso/Contest</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Mineração"> Mineração</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Shortlinks"> Shortlinks</label>        
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Surveys (Pesquisas)"> Surveys (Pesquisas)</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Staking"> Staking</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Trabalhos"> Trabalhos</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="SurfAds"> SurfAds</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Micro Tarefas"> Micro Tarefas</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Jogos/Dice"> Jogos/Dice</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Offerwalls"> Offerwalls</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Referências/Afiliados"> Referências/Afiliados</label>
                 </div>
 
                 <label>Intervalo do Timer *</label>
@@ -158,29 +168,29 @@
 
                 <label>Tipos de Captcha Utilizados:</label>
                 <div class="recursos-group">
-                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="reCAPTCHA"> reCAPTCHA</label>
-                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="hCaptcha"> hCaptcha</label>
-                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Turnstile"> Turnstile</label>
-                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="IconCaptcha"> IconCaptcha</label>
-                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Antibot"> Antibot Links</label>
-                    <label class="recursos-item"><input type="checkbox" name="captchas[]" value="Custom"> Captcha Próprio</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas" value="reCAPTCHA"> reCAPTCHA</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas" value="hCaptcha"> hCaptcha</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas" value="Turnstile"> Turnstile</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas" value="IconCaptcha"> IconCaptcha</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas" value="Antibot Links"> Antibot Links</label>
+                    <label class="recursos-item"><input type="checkbox" name="captchas" value="Captcha Próprio"> Captcha Próprio</label>
                 </div>
 
                 <label>Onde é feito o pagamento? *</label>
                 <div class="recursos-group">
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="FaucetPay"> FaucetPay</label>                      
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Metamask"> Metamask</label>                                        
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Base"> Base</label>
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Coinbase"> Coinbase</label>
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Payeer"> Payeer</label>
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Cwallet"> Cwallet</label>
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Binance"> Binance</label>
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="PIX"> PIX</label>
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="PayPal"> PayPal</label> 
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Lightning Network"> Lightning Network</label>                      
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Gift Cards"> Gift Cards</label>
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="Carteira Direta"> Carteira Direta (BTC, LTC, BNB, etc ...)</label>
-                    <label class="recursos-item"><input type="checkbox" name="pagamento[]" value="outros" id="check-outro-pagamento"> Outros</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="FaucetPay"> FaucetPay</label>                       
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Metamask"> Metamask</label>                                        
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Base"> Base</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Coinbase"> Coinbase</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Bet Crypto"> Bet Crypto</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Cwallet"> Cwallet</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Binance"> Binance</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="PIX"> PIX</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="PayPal"> PayPal</label> 
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Lightning Network"> Lightning Network</label>                       
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Gift Cards"> Gift Cards</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Carteira Direta"> Carteira Direta</label>
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Outros" id="check-outro-pagamento"> Outros</label>
                 </div>
 
                 <div id="campo-outro-pagamento" class="campo-dinamico" style="display: none;">
@@ -223,7 +233,7 @@
         toggleOutro('check-outro-pagamento', 'campo-outro-pagamento', 'input-outro-pagamento');
     </script>
     <script src="js/ticker-data.js"></script>
-<script src="js/script-global.js"></script>
-    <script src="js/cadastrar.js"></script>
+    <script src="js/script-global.js"></script>
+    <script src="js/ads-manager.js"></script>
 </body>
 </html>
