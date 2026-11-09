@@ -50,7 +50,7 @@ function fillPageData(faucet) {
     document.getElementById('faucet-captcha').textContent = faucet.captcha || 'N/A';
 
     const statusTag = document.getElementById('faucet-status');
-    statusTag.textContent = faucet.status === 'paying' ? 'PAGA REGULARMENTE' : (faucet.status === 'pending' ? 'PENDENTE' : 'SCAM/FECHADA');
+    statusTag.textContent = faucet.status === 'paying' ? 'PAGA REGULARMENTE' : (faucet.status === 'pending' ? 'EM ANÁLISE' : 'SCAM/FECHADA');
     statusTag.className = `status-tag ${faucet.status} large-tag`;
 
     // SISTEMA DE RECURSOS ATUALIZADO: Formata o texto para exibição
