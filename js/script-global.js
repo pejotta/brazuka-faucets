@@ -8,7 +8,7 @@ async function loadEverything() {
     await loadTemplate('menu_template.html', 'header-placeholder', 'afterbegin');
     initMobileMenu();
     
-    // ANALISTA: Chama o ticker SÓ DEPOIS que o menu_template foi injetado [cite: 2026-01-02]
+    // ANALISTA: Chama o ticker SÓ DEPOIS que o menu_template foi injetado
     carregarTicker(); 
 
     // 3. Carrega o Footer e inicia os Widgets
@@ -45,7 +45,6 @@ function initFooterWidgets() {
 // Função auxiliar para carregar arquivos HTML externos
 async function loadTemplate(file, id, position) {
     try {
-        // Cache busting para templates também, para evitar menus antigos
         const res = await fetch(`${file}?v=${new Date().getTime()}`);
         if (!res.ok) throw new Error(`Arquivo ${file} não encontrado`);
         const html = await res.text();
@@ -72,16 +71,18 @@ function initMobileMenu() {
             nav.classList.toggle('active');
             
             const icon = menuBtn.querySelector('i');
-            if (nav.classList.contains('active')) {
-                icon.classList.replace('fa-bars', 'fa-xmark');
-            } else {
-                icon.classList.replace('fa-xmark', 'fa-bars');
+            if (icon) {
+                if (nav.classList.contains('active')) {
+                    icon.classList.replace('fa-bars', 'fa-xmark');
+                } else {
+                    icon.classList.replace('fa-xmark', 'fa-bars');
+                }
             }
         });
     }
 }
 
-// --- Ajuste do Favicon (Onde o filho chora e a mãe não vê) ---
+// --- Ajuste do Favicon ---
 function setFavicon() {
     let link = document.querySelector("link[rel~='icon']");
     if (!link) {
@@ -89,7 +90,6 @@ function setFavicon() {
         link.rel = 'icon';
         document.head.appendChild(link);
     }
-    // Corrigido: Estava 'assets/assets/logo-brazuka.png'
     link.href = 'assets/logo-brazuka.png'; 
 }
 
@@ -141,23 +141,19 @@ const urlParams = new URLSearchParams(window.location.search);
 const ref = urlParams.get('ref');
 
 if (ref) {
-    // Salva no navegador do novo usuário para usar no momento do claim
     localStorage.setItem('brazuka_ref', ref);
     console.log("Padrinho detectado e salvo:", ref);
 }
+
 function carregarTicker() {
     const tickerTrack = document.getElementById('ticker-track');
-    // Se não achar o elemento ou os dados, para aqui sem erro
     if (!tickerTrack || typeof TICKER_CONFIG === 'undefined') return;
 
-    // Pega as mensagens do seu mural (ticker-data.js)
     const mensagens = TICKER_CONFIG.mensagensFixas;
-
     if (mensagens.length === 0) return;
 
     tickerTrack.innerHTML = ''; 
 
-    // ANALISTA: Multiplicamos a lista para o scroll ser fluido e infinito
     const listaExibicao = [...mensagens, ...mensagens, ...mensagens];
 
     listaExibicao.forEach(item => {
@@ -165,7 +161,6 @@ function carregarTicker() {
         link.href = item.link;
         link.className = 'ticker-item';
         
-        // Mantive a lógica de ícone: se tiver fogo ou troféu no texto, ele destaca
         let icone = "fa-bullhorn";
         if (item.title.includes("🔥")) icone = "fa-fire";
         if (item.title.includes("🏆")) icone = "fa-trophy";
@@ -176,12 +171,11 @@ function carregarTicker() {
     });
 }
 
-// Função unificada para rastrear cliques no site
+// Função para registrar o clique na Cloudflare Worker (Analytics)
 function registrarClique(tipo, identificador) {
-    // Dispara via fetch sem bloquear a abertura do link
-    fetch(`${URL_WORKER}/track-click`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+    fetch("https://brazuka-faucets.moneynanet-yt.workers.dev/track-click", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type: tipo, id: identificador })
-    }).catch(err => console.log('Erro ao rastrear clique:', err));
+    }).catch(err => console.log("Erro ao registrar analytics:", err));
 }
