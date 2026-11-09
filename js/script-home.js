@@ -24,9 +24,8 @@ function renderizarAd(index) {
     container.style.opacity = "0";
 
     setTimeout(() => {
-        // ANALISTA: object-fit: cover garante que o GIF não achate no celular
         container.innerHTML = `
-            <a href="${meusAnuncios[index].link}" target="_blank">
+            <a href="${meusAnuncios[index].link}" target="_blank" onclick="registrarClique('banner', 'home-slider-${index}')">
                 <img src="${meusAnuncios[index].img}" 
                      class="ad-image" 
                      style="width:100%; height:250px; object-fit:cover; object-position:center; display:block; border-radius:12px;">
@@ -66,12 +65,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (btnPrev) btnPrev.onclick = anteriorAd;
 
     try {
-        // Busca dados no Banco de Dados [cite: 2025-12-26]
+        // Busca dados no Banco de Dados
         const response = await fetch(`${WORKER_URL}/get-all-faucets?t=${Date.now()}`);
         const data = await response.json();
 
         // 1. PREENCHER CATEGORIAS (BTC, ETH, etc)
-        const moedasHome = ['btc', 'eth', 'doge', 'trx', 'central', 'minerador', 'autofaucet', 'airdrop', 'ipo', 'bet',];
+        const moedasHome = ['btc', 'eth', 'doge', 'trx', 'central', 'minerador', 'autofaucet', 'airdrop', 'ipo', 'bet'];
 
         moedasHome.forEach(moeda => {
             const container = document.getElementById(`grid-${moeda}`);
@@ -79,7 +78,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const allInCategory = data.filter(f => Array.isArray(f.moeda) ? f.moeda.includes(moeda) : f.moeda === moeda);
             
-            // Separa VIPs (Patrocinados e Destaques)
             const vips = allInCategory.filter(f => f.patrocinado == "true" || f.patrocinado === true || f.destaque == "true" || f.destaque === true);
             const normais = allInCategory.filter(f => !(f.patrocinado == "true" || f.patrocinado === true || f.destaque == "true" || f.destaque === true));
             
@@ -109,21 +107,31 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const domain = faucet.url.replace(/^(https?:\/\/)/, '').split('/')[0];
                 const statusLabels = { 'paying': 'Paga', 'pending': 'Análise', 'scam': 'SCAM/OFF' };
 
-                container.innerHTML += `
-                    <a href="faucet.html?id=${faucet.id}" class="faucet-card ${destaqueClass}">
-                        ${tagsHTML}
-                        <div class="faucet-icon">
-                            <img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" 
-                                 style="width:32px; height:32px; border-radius:4px;"
-                                 onerror="this.src='https://api.iconify.design/cryptocurrency:${Array.isArray(faucet.moeda) ? faucet.moeda[0] : faucet.moeda}.svg'">
-                        </div>
-                        <div class="faucet-info">
-                            <h3>${faucet.nome}</h3>
-                            <p class="url">${domain}</p>
-                        </div>
-                        <span class="status-tag ${faucet.status}">${statusLabels[faucet.status] || 'Análise'}</span>
-                    </a>
+                const cardHtml = document.createElement('a');
+                cardHtml.href = `faucet.html?id=${faucet.id}`;
+                cardHtml.className = `faucet-card ${destaqueClass}`;
+                cardHtml.innerHTML = `
+                    ${tagsHTML}
+                    <div class="faucet-icon">
+                        <img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" 
+                             style="width:32px; height:32px; border-radius:4px;"
+                             onerror="this.src='https://api.iconify.design/cryptocurrency:${Array.isArray(faucet.moeda) ? faucet.moeda[0] : faucet.moeda}.svg'">
+                    </div>
+                    <div class="faucet-info">
+                        <h3>${faucet.nome}</h3>
+                        <p class="url">${domain}</p>
+                    </div>
+                    <span class="status-tag ${faucet.status}">${statusLabels[faucet.status] || 'Análise'}</span>
                 `;
+
+                // Dispara o registro de clique no Analytics ao clicar no card da faucet
+                cardHtml.addEventListener('click', () => {
+                    if (typeof registrarClique === 'function') {
+                        registrarClique('faucet', faucet.nome || faucet.id);
+                    }
+                });
+
+                container.appendChild(cardHtml);
             });
         });
 
@@ -131,7 +139,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const recentContainer = document.getElementById('grid-recent');
         if (recentContainer) {
             recentContainer.innerHTML = [...data].reverse().slice(0, 5).map(f => `
-                <a href="faucet.html?id=${f.id}" class="mini-item">
+                <a href="faucet.html?id=${f.id}" class="mini-item" onclick="registrarClique('faucet', '${f.nome || f.id}')">
                     <img src="https://www.google.com/s2/favicons?domain=${f.url.replace(/^(https?:\/\/)/, '').split('/')[0]}&sz=64">
                     <div class="mini-info">
                         <h4>${f.nome}</h4>
@@ -174,7 +182,7 @@ async function loadHomeStats(allFaucetsJson) {
             commContainer.innerHTML = stats.recentComments.map(c => {
                 const faucetRef = allFaucetsJson.find(f => f.id == c.faucetId);
                 return `
-                    <a href="faucet.html?id=${c.faucetId}" class="mini-item comment-link">
+                    <a href="faucet.html?id=${c.faucetId}" class="mini-item comment-link" onclick="registrarClique('comentario', '${c.faucetId}')">
                         <div class="mini-info">
                             <h4>${c.nome} <small>em ${faucetRef ? faucetRef.nome : "Oportunidade"}</small></h4>
                             <p>"${c.texto.substring(0, 40)}..."</p>
@@ -184,13 +192,13 @@ async function loadHomeStats(allFaucetsJson) {
             }).join('');
         }
 
-        // Top Avaliações (Restauração concluída)
+        // Top Avaliações
         const topContainer = document.getElementById('grid-top-rated');
         if (topContainer && stats.topRated) {
             topContainer.innerHTML = stats.topRated.map(f => {
                 const faucetRef = allFaucetsJson.find(item => item.id == f.id);
                 return `
-                    <a href="faucet.html?id=${f.id}" class="mini-item">
+                    <a href="faucet.html?id=${f.id}" class="mini-item" onclick="registrarClique('top_rated', '${faucetRef ? faucetRef.nome : f.id}')">
                         <div class="mini-info">
                             <h4>${faucetRef ? faucetRef.nome : `Item #${f.id}`}</h4>
                             <span class="rating-pill" style="color: #f29900; font-weight: bold;">⭐ ${f.media}</span>
