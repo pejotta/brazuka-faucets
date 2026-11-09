@@ -9,112 +9,196 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/faucet_detail.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <meta http-equiv="content-language" content="pt-BR" />
-    <title>Reportar Faucet / Erro | Brazuka Faucets</title>
-    <meta name="description" content="Encontrou algum erro, link quebrador ou faucet scam? Relate para nossa equipe." />
+    <title>Carregando... | Brazuka Faucets</title>
+    <meta name="description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas. Analisamos as melhores opções para você ganhar BTC, LTC, DOGE e muito mais com segurança." />
     <meta name="author" content="Pejotta" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.brazukafaucets.com.br" />
+
+    <meta property="og:title" content="Brazuka Faucets | As Melhores Faucets Auditadas" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas. Analisamos as melhores opções para você ganhar BTC, LTC, DOGE e muito mais com segurança." />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:image" content="https://www.brazukafaucets.com.br/assets/brazuka-faucets-share-image.png" />
+    <meta property="og:url" content="https://www.brazukafaucets.com.br" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Brazuka Faucets | As Melhores Faucets Auditadas" />
+    <meta name="twitter:description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas. Analisamos as melhores opções para você ganhar BTC, LTC, DOGE e muito mais com segurança." />
+    <meta name="twitter:image" content="https://www.brazukafaucets.com.br/assets/brazuka-faucets-share-image.png" />
     <meta name="theme-color" content="#1a73e8">
-    
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-11KQEGEBZ3"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-11KQEGEBZ3');
-    </script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-    <style>
-        .hero-ads {
-            text-align: center; padding: 60px 20px;
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            color: white; border-radius: 0 0 50px 50px; max-width: 1200px; margin: 0 auto;
-        }
-        .hero-ads h1 { font-size: 2.5em; margin-bottom: 10px; }
-        .hero-ads p { opacity: 0.9; font-size: 1.1em; }
-        
-        .faucet-form-container {
-            max-width: 600px; margin: 50px auto; background: #ffffff;
-            padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            position: relative; z-index: 2;
-        }
-        .faucet-form h2 { color: #e74c3c; margin-bottom: 25px; text-align: center; font-size: 1.6em; }
-        .faucet-form label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; font-size: 0.95em; }
-        .faucet-form input, .faucet-form select, .faucet-form textarea {
-            width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1em; box-sizing: border-box;
-        }
-        .faucet-form button {
-            width: 100%; background-color: #e74c3c; color: white; padding: 15px;
-            border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold;
-            cursor: pointer; transition: 0.3s;
-        }
-        .faucet-form button:hover:not(:disabled) { background-color: #c0392b; }
-        .faucet-form button:disabled { opacity: 0.5; cursor: not-allowed; }
-        
-        .banner-lateral {
-            position: fixed; top: 50%; transform: translateY(-50%);
-            width: 160px; height: 600px; z-index: 1;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .banner-left { left: 20px; } 
-        .banner-right { right: 20px; }
-        
-        @media (max-width: 1200px) { .banner-lateral { display: none; } }
-    </style>
+    gtag('config', 'G-11KQEGEBZ3');
+    </script>
 </head>
 <body>
 
-    <!-- Banners Laterais Esquerdo e Direito -->
-    <div class="banner-lateral banner-left">
-        <div id="ad-modal-left"></div>
-    </div>
-
-    <div class="banner-lateral banner-right">
-        <div id="ad-modal-right"></div>
-    </div>
-
-    <section class="hero-ads">
-        <h1>Reportar Faucet / Erro</h1>
-        <p>Encontrou um site scam, link quebrado ou problemas de pagamento? Avise-nos.</p>
-    </section>
-    
     <main class="container">
-        <div class="faucet-form-container">
-            <form action="https://api.web3forms.com/submit" method="POST" class="faucet-form">
-                
-                <!-- Configurações do Web3Forms -->
-                <input type="hidden" name="access_key" value="f929ba8a-9ec8-46f4-a61c-d11dfb40de7e">
-                <input type="hidden" name="subject" value="🚨 Report / Alerta de Faucet - Brazuka Faucets">
-                <input type="hidden" name="from_name" value="Brazuka Reports">
+    <div class="faucet-detail-box">
+        <div class="ad-slot-top"></div>
 
-                <h2><i class="fa-solid fa-triangle-exclamation"></i> Enviar Relatório</h2>
-                
-                <label>Seu Nome *</label>
-                <input type="text" name="name" placeholder="Seu nome ou apelido" required>
-
-                <label>Seu E-mail *</label>
-                <input type="email" name="email" placeholder="seu-email@exemplo.com" required>
-
-                <label>Detalhes do Report (Nome do site, URL e motivo) *</label>
-                <textarea name="message" rows="5" placeholder="Ex: A faucet X em https://... parou de pagar / virou scam / link quebrado." required></textarea>
-                
-                <div class="cf-turnstile" data-sitekey="0x4AAAAAACIz3XQpjGaXppF0" data-callback="onTurnstileSuccess" style="margin-bottom: 20px;"></div>
-                <button type="submit" id="btn-reportar" disabled>🚨 Enviar Relatório</button>
-            </form>
+        <div class="header-detail">
+            <h1 id="faucet-name">Carregando Nome...</h1>
+            <span id="faucet-status" class="status-tag large-tag">---</span>
         </div>
-    </main>
 
-    <script>
-        const btn = document.getElementById('btn-reportar');
-        window.onTurnstileSuccess = (token) => {
-            btn.disabled = false;
-        };
-    </script>
+        <a href="#" target="_blank" id="faucet-visit-link" class="visit-btn">
+            VISITAR FAUCET AGORA <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+
+       <section class="details">
+    <h2>📋 Ficha Técnica</h2>
+
+    <div class="ficha-wrapper">
+        <div class="details-grid">
+            <p><strong><i class="fa-solid fa-coins"></i> Moeda/Tipo:</strong> <span id="faucet-coin">---</span></p>
+            <p><strong><i class="fa-solid fa-wallet"></i> Onde Receber:</strong> <span id="faucet-payment">---</span></p>
+            <p><strong><i class="fa-solid fa-bolt"></i> Sistema:</strong> <span id="faucet-type">---</span></p>
+            <p><strong><i class="fa-solid fa-hand-holding-dollar"></i> Min. Saque:</strong> <span id="faucet-min">---</span></p>
+            <p><strong><i class="fa-solid fa-clock"></i> Prazo de Saque:</strong> <span id="faucet-time">---</span></p>
+
+            <p><strong><i class="fa-solid fa-hourglass-half"></i> Intervalo:</strong> <span id="faucet-interval">---</span></p>
+            <p><strong><i class="fa-solid fa-robot"></i> Captcha:</strong> <span id="faucet-captcha">---</span></p>
+
+            <p><strong><i class="fa-solid fa-shield-check"></i> Verificação:</strong> <span>Auditoria Brazuka</span></p>
+
+            <div class="audit-box">
+                <h3 style="padding: 5px 0;">Recursos Auditados:</h3>
+                <div id="recursos-auditados" class="recursos-grid"></div>
+            </div>
+
+            <button id="report-btn" class="btn-report">
+                <i class="fas fa-flag"></i> Reportar Problema
+            </button>
+        </div>
+
+        <div class="ad-slot-sidebar">
+            </div>
+    </div>
+
+    <div class="pro-tip">
+        <i class="fa-solid fa-circle-info"></i>
+        <strong>Dica Brazuka:</strong> Sempre utilize a mesma carteira cadastrada na FaucetPay para evitar taxas desnecessárias.
+    </div>
+</section>
+
+        <section class="tools-needed">
+    <h3 class="tools-title"><i class="fa-solid fa-toolbox"></i> Você vai precisar de:</h3>
+    <div class="tools-grid-detail">
+
+        <a href="https://faucetpay.io/?r=brazuka" target="_blank" class="tool-mini-card">
+            <img src="https://www.google.com/s2/favicons?domain=faucetpay.io&sz=64" alt="FaucetPay">
+            <div class="tool-text">
+                <h4>FaucetPay</h4>
+                <p>Para receber os pagamentos</p>
+            </div>
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+
+        <a href="https://www.binance.com/referral/earn-together/refer2earn-usdc/claim?hl=pt-BR&ref=GRO_28502_RVE7R" target="_blank" class="tool-mini-card">
+            <img src="https://www.google.com/s2/favicons?domain=binance.com&sz=64" alt="Binance">
+            <div class="tool-text">
+                <h4>Binance</h4>
+                <p>Para sacar via PIX</p>
+            </div>
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+
+        <a href="https://link.metamask.io/rewards?referral=9TQ6M6" target="_blank" class="tool-mini-card">
+            <img src="https://www.google.com/s2/favicons?domain=metamask.io&sz=64" alt="MetaMask">
+            <div class="tool-text">
+                <h4>MetaMask</h4>
+                <p>Carteira Web3 Avançada</p>
+            </div>
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+    </div>
+</section>
+
+        <section class="meta-info">
+            <div class="engagement-container">
+                <div class="engagement-item">
+                    <div class="stars" id="user-rating">
+                        <iconify-icon icon="ic:round-star-border" data-value="1"></iconify-icon>
+                        <iconify-icon icon="ic:round-star-border" data-value="2"></iconify-icon>
+                        <iconify-icon icon="ic:round-star-border" data-value="3"></iconify-icon>
+                        <iconify-icon icon="ic:round-star-border" data-value="4"></iconify-icon>
+                        <iconify-icon icon="ic:round-star-border" data-value="5"></iconify-icon>
+                    </div>
+                    <span id="rating-status">Avalie!</span>
+                </div>
+
+                <div class="engagement-item social-grid">
+                    <a href="#" id="share-wa" class="btn-share wa"><iconify-icon icon="ic:baseline-whatsapp"></iconify-icon></a>
+                    <a href="#" id="share-tg" class="btn-share tg"><iconify-icon icon="ic:baseline-telegram"></iconify-icon></a>
+                    <a href="#" id="share-fb" class="btn-share fb"><iconify-icon icon="ic:baseline-facebook"></iconify-icon></a>
+                    <a href="#" id="share-tw" class="btn-share tw"><iconify-icon icon="simple-icons:x"></iconify-icon></a>
+                    <a href="#" id="share-rd" class="btn-share rd"><iconify-icon icon="ic:baseline-reddit"></iconify-icon></a>
+                    <a href="#" id="share-ml" class="btn-share ml"><iconify-icon icon="ic:baseline-email"></iconify-icon></a>
+                </div>
+            </div>
+        </section>
+
+        <section class="recommended-section container">
+            <h2 class="coin-title"><i class="fas fa-thumbs-up"></i> Faucets Recomendadas</h2>
+            <div id="recommended-grid" class="faucet-grid"></div>
+        </section>
+
+        <section id="comments" class="comments-section">
+            <h2>💬 Comentários e Provas de Pagamento</h2>
+            <form id="comment-form" class="comment-form">
+                <div class="input-group-row">
+                    <input type="text" id="comm-name" placeholder="Seu Nome (Obrigatório)" required>
+                    <input type="email" id="comm-email" placeholder="E-mail (Opcional)">
+                </div>
+                <input type="url" id="comm-site" placeholder="Seu Site ou Link de Referência (Opcional)">
+                <textarea id="comm-text" placeholder="Deixe seu depoimento ou dúvida sobre esta faucet..." required></textarea>
+                <button type="submit" class="submit-comment-btn">Publicar Comentário</button>
+            </form>
+            <div id="comments-display-list"></div>
+        </section>
+    </div>
+</main>
+
+<div id="report-modal" class="modal">
+    <div class="modal-content">
+        <h3>Reportar Problema</h3>
+        <p>Ajude a comunidade Brazuka!</p>
+        <form id="report-form" action="https://formspree.io/f/mwveynoa" method="POST">
+            <input type="hidden" name="_subject" id="report-subject" value="[Report] - Faucet">
+            <input type="hidden" name="faucet_id" id="hidden-faucet-id">
+            <input type="hidden" name="faucet_nome" id="hidden-faucet-nome">
+
+            <label for="reason">O que aconteceu?</label>
+            <select name="motivo" id="report-reason" required>
+                <option value="nao-pagando">Não está pagando</option>
+                <option value="link-quebrado">Link quebrado / Off-line</option>
+                <option value="saldo-vazio">Saldo da Faucet vazio</option>
+                <option value="outros">Outro motivo</option>
+            </select>
+
+            <label for="msg">Detalhes adicionais (opcional):</label>
+            <textarea name="mensagem" id="report-msg" rows="3" placeholder="Conte o que houve..."></textarea>
+
+            <div class="modal-buttons">
+                <button type="submit" class="btn-confirm">Enviar Report</button>
+                <button type="button" onclick="closeReport()" class="btn-cancel">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
     <script src="js/ticker-data.js"></script>
-    <script src="js/script-global.js"></script>
-    <script src="js/ads-manager.js"></script>
-</body>
+<script src="js/script-global.js"></script> <script src="js/script-detail.js"></script><script src="js/ads-manager.js"></script> </body>
 </html>
