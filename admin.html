@@ -193,37 +193,66 @@
             }
         }
 
-        // 3. Renderiza a tabela de e-mails
+        // 3. Renderiza a tabela de e-mails de forma segura (Blindada)
         function renderizarTabela(dados) {
             const tbody = document.getElementById('tabela-emails');
+            if (!tbody) return;
+
             if (!dados || dados.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #777;">Nenhum e-mail encontrado.</td></tr>';
                 return;
             }
 
-            tbody.innerHTML = dados.map((item, index) => `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td style="font-weight: 600; color: #1a73e8;">${item.email || item}</td>
-                    <td><span style="background: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 4px; font-size: 0.8em;">Dashboard Local</span></td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = dados.map((item, index) => {
+                let emailStr = "";
+                if (typeof item === 'string') {
+                    emailStr = item;
+                } else if (item && typeof item === 'object') {
+                    emailStr = item.email || item.wallet || "";
+                }
+
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td style="font-weight: 600; color: #1a73e8;">${emailStr || 'E-mail não identificado'}</td>
+                        <td><span style="background: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 4px; font-size: 0.8em;">Dashboard Local</span></td>
+                    </tr>
+                `;
+            }).join('');
         }
 
-        // 4. Filtro Instantâneo
+        // 4. Filtro Instantâneo Blindado
         function filtrarTabela() {
-            const termo = document.getElementById('filtro-email').value.toLowerCase();
+            const campoFiltro = document.getElementById('filtro-email');
+            if (!campoFiltro) return;
+
+            const termo = (campoFiltro.value || "").toLowerCase().trim();
+            
             const filtrados = listaEmailsGlobal.filter(item => {
-                const emailStr = (item.email || item).toLowerCase();
-                return emailStr.includes(termo);
+                if (!item) return false;
+                
+                let emailStr = "";
+                if (typeof item === 'string') {
+                    emailStr = item;
+                } else if (typeof item === 'object') {
+                    emailStr = item.email || item.wallet || "";
+                }
+
+                return emailStr.toLowerCase().includes(termo);
             });
+
             renderizarTabela(filtrados);
         }
 
         // 5. Copiar Todos os E-mails
         function copiarTodosEmails() {
-            if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para copiar!");
-            const apenasEmails = listaEmailsGlobal.map(item => item.email || item).join(', ');
+            if (listaEmailsGlobal.length === 0) return alert("No há e-mails para copiar!");
+            
+            const apenasEmails = listaEmailsGlobal.map(item => {
+                if (typeof item === 'string') return item;
+                return item.email || item.wallet || "";
+            }).filter(Boolean).join(', ');
+
             navigator.clipboard.writeText(apenasEmails).then(() => {
                 alert("✅ Todos os e-mails foram copiados para a área de transferência!");
             });
@@ -235,8 +264,15 @@
 
             let csvContent = "data:text/csv;charset=utf-8,Email,Origem\n";
             listaEmailsGlobal.forEach(item => {
-                const email = item.email || item;
-                csvContent += `"${email}","Dashboard Local"\n`;
+                let email = "";
+                if (typeof item === 'string') {
+                    email = item;
+                } else if (item && typeof item === 'object') {
+                    email = item.email || item.wallet || "";
+                }
+                if (email) {
+                    csvContent += `"${email}","Dashboard Local"\n`;
+                }
             });
 
             const encodedUri = encodeURI(csvContent);
