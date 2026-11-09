@@ -91,7 +91,7 @@ async function renderTable(data, allRatings) {
                 <td>${f.minimo_saque || '---'}</td>
                 <td>${f.tempo_saque || 'Imediato'}</td>
                 <td style="text-align: center;">${avaliacaoHTML}</td>
-                <td><span style="position:relative;" class="status-tag ${f.status}">${f.status === 'paying' ? 'Pagando' : 'Pendente'}</span></td>
+                <td><span style="position:relative;" class="status-tag ${f.status}"> ${f.status === 'paying' ? 'Pagando' : (f.status === 'pending' ? 'Em Análise' : 'SCAM / Fechada')} </span> </td>
                 <td><a href="faucet.html?id=${f.id}" class="details-btn">Detalhes</a></td>
             </tr>
         `;
