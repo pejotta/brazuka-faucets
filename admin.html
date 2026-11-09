@@ -72,6 +72,9 @@
             <a href="gerador.html" class="btn-gerador-link">
                 <i class="fa-solid fa-plus-circle"></i> Acessar Gerador de Faucets
             </a>
+            <button class="btn-action" onclick="baixarBackupKV()" style="background: var(--dark-blue);">
+    <i class="fa-solid fa-download"></i> Baixar Backup Geral (JSON)
+</button>
         </div>
 
         <!-- Cards de Estatísticas -->
@@ -399,6 +402,33 @@
             link.click();
             document.body.removeChild(link);
         }
+
+        // Função para Baixar o Backup Completo do Banco de Dados
+async function baixarBackupKV() {
+    try {
+        const response = await fetch(`${URL_WORKER}/admin-backup-data`);
+        if (!response.ok) throw new Error("Erro ao gerar backup na Worker.");
+
+        const data = await response.json();
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+        
+        const link = document.createElement("a");
+        link.setAttribute("href", dataStr);
+        
+        // Nome do arquivo com a data atual para organização
+        const dataAtual = new Date().toISOString().slice(0,10);
+        link.setAttribute("download", `brazuka_backup_${dataAtual}.json`);
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        alert("✅ Backup completo baixado com sucesso!");
+    } catch (err) {
+        console.error(err);
+        alert("❌ Erro ao realizar o backup do banco de dados.");
+    }
+}
 
         // Executa a autenticação e carregamento
         verificarAutenticacaoEScarregar();
