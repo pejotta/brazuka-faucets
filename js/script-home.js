@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
 
                 const domain = faucet.url.replace(/^(https?:\/\/)/, '').split('/')[0];
-                const statusLabels = { 'paying': 'Paga', 'pending': 'Análise', 'scam': 'SCAM' };
+                const statusLabels = { 'paying': 'Paga', 'pending': 'Análise', 'scam': 'SCAM/OFF' };
 
                 container.innerHTML += `
                     <a href="faucet.html?id=${faucet.id}" class="faucet-card ${destaqueClass}">
