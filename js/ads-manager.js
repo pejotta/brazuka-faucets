@@ -1,49 +1,61 @@
 const BRAZUKA_ADS = {
     pools: {},
+    CACHE_KEY: 'brazuka_ads_cache',
+    URL_WORKER: 'https://brazuka-faucets.moneynanet-yt.workers.dev/admin-get-ads',
 
     async init() {
-        try {
-            // Busca os anúncios atualizados direto da Cloudflare Worker
-            const response = await fetch("https://brazuka-faucets.moneynanet-yt.workers.dev/admin-get-ads");
-            const data = await response.json();
-            
-            if (data && typeof data === 'object') {
-                this.pools = data;
+        // 1. Tenta carregar do cache local imediatamente para zero espera
+        const cachedAds = localStorage.getItem(this.CACHE_KEY);
+        if (cachedAds) {
+            try {
+                this.pools = JSON.parse(cachedAds);
+                this.render(); // Renderiza na hora com os dados salvos no cache!
+            } catch (e) {
+                console.error("Erro ao ler cache de ads", e);
             }
-        } catch (err) {
-            console.error("Erro ao carregar anúncios da Worker, usando fallbacks vazios:", err);
-            this.pools = {
-                homeTop: [], homeMid: [], sidebar: [], pageGain: [],
-                modalLeft: [], modalRight: [], modalCenter: [], pageCadastro: []
-            };
         }
 
-        this.render();
+        // 2. Busca a versão atualizada em segundo plano sem bloquear a tela (Background Sync)
+        this.fetchFreshAds();
+    },
+
+    async fetchFreshAds() {
+        try {
+            // Controller de timeout de 2.5s para nunca travar a navegação do usuário
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 2500);
+
+            const response = await fetch(this.URL_WORKER, { signal: controller.signal });
+            clearTimeout(timeoutId);
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data && typeof data === 'object') {
+                    // Atualiza o cache local
+                    localStorage.setItem(this.CACHE_KEY, JSON.stringify(data));
+
+                    // Se a tela ainda não tinha anúncios (primeira visita), renderiza agora
+                    if (Object.keys(this.pools).length === 0) {
+                        this.pools = data;
+                        this.render();
+                    }
+                }
+            }
+        } catch (err) {
+            console.warn("Aviso: Requisição de Ads expirou ou falhou. Usando cache/fallback local.", err);
+        }
     },
 
     render() {
-        // Renderiza o Topo (Aleatório)
+        if (!this.pools) return;
+
         this.injectRandom('.ad-slot-top', this.pools.homeTop || []);
-        
-        // Renderiza o Meio (Aleatório)
         this.injectRandom('.ad-slot-mid', this.pools.homeMid || []);
-
-        // Renderiza a Sidebar (Aleatório)
         this.injectRandom('.ad-slot-sidebar', this.pools.sidebar || []);
-        
-        // Renderiza a página de Faucets e Shortlinks
         this.injectRandom('.ad-slot-pagegain', this.pools.pageGain || []);
-
-        // Renderiza o Ad modal Esquerdo
         this.injectRandom('#ad-modal-left', this.pools.modalLeft || []);
-
-        // Renderiza o Ad modal Direito
         this.injectRandom('#ad-modal-right', this.pools.modalRight || []);
-
-        // Renderiza o Ad modal Central
         this.injectRandom('#ad-modal-center', this.pools.modalCenter || []);
-
-         // Renderiza o Ad da Página de Cadastro
         this.injectRandom('.ad-slot-cadastro', this.pools.pageCadastro || []);
     },
 
@@ -52,13 +64,13 @@ const BRAZUKA_ADS = {
         if (slots.length === 0 || !Array.isArray(adPool) || adPool.length === 0) return;
 
         slots.forEach(slot => {
-            // Escolhe um anúncio aleatório da lista vinda do KV
+            // Evita re-injetar se o banner já estiver lá e for o mesmo
             const randomIndex = Math.floor(Math.random() * adPool.length);
             const adContent = adPool[randomIndex];
 
             slot.innerHTML = `<span class="ad-label">Publicidade</span>` + adContent;
 
-            // Re-executa scripts de anúncios se houver (como surfe.pro, etc.)
+            // Re-executa scripts de anúncios se houver
             const scripts = slot.querySelectorAll("script");
             scripts.forEach(oldScript => {
                 const newScript = document.createElement("script");
@@ -70,5 +82,9 @@ const BRAZUKA_ADS = {
     }
 };
 
-// Inicializa o gerenciador assim que o DOM carregar
-document.addEventListener('DOMContentLoaded', () => BRAZUKA_ADS.init());
+// Executa a inicialização de forma ultra-rápida sem travar o evento principal da página
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => BRAZUKA_ADS.init());
+} else {
+    BRAZUKA_ADS.init();
+}
