@@ -54,7 +54,7 @@
         </div>
 
         <a href="#" target="_blank" id="faucet-visit-link" class="visit-btn">
-            VISITAR FAUCET AGORA <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            IR AO SITE AGORA <i class="fa-solid fa-arrow-up-right-from-square"></i>
         </a>
 
        <section class="details">
@@ -171,25 +171,32 @@
     </div>
 </main>
 
+<!-- Modal de Report Atualizado para Web3Forms -->
 <div id="report-modal" class="modal">
     <div class="modal-content">
         <h3>Reportar Problema</h3>
         <p>Ajude a comunidade Brazuka!</p>
-        <form id="report-form" action="https://formspree.io/f/mwveynoa" method="POST">
-            <input type="hidden" name="_subject" id="report-subject" value="[Report] - Faucet">
+        <form id="report-form" action="https://api.web3forms.com/submit" method="POST">
+            
+            <!-- Credenciais e Metadados do Web3Forms -->
+            <input type="hidden" name="access_key" value="f929ba8a-9ec8-46f4-a61c-d11dfb40de7e">
+            <input type="hidden" name="subject" id="report-subject" value="🚨 [Report] - Faucet Problema">
+            <input type="hidden" name="from_name" value="Brazuka Faucets Report">
+
+            <!-- Campos dinâmicos existentes da Faucet -->
             <input type="hidden" name="faucet_id" id="hidden-faucet-id">
             <input type="hidden" name="faucet_nome" id="hidden-faucet-nome">
 
-            <label for="reason">O que aconteceu?</label>
-            <select name="motivo" id="report-reason" required>
+            <label for="report-reason">O que aconteceu?</label>
+            <select name="motivo" id="report-reason" required style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #ddd;">
                 <option value="nao-pagando">Não está pagando</option>
                 <option value="link-quebrado">Link quebrado / Off-line</option>
                 <option value="saldo-vazio">Saldo da Faucet vazio</option>
                 <option value="outros">Outro motivo</option>
             </select>
 
-            <label for="msg">Detalhes adicionais (opcional):</label>
-            <textarea name="mensagem" id="report-msg" rows="3" placeholder="Conte o que houve..."></textarea>
+            <label for="report-msg">Detalhes adicionais (opcional):</label>
+            <textarea name="mensagem" id="report-msg" rows="3" placeholder="Conte o que houve..." style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #ddd;"></textarea>
 
             <div class="modal-buttons">
                 <button type="submit" class="btn-confirm">Enviar Report</button>
@@ -199,6 +206,9 @@
     </div>
 </div>
 
-    <script src="js/ticker-data.js"></script>
-<script src="js/script-global.js"></script> <script src="js/script-detail.js"></script><script src="js/ads-manager.js"></script> </body>
+<script src="js/ticker-data.js"></script>
+<script src="js/script-global.js"></script> 
+<script src="js/script-detail.js"></script>
+<script src="js/ads-manager.js"></script> 
+</body>
 </html>
