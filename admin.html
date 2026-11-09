@@ -130,38 +130,51 @@
         const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
         let listaEmailsGlobal = [];
 
-        async function verificarAutenticacaoEScarregar() {
-            let acesso = sessionStorage.getItem('autenticado');
-
-            if (acesso !== 'true') {
-                let tentativa = prompt("Acesso Administrativo! Digite a senha mestra:");
-                if (!tentativa) {
-                    alert("Acesso negado!");
-                    window.location.replace("index.html");
-                    return;
-                }
-
-                try {
-                    const response = await fetch(`${URL_WORKER}/admin-login`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ senha: tentativa })
-                    });
-                    const res = await response.json();
-
-                    if (!res.success) {
-                        alert("Senha incorreta! Acesso negado.");
-                        window.location.replace("index.html");
-                        return;
-                    } else {
-                        sessionStorage.setItem('autenticado', 'true');
-                    }
-                } catch (err) {
-                    alert("Erro ao validar credenciais com o servidor.");
-                    window.location.replace("index.html");
-                    return;
-                }
+        // Função para renderizar a tabela na tela
+        function renderizarTabela(dados) {
+            const tbody = document.getElementById('tabela-emails');
+            if (!dados || dados.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #777;">Nenhum e-mail encontrado.</td></tr>';
+                return;
             }
+
+            tbody.innerHTML = dados.map((item, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td style="font-weight: 600; color: #1a73e8;">${item.email || item}</td>
+                    <td><span style="background: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 4px; font-size: 0.8em;">Dashboard Local</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // Função de Pesquisa / Filtro instantâneo
+        function filtrarTabela() {
+            const termo = document.getElementById('filtro-email').value.toLowerCase();
+            const filtrados = listaEmailsGlobal.filter(item => {
+                const emailStr = (item.email || item).toLowerCase();
+                return emailStr.includes(termo);
+            });
+            renderizarTabela(filtrados);
+        }
+
+        // Função para Exportar e Baixar arquivo CSV
+        function baixarCSV() {
+            if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para exportar!");
+
+            let csvContent = "data:text/csv;charset=utf-8,Email,Origem\n";
+            listaEmailsGlobal.forEach(item => {
+                const email = item.email || item;
+                csvContent += `"${email}","Dashboard Local"\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "brazuka_leads_faucets.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
 
             // SE PASSOU DA SENHA: Só agora liberamos a exibição do body e buscamos os dados!
             document.body.style.display = 'flex';
