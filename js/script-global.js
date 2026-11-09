@@ -136,17 +136,6 @@ if (window.location.pathname.includes("cadastrar")) {
     atualizarSEO("Anuncie Conosco", "Anuncie no Brazuka Faucets.");
 }
 
-// Comando para remover o Preloader após o carregamento completo
-window.addEventListener('load', () => {
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        // Dá um tempinho de 500ms para garantir uma transição suave
-        setTimeout(() => {
-            preloader.classList.add('fade-out');
-        }, 500);
-    }
-});
-
 // ANALISTA: Captura o padrinho pela URL (?ref=email@faucetpay.com)
 const urlParams = new URLSearchParams(window.location.search);
 const ref = urlParams.get('ref');
