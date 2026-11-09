@@ -175,3 +175,13 @@ function carregarTicker() {
         tickerTrack.appendChild(link);
     });
 }
+
+// Função unificada para rastrear cliques no site
+function registrarClique(tipo, identificador) {
+    // Dispara via fetch sem bloquear a abertura do link
+    fetch(`${URL_WORKER}/track-click`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: tipo, id: identificador })
+    }).catch(err => console.log('Erro ao rastrear clique:', err));
+}
