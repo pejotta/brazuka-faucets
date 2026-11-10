@@ -1,32 +1,32 @@
 <div class="footer">
     <div class="footer-container">
         
-        <!-- Coluna 1 (Esquerda): Tradutor e Widgets -->
-        <div class="footer-section footer-left">
-            <div id="google_translate_element"></div>
-            <!-- Se quiser colocar uma breve descrição do site aqui igual no Airdrops, fica show -->
-            <p style="font-size: 0.8em; color: #888; margin-top: 10px; line-height: 1.4;">
+        <!-- Coluna 1: Logo + Slogan + Tradutor -->
+        <div class="footer-section footer-col-1">
+            <div class="footer-logo-container">
+                <a href="index.html">
+                    <img src="https://www.brazukafaucets.com.br/assets/logo-brazuka.png" alt="Brazuka Faucets" class="footer-logo">
+                </a>
+            </div>
+            <p class="footer-slogan">
                 O melhor agregador de faucets e ferramentas cripto do Brasil. Ganhe criptomoedas de forma rápida e segura.
             </p>
+            <div id="google_translate_element" style="margin-top: 15px;"></div>
         </div>
 
-        <!-- Coluna 2 (Centro): Links Institucionais, Copyright e Assinatura -->
-        <div class="footer-section footer-center">
-            <h4 style="color: #fff; margin-bottom: 15px; font-size: 0.95em; text-transform: uppercase; letter-spacing: 1px;">Navegação</h4>
-            <div class="footer-links-vertical" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 25px;">
+        <!-- Coluna 2: Páginas / Navegação -->
+        <div class="footer-section footer-col-2">
+            <h4>Navegação</h4>
+            <div class="footer-nav-links">
                 <a href="contato.html">Contato</a>
                 <a href="privacidade.html">Política de Privacidade</a>
                 <a href="termos.html">Termos de Uso</a>
                 <a href="anuncie.html">Anuncie</a>
             </div>
-
-            <!-- Assinatura e Copyright -->
-            <p class="footer-dev-text">Desenvolvido por <a href="https://pejottahub.lovable.app/" target="_blank" style="color: var(--primary, #1a73e8); text-decoration: none; font-weight: 600;">Pejotta HUB</a>.</p>
-            <p class="footer-dev-text">&copy; <span id="current-year"></span> Brazuka Faucets. Todos os direitos reservados. Deus Seja Louvado.</p>
         </div>
 
-        <!-- Coluna 3 (Direita): Seção de Doações (Estilo Airdrops.io) -->
-        <div class="footer-section footer-right">
+        <!-- Coluna 3: Donate / Doações -->
+        <div class="footer-section footer-col-3">
             <div class="footer-donate-section">
                 <div class="footer-donate-header">
                     <i class="fa-solid fa-heart" style="color: #e74c3c; margin-right: 8px;"></i>
@@ -73,18 +73,25 @@
                 </div>
             </div>
             
-            <!-- Whos Amung Us logo abaixo na direita, igualzinho a referência -->
+            <!-- Whos Amung Us -->
             <div id="wau-placeholder" style="margin-top: 15px;"></div>
         </div>
 
     </div>
+
+    <!-- Linha Divisória e Rodapé Inferior -->
+    <div class="footer-bottom-bar">
+        <div class="footer-bottom-content">
+            <span>Desenvolvido por <a href="https://pejottahub.lovable.app/" target="_blank" class="hub-link">Pejotta HUB</a>.</span>
+            <span>&copy; <span id="current-year"></span> Brazuka Faucets. Todos os direitos reservados.</span>
+            <span class="deus-louvado">Deus Seja Louvado.</span>
+        </div>
+    </div>
 </div>
 
 <script>
-// Atualiza automaticamente o ano no rodapé
 document.getElementById('current-year').textContent = new Date().getFullYear();
 
-// Função para copiar com feedback visual direto no botão
 function copiarChaveDoacao(elementId, btnElement) {
     const inputElement = document.getElementById(elementId);
     if (!inputElement) return;
