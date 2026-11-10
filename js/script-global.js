@@ -18,14 +18,21 @@ async function loadEverything() {
 
 async function carregarTicker() {
     const tickerTrack = document.getElementById('ticker-track');
+    
+    // Se o elemento não existir na página atual, aborta de forma segura sem quebrar o console
     if (!tickerTrack) return;
 
     try {
         const response = await fetch("https://brazuka-faucets.moneynanet-yt.workers.dev/admin-get-ticker");
+        if (!response.ok) throw new Error("Erro de rede ao buscar ticker");
+
         const data = await response.json();
         const mensagens = data.mensagensFixas || [];
 
-        if (mensagens.length === 0) return;
+        if (mensagens.length === 0) {
+            tickerTrack.innerHTML = '<span class="ticker-item">Nenhum aviso no momento.</span>';
+            return;
+        }
 
         tickerTrack.innerHTML = ''; 
 
@@ -36,18 +43,26 @@ async function carregarTicker() {
             const link = document.createElement('a');
             link.href = item.link || "#";
             link.className = 'ticker-item';
+            link.target = "_blank";
             
             let icone = "fa-bullhorn";
-            if (item.title.includes("🔥")) icone = "fa-fire";
-            if (item.title.includes("🏆")) icone = "fa-trophy";
-            if (item.title.includes("💡")) icone = "fa-lightbulb";
+            if (item.title && item.title.includes("🔥")) icone = "fa-fire";
+            else if (item.title && item.title.includes("🏆")) icone = "fa-trophy";
+            else if (item.title && item.title.includes("💡")) icone = "fa-lightbulb";
 
             link.innerHTML = `<i class="fa-solid ${icone}" style="font-size: 10px; margin-right: 8px; color: #1a73e8;"></i> ${item.title}`;
             tickerTrack.appendChild(link);
         });
     } catch (e) {
-        console.error("Erro ao carregar ticker do servidor:", e);
+        console.warn("Aviso do Ticker (usando fallback local ou aguardando conexão):", e);
     }
+}
+
+// Garante que só roda após o DOM carregar completamente
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', carregarTicker);
+} else {
+    carregarTicker();
 }
 
 function initFooterWidgets() {
