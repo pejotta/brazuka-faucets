@@ -1,21 +1,98 @@
 <div class="footer">
-<div class="footer-container">
-    <div class="footer-section footer-left">
-        <div id="google_translate_element"></div>
-    </div>
+    <div class="footer-container">
+        <!-- Coluna Esquerda: Tradutor e Widgets -->
+        <div class="footer-section footer-left">
+            <div id="google_translate_element"></div>
+        </div>
 
-    <div class="footer-section footer-center">
-        <p>&copy; 2025 Brazuka Faucets. Todos os direitos reservados.</p>
-        <div class="footer-links">
-            <a href="contato.html">Contato</a> | 
-            <a href="privacidade.html">Política de Privacidade</a> | 
-            <a href="termos.html">Termos de Uso</a> |
-            <a href="anuncie.html">Anuncie</a>
+        <!-- Coluna Central: Links, Copyright e Seção de Doações -->
+        <div class="footer-section footer-center">
+            
+            <!-- Nova Seção de Doações (Estilo Clean) -->
+            <div class="footer-donate-section">
+                <div class="footer-donate-header">
+                    <i class="fa-solid fa-heart" style="color: #e74c3c; margin-right: 8px;"></i>
+                    <span>Apoie o Projeto (Doações)</span>
+                </div>
+                <p class="footer-donate-desc">Gosta do Brazuka Faucets? Ajude a manter as ferramentas no ar e gratuitas fazendo uma doação voluntária!</p>
+
+                <div class="footer-donate-grid">
+                    <!-- Bitcoin (Lightning Network) -->
+                    <div class="donate-item">
+                        <span class="donate-label"><i class="fa-brands fa-bitcoin" style="color: #f39c12;"></i> BTC (Lightning / Zero Fee)</span>
+                        <div class="donate-input-group">
+                            <input type="text" value="eupaulojhonatan@bipa.app" readonly id="donate-btc">
+                            <button onclick="copiarChaveDoacao('donate-btc', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Dogecoin -->
+                    <div class="donate-item">
+                        <span class="donate-label"><i class="fa-solid fa-coins" style="color: #f1c40f;"></i> DOGE</span>
+                        <div class="donate-input-group">
+                            <input type="text" value="DNeV9iAkw2K5WofPehfz1GAwwHyCSKYxaq" readonly id="donate-doge">
+                            <button onclick="copiarChaveDoacao('donate-doge', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- TRX e USDT (TRC20) -->
+                    <div class="donate-item">
+                        <span class="donate-label"><i class="fa-solid fa-bolt" style="color: #e74c3c;"></i> TRX & USDT (TRC20)</span>
+                        <div class="donate-input-group">
+                            <input type="text" value="TMRVmB5b5zp3ormTeuhsbwUiUH2eyndPMh" readonly id="donate-trx">
+                            <button onclick="copiarChaveDoacao('donate-trx', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Pix ou FaucetPay -->
+                    <div class="donate-item">
+                        <span class="donate-label"><i class="fa-solid fa-wallet" style="color: #27ae60;"></i> Pix ou FaucetPay</span>
+                        <div class="donate-input-group">
+                            <input type="text" value="paulo.tan@hotmail.com" readonly id="donate-pix">
+                            <button onclick="copiarChaveDoacao('donate-pix', this)" title="Copiar chave"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rodapé Clássico e Assinatura Pejotta HUB -->
+            <p class="footer-dev-text">Desenvolvido por <a href="https://pejottahub.lovable.app/" target="_blank" style="color: var(--primary, #1a73e8); text-decoration: none; font-weight: 600;">Pejotta HUB</a>. &copy; <span id="current-year"></span> Brazuka Faucets. Todos os direitos reservados. Deus Seja Louvado.</p>
+            
+            <div class="footer-links">
+                <a href="contato.html">Contato</a> | 
+                <a href="privacidade.html">Política de Privacidade</a> | 
+                <a href="termos.html">Termos de Uso</a> |
+                <a href="anuncie.html">Anuncie</a>
+            </div>
+        </div>
+
+        <!-- Coluna Direita: Whos Amung Us -->
+        <div class="footer-section footer-right">
+            <div id="wau-placeholder"></div>
         </div>
     </div>
+</div>
 
-    <div class="footer-section footer-right">
-        <div id="wau-placeholder"></div>
-    </div>
-</div>
-</div>
+<script>
+// Atualiza automaticamente o ano no rodapé
+document.getElementById('current-year').textContent = new Date().getFullYear();
+
+// Função para copiar com feedback visual direto no botão
+function copiarChaveDoacao(elementId, btnElement) {
+    const inputElement = document.getElementById(elementId);
+    if (!inputElement) return;
+
+    navigator.clipboard.writeText(inputElement.value).then(() => {
+        const iconeOriginal = btnElement.innerHTML;
+        btnElement.innerHTML = '<i class="fa-solid fa-check" style="color: #27ae60;"></i>';
+        btnElement.style.background = '#e8f8f5';
+
+        setTimeout(() => {
+            btnElement.innerHTML = iconeOriginal;
+            btnElement.style.background = '';
+        }, 2000);
+    }).catch(err => {
+        console.error("Erro ao copiar:", err);
+    });
+}
+</script>
