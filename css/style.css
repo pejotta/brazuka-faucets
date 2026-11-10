@@ -285,7 +285,7 @@ body {
 
 /* --- FOOTER ESTILO AIRDROPS.IO (ABERTO E EM COLUNAS) --- */
 .footer {
-    background-color: #111;
+    background-color: #1a1a1a;
     color: #999;
     padding: 50px 20px;
     margin-top: 40px;
@@ -865,41 +865,6 @@ body {
 .mini-info h4 { font-size: 0.9rem; margin: 0; }
 .mini-info p { font-size: 0.75rem; color: #777; margin: 0; }
 .rating-pill { background: #fff8e1; color: #ffa000; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; }
-
-/* CSS Reforçado */
-.footer {
-    background-color: #555; 
-    padding: 30px 0;
-    border-top: 2px solid #eee;
-    width: 100%;
-    font-family: sans-serif;
-}
-
-.footer-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center
-    margin: 0 auto;
-    padding: 0 20px;
-    flex-wrap: wrap; /* Garante que não quebre em telas menores */
-}
-
-.footer-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.footer-left { align-items: flex-start; }
-.footer-center { align-items: center; text-align: center; }
-.footer-right { align-items: flex-end; }
-
-.footer-links a {
-    text-decoration: none;
-    color: #ccc;
-    font-size: 14px;
-    margin: 0 5px;
-}
 
 /* Se no celular ficar bagunçado, ele empilha */
 @media (max-width: 768px) {
