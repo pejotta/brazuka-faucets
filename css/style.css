@@ -283,14 +283,131 @@ body {
     text-decoration: underline;
 }
 
-/* FOOTER */
+/* --- CSS COMPLETO DO RODAPÉ E SEÇÃO DE DOAÇÕES --- */
 .footer {
-    background-color: #333;
+    background-color: #222;
     color: #ccc;
-    text-align: center;
-    padding: 15px 20px;
+    padding: 30px 20px;
     margin-top: 40px;
     font-size: 0.9em;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+}
+
+.footer-center {
+    flex: 2;
+    text-align: center;
+}
+
+.footer-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Seção de Doações */
+.footer-donate-section {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.footer-donate-header {
+    font-weight: bold;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.footer-donate-desc {
+    font-size: 0.8em;
+    color: #aaa;
+    margin-bottom: 12px;
+}
+
+.footer-donate-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+}
+
+.donate-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.donate-label {
+    font-size: 0.75em;
+    font-weight: 600;
+    color: #bbb;
+}
+
+.donate-input-group {
+    display: flex;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.donate-input-group input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    padding: 6px 10px;
+    font-family: monospace;
+    font-size: 0.75em;
+    width: 100%;
+    outline: none;
+}
+
+.donate-input-group button {
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: #fff;
+    padding: 0 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.donate-input-group button:hover {
+    background: var(--primary, #1a73e8);
+}
+
+/* Textos e Links do Rodapé */
+.footer-dev-text {
+    font-size: 0.85em;
+    color: #bbb;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.footer-links {
+    margin-top: 8px;
 }
 
 .footer-links a {
@@ -301,6 +418,25 @@ body {
 
 .footer-links a:hover {
     color: #fff;
+}
+
+/* Responsivo para Celulares */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .footer-right, .footer-left {
+        justify-content: center;
+        width: 100%;
+    }
+    .footer-donate-section {
+        text-align: center;
+    }
+    .footer-donate-header {
+        justify-content: center;
+    }
 }
 
 /* MEDIA QUERIES para responsividade */
