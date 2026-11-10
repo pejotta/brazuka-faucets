@@ -866,18 +866,6 @@ body {
 .mini-info p { font-size: 0.75rem; color: #777; margin: 0; }
 .rating-pill { background: #fff8e1; color: #ffa000; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; }
 
-/* Se no celular ficar bagunçado, ele empilha */
-@media (max-width: 768px) {
-    .footer-container {
-        flex-direction: column;
-        text-align: center;
-        gap: 20px;
-    }
-    .footer-left, .footer-center, .footer-right {
-        align-items: center;
-        justify-content: center;
-    }
-}
 .stats-hero {
     background: linear-gradient(135deg, #ececec 0%, #b6d6ff 100%);
     padding: 60px 20px;
