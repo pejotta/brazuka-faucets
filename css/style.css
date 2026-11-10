@@ -283,11 +283,11 @@ body {
     text-decoration: underline;
 }
 
-/* --- FOOTER ESTILO AIRDROPS.IO (ALINHADO E ABERTO) --- */
+/* --- FOOTER ESTILO AIRDROPS.IO (ABERTO E EM COLUNAS) --- */
 .footer {
-    background-color: #111; /* Fundo bem escuro estilo Airdrops */
+    background-color: #111;
     color: #999;
-    padding: 40px 20px;
+    padding: 50px 20px;
     margin-top: 40px;
     font-size: 0.85em;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -297,7 +297,7 @@ body {
     max-width: 1300px;
     margin: 0 auto;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Garante que fiquem lado a lado no desktop */
     justify-content: space-between;
     align-items: flex-start;
     gap: 40px;
@@ -306,31 +306,39 @@ body {
 /* Colunas individuais */
 .footer-section {
     flex: 1;
-    min-width: 250px;
-    text-align: left; /* Alinhado à esquerda como na referência */
+    text-align: left;
 }
 
 .footer-left {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    flex: 1;
 }
 
 .footer-center {
-    flex: 1.5;
+    flex: 1;
 }
 
 .footer-right {
     flex: 1.2;
 }
 
-/* Seção de Doações no Rodapé (Estilo Bloco Lateral) */
+/* Links em coluna vertical estilo Airdrops */
+.footer-links-vertical a {
+    color: #aaa;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.footer-links-vertical a:hover {
+    color: #fff;
+    padding-left: 5px;
+}
+
+/* Seção de Doações no Rodapé (Bloco da Direita) */
 .footer-donate-section {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 8px;
     padding: 15px;
-    margin-bottom: 15px;
     text-align: left;
 }
 
@@ -405,44 +413,21 @@ body {
 .footer-dev-text {
     font-size: 0.8em;
     color: #888;
-    margin-top: 15px;
-    margin-bottom: 8px;
+    margin-top: 8px;
     line-height: 1.5;
-}
-
-.footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-.footer-links a {
-    color: #aaa;
-    text-decoration: none;
-    transition: 0.2s;
-}
-
-.footer-links a:hover {
-    color: #fff;
 }
 
 /* Responsivo para Celulares */
 @media (max-width: 900px) {
     .footer-container {
+        flex-wrap: wrap;
         flex-direction: column;
         align-items: stretch;
         gap: 30px;
     }
     .footer-section {
         width: 100%;
-        text-align: center;
-    }
-    .footer-donate-section {
-        text-align: left; /* Mantém organizado no mobile */
-    }
-    .footer-links {
-        justify-content: center;
+        text-align: left;
     }
 }
 
