@@ -16,6 +16,40 @@ async function loadEverything() {
     initFooterWidgets();
 }
 
+async function carregarTicker() {
+    const tickerTrack = document.getElementById('ticker-track');
+    if (!tickerTrack) return;
+
+    try {
+        const response = await fetch("https://brazuka-faucets.moneynanet-yt.workers.dev/admin-get-ticker");
+        const data = await response.json();
+        const mensagens = data.mensagensFixas || [];
+
+        if (mensagens.length === 0) return;
+
+        tickerTrack.innerHTML = ''; 
+
+        // Multiplicamos a lista para o scroll ser fluido e infinito
+        const listaExibicao = [...mensagens, ...mensagens, ...mensagens];
+
+        listaExibicao.forEach(item => {
+            const link = document.createElement('a');
+            link.href = item.link || "#";
+            link.className = 'ticker-item';
+            
+            let icone = "fa-bullhorn";
+            if (item.title.includes("🔥")) icone = "fa-fire";
+            if (item.title.includes("🏆")) icone = "fa-trophy";
+            if (item.title.includes("💡")) icone = "fa-lightbulb";
+
+            link.innerHTML = `<i class="fa-solid ${icone}" style="font-size: 10px; margin-right: 8px; color: #1a73e8;"></i> ${item.title}`;
+            tickerTrack.appendChild(link);
+        });
+    } catch (e) {
+        console.error("Erro ao carregar ticker do servidor:", e);
+    }
+}
+
 function initFooterWidgets() {
     // --- LÓGICA DO GOOGLE TRANSLATE ---
     window.googleTranslateElementInit = function() {
