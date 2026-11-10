@@ -1,7 +1,7 @@
 <style>
-/* --- FOOTER IDÊNTICO AO AIRDROPS.IO --- */
+/* --- FOOTER ATUALIZADO (DUAS COLUNAS DE NAVEGAÇÃO) --- */
 .footer {
-    background-color: #121212; /* Fundo escuro sólido impecável */
+    background-color: #121212;
     color: #999;
     padding: 50px 20px 30px 20px;
     margin-top: 50px;
@@ -16,11 +16,11 @@
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 40px;
+    gap: 30px;
     padding-bottom: 40px;
 }
 
-/* Colunas Individuais */
+/* Colunas individuais */
 .footer-section {
     flex: 1;
     text-align: left;
@@ -31,7 +31,7 @@
 }
 
 .footer-col-2 {
-    flex: 0.8;
+    flex: 1.2; /* Expandido levemente para acomodar as duas listas de navegação */
 }
 
 .footer-col-3 {
@@ -57,11 +57,16 @@
     margin-bottom: 15px;
 }
 
-/* Coluna de Navegação (Lista Vertical estilo Airdrops) */
-.footer-col-2 h4 {
+/* Navegação Bipartida (Ganhe Cripto & Institucional) */
+.footer-nav-grid {
+    display: flex;
+    gap: 30px;
+}
+
+.footer-nav-column h4 {
     color: #fff;
-    margin-bottom: 15px;
-    font-size: 0.95em;
+    margin-bottom: 12px;
+    font-size: 0.9em;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 600;
@@ -70,13 +75,13 @@
 .footer-nav-links {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .footer-nav-links a {
     color: #999;
     text-decoration: none;
-    font-size: 0.9em;
+    font-size: 0.85em;
     transition: color 0.2s;
 }
 
@@ -160,7 +165,7 @@
     color: #fff;
 }
 
-/* Barra Inferior (Créditos idênticos ao Airdrops.io mas com a sua assinatura) */
+/* Barra Inferior de Créditos */
 .footer-bottom-bar {
     max-width: 1280px;
     margin: 0 auto;
@@ -208,6 +213,10 @@
         width: 100%;
         text-align: left;
     }
+    .footer-nav-grid {
+        flex-direction: column;
+        gap: 20px;
+    }
     .footer-bottom-bar {
         flex-direction: column;
         text-align: center;
@@ -232,14 +241,31 @@
             <div id="google_translate_element" style="margin-top: 15px;"></div>
         </div>
 
-        <!-- Coluna 2: Páginas / Navegação (Em lista vertical limpa) -->
+        <!-- Coluna 2: Navegação Bipartida (Ganhe Cripto & Institucional) -->
         <div class="footer-section footer-col-2">
-            <h4>Navegação</h4>
-            <div class="footer-nav-links">
-                <a href="contato.html">Contato</a>
-                <a href="privacidade.html">Política de Privacidade</a>
-                <a href="termos.html">Termos de Uso</a>
-                <a href="anuncie.html">Anuncie</a>
+            <div class="footer-nav-grid">
+                <!-- Subcoluna: Ganhe Cripto -->
+                <div class="footer-nav-column">
+                    <h4>Ganhe Cripto</h4>
+                    <div class="footer-nav-links">
+                        <a href="nossas-faucets.html">Nossas Faucets</a>
+                        <a href="shortlinks.html">Shortlinks</a>
+                        <a href="todas-as-moedas.html">Todas as Moedas</a>
+                        <a href="cadastrar-faucet.html">Cadastrar Faucet</a>
+                    </div>
+                </div>
+
+                <!-- Subcoluna: Institucional -->
+                <div class="footer-nav-column">
+                    <h4>Institucional</h4>
+                    <div class="footer-nav-links">
+                        <a href="guia-do-iniciante.html">Guia do Iniciante</a>
+                        <a href="contato.html">Contato</a>
+                        <a href="privacidade.html">Privacidade</a>
+                        <a href="termos.html">Termos de Uso</a>
+                        <a href="anuncie.html">Anuncie</a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -297,7 +323,7 @@
 
     </div>
 
-    <!-- Barra Inferior de Créditos (Alinhada idêntica ao Airdrops.io) -->
+    <!-- Barra Inferior de Créditos -->
     <div class="footer-bottom-bar">
         <div class="footer-bottom-left">
             <span>Desenvolvido por <a href="https://pejottahub.lovable.app/" target="_blank" class="hub-link">Pejotta HUB</a>.</span>
