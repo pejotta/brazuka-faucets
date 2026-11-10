@@ -16,6 +16,7 @@ async function loadEverything() {
     initFooterWidgets();
 }
 
+// ÚNICA E CORRETA FUNÇÃO DO TICKER (Puxando do Banco de Dados Cloudflare)
 async function carregarTicker() {
     const tickerTrack = document.getElementById('ticker-track');
     
@@ -192,32 +193,6 @@ const ref = urlParams.get('ref');
 if (ref) {
     localStorage.setItem('brazuka_ref', ref);
     console.log("Padrinho detectado e salvo:", ref);
-}
-
-function carregarTicker() {
-    const tickerTrack = document.getElementById('ticker-track');
-    if (!tickerTrack || typeof TICKER_CONFIG === 'undefined') return;
-
-    const mensagens = TICKER_CONFIG.mensagensFixas;
-    if (mensagens.length === 0) return;
-
-    tickerTrack.innerHTML = ''; 
-
-    const listaExibicao = [...mensagens, ...mensagens, ...mensagens];
-
-    listaExibicao.forEach(item => {
-        const link = document.createElement('a');
-        link.href = item.link;
-        link.className = 'ticker-item';
-        
-        let icone = "fa-bullhorn";
-        if (item.title.includes("🔥")) icone = "fa-fire";
-        if (item.title.includes("🏆")) icone = "fa-trophy";
-        if (item.title.includes("💡")) icone = "fa-lightbulb";
-
-        link.innerHTML = `<i class="fa-solid ${icone}" style="font-size: 10px; margin-right: 8px; color: #1a73e8;"></i> ${item.title}`;
-        tickerTrack.appendChild(link);
-    });
 }
 
 // Função para registrar o clique na Cloudflare Worker (Analytics)
