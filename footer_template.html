@@ -1,25 +1,43 @@
 <div class="footer">
     <div class="footer-container">
-        <!-- Coluna Esquerda: Tradutor e Widgets -->
+        
+        <!-- Coluna 1 (Esquerda): Tradutor e Widgets -->
         <div class="footer-section footer-left">
             <div id="google_translate_element"></div>
+            <!-- Se quiser colocar uma breve descrição do site aqui igual no Airdrops, fica show -->
+            <p style="font-size: 0.8em; color: #888; margin-top: 10px; line-height: 1.4;">
+                O melhor agregador de faucets e ferramentas cripto do Brasil. Ganhe criptomoedas de forma rápida e segura.
+            </p>
         </div>
 
-        <!-- Coluna Central: Links, Copyright e Seção de Doações -->
+        <!-- Coluna 2 (Centro): Links Institucionais, Copyright e Assinatura -->
         <div class="footer-section footer-center">
-            
-            <!-- Nova Seção de Doações (Estilo Clean) -->
+            <h4 style="color: #fff; margin-bottom: 15px; font-size: 0.95em; text-transform: uppercase; letter-spacing: 1px;">Navegação</h4>
+            <div class="footer-links-vertical" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 25px;">
+                <a href="contato.html">Contato</a>
+                <a href="privacidade.html">Política de Privacidade</a>
+                <a href="termos.html">Termos de Uso</a>
+                <a href="anuncie.html">Anuncie</a>
+            </div>
+
+            <!-- Assinatura e Copyright -->
+            <p class="footer-dev-text">Desenvolvido por <a href="https://pejottahub.lovable.app/" target="_blank" style="color: var(--primary, #1a73e8); text-decoration: none; font-weight: 600;">Pejotta HUB</a>.</p>
+            <p class="footer-dev-text">&copy; <span id="current-year"></span> Brazuka Faucets. Todos os direitos reservados. Deus Seja Louvado.</p>
+        </div>
+
+        <!-- Coluna 3 (Direita): Seção de Doações (Estilo Airdrops.io) -->
+        <div class="footer-section footer-right">
             <div class="footer-donate-section">
                 <div class="footer-donate-header">
                     <i class="fa-solid fa-heart" style="color: #e74c3c; margin-right: 8px;"></i>
-                    <span>Apoie o Projeto (Doações)</span>
+                    <span>Donate / Apoie o Projeto</span>
                 </div>
-                <p class="footer-donate-desc">Gosta do Brazuka Faucets? Ajude a manter as ferramentas no ar e gratuitas fazendo uma doação voluntária!</p>
+                <p class="footer-donate-desc">Ajude a manter as ferramentas no ar fazendo uma doação voluntária:</p>
 
                 <div class="footer-donate-grid">
                     <!-- Bitcoin (Lightning Network) -->
                     <div class="donate-item">
-                        <span class="donate-label"><i class="fa-brands fa-bitcoin" style="color: #f39c12;"></i> BTC (Via Lightning / Taxa Zero)</span>
+                        <span class="donate-label"><i class="fa-brands fa-bitcoin" style="color: #f39c12;"></i> BTC (Lightning / Zero Fee)</span>
                         <div class="donate-input-group">
                             <input type="text" value="eupaulojhonatan@bipa.app" readonly id="donate-btc">
                             <button onclick="copiarChaveDoacao('donate-btc', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
@@ -54,22 +72,11 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Rodapé Clássico e Assinatura Pejotta HUB -->
-            <p class="footer-dev-text">Desenvolvido por <a href="https://pejottahub.lovable.app/" target="_blank" style="color: var(--primary, #1a73e8); text-decoration: none; font-weight: 600;">Pejotta HUB</a>. &copy; <span id="current-year"></span> Brazuka Faucets. Todos os direitos reservados. Deus Seja Louvado.</p>
             
-            <div class="footer-links">
-                <a href="contato.html">Contato</a> | 
-                <a href="privacidade.html">Política de Privacidade</a> | 
-                <a href="termos.html">Termos de Uso</a> |
-                <a href="anuncie.html">Anuncie</a>
-            </div>
+            <!-- Whos Amung Us logo abaixo na direita, igualzinho a referência -->
+            <div id="wau-placeholder" style="margin-top: 15px;"></div>
         </div>
 
-        <!-- Coluna Direita: Whos Amung Us -->
-        <div class="footer-section footer-right">
-            <div id="wau-placeholder"></div>
-        </div>
     </div>
 </div>
 
