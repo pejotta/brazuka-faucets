@@ -293,6 +293,17 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* Estilo da Logo no Rodapé */
+.footer-logo-container {
+    margin-bottom: 12px;
+}
+
+.footer-logo {
+    max-width: 160px; /* Ajuste o tamanho máximo conforme preferir */
+    height: auto;
+    display: block;
+}
+
 .footer-container {
     max-width: 1300px;
     margin: 0 auto;
