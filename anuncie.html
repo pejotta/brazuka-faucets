@@ -313,7 +313,8 @@
             <h2 style="color: var(--primary-blue);"><i class="fas fa-bullhorn"></i> Solicitar Espaço</h2>
             <p>Envie sua proposta e retornaremos o mais rápido possível.</p>
 
-            <form action="https://formspree.io/f/mjgbvzbq" method="POST" id="form-anuncio">
+            <form action="https://api.web3forms.com/submit" method="POST" id="form-anuncio">
+                <input type="hidden" name="access_key" value="2e11cc20-43eb-439c-9e11-a0a407c7547c">
                 <div class="input-group">
                     <label>Seu Nome / Empresa *</label>
                     <input type="text" name="cliente" placeholder="Ex: Crypto Faucet Inc." required>
