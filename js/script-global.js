@@ -78,18 +78,6 @@ function initFooterWidgets() {
     const gtScript = document.createElement('script');
     gtScript.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
     document.body.appendChild(gtScript);
-
-    // --- LÓGICA DO WHOS AMUNG US ---
-    const wauPlaceholder = document.getElementById('wau-placeholder');
-    if (wauPlaceholder) {
-        window._wau = window._wau || [];
-        window._wau.push(["classic", "z19kbip6mo", "tqi"]);
-
-        const wauScript = document.createElement('script');
-        wauScript.src = "https://waust.at/c.js";
-        wauScript.async = true;
-        wauPlaceholder.appendChild(wauScript);
-    }
 }
 
 // Função auxiliar para carregar arquivos HTML externos
