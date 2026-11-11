@@ -101,7 +101,7 @@
             <div class="top-actions">
                 <div>
                     <h2 style="margin:0; color: #333; font-size: 1.2em;"><i class="fa-solid fa-gauge-high"></i> Bem-vindo ao Painel</h2>
-                    <p style="margin: 5px 0 0; color: #666; font-size: 0.9em;">Gerencie suas ferramentas ou faça backups rápidos do Banco de Dados.</p>
+                    <p style="margin: 5px 0 0; color: #666; font-size: 0.9em;">Gerencie suas ferramentas ou faça backups rápidos do banco de dados.</p>
                 </div>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                     <a href="gerador.html" class="btn-painel">
@@ -139,21 +139,32 @@
                         <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Gerencie e rotacione os banners exibidos no seu site em tempo real.</p>
                     </div>
                     <button class="btn-action" onclick="salvarAnunciosNoBanco()" style="background: var(--cloud);">
-                        <i class="fa-solid fa-floppy-disk"></i> Salvar Anúncios no Banco de Dados
+                        <i class="fa-solid fa-floppy-disk"></i> Salvar Anúncios no KV
                     </button>
                 </div>
 
                 <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
                     <div style="flex: 1; min-width: 250px;">
-                        <label style="font-weight: bold; font-size: 0.9em; display: block; margin-bottom: 5px;">Selecione a Posição/Slot:</label>
+                        <label style="font-weight: bold; font-size: 0.9em; display: block; margin-bottom: 5px;">Selecione o Posição/Slot:</label>
                         <select id="ad-slot-select" onchange="carregarSlotSelecionado()" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
-                            <option value="home_top">Home / Topo Geral - (728x90)</option>
-                            <option value="home_central_auto">Modal de Claim - Centro / Automático - (728x90)</option>
-                            <option value="fichaTecnica">Ficha Técnica - Banner Quadrado - (300x250)</option>
-                            <option value="sidebarTrx">Skyscraper Exclusivo - Faucet TRX - (160x600)</option>
-                            <option value="sidebarTon">Skyscraper Exclusivo - Faucet TON - (160x600)</option>
-                            <option value="pageCadastro">Página de Cadastro - Skyscraper Lateral - (160x600)</option>
-                        </select>
+    <option value="homeTop">Home - Banner Topo Geral (728x90)</option>
+    <option value="homeBtcEth">Home - Setorial BTC & ETH (728x90)</option>
+    <option value="homeDogeTrx">Home - Setorial DOGE & TRX (728x90)</option>
+    <option value="homeCentralAuto">Home - Setorial Central & AutoFaucets (728x90)</option>
+    <option value="homeMinerBet">Home - Setorial Mineradores & Bets (728x90)</option>
+    <option value="homeAirdropIpo">Home - Cursos, Ferramentas & IPOs (Largo)</option>
+    <option value="fichaTecnica">Ficha Técnica - Banner Quadrado (300x250)</option>
+    <option value="sidebarTrx">Skyscraper Exclusivo - Faucet TRX (160x600)</option>
+    <option value="sidebarTon">Skyscraper Exclusivo - Faucet TON (160x600)</option>
+    <option value="pageCadastro">Página de Cadastro - Skyscraper (160x600)</option>
+    <!-- Legados / Compatibilidade -->
+    <option value="homeMid">Legado - Home Meio Genérico</option>
+    <option value="sidebar">Legado - Sidebar Genérica</option>
+    <option value="pageGain">Legado - Página de Ganho</option>
+    <option value="modalLeft">Modal - Esquerda (160x600)</option>
+    <option value="modalRight">Modal - Direita (160x600)</option>
+    <option value="modalCenter">Modal - Centro (Principal)</option>
+</select>
                     </div>
                 </div>
 
@@ -173,7 +184,7 @@
             </div>
         </div>
 
-        <!-- ABA 3: GERENCIAR TICKER -->
+        <!-- ABA 3: GERENCIAR TICKER (NOVA) -->
         <div id="aba-ticker" class="tab-content">
             <div class="panel-container">
                 <div class="panel-header">
@@ -182,7 +193,7 @@
                         <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Edite os avisos e links que passam rolando no topo de todas as páginas do site.</p>
                     </div>
                     <button class="btn-action" onclick="salvarTickerNoBanco()" style="background: var(--success);">
-                        <i class="fa-solid fa-floppy-disk"></i> Salvar Ticker no Banco de Dados
+                        <i class="fa-solid fa-floppy-disk"></i> Salvar Ticker no KV
                     </button>
                 </div>
 
@@ -260,7 +271,7 @@
                             </tr>
                         </thead>
                         <tbody id="tabela-emails">
-                            <tr><td colspan="3" style="text-align: center; color: #777;">Carregando e-mails do Banco de Dados...</td></tr>
+                            <tr><td colspan="3" style="text-align: center; color: #777;">Carregando e-mails do Banco de Dados KV...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -273,23 +284,18 @@
         const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
         let listaEmailsGlobal = [];
         let objetoAdsGlobal = {
-            home_top: [], home_central_auto: [], fichaTecnica: [], 
-            sidebarTrx: [], sidebarTon: [], pageCadastro: []
+            homeTop: [], homeMid: [], sidebar: [], pageGain: [],
+            modalLeft: [], modalRight: [], modalCenter: [], pageCadastro: []
         };
         let tickerItens = [];
 
-        // Função para Alternar entre as Abas
+        // Função para Alternar entre as Abas Limpas
         function mudarAba(nomeAba, evento) {
-            document.querySelectorAll('.tab-content').forEach(function(aba) {
-                aba.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-btn').forEach(function(btn) {
-                btn.classList.remove('active');
-            });
+            document.querySelectorAll('.tab-content').forEach(aba => aba.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
-            const abaAlvo = document.getElementById('aba-' + nomeAba);
-            if (abaAlvo) abaAlvo.classList.add('active');
-            if (evento && evento.currentTarget) evento.currentTarget.classList.add('active');
+            document.getElementById(`aba-${nomeAba}`).classList.add('active');
+            evento.currentTarget.classList.add('active');
         }
 
         // 1. Função de Autenticação Segura (Bloqueante)
@@ -305,7 +311,7 @@
                 }
 
                 try {
-                    const response = await fetch(URL_WORKER + '/admin-login', {
+                    const response = await fetch(`${URL_WORKER}/admin-login`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ senha: tentativa })
@@ -336,28 +342,26 @@
         async function carregarDadosPainel() {
             try {
                 // Puxa e-mails
-                const resEmails = await fetch(URL_WORKER + '/admin-get-emails');
+                const resEmails = await fetch(`${URL_WORKER}/admin-get-emails`);
                 const emailsData = await resEmails.json();
                 if (Array.isArray(emailsData)) {
                     listaEmailsGlobal = emailsData;
-                    const elEmails = document.getElementById('total-emails');
-                    if (elEmails) elEmails.innerText = emailsData.length;
+                    document.getElementById('total-emails').innerText = emailsData.length;
                     renderizarTabela(emailsData);
                 }
 
                 // Puxa faucets
-                const resFaucets = await fetch(URL_WORKER + '/get-all-faucets');
+                const resFaucets = await fetch(`${URL_WORKER}/get-all-faucets`);
                 const faucetsData = await resFaucets.json();
                 if (Array.isArray(faucetsData)) {
-                    const elFaucets = document.getElementById('total-faucets');
-                    if (elFaucets) elFaucets.innerText = faucetsData.length;
+                    document.getElementById('total-faucets').innerText = faucetsData.length;
                 }
 
-                // Puxa Ads do Banco de Dados
-                const resAds = await fetch(URL_WORKER + '/admin-get-ads');
+                // Puxa Ads do KV
+                const resAds = await fetch(`${URL_WORKER}/admin-get-ads`);
                 const adsData = await resAds.json();
                 if (adsData && typeof adsData === 'object') {
-                    objetoAdsGlobal = Object.assign({}, objetoAdsGlobal, adsData);
+                    objetoAdsGlobal = { ...objetoAdsGlobal, ...adsData };
                     atualizarContadorAnuncios();
                     carregarSlotSelecionado();
                 }
@@ -371,21 +375,17 @@
 
         function atualizarContadorAnuncios() {
             let total = 0;
-            Object.keys(objetoAdsGlobal).forEach(function(slot) {
+            Object.keys(objetoAdsGlobal).forEach(slot => {
                 if (Array.isArray(objetoAdsGlobal[slot])) {
                     total += objetoAdsGlobal[slot].length;
                 }
             });
-            const elAds = document.getElementById('total-ads');
-            if (elAds) elAds.innerText = total;
+            document.getElementById('total-ads').innerText = total;
         }
 
         function carregarSlotSelecionado() {
-            const elSelect = document.getElementById('ad-slot-select');
+            const slot = document.getElementById('ad-slot-select').value;
             const listaContainer = document.getElementById('lista-ads-slot');
-            if (!elSelect || !listaContainer) return;
-
-            const slot = elSelect.value;
             const adsDoSlot = objetoAdsGlobal[slot] || [];
 
             if (adsDoSlot.length === 0) {
@@ -393,15 +393,12 @@
                 return;
             }
 
-            let htmlContent = "";
-            for (let i = 0; i < adsDoSlot.length; i++) {
-                let codigo = adsDoSlot[i];
-                htmlContent += '<div class="ad-item">';
-                htmlContent += '<div class="ad-code-preview">' + escapeHtml(codigo) + '</div>';
-                htmlContent += '<button class="btn-del" onclick="removerAnuncioDoSlot(' + i + ')"><i class="fa-solid fa-trash"></i> Excluir</button>';
-                htmlContent += '</div>';
-            }
-            listaContainer.innerHTML = htmlContent;
+            listaContainer.innerHTML = adsDoSlot.map((codigo, index) => `
+                <div class="ad-item">
+                    <div class="ad-code-preview">${escapeHtml(codigo)}</div>
+                    <button class="btn-del" onclick="removerAnuncioDoSlot(${index})"><i class="fa-solid fa-trash"></i> Excluir</button>
+                </div>
+            `).join('');
         }
 
         function adicionarAnuncioAoSlot() {
@@ -417,7 +414,7 @@
 
             carregarSlotSelecionado();
             atualizarContadorAnuncios();
-            alert("Anúncio adicionado à lista local! Não se esqueça de clicar em 'Salvar Anúncios no Banco de Dados'.");
+            alert("Anúncio adicionado à lista local! Não se esqueça de clicar em 'Salvar Anúncios no KV'.");
         }
 
         function removerAnuncioDoSlot(index) {
@@ -431,14 +428,14 @@
 
         async function salvarAnunciosNoBanco() {
             try {
-                const response = await fetch(URL_WORKER + '/admin-save-ads', {
+                const response = await fetch(`${URL_WORKER}/admin-save-ads`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(objetoAdsGlobal)
                 });
                 const res = await response.json();
                 if (res.success) {
-                    alert("✅ Excelente! Todos os anúncios foram atualizados e salvos no Banco de Dados.");
+                    alert("✅ Excelente! Todos os anúncios foram atualizados e salvos no Banco de Dados Cloudflare.");
                 } else {
                     alert("❌ Erro ao salvar: " + res.error);
                 }
@@ -449,15 +446,14 @@
         }
 
         function escapeHtml(text) {
-            if (!text) return "";
-            return String(text).replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, """).replace(/'/g, "'");
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
         // --- LÓGICA DO GERENCIADOR DE TICKER ---
 
         async function carregarTickerAdmin() {
             try {
-                const res = await fetch(URL_WORKER + '/admin-get-ticker');
+                const res = await fetch(`${URL_WORKER}/admin-get-ticker`);
                 const data = await res.json();
                 tickerItens = data.mensagensFixas || [];
                 renderizarEditorTicker();
@@ -475,16 +471,13 @@
                 return;
             }
 
-            let htmlContent = "";
-            for (let i = 0; i < tickerItens.length; i++) {
-                let item = tickerItens[i];
-                htmlContent += '<div style="display: flex; gap: 10px; align-items: center; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #e9ecef;">';
-                htmlContent += '<input type="text" value="' + escapeHtml(item.title || '') + '" id="t-title-' + i + '" placeholder="Texto (ex: 🔥 Novo site pagando!)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">';
-                htmlContent += '<input type="text" value="' + escapeHtml(item.link || '') + '" id="t-link-' + i + '" placeholder="Link de destino (URL)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">';
-                htmlContent += '<button class="btn-del" onclick="removerTicker(' + i + ')"><i class="fa-solid fa-trash"></i></button>';
-                htmlContent += '</div>';
-            }
-            container.innerHTML = htmlContent;
+            container.innerHTML = tickerItens.map((item, index) => `
+                <div style="display: flex; gap: 10px; align-items: center; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #e9ecef;">
+                    <input type="text" value="${escapeHtml(item.title || '')}" id="t-title-${index}" placeholder="Texto (ex: 🔥 Novo site pagando!)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">
+                    <input type="text" value="${escapeHtml(item.link || '')}" id="t-link-${index}" placeholder="Link de destino (URL)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">
+                    <button class="btn-del" onclick="removerTicker(${index})"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `).join('');
         }
 
         function adicionarCampoTicker() {
@@ -498,24 +491,25 @@
         }
 
         async function salvarTickerNoBanco() {
-            for (let i = 0; i < tickerItens.length; i++) {
-                const titleInput = document.getElementById('t-title-' + i);
-                const linkInput = document.getElementById('t-link-' + i);
-                if (titleInput && linkInput) {
-                    tickerItens[i].title = titleInput.value.trim();
-                    tickerItens[i].link = linkInput.value.trim();
-                }
-            }
+            // Coleta os valores dos inputs antes de salvar
+            tickerItens = tickerItens.map((_, index) => {
+                const titleInput = document.getElementById(`t-title-${index}`);
+                const linkInput = document.getElementById(`t-link-${index}`);
+                return {
+                    title: titleInput ? titleInput.value.trim() : "",
+                    link: linkInput ? linkInput.value.trim() : ""
+                };
+            });
 
             try {
-                const res = await fetch(URL_WORKER + '/admin-save-ticker', {
+                const res = await fetch(`${URL_WORKER}/admin-save-ticker`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ mensagensFixas: tickerItens })
                 });
 
                 const result = await res.json();
-                if (result.success) {
+                if(result.success) {
                     alert("✅ Ticker atualizado com sucesso no Banco de Dados!");
                     carregarTickerAdmin();
                 } else {
@@ -538,9 +532,7 @@
                 return;
             }
 
-            let htmlContent = "";
-            for (let i = 0; i < dados.length; i++) {
-                let item = dados[i];
+            tbody.innerHTML = dados.map((item, index) => {
                 let emailStr = "";
                 if (typeof item === 'string') {
                     emailStr = item;
@@ -548,13 +540,14 @@
                     emailStr = item.email || item.wallet || "";
                 }
 
-                htmlContent += '<tr>';
-                htmlContent += '<td>' + (i + 1) + '</td>';
-                htmlContent += '<td style="font-weight: 600; color: #1a73e8;">' + (emailStr || 'E-mail não identificado') + '</td>';
-                htmlContent += '<td><span style="background: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 4px; font-size: 0.8em;">Dashboard Local</span></td>';
-                htmlContent += '</tr>';
-            }
-            tbody.innerHTML = htmlContent;
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td style="font-weight: 600; color: #1a73e8;">${emailStr || 'E-mail não identificado'}</td>
+                        <td><span style="background: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 4px; font-size: 0.8em;">Dashboard Local</span></td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         function filtrarTabela() {
@@ -562,7 +555,7 @@
             if (!campoFiltro) return;
 
             const termo = (campoFiltro.value || "").toLowerCase().trim();
-            const filtrados = listaEmailsGlobal.filter(function(item) {
+            const filtrados = listaEmailsGlobal.filter(item => {
                 if (!item) return false;
                 let emailStr = typeof item === 'string' ? item : (item.email || item.wallet || "");
                 return emailStr.toLowerCase().includes(termo);
@@ -573,11 +566,9 @@
 
         function copiarTodosEmails() {
             if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para copiar!");
-            const apenasEmails = listaEmailsGlobal.map(function(item) {
-                return typeof item === 'string' ? item : (item.email || item.wallet || "");
-            }).filter(Boolean).join(', ');
+            const apenasEmails = listaEmailsGlobal.map(item => typeof item === 'string' ? item : (item.email || item.wallet || "")).filter(Boolean).join(', ');
 
-            navigator.clipboard.writeText(apenasEmails).then(function() {
+            navigator.clipboard.writeText(apenasEmails).then(() => {
                 alert("✅ Todos os e-mails foram copiados para a área de transferência!");
             });
         }
@@ -586,9 +577,9 @@
             if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para exportar!");
 
             let csvContent = "data:text/csv;charset=utf-8,Email,Origem\n";
-            listaEmailsGlobal.forEach(function(item) {
+            listaEmailsGlobal.forEach(item => {
                 let email = typeof item === 'string' ? item : (item.email || item.wallet || "");
-                if (email) csvContent += '"' + email + '","Dashboard Local"\n';
+                if (email) csvContent += `"${email}","Dashboard Local"\n`;
             });
 
             const encodedUri = encodeURI(csvContent);
@@ -603,7 +594,7 @@
         // Função para Baixar o Backup Completo do Banco de Dados
         async function baixarBackupKV() {
             try {
-                const response = await fetch(URL_WORKER + '/admin-backup-data');
+                const response = await fetch(`${URL_WORKER}/admin-backup-data`);
                 if (!response.ok) throw new Error("Erro ao gerar backup na Worker.");
 
                 const data = await response.json();
@@ -612,8 +603,8 @@
                 const link = document.createElement("a");
                 link.setAttribute("href", dataStr);
                 
-                const dataAtual = new Date().toISOString().slice(0, 10);
-                link.setAttribute("download", "brazuka_backup_" + dataAtual + ".json");
+                const dataAtual = new Date().toISOString().slice(0,10);
+                link.setAttribute("download", `brazuka_backup_${dataAtual}.json`);
                 
                 document.body.appendChild(link);
                 link.click();
@@ -622,28 +613,27 @@
                 alert("✅ Backup completo baixado com sucesso!");
             } catch (err) {
                 console.error(err);
-                alert("❌ Erro ao realizar o backup do Banco de Dados.");
+                alert("❌ Erro ao realizar o backup do banco de dados.");
             }
         }
 
         // Função para carregar e exibir os dados de Analytics no Painel
         async function carregarAnalyticsAdmin() {
             try {
-                const response = await fetch(URL_WORKER + '/admin-get-analytics');
+                const response = await fetch(`${URL_WORKER}/admin-get-analytics`);
                 if (!response.ok) throw new Error("Erro ao buscar dados de analytics.");
 
                 const data = await response.json();
                 const tbody = document.getElementById('analytics-tbody');
-                if (!tbody) return;
                 tbody.innerHTML = '';
 
                 const keys = Object.keys(data);
                 if (keys.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="3" style="padding: 15px; text-align: center; color: #666;">Nenhum clique registrado ainda.</td></tr>';
+                    tbody.innerHTML = `<tr><td colspan="3" style="padding: 15px; text-align: center; color: #666;">Nenhum clique registrado ainda.</td></tr>`;
                     return;
                 }
 
-                keys.forEach(function(key) {
+                keys.forEach(key => {
                     const partes = key.replace('analytics:', '').split(':');
                     const tipo = partes[0] || 'geral';
                     const idItem = partes.slice(1).join(':') || 'desconhecido';
@@ -651,16 +641,17 @@
 
                     const tr = document.createElement('tr');
                     tr.style.borderBottom = '1px solid #eee';
-                    tr.innerHTML = '<td style="padding: 12px; text-transform: uppercase; font-weight: bold; font-size: 0.85em; color: #555;">' + tipo + '</td>' +
-                                   '<td style="padding: 12px; color: #333;">' + idItem + '</td>' +
-                                   '<td style="padding: 12px; text-align: right; font-weight: bold; color: #1a73e8;">' + totalCliques.toLocaleString() + '</td>';
+                    tr.innerHTML = `
+                        <td style="padding: 12px; text-transform: uppercase; font-weight: bold; font-size: 0.85em; color: #555;">${tipo}</td>
+                        <td style="padding: 12px; color: #333;">${idItem}</td>
+                        <td style="padding: 12px; text-align: right; font-weight: bold; color: #1a73e8;">${totalCliques.toLocaleString()}</td>
+                    `;
                     tbody.appendChild(tr);
                 });
 
             } catch (err) {
                 console.error(err);
-                const tbody = document.getElementById('analytics-tbody');
-                if (tbody) tbody.innerHTML = '<tr><td colspan="3" style="padding: 15px; text-align: center; color: red;">Erro ao carregar o relatório.</td></tr>';
+                document.getElementById('analytics-tbody').innerHTML = `<tr><td colspan="3" style="padding: 15px; text-align: center; color: red;">Erro ao carregar o relatório.</td></tr>`;
             }
         }
 
