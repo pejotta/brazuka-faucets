@@ -1,6 +1,6 @@
 /**
  * BRAZUKA ADS MANAGER
- * Gerenciador de Publicidade de Alta Performance
+ * Gerenciador de Publicidade de Alta Performance - Versão Segmentada
  */
 
 const BRAZUKA_ADS = {
@@ -54,14 +54,24 @@ const BRAZUKA_ADS = {
     render() {
         if (!this.pools) return;
 
+        // --- BANNERS DA HOME PAGE (SEGMENTADOS POR NICHO) ---
+        this.injectRandom('#ad-zone-home-top', this.pools.homeTop || [], 'homeTop');
+        this.injectRandom('#ad-zone-home-btc-eth', this.pools.homeBtcEth || [], 'homeBtcEth');
+        this.injectRandom('#ad-zone-home-doge-trx', this.pools.homeDogeTrx || [], 'homeDogeTrx');
+        this.injectRandom('#ad-zone-home-central-auto', this.pools.homeCentralAuto || [], 'homeCentralAuto');
+        this.injectRandom('#ad-zone-home-miner-bet', this.pools.homeMinerBet || [], 'homeMinerBet');
+        this.injectRandom('#ad-zone-home-airdrop-ipo', this.pools.homeAirdropIpo || [], 'homeAirdropIpo');
+
+        // --- BANNERS DE PÁGINAS ESPECÍFICAS / SKYSCRAPERS EXCLUSIVOS ---
+        this.injectRandom('.ad-slot-cadastro', this.pools.pageCadastro || [], 'pageCadastro');
+        this.injectRandom('.ad-slot-sidebar-trx', this.pools.sidebarTrx || [], 'sidebarTrx');
+        this.injectRandom('.ad-slot-sidebar-ton', this.pools.sidebarTon || [], 'sidebarTon');
+        this.injectRandom('.ad-slot-ficha-tecnica', this.pools.fichaTecnica || [], 'fichaTecnica');
+        
+        // Compatibilidade com seletores genéricos antigos
         this.injectRandom('.ad-slot-top', this.pools.homeTop || [], 'homeTop');
         this.injectRandom('.ad-slot-mid', this.pools.homeMid || [], 'homeMid');
         this.injectRandom('.ad-slot-sidebar', this.pools.sidebar || [], 'sidebar');
-        this.injectRandom('.ad-slot-pagegain', this.pools.pageGain || [], 'pageGain');
-        this.injectRandom('#ad-modal-left', this.pools.modalLeft || [], 'modalLeft');
-        this.injectRandom('#ad-modal-right', this.pools.modalRight || [], 'modalRight');
-        this.injectRandom('#ad-modal-center', this.pools.modalCenter || [], 'modalCenter');
-        this.injectRandom('.ad-slot-cadastro', this.pools.pageCadastro || [], 'pageCadastro');
     },
 
     injectRandom(selector, adPool, slotName) {
