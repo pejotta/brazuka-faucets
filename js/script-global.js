@@ -203,3 +203,71 @@ function registrarClique(tipo, identificador) {
         body: JSON.stringify({ type: tipo, id: identificador })
     }).catch(err => console.log("Erro ao registrar analytics:", err));
 }
+
+
+document.getElementById('current-year').textContent = new Date().getFullYear();
+
+function copiarChaveDoacao(tipoMoeda, tooltipId, btnElement) {
+    const chaves = {
+        'btc': 'eupaulojhonatan@bipa.app',
+        'doge': 'DNeV9iAkw2K5WofPehfz1GAwwHyCSKYxaq',
+        'trx': 'TMRVmB5b5zp3ormTeuhsbwUiUH2eyndPMh',
+        'pix': 'paulo.tan@hotmail.com'
+    };
+
+    const textoParaCopiar = chaves[tipoMoeda];
+    const tooltipElement = document.getElementById(tooltipId);
+
+    if (!textoParaCopiar) return;
+
+    const tempEl = document.createElement('textarea');
+    tempEl.value = textoParaCopiar;
+    tempEl.setAttribute('readonly', '');
+    tempEl.style.position = 'fixed';
+    tempEl.style.opacity = '0';
+    document.body.appendChild(tempEl);
+    
+    tempEl.select();
+    tempEl.setSelectionRange(0, 99999);
+
+    let copiado = false;
+    try {
+        copiado = document.execCommand('copy');
+    } catch (e) {
+        console.error("Erro no execCommand", e);
+    }
+
+    document.body.removeChild(tempEl);
+
+    if (!copiado && navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textoParaCopiar).then(() => {
+            dispararFeedbackCopia(btnElement, tooltipElement);
+        }).catch(err => {
+            console.error("Clipboard API falhou:", err);
+            alert("Erro ao copiar. Copie manualmente: " + textoParaCopiar);
+        });
+    } else if (copiado) {
+        dispararFeedbackCopia(btnElement, tooltipElement);
+    } else {
+        alert("Erro ao copiar. Copie manualmente: " + textoParaCopiar);
+    }
+}
+
+function dispararFeedbackCopia(btnElement, tooltipElement) {
+    const iconeOriginal = btnElement.innerHTML;
+
+    btnElement.innerHTML = '<i class="fa-solid fa-check" style="color: #27ae60;"></i>';
+    btnElement.style.background = '#e8f8f5';
+
+    if (tooltipElement) {
+        tooltipElement.classList.add('show');
+    }
+
+    setTimeout(() => {
+        btnElement.innerHTML = iconeOriginal;
+        btnElement.style.background = '';
+        if (tooltipElement) {
+            tooltipElement.classList.remove('show');
+        }
+    }, 2000);
+}
