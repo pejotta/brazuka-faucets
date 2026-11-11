@@ -1,5 +1,5 @@
 <style>
-/* --- FOOTER ATUALIZADO (DUAS COLUNAS DE NAVEGAÇÃO) --- */
+/* --- FOOTER ATUALIZADO COM TOOLTIP "COPIADO!" --- */
 .footer {
     background-color: #121212;
     color: #999;
@@ -31,7 +31,7 @@
 }
 
 .footer-col-2 {
-    flex: 1.2; /* Expandido levemente para acomodar as duas listas de navegação */
+    flex: 1.2;
 }
 
 .footer-col-3 {
@@ -117,13 +117,34 @@
 .footer-donate-grid {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 
 .donate-item {
     display: flex;
     flex-direction: column;
     gap: 3px;
+    position: relative; /* Necessário para posicionar o aviso flutuante */
+}
+
+/* Estilo do aviso "Copiado!" */
+.copy-tooltip {
+    position: absolute;
+    right: 0;
+    top: -22px;
+    background: #27ae60;
+    color: #fff;
+    font-size: 0.65em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    pointer-events: none;
+}
+
+.copy-tooltip.show {
+    opacity: 1;
 }
 
 .donate-label {
@@ -282,36 +303,40 @@
                     <!-- Bitcoin (Lightning Network) -->
                     <div class="donate-item">
                         <span class="donate-label"><i class="fa-brands fa-bitcoin" style="color: #f39c12;"></i> BTC (Lightning / Zero Fee)</span>
+                        <span class="copy-tooltip" id="tooltip-donate-btc">Copiado!</span>
                         <div class="donate-input-group">
                             <input type="text" value="eupaulojhonatan@bipa.app" readonly id="donate-btc">
-                            <button onclick="copiarChaveDoacao('donate-btc', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
+                            <button onclick="copiarChaveDoacao('donate-btc', 'tooltip-donate-btc', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
                         </div>
                     </div>
 
                     <!-- Dogecoin -->
                     <div class="donate-item">
                         <span class="donate-label"><i class="fa-solid fa-coins" style="color: #f1c40f;"></i> DOGE</span>
+                        <span class="copy-tooltip" id="tooltip-donate-doge">Copiado!</span>
                         <div class="donate-input-group">
                             <input type="text" value="DNeV9iAkw2K5WofPehfz1GAwwHyCSKYxaq" readonly id="donate-doge">
-                            <button onclick="copiarChaveDoacao('donate-doge', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
+                            <button onclick="copiarChaveDoacao('donate-doge', 'tooltip-donate-doge', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
                         </div>
                     </div>
 
                     <!-- TRX e USDT (TRC20) -->
                     <div class="donate-item">
                         <span class="donate-label"><i class="fa-solid fa-bolt" style="color: #e74c3c;"></i> TRX & USDT (TRC20)</span>
+                        <span class="copy-tooltip" id="tooltip-donate-trx">Copiado!</span>
                         <div class="donate-input-group">
                             <input type="text" value="TMRVmB5b5zp3ormTeuhsbwUiUH2eyndPMh" readonly id="donate-trx">
-                            <button onclick="copiarChaveDoacao('donate-trx', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
+                            <button onclick="copiarChaveDoacao('donate-trx', 'tooltip-donate-trx', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
                         </div>
                     </div>
 
                     <!-- Pix ou FaucetPay -->
                     <div class="donate-item">
                         <span class="donate-label"><i class="fa-solid fa-wallet" style="color: #27ae60;"></i> Pix ou FaucetPay</span>
+                        <span class="copy-tooltip" id="tooltip-donate-pix">Copiado!</span>
                         <div class="donate-input-group">
                             <input type="text" value="paulo.tan@hotmail.com" readonly id="donate-pix">
-                            <button onclick="copiarChaveDoacao('donate-pix', this)" title="Copiar chave"><i class="fa-solid fa-copy"></i></button>
+                            <button onclick="copiarChaveDoacao('donate-pix', 'tooltip-donate-pix', this)" title="Copiar chave"><i class="fa-solid fa-copy"></i></button>
                         </div>
                     </div>
                 </div>
@@ -340,21 +365,57 @@
 <script>
 document.getElementById('current-year').textContent = new Date().getFullYear();
 
-function copiarChaveDoacao(elementId, btnElement) {
+function copiarChaveDoacao(elementId, tooltipId, btnElement) {
     const inputElement = document.getElementById(elementId);
+    const tooltipElement = document.getElementById(tooltipId);
     if (!inputElement) return;
 
-    navigator.clipboard.writeText(inputElement.value).then(() => {
-        const iconeOriginal = btnElement.innerHTML;
-        btnElement.innerHTML = '<i class="fa-solid fa-check" style="color: #27ae60;"></i>';
-        btnElement.style.background = '#e8f8f5';
+    // Utiliza a API moderna de clipboard (ou fallback se necessário)
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(inputElement.value).then(() => {
+            sucessoCopia(btnElement, tooltipElement);
+        }).catch(err => {
+            console.error("Erro ao copiar com Clipboard API:", err);
+            copiarFallback(inputElement, btnElement, tooltipElement);
+        });
+    } else {
+        copiarFallback(inputElement, btnElement, tooltipElement);
+    }
+}
 
-        setTimeout(() => {
-            btnElement.innerHTML = iconeOriginal;
-            btnElement.style.background = '';
-        }, 2000);
-    }).catch(err => {
-        console.error("Erro ao copiar:", err);
-    });
+function copiarFallback(inputElement, btnElement, tooltipElement) {
+    inputElement.select();
+    inputElement.setSelectionRange(0, 99999); // Para mobile
+    try {
+        const sucesso = document.execCommand('copy');
+        if (sucesso) {
+            sucessoCopia(btnElement, tooltipElement);
+        } else {
+            alert("Não foi possível copiar automaticamente.");
+        }
+    } catch (err) {
+        console.error("Erro no fallback de cópia:", err);
+    }
+}
+
+function sucessoCopia(btnElement, tooltipElement) {
+    // Muda o ícone para check verde
+    const iconeOriginal = btnElement.innerHTML;
+    btnElement.innerHTML = '<i class="fa-solid fa-check" style="color: #27ae60;"></i>';
+    btnElement.style.background = '#e8f8f5';
+
+    // Mostra o aviso flutuante "Copiado!" em cima do item
+    if (tooltipElement) {
+        tooltipElement.classList.add('show');
+    }
+
+    // Retorna ao estado original após 2 segundos
+    setTimeout(() => {
+        btnElement.innerHTML = iconeOriginal;
+        btnElement.style.background = '';
+        if (tooltipElement) {
+            tooltipElement.classList.remove('show');
+        }
+    }, 2000);
 }
 </script>
