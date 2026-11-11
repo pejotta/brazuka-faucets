@@ -147,6 +147,7 @@
                     <div style="flex: 1; min-width: 250px;">
                         <label style="font-weight: bold; font-size: 0.9em; display: block; margin-bottom: 5px;">Selecione a Posição/Slot:</label>
                         <select id="ad-slot-select" onchange="carregarSlotSelecionado()" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
+    <option value="heroCarousel">Carrossel Home - Mega Exposição (1200x350)</option>
     <option value="homeTop">Home / Topo Geral - (728x90)</option>
     <option value="homeBtcEth">Home - Setorial BTC & ETH - (728x90)</option>
     <option value="homeDogeTrx">Home - Setorial DOGE & TRX - (728x90)</option>
@@ -279,7 +280,7 @@
         const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
         let listaEmailsGlobal = [];
         let objetoAdsGlobal = {
-            home_top: [], home_central_auto: [], fichaTecnica: [], 
+            heroCarousel: [], home_top: [], home_central_auto: [], fichaTecnica: [], 
             sidebarTrx: [], sidebarTon: [], pageCadastro: []
         };
         let tickerItens = [];
