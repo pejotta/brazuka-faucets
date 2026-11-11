@@ -51,31 +51,31 @@ const BRAZUKA_ADS = {
         }
     },
 
-  render() {
-    if (!this.pools) return;
+    render() {
+        if (!this.pools) return;
 
-    // --- BANNERS DA HOME PAGE (SEGMENTADOS POR NICHO) ---
-    this.injectCarousel('#carousel-track', this.pools.heroCarousel || []);
-    this.injectRandom('#ad-zone-home-top', this.pools.homeTop || [], 'homeTop');
-    this.injectRandom('#ad-zone-home-btc-eth', this.pools.homeBtcEth || [], 'homeBtcEth');
-    this.injectRandom('#ad-zone-home-doge-trx', this.pools.homeDogeTrx || [], 'homeDogeTrx');
-    this.injectRandom('#ad-zone-home-central-auto', this.pools.homeCentralAuto || [], 'homeCentralAuto');
-    this.injectRandom('#ad-zone-home-miner-bet', this.pools.homeMinerBet || [], 'homeMinerBet');
-    this.injectRandom('#ad-zone-home-airdrop-ipo', this.pools.homeAirdropIpo || [], 'homeAirdropIpo');
+        // --- BANNERS DA HOME PAGE (SEGMENTADOS POR NICHO) ---
+        this.injectCarousel('#carousel-track', this.pools.heroCarousel || []);
+        this.injectRandom('#ad-zone-home-top', this.pools.homeTop || [], 'homeTop');
+        this.injectRandom('#ad-zone-home-btc-eth', this.pools.homeBtcEth || [], 'homeBtcEth');
+        this.injectRandom('#ad-zone-home-doge-trx', this.pools.homeDogeTrx || [], 'homeDogeTrx');
+        this.injectRandom('#ad-zone-home-central-auto', this.pools.homeCentralAuto || [], 'homeCentralAuto');
+        this.injectRandom('#ad-zone-home-miner-bet', this.pools.homeMinerBet || [], 'homeMinerBet');
+        this.injectRandom('#ad-zone-home-airdrop-ipo', this.pools.homeAirdropIpo || [], 'homeAirdropIpo');
 
-    // --- BANNERS DE PÁGINAS ESPECÍفICAS / RETÂNGULOS E SKYSCRAPERS EXCLUSIVOS ---
-    this.injectRandom('.ad-slot-cadastro', this.pools.pageCadastro || [], 'pageCadastro');
-    this.injectRandom('.ad-slot-sidebar-trx', this.pools.sidebarTrx || [], 'sidebarTrx');
-    this.injectRandom('.ad-slot-sidebar-ton', this.pools.sidebarTon || [], 'sidebarTon');
-    this.injectRandom('.ad-slot-ficha-tecnica', this.pools.fichaTecnica || [], 'fichaTecnica');
-    
-    // Novos slots de Retângulo Médio (300x250) específicos para TRX e TON
-    this.injectRandom('.ad-slot-ficha-tecnica-trx', this.pools.fichaTecnicaTrx || [], 'fichaTecnicaTrx');
-    this.injectRandom('.ad-slot-ficha-tecnica-ton', this.pools.fichaTecnicaTon || [], 'fichaTecnicaTon');
-    
-    // Compatibilidade com seletores genéricos antigos
-    this.injectRandom('.ad-slot-top', this.pools.homeTop || [], 'homeTop');
-}
+        // --- BANNERS DE PÁGINAS ESPECÍFICAS / RETÂNGULOS E SKYSCRAPERS EXCLUSIVOS ---
+        this.injectRandom('.ad-slot-cadastro', this.pools.pageCadastro || [], 'pageCadastro');
+        this.injectRandom('.ad-slot-sidebar-trx', this.pools.sidebarTrx || [], 'sidebarTrx');
+        this.injectRandom('.ad-slot-sidebar-ton', this.pools.sidebarTon || [], 'sidebarTon');
+        this.injectRandom('.ad-slot-ficha-tecnica', this.pools.fichaTecnica || [], 'fichaTecnica');
+        
+        // Novos slots de Retângulo Médio (300x250) específicos para TRX e TON
+        this.injectRandom('.ad-slot-ficha-tecnica-trx', this.pools.fichaTecnicaTrx || [], 'fichaTecnicaTrx');
+        this.injectRandom('.ad-slot-ficha-tecnica-ton', this.pools.fichaTecnicaTon || [], 'fichaTecnicaTon');
+        
+        // Compatibilidade com seletores genéricos antigos
+        this.injectRandom('.ad-slot-top', this.pools.homeTop || [], 'homeTop');
+    },
 
     injectRandom(selector, adPool, slotName) {
         const slots = document.querySelectorAll(selector);
@@ -103,35 +103,30 @@ const BRAZUKA_ADS = {
                 oldScript.parentNode.replaceChild(newScript, oldScript);
             });
         });
-    }
+    },
 
     injectCarousel(selector, slidesArray) {
-    const track = document.querySelector(selector);
-    if (!track) return;
+        const track = document.querySelector(selector);
+        if (!track) return;
 
-    if (!slidesArray || slidesArray.length === 0) {
-        track.innerHTML = '<p style="color:#fff; text-align:center; padding:20px;">Nenhum slide cadastrado no painel.</p>';
-        return;
-    }
-
-    // Injeta os slides salvos no Banco de Dados
-    track.innerHTML = slidesArray.map((slideHtml, index) => {
-        // Se você salvar o bloco HTML completo de cada slide no painel admin:
-        // Exemplo de o que colar no admin: 
-        // <div class="slide active" style="background: linear-gradient(...), url('SUA_IMAGEM');">...</div>
-        
-        // Adicionamos a classe 'active' apenas no primeiro slide para o carrossel funcionar
-        if (index === 0) {
-            return slideHtml.replace('class="slide"', 'class="slide active"');
+        if (!slidesArray || slidesArray.length === 0) {
+            track.innerHTML = '<p style="color:#fff; text-align:center; padding:20px;">Nenhum slide cadastrado no painel.</p>';
+            return;
         }
-        return slideHtml;
-    }).join('');
 
-    // Reinicia o script de movimento do carrossel se necessário
-    if (typeof initCarousel === 'function') {
-        initCarousel();
+        // Injeta os slides salvos no Banco de Dados
+        track.innerHTML = slidesArray.map((slideHtml, index) => {
+            if (index === 0) {
+                return slideHtml.replace('class="slide"', 'class="slide active"');
+            }
+            return slideHtml;
+        }).join('');
+
+        // Reinicia o script de movimento do carrossel se necessário
+        if (typeof initCarousel === 'function') {
+            initCarousel();
+        }
     }
-}
 };
 
 // Executa a inicialização de forma ultra-rápida
