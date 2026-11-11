@@ -55,6 +55,7 @@ const BRAZUKA_ADS = {
     if (!this.pools) return;
 
     // --- BANNERS DA HOME PAGE (SEGMENTADOS POR NICHO) ---
+    this.injectCarousel('#carousel-track', this.pools.heroCarousel || []);
     this.injectRandom('#ad-zone-home-top', this.pools.homeTop || [], 'homeTop');
     this.injectRandom('#ad-zone-home-btc-eth', this.pools.homeBtcEth || [], 'homeBtcEth');
     this.injectRandom('#ad-zone-home-doge-trx', this.pools.homeDogeTrx || [], 'homeDogeTrx');
@@ -103,6 +104,34 @@ const BRAZUKA_ADS = {
             });
         });
     }
+
+    injectCarousel(selector, slidesArray) {
+    const track = document.querySelector(selector);
+    if (!track) return;
+
+    if (!slidesArray || slidesArray.length === 0) {
+        track.innerHTML = '<p style="color:#fff; text-align:center; padding:20px;">Nenhum slide cadastrado no painel.</p>';
+        return;
+    }
+
+    // Injeta os slides salvos no Banco de Dados
+    track.innerHTML = slidesArray.map((slideHtml, index) => {
+        // Se você salvar o bloco HTML completo de cada slide no painel admin:
+        // Exemplo de o que colar no admin: 
+        // <div class="slide active" style="background: linear-gradient(...), url('SUA_IMAGEM');">...</div>
+        
+        // Adicionamos a classe 'active' apenas no primeiro slide para o carrossel funcionar
+        if (index === 0) {
+            return slideHtml.replace('class="slide"', 'class="slide active"');
+        }
+        return slideHtml;
+    }).join('');
+
+    // Reinicia o script de movimento do carrossel se necessário
+    if (typeof initCarousel === 'function') {
+        initCarousel();
+    }
+}
 };
 
 // Executa a inicialização de forma ultra-rápida
