@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anuncie | Brazuka Faucets</title>
     <link rel="stylesheet" href="css/style.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta http-equiv="content-language" content="pt-BR" />
     <meta name="description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas. Analisamos as melhores opções para você ganhar BTC, LTC, DOGE e muito mais com segurança." />
@@ -167,6 +167,24 @@
         .check-item { font-size: 0.9em; display: flex; align-items: center; cursor: pointer; }
         .check-item input { margin-right: 8px; }
 
+        .btn-enviar-ads {
+            width: 100%;
+            background: var(--primary-blue);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 15px;
+        }
+
+        .btn-enviar-ads:hover {
+            background: var(--primary-dark);
+        }
+
         @media (max-width: 768px) {
             .ad-options { grid-template-columns: 1fr; }
             .recursos-grid { grid-template-columns: 1fr; }
@@ -174,7 +192,6 @@
     </style>
 </head>
 <body>
- 
 
     <section class="hero-ads">
         <h1>🚀 Anuncie no Brazuka Faucets</h1>
@@ -200,9 +217,10 @@
             </div>
         </div>
 
-        <h3 class="section-title">🎯 Nossos Espaços</h3>
+        <h3 class="section-title">🎯 Nossos Espaços Segmentados</h3>
 
         <div class="ad-options">
+            <!-- 1. Carrossel Home -->
             <div class="ad-box featured-space">
                 <div>
                     <h4>Carrossel - Home</h4>
@@ -215,11 +233,12 @@
                 </div>
             </div>
 
+            <!-- 2. Banner Topo Geral -->
             <div class="ad-box">
                 <div>
-                    <h4>Banner Topo</h4>
+                    <h4>Banner Topo Geral</h4>
                     <p><strong>728x90px</strong></p>
-                    <p>Página Inicial e Listas. Visibilidade imediata no carregamento.</p>
+                    <p>Visibilidade imediata logo abaixo do carrossel no topo da Home.</p>
                 </div>
                 <div class="price-tag">
                     <span class="consult-label">R$ 200 / mês</span>
@@ -227,11 +246,25 @@
                 </div>
             </div>
 
+            <!-- 3. Setorial BTC & ETH -->
             <div class="ad-box">
                 <div>
-                    <h4>Banner Meio/Rodapé</h4>
+                    <h4>Banner Setorial (BTC & ETH)</h4>
                     <p><strong>728x90px</strong></p>
-                    <p>Inserido estrategicamente entre as listas de criptomoedas.</p>
+                    <p>Exclusivo para o público de Bitcoin e Ethereum (Abaixo da aba BTC/ETH).</p>
+                </div>
+                <div class="price-tag">
+                    <span class="consult-label">R$ 200 / mês</span>
+                    <span class="vagas-badge">4 Vagas</span>
+                </div>
+            </div>
+
+            <!-- 4. Setorial DOGE & TRX -->
+            <div class="ad-box">
+                <div>
+                    <h4>Banner Setorial (DOGE & TRX)</h4>
+                    <p><strong>728x90px</strong></p>
+                    <p>Público focado em altcoins de taxa zero (Abaixo da aba DOGE/TRX).</p>
                 </div>
                 <div class="price-tag">
                     <span class="consult-label">R$ 150 / mês</span>
@@ -239,11 +272,38 @@
                 </div>
             </div>
 
+            <!-- 5. Setorial AutoFaucets & Central -->
+            <div class="ad-box">
+                <div>
+                    <h4>Banner AutoFaucets & Central</h4>
+                    <p><strong>728x90px</strong></p>
+                    <p>Audiência engajada em automação e agregadores de claim.</p>
+                </div>
+                <div class="price-tag">
+                    <span class="consult-label">R$ 150 / mês</span>
+                    <span class="vagas-badge">4 Vagas</span>
+                </div>
+            </div>
+
+            <!-- 6. Setorial Mineradores & Bets -->
             <div class="ad-box featured-space">
                 <div>
-                    <h4>Espaço para Cursos</h4>
-                    <p><strong>900x250px</strong></p>
-                    <p>Seção exclusiva entre Mineradores e Estatísticas. Ótimo CTR.</p>
+                    <h4>Banner Mineradores & Bets</h4>
+                    <p><strong>728x90px</strong></p>
+                    <p>Ideal para Cassinos, Bets e plataformas de investimento/mineração.</p>
+                </div>
+                <div class="price-tag">
+                    <span class="consult-label">R$ 250 / mês</span>
+                    <span class="vagas-badge">4 Vagas</span>
+                </div>
+            </div>
+
+            <!-- 7. Banner de Cursos & Ferramentas -->
+            <div class="ad-box">
+                <div>
+                    <h4>Banner Cursos & Ferramentas</h4>
+                    <p><strong>Formato Largo</strong></p>
+                    <p>Banner horizontal de alto impacto no fim das seções (IPOs e Airdrops).</p>
                 </div>
                 <div class="price-tag">
                     <span class="consult-label">R$ 300 / mês</span>
@@ -251,11 +311,12 @@
                 </div>
             </div>
 
+            <!-- 8. Ficha Técnica / Quadrado -->
             <div class="ad-box">
                 <div>
-                    <h4>Banner Quadrado</h4>
+                    <h4>Banner Quadrado (Ficha Técnica)</h4>
                     <p><strong>300x250px</strong></p>
-                    <p>Posicionado nas páginas de detalhes de cada faucet.</p>
+                    <p>Nas páginas de detalhes e auditoria individual de cada faucet.</p>
                 </div>
                 <div class="price-tag">
                     <span class="consult-label">R$ 150 / mês</span>
@@ -263,22 +324,24 @@
                 </div>
             </div>
 
+            <!-- 9. Skyscrapers Exclusivos por Moeda -->
             <div class="ad-box">
                 <div>
-                    <h4>Arranha-céu (Skyscraper)</h4>
+                    <h4>Arranha-Céus (Skyscrapers)</h4>
                     <p><strong>160x600px</strong></p>
-                    <p>Banners laterais flutuantes na página de cadastro.</p>
+                    <p>Flutuante lateral nas páginas de Cadastro e Faucets exclusivas (TRX, TON, etc).</p>
                 </div>
                 <div class="price-tag">
-                    <span class="consult-label">R$ 100 / mês</span>
-                    <span class="vagas-badge">2 Vagas</span>
+                    <span class="consult-label">R$ 150 / mês</span>
+                    <span class="vagas-badge">2 Vagas / Página</span>
                 </div>
             </div>
 
+            <!-- 10. Faucet em Destaque -->
             <div class="ad-box" style="background: #fffdf2; border-color: var(--gold);">
                 <div>
                     <h4><i class="fas fa-star" style="color: var(--gold);"></i> Faucet em Destaque</h4>
-                    <p>Sua faucet fixa no topo da lista principal da página inicial.</p>
+                    <p>Sua faucet fixada no topo absoluto da lista principal da Home.</p>
                 </div>
                 <div class="price-tag">
                     <span class="consult-label">R$ 100 / mês</span>
@@ -286,10 +349,11 @@
                 </div>
             </div>
 
+            <!-- 11. Artigo de Auditoria -->
             <div class="ad-box">
                 <div>
                     <h4>Artigo de Auditoria</h4>
-                    <p>Review completo no blog com links permanentes e SEO.</p>
+                    <p>Review completo no blog com backlinks permanentes e autoridade SEO.</p>
                 </div>
                 <div class="price-tag">
                     <span class="consult-label">R$ 150 / Artigo</span>
@@ -303,10 +367,11 @@
         </button>
         
         <p style="text-align: center; color: #999; font-size: 0.85em; margin-top: 20px;">
-            Aceitamos pagamentos em PIX, BTC, LTC, TRX e USDT.
+            Aceitamos pagamentos em PIX, BTC, LTC, TRX, TON e USDT.
         </p>
     </div>
 
+    <!-- MODAL DE ORÇAMENTO COM WEB3FORMS -->
     <div id="ad-modal" class="modal-ads">
         <div class="modal-ads-content">
             <span class="close-modal">&times;</span>
@@ -315,6 +380,8 @@
 
             <form action="https://api.web3forms.com/submit" method="POST" id="form-anuncio">
                 <input type="hidden" name="access_key" value="2e11cc20-43eb-439c-9e11-a0a407c7547c">
+                <input type="hidden" name="subject" value="Novo Pedido de Anúncio - Brazuka Faucets">
+
                 <div class="input-group">
                     <label>Seu Nome / Empresa *</label>
                     <input type="text" name="cliente" placeholder="Ex: Crypto Faucet Inc." required>
@@ -327,18 +394,22 @@
 
                 <label style="font-weight: bold; display: block; margin-top: 20px;">Espaços de Interesse:</label>
                 <div class="recursos-grid">
-                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Carrossel"> Carrossel</label>
-                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Topo"> Banner Topo</label>
-                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Meio"> Banner Meio</label>                    
-                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Arranha-ceu"> Arranha-céu</label>
-                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Espaço Cursos"> Espaço Cursos</label>
-                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Quadrado"> Banner Quadrado</label>
-                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Destaque"> Faucet Destaque</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Carrossel Home"> Carrossel Home</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Topo Geral"> Banner Topo Geral</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Setorial BTC/ETH"> Setorial BTC & ETH</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Setorial DOGE/TRX"> Setorial DOGE & TRX</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Setorial AutoFaucets"> AutoFaucets & Central</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Setorial Mineradores/Bets"> Mineradores & Bets</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Cursos/Ferramentas"> Cursos & Ferramentas</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Quadrado"> Banner Quadrado (Ficha)</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Skyscrapers Moeda Exclusiva"> Skyscraper Exclusivo</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Faucet Destaque"> Faucet Destaque</label>
+                    <label class="check-item"><input type="checkbox" name="espaço[]" value="Artigo Auditoria"> Artigo de Auditoria</label>
                 </div>
 
                 <div class="input-group">
                     <label>Mensagem / Observações</label>
-                    <textarea name="mensagem" rows="3" placeholder="Conte-nos mais sobre seu projeto..."></textarea>
+                    <textarea name="mensagem" rows="3" placeholder="Qual a sua moeda/projeto? Conte-nos os detalhes..."></textarea>
                 </div>
 
                 <button type="submit" class="btn-enviar-ads">
