@@ -260,7 +260,7 @@
                             </tr>
                         </thead>
                         <tbody id="tabela-emails">
-                            <tr><td colspan="3" style="padding: 15px; text-align: center; color: #777;">Carregando e-mails do Banco de Dados...</td></tr>
+                            <tr><td colspan="3" style="text-align: center; color: #777;">Carregando e-mails do Banco de Dados...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -478,9 +478,12 @@
             let htmlContent = "";
             for (let i = 0; i < tickerItens.length; i++) {
                 let item = tickerItens[i];
+                let safeTitle = escapeHtml(item.title || '');
+                let safeLink = escapeHtml(item.link || '');
+                
                 htmlContent += '<div style="display: flex; gap: 10px; align-items: center; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #e9ecef;">';
-                htmlContent += '<input type="text" value="' + escapeHtml(item.title || '') + '" id="t-title-' + i + '" placeholder="Texto (ex: 🔥 Novo site pagando!)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">';
-                htmlContent += '<input type="text" value="' + escapeHtml(item.link || '') + '" id="t-link-' + i + '" placeholder="Link de destino (URL)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">';
+                htmlContent += '<input type="text" value="' + safeTitle + '" id="t-title-' + i + '" placeholder="Texto (ex: 🔥 Novo site pagando!)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">';
+                htmlContent += '<input type="text" value="' + safeLink + '" id="t-link-' + i + '" placeholder="Link de destino (URL)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">';
                 htmlContent += '<button class="btn-del" onclick="removerTicker(' + i + ')"><i class="fa-solid fa-trash"></i></button>';
                 htmlContent += '</div>';
             }
