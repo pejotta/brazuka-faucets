@@ -306,7 +306,7 @@
                         <span class="copy-tooltip" id="tooltip-donate-btc">Copiado!</span>
                         <div class="donate-input-group">
                             <input type="text" value="eupaulojhonatan@bipa.app" readonly id="donate-btc">
-                            <button onclick="copiarChaveDoacao('donate-btc', 'tooltip-donate-btc', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
+                            <button onclick="copiarChaveDoacao('btc', 'tooltip-donate-btc', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
                         </div>
                     </div>
 
@@ -316,7 +316,7 @@
                         <span class="copy-tooltip" id="tooltip-donate-doge">Copiado!</span>
                         <div class="donate-input-group">
                             <input type="text" value="DNeV9iAkw2K5WofPehfz1GAwwHyCSKYxaq" readonly id="donate-doge">
-                            <button onclick="copiarChaveDoacao('donate-doge', 'tooltip-donate-doge', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
+                            <button onclick="copiarChaveDoacao('doge', 'tooltip-donate-doge', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
                         </div>
                     </div>
 
@@ -326,7 +326,7 @@
                         <span class="copy-tooltip" id="tooltip-donate-trx">Copiado!</span>
                         <div class="donate-input-group">
                             <input type="text" value="TMRVmB5b5zp3ormTeuhsbwUiUH2eyndPMh" readonly id="donate-trx">
-                            <button onclick="copiarChaveDoacao('donate-trx', 'tooltip-donate-trx', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
+                            <button onclick="copiarChaveDoacao('trx', 'tooltip-donate-trx', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
                         </div>
                     </div>
 
@@ -336,7 +336,7 @@
                         <span class="copy-tooltip" id="tooltip-donate-pix">Copiado!</span>
                         <div class="donate-input-group">
                             <input type="text" value="paulo.tan@hotmail.com" readonly id="donate-pix">
-                            <button onclick="copiarChaveDoacao('donate-pix', 'tooltip-donate-pix', this)" title="Copiar chave"><i class="fa-solid fa-copy"></i></button>
+                            <button onclick="copiarChaveDoacao('pix', 'tooltip-donate-pix', this)" title="Copiar chave"><i class="fa-solid fa-copy"></i></button>
                         </div>
                     </div>
                 </div>
@@ -365,46 +365,53 @@
 <script>
 document.getElementById('current-year').textContent = new Date().getFullYear();
 
-function copiarChaveDoacao(elementId, tooltipId, btnElement) {
-    const inputElement = document.getElementById(elementId);
+function copiarChaveDoacao(tipoMoeda, tooltipId, btnElement) {
+    // Banco de chaves direto no script (Sem depender de ler o input da tela)
+    const chaves = {
+        'btc': 'eupaulojhonatan@bipa.app',
+        'doge': 'DNeV9iAkw2K5WofPehfz1GAwwHyCSKYxaq',
+        'trx': 'TMRVmB5b5zp3ormTeuhsbwUiUH2eyndPMh',
+        'pix': 'paulo.tan@hotmail.com'
+    };
+
+    const textoParaCopiar = chaves[tipoMoeda];
     const tooltipElement = document.getElementById(tooltipId);
-    if (!inputElement) return;
 
-    // Foca e seleciona o texto do input de forma limpa (como a caixinha de código faz)
-    inputElement.focus();
-    inputElement.setSelectionRange(0, inputElement.value.length);
+    if (!textoParaCopiar) return;
 
-    const valorParaCopiar = inputElement.value;
-
-    // Executa a cópia via Clipboard API moderna ou fallback infalível
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(valorParaCopiar)
-            .then(() => dispararFeedbackCopia(btnElement, tooltipElement))
-            .catch(() => fallbackEngenhariaReversa(valorParaCopiar, btnElement, tooltipElement));
-    } else {
-        fallbackEngenhariaReversa(valorParaCopiar, btnElement, tooltipElement);
-    }
-}
-
-function fallbackEngenhariaReversa(texto, btnElement, tooltipElement) {
-    // Cria um elemento temporário fora da tela idêntico aos padrões de clipboard de sistemas
-    const el = document.createElement('textarea');
-    el.value = texto;
-    el.setAttribute('readonly', '');
-    el.style.position = 'absolute';
-    el.style.left = '-9999px';
-    document.body.appendChild(el);
+    // Função de cópia blindada com textarea temporário isolado
+    const tempEl = document.createElement('textarea');
+    tempEl.value = textoParaCopiar;
+    tempEl.setAttribute('readonly', '');
+    tempEl.style.position = 'fixed';
+    tempEl.style.opacity = '0';
+    document.body.appendChild(tempEl);
     
-    el.select();
-    
+    tempEl.select();
+    tempEl.setSelectionRange(0, 99999);
+
+    let copiado = false;
     try {
-        document.execCommand('copy');
-        dispararFeedbackCopia(btnElement, tooltipElement);
-    } catch (err) {
-        console.error("Falha na engenharia reversa de cópia", err);
+        copiado = document.execCommand('copy');
+    } catch (e) {
+        console.error("Erro no execCommand", e);
     }
-    
-    document.body.removeChild(el);
+
+    document.body.removeChild(tempEl);
+
+    // Se falhou o método clássico, tenta a Clipboard API moderna
+    if (!copiado && navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textoParaCopiar).then(() => {
+            dispararFeedbackCopia(btnElement, tooltipElement);
+        }).catch(err => {
+            console.error("Clipboard API falhou:", err);
+            alert("Erro ao copiar. Copie manualmente: " + textoParaCopiar);
+        });
+    } else if (copiado) {
+        dispararFeedbackCopia(btnElement, tooltipElement);
+    } else {
+        alert("Erro ao copiar. Copie manualmente: " + textoParaCopiar);
+    }
 }
 
 function dispararFeedbackCopia(btnElement, tooltipElement) {
