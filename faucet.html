@@ -146,8 +146,13 @@
         </section>
     </div>
 </main>
+
+<!-- Modal de Report Corrigido com Botão de Fechar e Fechamento Global -->
 <div id="report-modal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content" style="position: relative;">
+        <!-- Botão X de Fechar no Topo -->
+        <span onclick="closeReport()" style="position: absolute; right: 20px; top: 15px; font-size: 30px; cursor: pointer; color: #666;">×</span>
+        
         <h3>Reportar Problema</h3>
         <p>Ajude a comunidade Brazuka!</p>
         <form id="report-form" action="https://api.web3forms.com/submit" method="POST">
@@ -172,8 +177,27 @@
         </form>
     </div>
 </div>
+
 <script src="js/script-global.js"></script>
 <script src="js/script-detail.js"></script>
 <script src="js/ads-manager.js"></script>
+
+<script>
+    // Garante que a função closeReport exista e funcione caso o script-detail.js não a declare
+    if (typeof closeReport !== 'function') {
+        function closeReport() {
+            const modal = document.getElementById('report-modal');
+            if (modal) modal.style.display = 'none';
+        }
+    }
+
+    // Permite fechar o modal clicando fora dele (no fundo escuro)
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('report-modal');
+        if (event.target === modal) {
+            closeReport();
+        }
+    });
+</script>
 </body>
 </html>
