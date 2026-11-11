@@ -1,0 +1,432 @@
+<style>
+/* --- FOOTER ATUALIZADO COM TOOLTIP "COPIADO!" --- */
+.footer {
+    background-color: #121212;
+    color: #999;
+    padding: 50px 20px 30px 20px;
+    margin-top: 50px;
+    font-size: 0.9em;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
+    padding-bottom: 40px;
+}
+
+/* Colunas individuais */
+.footer-section {
+    flex: 1;
+    text-align: left;
+}
+
+.footer-col-1 {
+    flex: 1.1;
+}
+
+.footer-col-2 {
+    flex: 1.2;
+}
+
+.footer-col-3 {
+    flex: 1.3;
+}
+
+/* Logo no Rodapé */
+.footer-logo-container {
+    margin-bottom: 15px;
+}
+
+.footer-logo {
+    max-width: 220px;
+    height: auto;
+    display: block;
+}
+
+/* Slogan */
+.footer-slogan {
+    font-size: 0.85em;
+    color: #888;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+/* Navegação Bipartida (Ganhe Cripto & Institucional) */
+.footer-nav-grid {
+    display: flex;
+    gap: 30px;
+}
+
+.footer-nav-column h4 {
+    color: #fff;
+    margin-bottom: 12px;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.footer-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-nav-links a {
+    color: #999;
+    text-decoration: none;
+    font-size: 0.85em;
+    transition: color 0.2s;
+}
+
+.footer-nav-links a:hover {
+    color: #fff;
+}
+
+/* Seção de Doações (Coluna 3) */
+.footer-donate-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: left;
+}
+
+.footer-donate-header {
+    font-weight: bold;
+    font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+    color: #fff;
+}
+
+.footer-donate-desc {
+    font-size: 0.78em;
+    color: #888;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.footer-donate-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.donate-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    position: relative; /* Necessário para posicionar o aviso flutuante */
+}
+
+/* Estilo do aviso "Copiado!" */
+.copy-tooltip {
+    position: absolute;
+    right: 0;
+    top: -22px;
+    background: #27ae60;
+    color: #fff;
+    font-size: 0.65em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    pointer-events: none;
+}
+
+.copy-tooltip.show {
+    opacity: 1;
+}
+
+.donate-label {
+    font-size: 0.75em;
+    font-weight: 600;
+    color: #aaa;
+}
+
+.donate-input-group {
+    display: flex;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.donate-input-group input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    padding: 6px 10px;
+    font-family: monospace;
+    font-size: 0.75em;
+    width: 100%;
+    outline: none;
+}
+
+.donate-input-group button {
+    background: rgba(255, 255, 255, 0.06);
+    border: none;
+    color: #ccc;
+    padding: 0 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.donate-input-group button:hover {
+    background: var(--primary, #1a73e8);
+    color: #fff;
+}
+
+/* Barra Inferior de Créditos */
+.footer-bottom-bar {
+    max-width: 1280px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 0.85em;
+    color: #777;
+}
+
+.footer-bottom-left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.hub-link {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.hub-link:hover {
+    text-decoration: underline;
+}
+
+.deus-louvado {
+    color: #f1c40f;
+    font-weight: 500;
+}
+
+/* Responsivo para Celulares */
+@media (max-width: 900px) {
+    .footer-container {
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 30px;
+    }
+    .footer-section {
+        width: 100%;
+        text-align: left;
+    }
+    .footer-nav-grid {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .footer-bottom-bar {
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+    }
+}
+</style>
+
+<div class="footer">
+    <div class="footer-container">
+        
+        <!-- Coluna 1: Logo + Slogan + Tradutor -->
+        <div class="footer-section footer-col-1">
+            <div class="footer-logo-container">
+                <a href="index.html">
+                    <img src="https://www.brazukafaucets.com.br/assets/logo-brazuka-nome.webp" alt="Brazuka Faucets" class="footer-logo">
+                </a>
+            </div>
+            <p class="footer-slogan">
+                O melhor agregador de faucets e ferramentas cripto do Brasil. Ganhe criptomoedas de forma rápida e segura.
+            </p>
+            <div id="google_translate_element" style="margin-top: 15px;"></div>
+        </div>
+
+        <!-- Coluna 2: Navegação Bipartida (Ganhe Cripto & Institucional) -->
+        <div class="footer-section footer-col-2">
+            <div class="footer-nav-grid">
+                <!-- Subcoluna: Ganhe Cripto -->
+                <div class="footer-nav-column">
+                    <h4>Ganhe Cripto</h4>
+                    <div class="footer-nav-links">
+                        <a href="nossas-faucets.html">Nossas Faucets</a>
+                        <a href="shortlinks.html">Shortlinks</a>
+                        <a href="todas-as-moedas.html">Todas as Moedas</a>
+                        <a href="cadastrar-faucet.html">Cadastrar Faucet</a>
+                    </div>
+                </div>
+
+                <!-- Subcoluna: Institucional -->
+                <div class="footer-nav-column">
+                    <h4>Institucional</h4>
+                    <div class="footer-nav-links">
+                        <a href="guia-do-iniciante.html">Guia do Iniciante</a>
+                        <a href="contato.html">Contato</a>
+                        <a href="privacidade.html">Privacidade</a>
+                        <a href="termos.html">Termos de Uso</a>
+                        <a href="anuncie.html">Anuncie</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coluna 3: Donate / Doações -->
+        <div class="footer-section footer-col-3">
+            <div class="footer-donate-section">
+                <div class="footer-donate-header">
+                    <i class="fa-solid fa-heart" style="color: #e74c3c; margin-right: 8px;"></i>
+                    <span>Donate / Apoie o Projeto</span>
+                </div>
+                <p class="footer-donate-desc">Ajude a manter as ferramentas no ar fazendo uma doação voluntária:</p>
+
+                <div class="footer-donate-grid">
+                    <!-- Bitcoin (Lightning Network) -->
+                    <div class="donate-item">
+                        <span class="donate-label"><i class="fa-brands fa-bitcoin" style="color: #f39c12;"></i> BTC (Lightning / Zero Fee)</span>
+                        <span class="copy-tooltip" id="tooltip-donate-btc">Copiado!</span>
+                        <div class="donate-input-group">
+                            <input type="text" value="eupaulojhonatan@bipa.app" readonly id="donate-btc">
+                            <button onclick="copiarChaveDoacao('btc', 'tooltip-donate-btc', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Dogecoin -->
+                    <div class="donate-item">
+                        <span class="donate-label"><i class="fa-solid fa-coins" style="color: #f1c40f;"></i> DOGE</span>
+                        <span class="copy-tooltip" id="tooltip-donate-doge">Copiado!</span>
+                        <div class="donate-input-group">
+                            <input type="text" value="DNeV9iAkw2K5WofPehfz1GAwwHyCSKYxaq" readonly id="donate-doge">
+                            <button onclick="copiarChaveDoacao('doge', 'tooltip-donate-doge', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- TRX e USDT (TRC20) -->
+                    <div class="donate-item">
+                        <span class="donate-label"><i class="fa-solid fa-bolt" style="color: #e74c3c;"></i> TRX & USDT (TRC20)</span>
+                        <span class="copy-tooltip" id="tooltip-donate-trx">Copiado!</span>
+                        <div class="donate-input-group">
+                            <input type="text" value="TMRVmB5b5zp3ormTeuhsbwUiUH2eyndPMh" readonly id="donate-trx">
+                            <button onclick="copiarChaveDoacao('trx', 'tooltip-donate-trx', this)" title="Copiar endereço"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Pix ou FaucetPay -->
+                    <div class="donate-item">
+                        <span class="donate-label"><i class="fa-solid fa-wallet" style="color: #27ae60;"></i> Pix ou FaucetPay</span>
+                        <span class="copy-tooltip" id="tooltip-donate-pix">Copiado!</span>
+                        <div class="donate-input-group">
+                            <input type="text" value="paulo.tan@hotmail.com" readonly id="donate-pix">
+                            <button onclick="copiarChaveDoacao('pix', 'tooltip-donate-pix', this)" title="Copiar chave"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Whos Amung Us -->
+            <div id="wau-placeholder" style="margin-top: 15px;"></div>
+        </div>
+
+    </div>
+
+    <!-- Barra Inferior de Créditos -->
+    <div class="footer-bottom-bar">
+        <div class="footer-bottom-left">
+            <span>Desenvolvido por <a href="https://pejottahub.lovable.app/" target="_blank" class="hub-link">Pejotta HUB</a>.</span>
+        </div>
+        <div class="footer-bottom-center">
+            <span>© <span id="current-year"></span> Brazuka Faucets. Todos os direitos reservados.</span>
+        </div>
+        <div class="footer-bottom-right">
+            <span class="deus-louvado">Deus Seja Louvado.</span>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('current-year').textContent = new Date().getFullYear();
+
+function copiarChaveDoacao(tipoMoeda, tooltipId, btnElement) {
+    const chaves = {
+        'btc': 'eupaulojhonatan@bipa.app',
+        'doge': 'DNeV9iAkw2K5WofPehfz1GAwwHyCSKYxaq',
+        'trx': 'TMRVmB5b5zp3ormTeuhsbwUiUH2eyndPMh',
+        'pix': 'paulo.tan@hotmail.com'
+    };
+
+    const textoParaCopiar = chaves[tipoMoeda];
+    const tooltipElement = document.getElementById(tooltipId);
+
+    if (!textoParaCopiar) return;
+
+    const tempEl = document.createElement('textarea');
+    tempEl.value = textoParaCopiar;
+    tempEl.setAttribute('readonly', '');
+    tempEl.style.position = 'fixed';
+    tempEl.style.opacity = '0';
+    document.body.appendChild(tempEl);
+    
+    tempEl.select();
+    tempEl.setSelectionRange(0, 99999);
+
+    let copiado = false;
+    try {
+        copiado = document.execCommand('copy');
+    } catch (e) {
+        console.error("Erro no execCommand", e);
+    }
+
+    document.body.removeChild(tempEl);
+
+    if (!copiado && navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textoParaCopiar).then(() => {
+            dispararFeedbackCopia(btnElement, tooltipElement);
+        }).catch(err => {
+            console.error("Clipboard API falhou:", err);
+            alert("Erro ao copiar. Copie manualmente: " + textoParaCopiar);
+        });
+    } else if (copiado) {
+        dispararFeedbackCopia(btnElement, tooltipElement);
+    } else {
+        alert("Erro ao copiar. Copie manualmente: " + textoParaCopiar);
+    }
+}
+
+function dispararFeedbackCopia(btnElement, tooltipElement) {
+    const iconeOriginal = btnElement.innerHTML;
+
+    btnElement.innerHTML = '<i class="fa-solid fa-check" style="color: #27ae60;"></i>';
+    btnElement.style.background = '#e8f8f5';
+
+    if (tooltipElement) {
+        tooltipElement.classList.add('show');
+    }
+
+    setTimeout(() => {
+        btnElement.innerHTML = iconeOriginal;
+        btnElement.style.background = '';
+        if (tooltipElement) {
+            tooltipElement.classList.remove('show');
+        }
+    }, 2000);
+}
+</script>
