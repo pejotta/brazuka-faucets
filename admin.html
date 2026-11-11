@@ -382,12 +382,15 @@
                 return;
             }
 
-            listaContainer.innerHTML = adsDoSlot.map((codigo, index) => `
-                <div class="ad-item">
-                    <div class="ad-code-preview">${escapeHtml(codigo)}</div>
-                    <button class="btn-del" onclick="removerAnuncioDoSlot(${index})"><i class="fa-solid fa-trash"></i> Excluir</button>
-                </div>
-            `).join('');
+            let htmlContent = "";
+            for (let i = 0; i < adsDoSlot.length; i++) {
+                let codigo = adsDoSlot[i];
+                htmlContent += '<div class="ad-item">';
+                htmlContent += '<div class="ad-code-preview">' + escapeHtml(codigo) + '</div>';
+                htmlContent += '<button class="btn-del" onclick="removerAnuncioDoSlot(' + i + ')"><i class="fa-solid fa-trash"></i> Excluir</button>';
+                htmlContent += '</div>';
+            }
+            listaContainer.innerHTML = htmlContent;
         }
 
         function adicionarAnuncioAoSlot() {
@@ -435,6 +438,7 @@
         }
 
         function escapeHtml(text) {
+            if (!text) return "";
             return text.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, """).replace(/'/g, "'");
         }
 
@@ -460,13 +464,16 @@
                 return;
             }
 
-            container.innerHTML = tickerItens.map((item, index) => `
-                <div style="display: flex; gap: 10px; align-items: center; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #e9ecef;">
-                    <input type="text" value="${escapeHtml(item.title || '')}" id="t-title-${index}" placeholder="Texto (ex: 🔥 Novo site pagando!)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">
-                    <input type="text" value="${escapeHtml(item.link || '')}" id="t-link-${index}" placeholder="Link de destino (URL)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">
-                    <button class="btn-del" onclick="removerTicker(${index})"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            `).join('');
+            let htmlContent = "";
+            for (let i = 0; i < tickerItens.length; i++) {
+                let item = tickerItens[i];
+                htmlContent += '<div style="display: flex; gap: 10px; align-items: center; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #e9ecef;">';
+                htmlContent += '<input type="text" value="' + escapeHtml(item.title || '') + '" id="t-title-' + i + '" placeholder="Texto (ex: 🔥 Novo site pagando!)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">';
+                htmlContent += '<input type="text" value="' + escapeHtml(item.link || '') + '" id="t-link-' + i + '" placeholder="Link de destino (URL)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">';
+                htmlContent += '<button class="btn-del" onclick="removerTicker(' + i + ')"><i class="fa-solid fa-trash"></i></button>';
+                htmlContent += '</div>';
+            }
+            container.innerHTML = htmlContent;
         }
 
         function adicionarCampoTicker() {
@@ -480,14 +487,14 @@
         }
 
         async function salvarTickerNoBanco() {
-            tickerItens = tickerItens.map((_, index) => {
-                const titleInput = document.getElementById(`t-title-${index}`);
-                const linkInput = document.getElementById(`t-link-${index}`);
-                return {
-                    title: titleInput ? titleInput.value.trim() : "",
-                    link: linkInput ? linkInput.value.trim() : ""
-                };
-            });
+            for (let i = 0; i < tickerItens.length; i++) {
+                const titleInput = document.getElementById('t-title-' + i);
+                const linkInput = document.getElementById('t-link-' + i);
+                if (titleInput && linkInput) {
+                    tickerItens[i].title = titleInput.value.trim();
+                    tickerItens[i].link = linkInput.value.trim();
+                }
+            }
 
             try {
                 const res = await fetch(`${URL_WORKER}/admin-save-ticker`, {
@@ -520,7 +527,9 @@
                 return;
             }
 
-            tbody.innerHTML = dados.map((item, index) => {
+            let htmlContent = "";
+            for (let i = 0; i < dados.length; i++) {
+                let item = dados[i];
                 let emailStr = "";
                 if (typeof item === 'string') {
                     emailStr = item;
@@ -528,14 +537,13 @@
                     emailStr = item.email || item.wallet || "";
                 }
 
-                return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td style="font-weight: 600; color: #1a73e8;">${emailStr || 'E-mail não identificado'}</td>
-                        <td><span style="background: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 4px; font-size: 0.8em;">Dashboard Local</span></td>
-                    </tr>
-                `;
-            }).join('');
+                htmlContent += '<tr>';
+                htmlContent += '<td>' + (i + 1) + '</td>';
+                htmlContent += '<td style="font-weight: 600; color: #1a73e8;">' + (emailStr || 'E-mail não identificado') + '</td>';
+                htmlContent += '<td><span style="background: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 4px; font-size: 0.8em;">Dashboard Local</span></td>';
+                htmlContent += '</tr>';
+            }
+            tbody.innerHTML = htmlContent;
         }
 
         function filtrarTabela() {
