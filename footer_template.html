@@ -370,37 +370,45 @@ function copiarChaveDoacao(elementId, tooltipId, btnElement) {
     const tooltipElement = document.getElementById(tooltipId);
     if (!inputElement) return;
 
-    // Utiliza a API moderna de clipboard (ou fallback se necessário)
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(inputElement.value).then(() => {
-            sucessoCopia(btnElement, tooltipElement);
-        }).catch(err => {
-            console.error("Erro ao copiar com Clipboard API:", err);
-            copiarFallback(inputElement, btnElement, tooltipElement);
-        });
-    } else {
-        copiarFallback(inputElement, btnElement, tooltipElement);
-    }
-}
+    const textoParaCopiar = inputElement.value;
 
-function copiarFallback(inputElement, btnElement, tooltipElement) {
-    inputElement.select();
-    inputElement.setSelectionRange(0, 99999); // Para mobile
+    // Criação de um textarea temporário invisível (Método 100% compatível e infalível)
+    const tempTextArea = document.createElement("textarea");
+    tempTextArea.value = textoParaCopiar;
+    tempTextArea.style.position = "fixed";  // Evita rolagem da tela
+    tempTextArea.style.opacity = "0";
+    document.body.appendChild(tempTextArea);
+    
+    tempTextArea.focus();
+    tempTextArea.select();
+
     try {
         const sucesso = document.execCommand('copy');
+        document.body.removeChild(tempTextArea);
+
         if (sucesso) {
             sucessoCopia(btnElement, tooltipElement);
         } else {
             alert("Não foi possível copiar automaticamente.");
         }
     } catch (err) {
-        console.error("Erro no fallback de cópia:", err);
+        document.body.removeChild(tempTextArea);
+        console.error("Erro ao copiar:", err);
+        
+        // Tenta o método moderno caso o execCommand falhe
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(textoParaCopiar).then(() => {
+                sucessoCopia(btnElement, tooltipElement);
+            }).catch(e => console.error("Falha total no clipboard:", e));
+        }
     }
 }
 
 function sucessoCopia(btnElement, tooltipElement) {
-    // Muda o ícone para check verde
+    // Salva o HTML original do botão
     const iconeOriginal = btnElement.innerHTML;
+    
+    // Muda o ícone para check verde e altera o fundo do botão
     btnElement.innerHTML = '<i class="fa-solid fa-check" style="color: #27ae60;"></i>';
     btnElement.style.background = '#e8f8f5';
 
