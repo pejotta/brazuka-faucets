@@ -365,62 +365,63 @@
 <script>
 document.getElementById('current-year').textContent = new Date().getFullYear();
 
-function copiarChaveDoacao(elementId, tooltipId, btnElement) {
+async function copiarChaveDoacao(elementId, tooltipId, btnElement) {
     const inputElement = document.getElementById(elementId);
     const tooltipElement = document.getElementById(tooltipId);
-    if (!inputElement) return;
+
+    if (!inputElement || !btnElement) return;
 
     const textoParaCopiar = inputElement.value;
 
-    // Criação de um textarea temporário invisível (Método 100% compatível e infalível)
-    const tempTextArea = document.createElement("textarea");
-    tempTextArea.value = textoParaCopiar;
-    tempTextArea.style.position = "fixed";  // Evita rolagem da tela
-    tempTextArea.style.opacity = "0";
-    document.body.appendChild(tempTextArea);
-    
-    tempTextArea.focus();
-    tempTextArea.select();
-
     try {
-        const sucesso = document.execCommand('copy');
-        document.body.removeChild(tempTextArea);
-
-        if (sucesso) {
-            sucessoCopia(btnElement, tooltipElement);
+        // Funciona em páginas HTTPS ou em localhost, quando o navegador permite.
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(textoParaCopiar);
         } else {
-            alert("Não foi possível copiar automaticamente.");
+            copiarComExecCommand(textoParaCopiar);
         }
-    } catch (err) {
-        document.body.removeChild(tempTextArea);
-        console.error("Erro ao copiar:", err);
-        
-        // Tenta o método moderno caso o execCommand falhe
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(textoParaCopiar).then(() => {
-                sucessoCopia(btnElement, tooltipElement);
-            }).catch(e => console.error("Falha total no clipboard:", e));
-        }
+
+        sucessoCopia(btnElement, tooltipElement);
+    } catch (erro) {
+        console.error('Erro ao copiar:', erro);
+        alert('Não foi possível copiar automaticamente. Selecione e copie o texto manualmente.');
+    }
+}
+
+function copiarComExecCommand(texto) {
+    const tempTextArea = document.createElement('textarea');
+    tempTextArea.value = texto;
+    tempTextArea.setAttribute('readonly', '');
+    tempTextArea.style.position = 'fixed';
+    tempTextArea.style.left = '-9999px';
+    tempTextArea.style.top = '0';
+
+    document.body.appendChild(tempTextArea);
+    tempTextArea.select();
+    tempTextArea.setSelectionRange(0, tempTextArea.value.length);
+
+    const copiado = document.execCommand('copy');
+    document.body.removeChild(tempTextArea);
+
+    if (!copiado) {
+        throw new Error('O navegador não conseguiu copiar o texto.');
     }
 }
 
 function sucessoCopia(btnElement, tooltipElement) {
-    // Salva o HTML original do botão
     const iconeOriginal = btnElement.innerHTML;
-    
-    // Muda o ícone para check verde e altera o fundo do botão
+
     btnElement.innerHTML = '<i class="fa-solid fa-check" style="color: #27ae60;"></i>';
     btnElement.style.background = '#e8f8f5';
 
-    // Mostra o aviso flutuante "Copiado!" em cima do item
     if (tooltipElement) {
         tooltipElement.classList.add('show');
     }
 
-    // Retorna ao estado original após 2 segundos
     setTimeout(() => {
         btnElement.innerHTML = iconeOriginal;
         btnElement.style.background = '';
+
         if (tooltipElement) {
             tooltipElement.classList.remove('show');
         }
