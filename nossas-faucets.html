@@ -22,8 +22,6 @@
             --danger: #e74c3c;
         }
 
-         
-
         /* --- LAYOUT GERAL --- */
         body { font-family: 'Barlow', sans-serif; background-color: #f8f9fa; margin: 0; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 15px; }
@@ -98,16 +96,14 @@
 </head>
 <body>
 
-     
-
     <header class="hero-ads">
         <div class="container">
             <h1><i class="fas fa-faucet"></i> Torneiras Oficiais Brazuka</h1>
             <p>Sempre diretos para sua conta FaucetPay!</p>
         </div>
 
-        <div class="ad-slot-pagegain"></div>
-        
+        <!-- Zona de Anúncio Superior atualizada -->
+        <div class="ad-slot-pagegain" data-ad-zone="home_top"></div>
     </header>
 
     <main class="container">
@@ -144,7 +140,7 @@
                     <p style="font-size: 1.2em; color: #ffffff; background: #0088cc; border-radius: 10px; margin: 0 auto 15px;">Saldo: <span id="balance-ton">...</span> TON</p>
                     <img src="https://cryptologos.cc/logos/toncoin-ton-logo.svg?v=040" class="coin-logo">
                     <h3>Torneira TON</h3>
-                    <p style="margin: 5px; background: #000000; color: white; width: max-content; padding: 5px 10px; justify-self: center; border-radius: 10px;">🎁 Ganhe <strong>0.00000005 TON</strong></p>                    
+                    <p style="margin: 5px; background: #000000; color: white; width: max-content; padding: 5px 10px; justify-self: center; border-radius: 10px;">🎁 Ganhe <strong>0.00000005 TON</strong></p>    
                     <button onclick="openClaimModal('ton')" id="btn-ton" style="background: #0088cc; color:white; border:none; width:100%; padding:15px; border-radius:10px; font-weight:bold; cursor:pointer;">REIVINDICAR</button>
                 </div>
             </div>
@@ -169,13 +165,14 @@
         </div>
     </main>
 
+    <!-- Modal de Reivindicação com Zonas de Anúncios Integradas -->
     <div id="claim-modal">
         <div class="modal-content">
-            <span onclick="closeModal()" style="position: absolute; right: 20px; top: 15px; font-size: 30px; cursor: pointer;">&times;</span>
+            <span onclick="closeModal()" style="position: absolute; right: 20px; top: 15px; font-size: 30px; cursor: pointer;">×</span>
             
             <div class="modal-layout">                
-                    <div class="ad-lateral" style="width:160px; height:600px; background:#f9f9f9; border:1px dashed #ccc;">
-                        <div id="ad-modal-left"></div>
+                <div class="ad-lateral" style="width:160px; height:600px; background:#f9f9f9; border:1px dashed #ccc;">
+                    <div id="ad-modal-left" data-ad-zone="sidebarTrx"></div>
                 </div>
 
                 <div class="modal-main">
@@ -183,9 +180,8 @@
                     <p>Complete o desafio abaixo para liberar seus tokens.</p>
                     
                     <div style="margin: 20px auto; background: #f0f0f0; border-radius: 10px;">
-                         <div id="ad-modal-center">
-                             
-                         </div></div>
+                         <div id="ad-modal-center" data-ad-zone="home_central_auto"></div>
+                    </div>
 
                     <div class="cf-turnstile" data-sitekey="0x4AAAAAACIz3XQpjGaXppF0" data-callback="onTurnstileSuccess"></div>
 
@@ -193,7 +189,7 @@
                 </div>
 
                  <div class="ad-lateral" style="width:160px; height:600px; background:#f9f9f9; border:1px dashed #ccc;">
-                     <div id="ad-modal-right"></div>
+                     <div id="ad-modal-right" data-ad-zone="sidebarTon"></div>
                 </div>
             </div>
         </div>
@@ -203,15 +199,15 @@
 
     <script src="js/ads-manager.js"></script>
     
-<script src="js/script-global.js"></script>
-    <script src="js/script-faucets.js"></script>
+    <script src="js/script-global.js"></script>
+    <script src="js/script-faucets.pages"></script>
 
     <script>
        // ANALISTA: Fecha o modal se clicar fora da área branca
-        window.onclick = function(event) {
-            const modal = document.getElementById('claim-modal');
-            if (event.target == modal) closeModal();
-        }
+       window.onclick = function(event) {
+           const modal = document.getElementById('claim-modal');
+           if (event.target == modal) closeModal();
+       }
     </script>
 </body>
 </html>
