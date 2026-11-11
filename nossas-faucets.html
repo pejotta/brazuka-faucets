@@ -102,12 +102,13 @@
             <p>Sempre diretos para sua conta FaucetPay!</p>
         </div>
 
-        <!-- Zona de Anúncio Superior atualizada -->
+        <!-- Zona de Anúncio Superior -->
         <div class="ad-slot-pagegain" data-ad-zone="home_top"></div>
     </header>
 
     <main class="container">
         
+        <!-- Tela de Login FaucetPay -->
         <div id="login-view" style="max-width: 450px; margin: -80px auto 40px;">
             <div class="internal-card">
                 <iconify-icon icon="fluent:wallet-credit-card-24-filled" width="60" style="color: var(--brazuka-blue)"></iconify-icon>
@@ -117,6 +118,7 @@
             </div>
         </div>
 
+        <!-- Dashboard da Carteira (Oculto até logar) -->
         <div id="dashboard-view" style="display: none; margin-top: -30px;">
             <div class="internal-card" style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                 <span><i class="fas fa-user-circle"></i> <span id="display-wallet">...</span></span>
@@ -165,7 +167,7 @@
         </div>
     </main>
 
-    <!-- Modal de Reivindicação com Zonas de Anúncios Integradas -->
+    <!-- Modal de Reivindicação -->
     <div id="claim-modal">
         <div class="modal-content">
             <span onclick="closeModal()" style="position: absolute; right: 20px; top: 15px; font-size: 30px; cursor: pointer;">×</span>
@@ -197,13 +199,12 @@
 
     <style>@keyframes load { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }</style>
 
-    <script src="js/ads-manager.js"></script>
-    
+    <!-- Scripts Restaurados Corretamente -->
     <script src="js/script-global.js"></script>
-    <script src="js/script-faucets.pages"></script>
+    <script src="js/script-faucets.js"></script>
+    <script src="js/ads-manager.js"></script>
 
     <script>
-       // ANALISTA: Fecha o modal se clicar fora da área branca
        window.onclick = function(event) {
            const modal = document.getElementById('claim-modal');
            if (event.target == modal) closeModal();
