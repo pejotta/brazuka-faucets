@@ -977,9 +977,10 @@
                 `;
             }
 
+            // 2. Renderiza o Gráfico de Barras Proporcionais (Top Itens)
             const maiorClique = listaProcessada[0] ? listaProcessada[0].cliques : 1;
             if (graficoContainer) {
-                graficoContainer.innerHTML = listaProcessada.slice(0, 6).map(item => {
+                graficoContainer.innerHTML = listaProcessada.slice(0, 6).map(function(item) {
                     const percentual = Math.max(Math.round((item.cliques / maiorClique) * 100), 8);
                     return `
                         <div>
@@ -994,7 +995,7 @@
                     `;
                 }).join('');
             }
-
+            
             listaProcessada.forEach(function(item) {
                 const tr = document.createElement('tr');
                 tr.style.borderBottom = '1px solid #eee';
