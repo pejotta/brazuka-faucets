@@ -33,7 +33,7 @@ body {
 .header {
     background-color: #fff;
     border-bottom: 2px solid #eee;
-    padding: 15px 20px;
+    padding: 5px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -126,7 +126,7 @@ body {
 
 .hero-ads {
             text-align: center;
-            padding: 40px 20px;
+            padding: 20px 20px;
             background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
             color: white;
             border-radius: 0 0 100px 100px;
@@ -621,7 +621,7 @@ body {
 
     .navbar a, .dropdown {
         width: 95%;
-        padding: 15px;
+        padding: 5px 20px;
         border-bottom: 1px solid #eee;
     }
 
