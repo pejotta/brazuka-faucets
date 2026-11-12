@@ -94,6 +94,9 @@
             <button class="tab-btn" onclick="mudarAba('leads', event)">
                 <i class="fa-solid fa-envelope"></i> Base de Leads
             </button>
+            <button class="tab-btn" onclick="mudarAba('blog', event)">
+                <i class="fa-solid fa-newspaper"></i> Gerenciar Blog
+            </button>
         </div>
 
         <!-- ABA 1: VISÃO GERAL -->
@@ -273,7 +276,79 @@
                 </div>
             </div>
         </div>
+        <div id="aba-blog" class="tab-content">
+    <div style="display: grid; grid-template-columns: 1fr; gap: 25px;">
+        
+        <!-- Formulário de Criação / Edição -->
+        <div style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0;">
+            <h3 style="margin-top: 0; color: #7a33eb;"><i class="fa-solid fa-pen-to-square"></i> Escrever ou Editar Artigo</h3>
+            
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div>
+                    <label style="display: block; font-weight: 600; margin-bottom: 5px;">Título do Artigo (SEO):</label>
+                    <input type="text" id="post-title" oninput="gerarSlugAutomatico()" placeholder="Ex: Vie Faucet Paga Mesmo? Review Completa 2026" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+                </div>
+                <div>
+                    <label style="display: block; font-weight: 600; margin-bottom: 5px;">Categoria / Marcador:</label>
+                    <select id="post-category" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+                        <option value="Review">Review de Faucet</option>
+                        <option value="Patrocinado">Review Patrocinada</option>
+                        <option value="Notícia">Notícia Cripto</option>
+                        <option value="Tutorial">Guia & Tutorial</option>
+                    </select>
+                </div>
+            </div>
 
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div>
+                    <label style="display: block; font-weight: 600; margin-bottom: 5px;">Slug (URL Amigável - Gerado Auto):</label>
+                    <input type="text" id="post-slug" placeholder="vie-faucet-paga-mesmo-review" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; background: #f9f9f9; box-sizing: border-box;">
+                </div>
+                <div>
+                    <label style="display: block; font-weight: 600; margin-bottom: 5px;">URL da Imagem de Capa (1200x630):</label>
+                    <input type="text" id="post-image" placeholder="https://..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; font-weight: 600; margin-bottom: 5px;">Meta Descrição (Opcional - Se vazio, pega início do texto):</label>
+                <input type="text" id="post-meta" maxlength="160" placeholder="Resumo curto para aparecer no Google (máx. 160 caracteres)..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 5px;">
+                    <label style="font-weight: 600;">Corpo do Artigo (Aceita HTML):</label>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                        <button type="button" onclick="inserirTagPost('<h2>', '</h2>')" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; background: #f4f4f4; font-weight: bold;">H2</button>
+                        <button type="button" onclick="inserirTagPost('<strong>', '</strong>')" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; background: #f4f4f4; font-weight: bold;">B</button>
+                        <button type="button" onclick="inserirTagPost('<p>', '</p>')" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; background: #f4f4f4;">Parágrafo</button>
+                        <button type="button" onclick="inserirLinkPost()" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; background: #f4f4f4;"><i class="fa-solid fa-link"></i> Link</button>
+                        <button type="button" onclick="inserirAdNoPost()" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #7a33eb; cursor: pointer; background: #f3ebff; color: #7a33eb; font-weight: 600;"><i class="fa-solid fa-rectangle-ad"></i> Inserir Banner</button>
+                    </div>
+                </div>
+                <textarea id="post-content" rows="12" placeholder="Escreva o conteúdo completo do artigo aqui..." style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; line-height: 1.5; box-sizing: border-box;"></textarea>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button type="button" onclick="salvarPostNoBanco()" style="background: #7a33eb; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                    <i class="fa-solid fa-paper-plane"></i> Publicar / Atualizar Artigo
+                </button>
+                <button type="button" onclick="limparFormularioPost()" style="background: #eee; color: #333; border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer;">
+                    Limpar Campos
+                </button>
+            </div>
+        </div>
+
+        <!-- Lista de Artigos Publicados -->
+        <div style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0;">
+            <h3 style="margin-top: 0;"><i class="fa-solid fa-list"></i> Artigos Publicados</h3>
+            <div id="lista-posts-admin" style="display: flex; flex-direction: column; gap: 10px;">
+                <p style="color: #777; text-align: center;">Carregando artigos...</p>
+            </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <script>
@@ -348,6 +423,7 @@
             carregarDadosPainel();
             carregarAnalyticsAdmin();
             carregarTickerAdmin();
+            carregarPostsAdmin();
         }
 
         // 2. Busca de Dados na Worker (Leads, Faucets, Ads e Ticker)
@@ -384,6 +460,169 @@
                 console.error("Erro ao carregar dados do painel:", err);
             }
         }
+
+        // --- LÓGICA DO GERENCIADOR DE BLOG ---
+let listaPostsGlobal = [];
+
+async function carregarPostsAdmin() {
+    try {
+        const res = await fetch(URL_WORKER + '/get-posts');
+        const posts = await res.json();
+        if (Array.isArray(posts)) {
+            listaPostsGlobal = posts;
+            renderizarListaPostsAdmin();
+        }
+    } catch (err) {
+        console.error("Erro ao carregar posts do blog:", err);
+    }
+}
+
+function renderizarListaPostsAdmin() {
+    const container = document.getElementById('lista-posts-admin');
+    if (!container) return;
+
+    if (listaPostsGlobal.length === 0) {
+        container.innerHTML = '<p style="color: #777; text-align: center;">Nenhum artigo publicado ainda.</p>';
+        return;
+    }
+
+    container.innerHTML = listaPostsGlobal.map((post, index) => `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef; flex-wrap: wrap; gap: 10px;">
+            <div>
+                <span style="background: #7a33eb; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; margin-right: 8px;">${escapeHtml(post.category)}</span>
+                <strong style="font-size: 1em; color: #222;">${escapeHtml(post.title)}</strong>
+                <div style="font-size: 0.8em; color: #666; margin-top: 4px;">
+                    Slug: <code>${escapeHtml(post.slug)}</code> • Data: ${new Date(post.createdAt).toLocaleDateString('pt-BR')}
+                </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button onclick="editarPostAdmin(${index})" style="background: #1a73e8; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em;">
+                    <i class="fa-solid fa-pen"></i> Editar
+                </button>
+                <button class="btn-del" onclick="excluirPostAdmin('${escapeHtml(post.slug)}')">
+                    <i class="fa-solid fa-trash"></i> Excluir
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function gerarSlugAutomatico() {
+    const titulo = document.getElementById('post-title').value;
+    const slug = titulo
+        .toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove acentos
+        .replace(/[^a-z0-9\s-]/g, '') // Remove caracteres especiais
+        .trim()
+        .replace(/\s+/g, '-') // Troca espaços por hífen
+        .replace(/-+/g, '-'); // Evita hífens duplos
+    document.getElementById('post-slug').value = slug;
+}
+
+function inserirTagPost(tagAbre, tagFecha) {
+    const textarea = document.getElementById('post-content');
+    const inicio = textarea.selectionStart;
+    const fim = textarea.selectionEnd;
+    const textoSelecionado = textarea.value.substring(inicio, fim);
+    const substituicao = tagAbre + (textoSelecionado || 'Texto aqui') + tagFecha;
+    textarea.value = textarea.value.substring(0, inicio) + substituicao + textarea.value.substring(fim);
+    textarea.focus();
+}
+
+function inserirLinkPost() {
+    const url = prompt("Cole a URL de destino (ex: https://... ou faucet.html?id=1):");
+    if (!url) return;
+    inserirTagPost(`<a href="${url}" target="_blank" rel="noopener">`, '</a>');
+}
+
+function inserirAdNoPost() {
+    const textarea = document.getElementById('post-content');
+    const adBlock = '\n<div class="ad-slot-mid" style="margin: 25px 0;" data-ad-zone="homeTop"></div>\n';
+    textarea.value += adBlock;
+    textarea.focus();
+}
+
+function editarPostAdmin(index) {
+    const post = listaPostsGlobal[index];
+    if (!post) return;
+    document.getElementById('post-title').value = post.title || '';
+    document.getElementById('post-category').value = post.category || 'Review';
+    document.getElementById('post-slug').value = post.slug || '';
+    document.getElementById('post-image').value = post.image || '';
+    document.getElementById('post-meta').value = post.metaDescription || '';
+    document.getElementById('post-content').value = post.content || '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function limparFormularioPost() {
+    document.getElementById('post-title').value = '';
+    document.getElementById('post-slug').value = '';
+    document.getElementById('post-image').value = '';
+    document.getElementById('post-meta').value = '';
+    document.getElementById('post-content').value = '';
+}
+
+async function salvarPostNoBanco() {
+    const title = document.getElementById('post-title').value.trim();
+    const category = document.getElementById('post-category').value;
+    const slug = document.getElementById('post-slug').value.trim();
+    const image = document.getElementById('post-image').value.trim();
+    let metaDescription = document.getElementById('post-meta').value.trim();
+    const content = document.getElementById('post-content').value.trim();
+
+    if (!title || !slug || !content) {
+        return alert("Preencha pelo menos o Título, o Slug e o Corpo do artigo!");
+    }
+
+    // Gera meta descrição automática se estiver vazia
+    if (!metaDescription) {
+        const textoLimpo = content.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
+        metaDescription = textoLimpo.substring(0, 155) + (textoLimpo.length > 155 ? '...' : '');
+    }
+
+    try {
+        const res = await fetch(URL_WORKER + '/admin-save-post', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, category, slug, image, metaDescription, content })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            alert("✅ Artigo publicado/atualizado com sucesso!");
+            limparFormularioPost();
+            carregarPostsAdmin();
+        } else {
+            alert("❌ Erro ao salvar artigo: " + data.error);
+        }
+    } catch (err) {
+        alert("🚨 Erro de conexão ao salvar o artigo!");
+        console.error(err);
+    }
+}
+
+async function excluirPostAdmin(slug) {
+    if (!confirm("Tem certeza que deseja excluir este artigo permanentemente?")) return;
+
+    try {
+        const res = await fetch(URL_WORKER + '/admin-delete-post', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ slug })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            alert("🗑️ Artigo excluído com sucesso!");
+            carregarPostsAdmin();
+        } else {
+            alert("❌ Erro ao excluir: " + data.error);
+        }
+    } catch (err) {
+        alert("🚨 Erro de conexão ao excluir!");
+        console.error(err);
+    }
+}
 
         // --- LÓGICA DO GERENCIADOR DE ADS ---
 
