@@ -209,33 +209,61 @@
         </div>
 
         <!-- ABA 4: ANALYTICS -->
-        <div id="aba-analytics" class="tab-content">
-            <div class="panel-container">
-                <div class="panel-header">
-                    <div>
-                        <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-chart-pie"></i> Relatório de Analytics (Cliques & Marketing)</h3>
-                        <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Acompanhe em tempo real o desempenho de tráfego das suas faucets e banners de anúncios.</p>
-                    </div>
-                </div>
-                
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Tipo de Elemento</th>
-                                <th>Identificador / Nome</th>
-                                <th style="text-align: right;">Total de Cliques</th>
-                            </tr>
-                        </thead>
-                        <tbody id="analytics-tbody">
-                            <tr>
-                                <td colspan="3" style="padding: 15px; text-align: center; color: #666;">Carregando dados de analytics...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <div id="aba-analytics" class="tab-content active">
+    <div style="background: #fff; padding: 25px; border-radius: 12px; border: 1px solid #e0e0e0;">
+        
+        <!-- Cabeçalho com Ações Comerciais -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px;">
+            <div>
+                <h3 style="margin: 0; color: #7a33eb;"><i class="fa-solid fa-chart-pie"></i> Dashboard de Analytics & Desempenho</h3>
+                <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9em;">Métricas de engajamento em tempo real para auditoria e patrocinadores.</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="copiarRelatorioPatrocinador()" style="background: #1a73e8; color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9em;">
+                    <i class="fa-solid fa-copy"></i> Copiar Relatório p/ Patrocinador
+                </button>
             </div>
         </div>
+
+        <!-- Cards de Resumo (KPIs estilo Power BI) -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;" id="kpi-cards-container">
+            <!-- Preenchido via JS -->
+        </div>
+
+        <!-- Seção de Gráficos Visuais (Barras Proporcionais) -->
+        <div style="margin-bottom: 30px;">
+            <h4 style="margin-bottom: 15px; color: #333; border-left: 4px solid #7a33eb; padding-left: 8px;">Top Engajamento por Elemento</h4>
+            <div id="grafico-barras-container" style="display: flex; flex-direction: column; gap: 12px; background: #f8f9fa; padding: 20px; border-radius: 10px; border: 1px solid #eaeaea;">
+                <p style="text-align: center; color: #777;">Carregando métricas visuais...</p>
+            </div>
+        </div>
+
+        <!-- Tabela Compacta Ocultável / Detalhada -->
+        <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 style="margin: 0; color: #333;">Detalhamento Completo de Cliques</h4>
+                <button onclick="toggleTabelaDetalhada()" id="btn-toggle-tabela" style="background: none; border: none; color: #7a33eb; font-weight: 600; cursor: pointer; font-size: 0.9em;">
+                    Mostrar Tabela Completa ▼
+                </button>
+            </div>
+            <div id="wrapper-tabela-detalhada" style="display: none; overflow-x: auto; max-height: 300px; border: 1px solid #eee; border-radius: 8px;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9em;">
+                    <thead>
+                        <tr style="background: #f1f3f5; color: #495057; border-bottom: 2px solid #dee2e6;">
+                            <th style="padding: 12px;">Tipo</th>
+                            <th style="padding: 12px;">Identificador</th>
+                            <th style="padding: 12px; text-align: right;">Cliques</th>
+                        </tr>
+                    </thead>
+                    <tbody id="analytics-tbody">
+                        <!-- Dados da tabela -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
 
         <!-- ABA 5: BASE DE LEADS -->
         <div id="aba-leads" class="tab-content">
@@ -894,41 +922,143 @@ async function excluirPostAdmin(slug) {
         }
 
         // Função para carregar e exibir os dados de Analytics no Painel
-        async function carregarAnalyticsAdmin() {
-            try {
-                const response = await fetch(URL_WORKER + '/admin-get-analytics');
-                if (!response.ok) throw new Error("Erro ao buscar dados de analytics.");
+        let dadosAnalyticsGlobal = {};
 
-                const data = await response.json();
-                const tbody = document.getElementById('analytics-tbody');
-                if (!tbody) return;
-                tbody.innerHTML = '';
+async function carregarAnalyticsAdmin() {
+    try {
+        const response = await fetch(URL_WORKER + '/admin-get-analytics');
+        if (!response.ok) throw new Error("Erro ao buscar dados de analytics.");
 
-                const keys = Object.keys(data);
-                if (keys.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="3" style="padding: 15px; text-align: center; color: #666;">Nenhum clique registrado ainda.</td></tr>';
-                    return;
-                }
+        const data = await response.json();
+        dadosAnalyticsGlobal = data; // Salva globalmente para o botão de copiar
+        
+        const keys = Object.keys(data);
+        const kpiContainer = document.getElementById('kpi-cards-container');
+        const graficoContainer = document.getElementById('grafico-barras-container');
+        const tbody = document.getElementById('analytics-tbody');
+        
+        if (!tbody) return;
+        tbody.innerHTML = '';
 
-                keys.forEach(function(key) {
-                    const partes = key.replace('analytics:', '').split(':');
-                    const tipo = partes[0] || 'geral';
-                    const idItem = partes.slice(1).join(':') || 'desconhecido';
-                    const totalCliques = data[key];
+        if (keys.length === 0) {
+            if (kpiContainer) kpiContainer.innerHTML = '';
+            if (graficoContainer) graficoContainer.innerHTML = '<p style="text-align: center; color: #666;">Nenhum clique registrado ainda.</p>';
+            tbody.innerHTML = '<tr><td colspan="3" style="padding: 15px; text-align: center; color: #666;">Nenhum clique registrado ainda.</td></tr>';
+            return;
+        }
 
-                    const tr = document.createElement('tr');
-                    tr.style.borderBottom = '1px solid #eee';
-                    tr.innerHTML = '<td style="padding: 12px; text-transform: uppercase; font-weight: bold; font-size: 0.85em; color: #555;">' + tipo + '</td>' +
-                                   '<td style="padding: 12px; color: #333;">' + idItem + '</td>' +
-                                   '<td style="padding: 12px; text-align: right; font-weight: bold; color: #1a73e8;">' + totalCliques.toLocaleString() + '</td>';
-                    tbody.appendChild(tr);
-                });
+        let totalCliquesGeral = 0;
+        let totalBanners = 0;
+        let totalFaucets = 0;
+        let listaProcessada = [];
 
-            } catch (err) {
-                console.error(err);
-                const tbody = document.getElementById('analytics-tbody');
-                if (tbody) tbody.innerHTML = '<tr><td colspan="3" style="padding: 15px; text-align: center; color: red;">Erro ao carregar o relatório.</td></tr>';
-            }
+        keys.forEach(function(key) {
+            const partes = key.replace('analytics:', '').split(':');
+            const tipo = (partes[0] || 'geral').toUpperCase();
+            const idItem = partes.slice(1).join(':') || 'desconhecido';
+            const cliques = Number(data[key]) || 0;
+
+            totalCliquesGeral += cliques;
+            if (tipo === 'BANNER') totalBanners += cliques;
+            if (tipo === 'FAUCET') totalFaucets += cliques;
+
+            listaProcessada.push({ tipo, idItem, cliques });
+        });
+
+        // Ordena do mais clicado para o menos clicado
+        listaProcessada.sort((a, b) => b.cliques - a.cliques);
+
+        // 1. Renderiza os Cards KPI (Estilo Power BI)
+        if (kpiContainer) {
+            kpiContainer.innerHTML = `
+                <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #7a33eb; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                    <div style="font-size: 0.8em; color: #666; font-weight: bold; text-transform: uppercase;">Total de Cliques</div>
+                    <div style="font-size: 1.8em; font-weight: bold; color: #7a33eb; margin-top: 5px;">${totalCliquesGeral.toLocaleString()}</div>
+                </div>
+                <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #1a73e8; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                    <div style="font-size: 0.8em; color: #666; font-weight: bold; text-transform: uppercase;">Cliques em Banners</div>
+                    <div style="font-size: 1.8em; font-weight: bold; color: #1a73e8; margin-top: 5px;">${totalBanners.toLocaleString()}</div>
+                </div>
+                <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #34a853; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                    <div style="font-size: 0.8em; color: #666; font-weight: bold; text-transform: uppercase;">Cliques em Faucets</div>
+                    <div style="font-size: 1.8em; font-weight: bold; color: #34a853; margin-top: 5px;">${totalFaucets.toLocaleString()}</div>
+                </div>
+            `;
+        }
+
+        // 2. Renderiza o Gráfico de Barras Proporcionais (Top Itens)
+        const maiorClique = listaProcessada[0] ? listaProcessada[0].cliques : 1;
+        if (graficoContainer) {
+            graficoContainer.innerHTML = listaProcessada.slice(0, 6).map(item => {
+                const percentual = Math.max(Math.round((item.cliques / maiorClique) * 100), 8); // Mínimo de 8% para a barra aparecer bem
+                return `
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 4px; font-weight: 600; color: #444;">
+                            <span><span style="background: #e1f5fe; color: #0288d1; padding: 2px 6px; border-radius: 4px; font-size: 0.75em; margin-right: 6px;">${item.tipo}</span> ${escapeHtml(item.idItem)}</span>
+                            <span style="color: #7a33eb;">${item.cliques.toLocaleString()} cliques</span>
+                        </div>
+                        <div style="width: 100%; background: #e9ecef; height: 10px; border-radius: 5px; overflow: hidden;">
+                            <div style="width: ${percentual}%; background: linear-gradient(90deg, #7a33eb, #9b51e0); height: 100%; border-radius: 50px; transition: width 0.6s ease;"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 3. Preenche a tabela detalhada (caso aberta)
+        listaProcessada.forEach(function(item) {
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = '1px solid #eee';
+            tr.innerHTML = '<td style="padding: 12px; text-transform: uppercase; font-weight: bold; font-size: 0.8em; color: #555;">' + item.tipo + '</td>' +
+                           '<td style="padding: 12px; color: #333;">' + escapeHtml(item.idItem) + '</td>' +
+                           '<td style="padding: 12px; text-align: right; font-weight: bold; color: #1a73e8;">' + item.cliques.toLocaleString() + '</td>';
+            tbody.appendChild(tr);
+        });
+
+    } catch (err) {
+        console.error(err);
+        const graficoContainer = document.getElementById('grafico-barras-container');
+        if (graficoContainer) graficoContainer.innerHTML = '<p style="text-align: center; color: red;">Erro ao carregar o relatório de analytics.</p>';
+    }
+}
+
+// Função para alternar a exibição da tabela completa
+function toggleTabelaDetalhada() {
+    const wrapper = document.getElementById('wrapper-tabela-detalhada');
+    const btn = document.getElementById('btn-toggle-tabela');
+    if (wrapper.style.display === 'none') {
+        wrapper.style.display = 'block';
+        btn.innerText = 'Ocultar Tabela Completa ▲';
+    } else {
+        wrapper.style.display = 'none';
+        btn.innerText = 'Mostrar Tabela Completa ▼';
+    }
+}
+
+// Função para Copiar Relatório formatado para Patrocinadores
+function copiarRelatorioPatrocinador() {
+    const keys = Object.keys(dadosAnalyticsGlobal);
+    if (keys.length === 0) return alert("Não há dados de analytics para copiar!");
+
+    let textoRelatorio = "📊 *Relatório de Desempenho e Cliques - Brazuka Faucets*\n";
+    textoRelatorio += "----------------------------------------\n";
+    
+    keys.forEach(function(key) {
+        const partes = key.replace('analytics:', '').split(':');
+        const tipo = (partes[0] || 'geral').toUpperCase();
+        const idItem = partes.slice(1).join(':') || 'desconhecido';
+        const cliques = dadosAnalyticsGlobal[key];
+        
+        textoRelatorio += `• [${tipo}] ${idItem}: *${cliques} cliques*\n`;
+    });
+    
+    textoRelatorio += "----------------------------------------\n";
+    textoRelatorio += "🚀 Tráfego auditado em tempo real pelo Brazuka HUB.";
+
+    navigator.clipboard.writeText(textoRelatorio).then(function() {
+        alert("✅ Relatório formatado copiado para a área de transferência! Pronto para enviar no WhatsApp do patrocinador.");
+    });
+}
         }
 
         // Executa a autenticação e carregamento inicial
