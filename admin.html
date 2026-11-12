@@ -537,7 +537,8 @@ function inserirLinkPost() {
 
 function inserirAdNoPost() {
     const textarea = document.getElementById('post-content');
-    const adBlock = '\n<div class="ad-slot-mid" style="margin: 25px 0;" data-ad-zone="homeTop"></div>\n';
+    // Já insere com o ID e a classe corretos que o ads-manager.js procura
+    const adBlock = '\n<div class="ad-slot-mid" id="ad-zone-home-top" style="margin: 25px 0;" data-ad-zone="homeTop"></div>\n';
     textarea.value += adBlock;
     textarea.focus();
 }
