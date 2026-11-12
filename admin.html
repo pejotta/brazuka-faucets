@@ -380,689 +380,675 @@
     </div>
 
     <script>
-        const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
-        let listaEmailsGlobal = [];
-        let objetoAdsGlobal = {
-    heroCarousel: [],
-    homeTop: [],
-    homeBtcEth: [],
-    homeDogeTrx: [],
-    homeCentralAuto: [],
-    homeMinerBet: [],
-    homeAirdropIpo: [],
-    fichaTecnica: [],
-    fichaTecnicaTrx: [],
-    fichaTecnicaTon: [],
-    sidebarTrx: [],
-    sidebarTon: [],
-    pageCadastro: []
-};
-        let tickerItens = [];
+    const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
+    let listaEmailsGlobal = [];
+    let objetoAdsGlobal = {
+        heroCarousel: [],
+        homeTop: [],
+        homeBtcEth: [],
+        homeDogeTrx: [],
+        homeCentralAuto: [],
+        homeMinerBet: [],
+        homeAirdropIpo: [],
+        fichaTecnica: [],
+        fichaTecnicaTrx: [],
+        fichaTecnicaTon: [],
+        sidebarTrx: [],
+        sidebarTon: [],
+        pageCadastro: []
+    };
+    let tickerItens = [];
 
-        // Função para Alternar entre as Abas
-        function mudarAba(nomeAba, evento) {
-            document.querySelectorAll('.tab-content').forEach(function(aba) {
-                aba.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-btn').forEach(function(btn) {
-                btn.classList.remove('active');
-            });
-
-            const abaAlvo = document.getElementById('aba-' + nomeAba);
-            if (abaAlvo) abaAlvo.classList.add('active');
-            if (evento && evento.currentTarget) evento.currentTarget.classList.add('active');
-        }
-
-        // 1. Função de Autenticação Segura (Bloqueante)
-        async function verificarAutenticacaoEScarregar() {
-            let acesso = sessionStorage.getItem('autenticado');
-
-            if (acesso !== 'true') {
-                let tentativa = prompt("Acesso Administrativo! Digite a senha mestra:");
-                if (!tentativa) {
-                    alert("Acesso negado!");
-                    window.location.replace("index.html");
-                    return;
-                }
-
-                try {
-                    const response = await fetch(URL_WORKER + '/admin-login', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ senha: tentativa })
-                    });
-                    const res = await response.json();
-
-                    if (!res.success) {
-                        alert("Senha incorreta! Acesso negado.");
-                        window.location.replace("index.html");
-                        return;
-                    } else {
-                        sessionStorage.setItem('autenticado', 'true');
-                    }
-                } catch (err) {
-                    alert("Erro ao validar credenciais com o servidor.");
-                    window.location.replace("index.html");
-                    return;
-                }
-            }
-
-            document.body.style.display = 'flex';
-            carregarDadosPainel();
-            carregarAnalyticsAdmin();
-            carregarTickerAdmin();
-            carregarPostsAdmin();
-        }
-
-        // 2. Busca de Dados na Worker (Leads, Faucets, Ads e Ticker)
-        async function carregarDadosPainel() {
-            try {
-                // Puxa e-mails
-                const resEmails = await fetch(URL_WORKER + '/admin-get-emails');
-                const emailsData = await resEmails.json();
-                if (Array.isArray(emailsData)) {
-                    listaEmailsGlobal = emailsData;
-                    const elEmails = document.getElementById('total-emails');
-                    if (elEmails) elEmails.innerText = emailsData.length;
-                    renderizarTabela(emailsData);
-                }
-
-                // Puxa faucets
-                const resFaucets = await fetch(URL_WORKER + '/get-all-faucets');
-                const faucetsData = await resFaucets.json();
-                if (Array.isArray(faucetsData)) {
-                    const elFaucets = document.getElementById('total-faucets');
-                    if (elFaucets) elFaucets.innerText = faucetsData.length;
-                }
-
-                // Puxa Ads do Banco de Dados
-                const resAds = await fetch(URL_WORKER + '/admin-get-ads');
-                const adsData = await resAds.json();
-                if (adsData && typeof adsData === 'object') {
-                    objetoAdsGlobal = Object.assign({}, objetoAdsGlobal, adsData);
-                    atualizarContadorAnuncios();
-                    carregarSlotSelecionado();
-                }
-
-            } catch (err) {
-                console.error("Erro ao carregar dados do painel:", err);
-            }
-        }
-
-        // --- LÓGICA DO GERENCIADOR DE BLOG ---
-let listaPostsGlobal = [];
-
-async function carregarPostsAdmin() {
-    try {
-        const res = await fetch(URL_WORKER + '/get-posts');
-        const posts = await res.json();
-        if (Array.isArray(posts)) {
-            listaPostsGlobal = posts;
-            renderizarListaPostsAdmin();
-        }
-    } catch (err) {
-        console.error("Erro ao carregar posts do blog:", err);
-    }
-}
-
-function renderizarListaPostsAdmin() {
-    const container = document.getElementById('lista-posts-admin');
-    if (!container) return;
-
-    if (listaPostsGlobal.length === 0) {
-        container.innerHTML = '<p style="color: #777; text-align: center;">Nenhum artigo publicado ainda.</p>';
-        return;
-    }
-
-    container.innerHTML = listaPostsGlobal.map((post, index) => `
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef; flex-wrap: wrap; gap: 10px;">
-            <div>
-                <span style="background: #7a33eb; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; margin-right: 8px;">${escapeHtml(post.category)}</span>
-                <strong style="font-size: 1em; color: #222;">${escapeHtml(post.title)}</strong>
-                <div style="font-size: 0.8em; color: #666; margin-top: 4px;">
-                    Slug: <code>${escapeHtml(post.slug)}</code> • Data: ${new Date(post.createdAt).toLocaleDateString('pt-BR')}
-                </div>
-            </div>
-            <div style="display: flex; gap: 8px;">
-                <button onclick="editarPostAdmin(${index})" style="background: #1a73e8; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em;">
-                    <i class="fa-solid fa-pen"></i> Editar
-                </button>
-                <button class="btn-del" onclick="excluirPostAdmin('${escapeHtml(post.slug)}')">
-                    <i class="fa-solid fa-trash"></i> Excluir
-                </button>
-            </div>
-        </div>
-    `).join('');
-}
-
-function gerarSlugAutomatico() {
-    const titulo = document.getElementById('post-title').value;
-    const slug = titulo
-        .toLowerCase()
-        .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove acentos
-        .replace(/[^a-z0-9\s-]/g, '') // Remove caracteres especiais
-        .trim()
-        .replace(/\s+/g, '-') // Troca espaços por hífen
-        .replace(/-+/g, '-'); // Evita hífens duplos
-    document.getElementById('post-slug').value = slug;
-}
-
-function inserirTagPost(tagAbre, tagFecha) {
-    const textarea = document.getElementById('post-content');
-    const inicio = textarea.selectionStart;
-    const fim = textarea.selectionEnd;
-    const textoSelecionado = textarea.value.substring(inicio, fim);
-    const substituicao = tagAbre + (textoSelecionado || 'Texto aqui') + tagFecha;
-    textarea.value = textarea.value.substring(0, inicio) + substituicao + textarea.value.substring(fim);
-    textarea.focus();
-}
-
-function inserirLinkPost() {
-    const url = prompt("Cole a URL de destino (ex: https://... ou faucet.html?id=1):");
-    if (!url) return;
-    inserirTagPost(`<a href="${url}" target="_blank" rel="noopener">`, '</a>');
-}
-
-function inserirAdNoPost() {
-    const textarea = document.getElementById('post-content');
-    // Já insere com o ID e a classe corretos que o ads-manager.js procura
-    const adBlock = '\n<div class="ad-slot-mid" id="ad-zone-home-top" style="margin: 25px 0;" data-ad-zone="homeTop"></div>\n';
-    textarea.value += adBlock;
-    textarea.focus();
-}
-
-function editarPostAdmin(index) {
-    const post = listaPostsGlobal[index];
-    if (!post) return;
-    document.getElementById('post-title').value = post.title || '';
-    document.getElementById('post-category').value = post.category || 'Review';
-    document.getElementById('post-slug').value = post.slug || '';
-    document.getElementById('post-image').value = post.image || '';
-    document.getElementById('post-meta').value = post.metaDescription || '';
-    document.getElementById('post-content').value = post.content || '';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function limparFormularioPost() {
-    document.getElementById('post-title').value = '';
-    document.getElementById('post-slug').value = '';
-    document.getElementById('post-image').value = '';
-    document.getElementById('post-meta').value = '';
-    document.getElementById('post-content').value = '';
-}
-
-async function salvarPostNoBanco() {
-    const title = document.getElementById('post-title').value.trim();
-    const category = document.getElementById('post-category').value;
-    const slug = document.getElementById('post-slug').value.trim();
-    const image = document.getElementById('post-image').value.trim();
-    let metaDescription = document.getElementById('post-meta').value.trim();
-    const content = document.getElementById('post-content').value.trim();
-
-    if (!title || !slug || !content) {
-        return alert("Preencha pelo menos o Título, o Slug e o Corpo do artigo!");
-    }
-
-    // Gera meta descrição automática se estiver vazia
-    if (!metaDescription) {
-        const textoLimpo = content.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
-        metaDescription = textoLimpo.substring(0, 155) + (textoLimpo.length > 155 ? '...' : '');
-    }
-
-    try {
-        const res = await fetch(URL_WORKER + '/admin-save-post', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title, category, slug, image, metaDescription, content })
+    // Função para Alternar entre as Abas
+    function mudarAba(nomeAba, evento) {
+        document.querySelectorAll('.tab-content').forEach(function(aba) {
+            aba.classList.remove('active');
         });
-        const data = await res.json();
-
-        if (data.success) {
-            alert("✅ Artigo publicado/atualizado com sucesso!");
-            limparFormularioPost();
-            carregarPostsAdmin();
-        } else {
-            alert("❌ Erro ao salvar artigo: " + data.error);
-        }
-    } catch (err) {
-        alert("🚨 Erro de conexão ao salvar o artigo!");
-        console.error(err);
-    }
-}
-
-async function excluirPostAdmin(slug) {
-    if (!confirm("Tem certeza que deseja excluir este artigo permanentemente?")) return;
-
-    try {
-        const res = await fetch(URL_WORKER + '/admin-delete-post', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ slug })
+        document.querySelectorAll('.tab-btn').forEach(function(btn) {
+            btn.classList.remove('active');
         });
-        const data = await res.json();
 
-        if (data.success) {
-            alert("🗑️ Artigo excluído com sucesso!");
-            carregarPostsAdmin();
-        } else {
-            alert("❌ Erro ao excluir: " + data.error);
-        }
-    } catch (err) {
-        alert("🚨 Erro de conexão ao excluir!");
-        console.error(err);
+        const abaAlvo = document.getElementById('aba-' + nomeAba);
+        if (abaAlvo) abaAlvo.classList.add('active');
+        if (evento && evento.currentTarget) evento.currentTarget.classList.add('active');
     }
-}
 
-        // --- LÓGICA DO GERENCIADOR DE ADS ---
+    // 1. Função de Autenticação Segura (Bloqueante)
+    async function verificarAutenticacaoEScarregar() {
+        let acesso = sessionStorage.getItem('autenticado');
 
-        function atualizarContadorAnuncios() {
-            let total = 0;
-            Object.keys(objetoAdsGlobal).forEach(function(slot) {
-                if (Array.isArray(objetoAdsGlobal[slot])) {
-                    total += objetoAdsGlobal[slot].length;
-                }
-            });
-            const elAds = document.getElementById('total-ads');
-            if (elAds) elAds.innerText = total;
-        }
-
-        function carregarSlotSelecionado() {
-            const elSelect = document.getElementById('ad-slot-select');
-            const listaContainer = document.getElementById('lista-ads-slot');
-            if (!elSelect || !listaContainer) return;
-
-            const slot = elSelect.value;
-            const adsDoSlot = objetoAdsGlobal[slot] || [];
-
-            if (adsDoSlot.length === 0) {
-                listaContainer.innerHTML = '<p style="color: #777; font-size: 0.9em; text-align: center;">Nenhum anúncio cadastrado para este slot ainda.</p>';
+        if (acesso !== 'true') {
+            let tentativa = prompt("Acesso Administrativo! Digite a senha mestra:");
+            if (!tentativa) {
+                alert("Acesso negado!");
+                window.location.replace("index.html");
                 return;
             }
 
-            let htmlContent = "";
-            for (let i = 0; i < adsDoSlot.length; i++) {
-                let codigo = adsDoSlot[i];
-                htmlContent += '<div class="ad-item">';
-                htmlContent += '<div class="ad-code-preview">' + escapeHtml(codigo) + '</div>';
-                htmlContent += '<button class="btn-del" onclick="removerAnuncioDoSlot(' + i + ')"><i class="fa-solid fa-trash"></i> Excluir</button>';
-                htmlContent += '</div>';
-            }
-            listaContainer.innerHTML = htmlContent;
-        }
-
-        function adicionarAnuncioAoSlot() {
-            const slot = document.getElementById('ad-slot-select').value;
-            const campoCodigo = document.getElementById('novo-ad-codigo');
-            const codigo = campoCodigo.value.trim();
-
-            if (!codigo) return alert("Cole o código do anúncio primeiro!");
-
-            if (!objetoAdsGlobal[slot]) objetoAdsGlobal[slot] = [];
-            objetoAdsGlobal[slot].push(codigo);
-            campoCodigo.value = "";
-
-            carregarSlotSelecionado();
-            atualizarContadorAnuncios();
-            alert("Anúncio adicionado à lista local! Não se esqueça de clicar em 'Salvar Anúncios no Banco de Dados'.");
-        }
-
-        function removerAnuncioDoSlot(index) {
-            const slot = document.getElementById('ad-slot-select').value;
-            if (objetoAdsGlobal[slot] && objetoAdsGlobal[slot][index] !== undefined) {
-                objetoAdsGlobal[slot].splice(index, 1);
-                carregarSlotSelecionado();
-                atualizarContadorAnuncios();
-            }
-        }
-
-        async function salvarAnunciosNoBanco() {
             try {
-                const response = await fetch(URL_WORKER + '/admin-save-ads', {
+                const response = await fetch(URL_WORKER + '/admin-login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(objetoAdsGlobal)
+                    body: JSON.stringify({ senha: tentativa })
                 });
                 const res = await response.json();
-                if (res.success) {
-                    alert("✅ Excelente! Todos os anúncios foram atualizados e salvos no Banco de Dados.");
+
+                if (!res.success) {
+                    alert("Senha incorreta! Acesso negado.");
+                    window.location.replace("index.html");
+                    return;
                 } else {
-                    alert("❌ Erro ao salvar: " + res.error);
+                    sessionStorage.setItem('autenticado', 'true');
                 }
             } catch (err) {
-                alert("🚨 Erro de conexão ao salvar anúncios!");
-                console.error(err);
-            }
-        }
-
-        function escapeHtml(text) {
-    if (text == null) return "";
-
-    return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-}
-
-        // --- LÓGICA DO GERENCIADOR DE TICKER ---
-
-        async function carregarTickerAdmin() {
-            try {
-                const res = await fetch(URL_WORKER + '/admin-get-ticker');
-                const data = await res.json();
-                tickerItens = data.mensagensFixas || [];
-                renderizarEditorTicker();
-            } catch (err) {
-                console.error("Erro ao carregar ticker:", err);
-            }
-        }
-
-        function renderizarEditorTicker() {
-            const container = document.getElementById('ticker-editor-container');
-            if (!container) return;
-
-            if (tickerItens.length === 0) {
-                container.innerHTML = '<p style="color: #777; font-size: 0.9em; text-align: center;">Nenhum aviso no ticker cadastrado ainda.</p>';
+                alert("Erro ao validar credenciais com o servidor.");
+                window.location.replace("index.html");
                 return;
             }
-
-            let htmlContent = "";
-            for (let i = 0; i < tickerItens.length; i++) {
-                let item = tickerItens[i];
-                let safeTitle = escapeHtml(item.title || '');
-                let safeLink = escapeHtml(item.link || '');
-                
-                htmlContent += '<div style="display: flex; gap: 10px; align-items: center; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #e9ecef;">';
-                htmlContent += '<input type="text" value="' + safeTitle + '" id="t-title-' + i + '" placeholder="Texto (ex: 🔥 Novo site pagando!)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">';
-                htmlContent += '<input type="text" value="' + safeLink + '" id="t-link-' + i + '" placeholder="Link de destino (URL)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">';
-                htmlContent += '<button class="btn-del" onclick="removerTicker(' + i + ')"><i class="fa-solid fa-trash"></i></button>';
-                htmlContent += '</div>';
-            }
-            container.innerHTML = htmlContent;
         }
 
-        function adicionarCampoTicker() {
-            tickerItens.push({ title: "", link: "" });
-            renderizarEditorTicker();
-        }
+        document.body.style.display = 'flex';
+        carregarDadosPainel();
+        carregarAnalyticsAdmin();
+        carregarTickerAdmin();
+        carregarPostsAdmin();
+    }
 
-        function removerTicker(index) {
-            tickerItens.splice(index, 1);
-            renderizarEditorTicker();
-        }
-
-        async function salvarTickerNoBanco() {
-            for (let i = 0; i < tickerItens.length; i++) {
-                const titleInput = document.getElementById('t-title-' + i);
-                const linkInput = document.getElementById('t-link-' + i);
-                if (titleInput && linkInput) {
-                    tickerItens[i].title = titleInput.value.trim();
-                    tickerItens[i].link = linkInput.value.trim();
-                }
+    // 2. Busca de Dados na Worker (Leads, Faucets, Ads e Ticker)
+    async function carregarDadosPainel() {
+        try {
+            // Puxa e-mails
+            const resEmails = await fetch(URL_WORKER + '/admin-get-emails');
+            const emailsData = await resEmails.json();
+            if (Array.isArray(emailsData)) {
+                listaEmailsGlobal = emailsData;
+                const elEmails = document.getElementById('total-emails');
+                if (elEmails) elEmails.innerText = emailsData.length;
+                renderizarTabela(emailsData);
             }
 
-            try {
-                const res = await fetch(URL_WORKER + '/admin-save-ticker', {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ mensagensFixas: tickerItens })
-                });
-
-                const result = await res.json();
-                if (result.success) {
-                    alert("✅ Ticker atualizado com sucesso no Banco de Dados!");
-                    carregarTickerAdmin();
-                } else {
-                    alert("❌ Erro ao salvar ticker: " + result.error);
-                }
-            } catch (err) {
-                alert("🚨 Erro de conexão ao salvar ticker!");
-                console.error(err);
-            }
-        }
-
-        // --- LÓGICA DE LEADS ---
-
-        function renderizarTabela(dados) {
-            const tbody = document.getElementById('tabela-emails');
-            if (!tbody) return;
-
-            if (!dados || dados.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #777;">Nenhum e-mail encontrado.</td></tr>';
-                return;
+            // Puxa faucets
+            const resFaucets = await fetch(URL_WORKER + '/get-all-faucets');
+            const faucetsData = await resFaucets.json();
+            if (Array.isArray(faucetsData)) {
+                const elFaucets = document.getElementById('total-faucets');
+                if (elFaucets) elFaucets.innerText = faucetsData.length;
             }
 
-            let htmlContent = "";
-            for (let i = 0; i < dados.length; i++) {
-                let item = dados[i];
-                let emailStr = "";
-                if (typeof item === 'string') {
-                    emailStr = item;
-                } else if (item && typeof item === 'object') {
-                    emailStr = item.email || item.wallet || "";
-                }
-
-                htmlContent += '<tr>';
-                htmlContent += '<td>' + (i + 1) + '</td>';
-                htmlContent += '<td style="font-weight: 600; color: #1a73e8;">' + (emailStr || 'E-mail não identificado') + '</td>';
-                htmlContent += '<td><span style="background: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 4px; font-size: 0.8em;">Dashboard Local</span></td>';
-                htmlContent += '</tr>';
+            // Puxa Ads do Banco de Dados
+            const resAds = await fetch(URL_WORKER + '/admin-get-ads');
+            const adsData = await resAds.json();
+            if (adsData && typeof adsData === 'object') {
+                objetoAdsGlobal = Object.assign({}, objetoAdsGlobal, adsData);
+                atualizarContadorAnuncios();
+                carregarSlotSelecionado();
             }
-            tbody.innerHTML = htmlContent;
+
+        } catch (err) {
+            console.error("Erro ao carregar dados do painel:", err);
         }
+    }
 
-        function filtrarTabela() {
-            const campoFiltro = document.getElementById('filtro-email');
-            if (!campoFiltro) return;
+    // --- LÓGICA DO GERENCIADOR DE BLOG ---
+    let listaPostsGlobal = [];
 
-            const termo = (campoFiltro.value || "").toLowerCase().trim();
-            const filtrados = listaEmailsGlobal.filter(function(item) {
-                if (!item) return false;
-                let emailStr = typeof item === 'string' ? item : (item.email || item.wallet || "");
-                return emailStr.toLowerCase().includes(termo);
-            });
-
-            renderizarTabela(filtrados);
-        }
-
-        function copiarTodosEmails() {
-            if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para copiar!");
-            const apenasEmails = listaEmailsGlobal.map(function(item) {
-                return typeof item === 'string' ? item : (item.email || item.wallet || "");
-            }).filter(Boolean).join(', ');
-
-            navigator.clipboard.writeText(apenasEmails).then(function() {
-                alert("✅ Todos os e-mails foram copiados para a área de transferência!");
-            });
-        }
-
-        function baixarCSV() {
-            if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para exportar!");
-
-            let csvContent = "data:text/csv;charset=utf-8,Email,Origem\n";
-            listaEmailsGlobal.forEach(function(item) {
-                let email = typeof item === 'string' ? item : (item.email || item.wallet || "");
-                if (email) csvContent += '"' + email + '","Dashboard Local"\n';
-            });
-
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "brazuka_leads_faucets.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        // Função para Baixar o Backup Completo do Banco de Dados
-        async function baixarBackupKV() {
-            try {
-                const response = await fetch(URL_WORKER + '/admin-backup-data');
-                if (!response.ok) throw new Error("Erro ao gerar backup na Worker.");
-
-                const data = await response.json();
-                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
-                
-                const link = document.createElement("a");
-                link.setAttribute("href", dataStr);
-                
-                const dataAtual = new Date().toISOString().slice(0, 10);
-                link.setAttribute("download", "brazuka_backup_" + dataAtual + ".json");
-                
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                alert("✅ Backup completo baixado com sucesso!");
-            } catch (err) {
-                console.error(err);
-                alert("❌ Erro ao realizar o backup do Banco de Dados.");
+    async function carregarPostsAdmin() {
+        try {
+            const res = await fetch(URL_WORKER + '/get-posts');
+            const posts = await res.json();
+            if (Array.isArray(posts)) {
+                listaPostsGlobal = posts;
+                renderizarListaPostsAdmin();
             }
+        } catch (err) {
+            console.error("Erro ao carregar posts do blog:", err);
         }
+    }
 
-        // Função para carregar e exibir os dados de Analytics no Painel
-        let dadosAnalyticsGlobal = {};
+    function renderizarListaPostsAdmin() {
+        const container = document.getElementById('lista-posts-admin');
+        if (!container) return;
 
-async function carregarAnalyticsAdmin() {
-    try {
-        const response = await fetch(URL_WORKER + '/admin-get-analytics');
-        if (!response.ok) throw new Error("Erro ao buscar dados de analytics.");
-
-        const data = await response.json();
-        dadosAnalyticsGlobal = data; // Salva globalmente para o botão de copiar
-        
-        const keys = Object.keys(data);
-        const kpiContainer = document.getElementById('kpi-cards-container');
-        const graficoContainer = document.getElementById('grafico-barras-container');
-        const tbody = document.getElementById('analytics-tbody');
-        
-        if (!tbody) return;
-        tbody.innerHTML = '';
-
-        if (keys.length === 0) {
-            if (kpiContainer) kpiContainer.innerHTML = '';
-            if (graficoContainer) graficoContainer.innerHTML = '<p style="text-align: center; color: #666;">Nenhum clique registrado ainda.</p>';
-            tbody.innerHTML = '<tr><td colspan="3" style="padding: 15px; text-align: center; color: #666;">Nenhum clique registrado ainda.</td></tr>';
+        if (listaPostsGlobal.length === 0) {
+            container.innerHTML = '<p style="color: #777; text-align: center;">Nenhum artigo publicado ainda.</p>';
             return;
         }
 
-        let totalCliquesGeral = 0;
-        let totalBanners = 0;
-        let totalFaucets = 0;
-        let listaProcessada = [];
+        container.innerHTML = listaPostsGlobal.map((post, index) => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <span style="background: #7a33eb; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; margin-right: 8px;">${escapeHtml(post.category)}</span>
+                    <strong style="font-size: 1em; color: #222;">${escapeHtml(post.title)}</strong>
+                    <div style="font-size: 0.8em; color: #666; margin-top: 4px;">
+                        Slug: <code>${escapeHtml(post.slug)}</code> • Data: ${new Date(post.createdAt).toLocaleDateString('pt-BR')}
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button onclick="editarPostAdmin(${index})" style="background: #1a73e8; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em;">
+                        <i class="fa-solid fa-pen"></i> Editar
+                    </button>
+                    <button class="btn-del" onclick="excluirPostAdmin('${escapeHtml(post.slug)}')">
+                        <i class="fa-solid fa-trash"></i> Excluir
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
 
+    function gerarSlugAutomatico() {
+        const titulo = document.getElementById('post-title').value;
+        const slug = titulo
+            .toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s-]/g, '')
+            .trim()
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
+        document.getElementById('post-slug').value = slug;
+    }
+
+    function inserirTagPost(tagAbre, tagFecha) {
+        const textarea = document.getElementById('post-content');
+        const inicio = textarea.selectionStart;
+        const fim = textarea.selectionEnd;
+        const textoSelecionado = textarea.value.substring(inicio, fim);
+        const substituicao = tagAbre + (textoSelecionado || 'Texto aqui') + tagFecha;
+        textarea.value = textarea.value.substring(0, inicio) + substituicao + textarea.value.substring(fim);
+        textarea.focus();
+    }
+
+    function inserirLinkPost() {
+        const url = prompt("Cole a URL de destino (ex: https://... ou faucet.html?id=1):");
+        if (!url) return;
+        inserirTagPost(`<a href="${url}" target="_blank" rel="noopener">`, '</a>');
+    }
+
+    function inserirAdNoPost() {
+        const textarea = document.getElementById('post-content');
+        const adBlock = '\n<div class="ad-slot-mid" id="ad-zone-home-top" style="margin: 25px 0;" data-ad-zone="homeTop"></div>\n';
+        textarea.value += adBlock;
+        textarea.focus();
+    }
+
+    function editarPostAdmin(index) {
+        const post = listaPostsGlobal[index];
+        if (!post) return;
+        document.getElementById('post-title').value = post.title || '';
+        document.getElementById('post-category').value = post.category || 'Review';
+        document.getElementById('post-slug').value = post.slug || '';
+        document.getElementById('post-image').value = post.image || '';
+        document.getElementById('post-meta').value = post.metaDescription || '';
+        document.getElementById('post-content').value = post.content || '';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function limparFormularioPost() {
+        document.getElementById('post-title').value = '';
+        document.getElementById('post-slug').value = '';
+        document.getElementById('post-image').value = '';
+        document.getElementById('post-meta').value = '';
+        document.getElementById('post-content').value = '';
+    }
+
+    async function salvarPostNoBanco() {
+        const title = document.getElementById('post-title').value.trim();
+        const category = document.getElementById('post-category').value;
+        const slug = document.getElementById('post-slug').value.trim();
+        const image = document.getElementById('post-image').value.trim();
+        let metaDescription = document.getElementById('post-meta').value.trim();
+        const content = document.getElementById('post-content').value.trim();
+
+        if (!title || !slug || !content) {
+            return alert("Preencha pelo menos o Título, o Slug e o Corpo do artigo!");
+        }
+
+        if (!metaDescription) {
+            const textoLimpo = content.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
+            metaDescription = textoLimpo.substring(0, 155) + (textoLimpo.length > 155 ? '...' : '');
+        }
+
+        try {
+            const res = await fetch(URL_WORKER + '/admin-save-post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, category, slug, image, metaDescription, content })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                alert("✅ Artigo publicado/atualizado com sucesso!");
+                limparFormularioPost();
+                carregarPostsAdmin();
+            } else {
+                alert("❌ Erro ao salvar artigo: " + data.error);
+            }
+        } catch (err) {
+            alert("🚨 Erro de conexão ao salvar o artigo!");
+            console.error(err);
+        }
+    }
+
+    async function excluirPostAdmin(slug) {
+        if (!confirm("Tem certeza que deseja excluir este artigo permanentemente?")) return;
+
+        try {
+            const res = await fetch(URL_WORKER + '/admin-delete-post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ slug })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                alert("🗑️ Artigo excluído com sucesso!");
+                carregarPostsAdmin();
+            } else {
+                alert("❌ Erro ao excluir: " + data.error);
+            }
+        } catch (err) {
+            alert("🚨 Erro de conexão ao excluir!");
+            console.error(err);
+        }
+    }
+
+    // --- LÓGICA DO GERENCIADOR DE ADS ---
+    function atualizarContadorAnuncios() {
+        let total = 0;
+        Object.keys(objetoAdsGlobal).forEach(function(slot) {
+            if (Array.isArray(objetoAdsGlobal[slot])) {
+                total += objetoAdsGlobal[slot].length;
+            }
+        });
+        const elAds = document.getElementById('total-ads');
+        if (elAds) elAds.innerText = total;
+    }
+
+    function carregarSlotSelecionado() {
+        const elSelect = document.getElementById('ad-slot-select');
+        const listaContainer = document.getElementById('lista-ads-slot');
+        if (!elSelect || !listaContainer) return;
+
+        const slot = elSelect.value;
+        const adsDoSlot = objetoAdsGlobal[slot] || [];
+
+        if (adsDoSlot.length === 0) {
+            listaContainer.innerHTML = '<p style="color: #777; font-size: 0.9em; text-align: center;">Nenhum anúncio cadastrado para este slot ainda.</p>';
+            return;
+        }
+
+        let htmlContent = "";
+        for (let i = 0; i < adsDoSlot.length; i++) {
+            let codigo = adsDoSlot[i];
+            htmlContent += '<div class="ad-item">';
+            htmlContent += '<div class="ad-code-preview">' + escapeHtml(codigo) + '</div>';
+            htmlContent += '<button class="btn-del" onclick="removerAnuncioDoSlot(' + i + ')"><i class="fa-solid fa-trash"></i> Excluir</button>';
+            htmlContent += '</div>';
+        }
+        listaContainer.innerHTML = htmlContent;
+    }
+
+    function adicionarAnuncioAoSlot() {
+        const slot = document.getElementById('ad-slot-select').value;
+        const campoCodigo = document.getElementById('novo-ad-codigo');
+        const codigo = campoCodigo.value.trim();
+
+        if (!codigo) return alert("Cole o código do anúncio primeiro!");
+
+        if (!objetoAdsGlobal[slot]) objetoAdsGlobal[slot] = [];
+        objetoAdsGlobal[slot].push(codigo);
+        campoCodigo.value = "";
+
+        carregarSlotSelecionado();
+        atualizarContadorAnuncios();
+        alert("Anúncio adicionado à lista local! Não se esqueça de clicar em 'Salvar Anúncios no Banco de Dados'.");
+    }
+
+    function removerAnuncioDoSlot(index) {
+        const slot = document.getElementById('ad-slot-select').value;
+        if (objetoAdsGlobal[slot] && objetoAdsGlobal[slot][index] !== undefined) {
+            objetoAdsGlobal[slot].splice(index, 1);
+            carregarSlotSelecionado();
+            atualizarContadorAnuncios();
+        }
+    }
+
+    async function salvarAnunciosNoBanco() {
+        try {
+            const response = await fetch(URL_WORKER + '/admin-save-ads', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(objetoAdsGlobal)
+            });
+            const res = await response.json();
+            if (res.success) {
+                alert("✅ Excelente! Todos os anúncios foram atualizados e salvos no Banco de Dados.");
+            } else {
+                alert("❌ Erro ao salvar: " + res.error);
+            }
+        } catch (err) {
+            alert("🚨 Erro de conexão ao salvar anúncios!");
+            console.error(err);
+        }
+    }
+
+    function escapeHtml(text) {
+        if (text == null) return "";
+        return String(text)
+            .replace(/&/g, "&")
+            .replace(/</g, "<")
+            .replace(/>/g, ">")
+            .replace(/"/g, """)
+            .replace(/'/g, "'");
+    }
+
+    // --- LÓGICA DO GERENCIADOR DE TICKER ---
+    async function carregarTickerAdmin() {
+        try {
+            const res = await fetch(URL_WORKER + '/admin-get-ticker');
+            const data = await res.json();
+            tickerItens = data.mensagensFixas || [];
+            renderizarEditorTicker();
+        } catch (err) {
+            console.error("Erro ao carregar ticker:", err);
+        }
+    }
+
+    function renderizarEditorTicker() {
+        const container = document.getElementById('ticker-editor-container');
+        if (!container) return;
+
+        if (tickerItens.length === 0) {
+            container.innerHTML = '<p style="color: #777; font-size: 0.9em; text-align: center;">Nenhum aviso no ticker cadastrado ainda.</p>';
+            return;
+        }
+
+        let htmlContent = "";
+        for (let i = 0; i < tickerItens.length; i++) {
+            let item = tickerItens[i];
+            let safeTitle = escapeHtml(item.title || '');
+            let safeLink = escapeHtml(item.link || '');
+            
+            htmlContent += '<div style="display: flex; gap: 10px; align-items: center; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #e9ecef;">';
+            htmlContent += '<input type="text" value="' + safeTitle + '" id="t-title-' + i + '" placeholder="Texto (ex: 🔥 Novo site pagando!)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">';
+            htmlContent += '<input type="text" value="' + safeLink + '" id="t-link-' + i + '" placeholder="Link de destino (URL)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">';
+            htmlContent += '<button class="btn-del" onclick="removerTicker(' + i + ')"><i class="fa-solid fa-trash"></i></button>';
+            htmlContent += '</div>';
+        }
+        container.innerHTML = htmlContent;
+    }
+
+    function adicionarCampoTicker() {
+        tickerItens.push({ title: "", link: "" });
+        renderizarEditorTicker();
+    }
+
+    function removerTicker(index) {
+        tickerItens.splice(index, 1);
+        renderizarEditorTicker();
+    }
+
+    async function salvarTickerNoBanco() {
+        for (let i = 0; i < tickerItens.length; i++) {
+            const titleInput = document.getElementById('t-title-' + i);
+            const linkInput = document.getElementById('t-link-' + i);
+            if (titleInput && linkInput) {
+                tickerItens[i].title = titleInput.value.trim();
+                tickerItens[i].link = linkInput.value.trim();
+            }
+        }
+
+        try {
+            const res = await fetch(URL_WORKER + '/admin-save-ticker', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ mensagensFixas: tickerItens })
+            });
+
+            const result = await res.json();
+            if (result.success) {
+                alert("✅ Ticker atualizado com sucesso no Banco de Dados!");
+                carregarTickerAdmin();
+            } else {
+                alert("❌ Erro ao salvar ticker: " + result.error);
+            }
+        } catch (err) {
+            alert("🚨 Erro de conexão ao salvar ticker!");
+            console.error(err);
+        }
+    }
+
+    // --- LÓGICA DE LEADS ---
+    function renderizarTabela(dados) {
+        const tbody = document.getElementById('tabela-emails');
+        if (!tbody) return;
+
+        if (!dados || dados.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #777;">Nenhum e-mail encontrado.</td></tr>';
+            return;
+        }
+
+        let htmlContent = "";
+        for (let i = 0; i < dados.length; i++) {
+            let item = dados[i];
+            let emailStr = "";
+            if (typeof item === 'string') {
+                emailStr = item;
+            } else if (item && typeof item === 'object') {
+                emailStr = item.email || item.wallet || "";
+            }
+
+            htmlContent += '<tr>';
+            htmlContent += '<td>' + (i + 1) + '</td>';
+            htmlContent += '<td style="font-weight: 600; color: #1a73e8;">' + (emailStr || 'E-mail não identificado') + '</td>';
+            htmlContent += '<td><span style="background: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 4px; font-size: 0.8em;">Dashboard Local</span></td>';
+            htmlContent += '</tr>';
+        }
+        tbody.innerHTML = htmlContent;
+    }
+
+    function filtrarTabela() {
+        const campoFiltro = document.getElementById('filtro-email');
+        if (!campoFiltro) return;
+
+        const termo = (campoFiltro.value || "").toLowerCase().trim();
+        const filtrados = listaEmailsGlobal.filter(function(item) {
+            if (!item) return false;
+            let emailStr = typeof item === 'string' ? item : (item.email || item.wallet || "");
+            return emailStr.toLowerCase().includes(termo);
+        });
+
+        renderizarTabela(filtrados);
+    }
+
+    function copiarTodosEmails() {
+        if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para copiar!");
+        const apenasEmails = listaEmailsGlobal.map(function(item) {
+            return typeof item === 'string' ? item : (item.email || item.wallet || "");
+        }).filter(Boolean).join(', ');
+
+        navigator.clipboard.writeText(apenasEmails).then(function() {
+            alert("✅ Todos os e-mails foram copiados para a área de transferência!");
+        });
+    }
+
+    function baixarCSV() {
+        if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para exportar!");
+
+        let csvContent = "data:text/csv;charset=utf-8,Email,Origem\n";
+        listaEmailsGlobal.forEach(function(item) {
+            let email = typeof item === 'string' ? item : (item.email || item.wallet || "");
+            if (email) csvContent += '"' + email + '","Dashboard Local"\n';
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "brazuka_leads_faucets.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    async function baixarBackupKV() {
+        try {
+            const response = await fetch(URL_WORKER + '/admin-backup-data');
+            if (!response.ok) throw new Error("Erro ao gerar backup na Worker.");
+
+            const data = await response.json();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+            
+            const link = document.createElement("a");
+            link.setAttribute("href", dataStr);
+            
+            const dataAtual = new Date().toISOString().slice(0, 10);
+            link.setAttribute("download", "brazuka_backup_" + dataAtual + ".json");
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            alert("✅ Backup completo baixado com sucesso!");
+        } catch (err) {
+            console.error(err);
+            alert("❌ Erro ao realizar o backup do Banco de Dados.");
+        }
+    }
+
+    // --- LÓGICA DE ANALYTICS & BI DASHBOARD ---
+    let dadosAnalyticsGlobal = {};
+
+    async function carregarAnalyticsAdmin() {
+        try {
+            const response = await fetch(URL_WORKER + '/admin-get-analytics');
+            if (!response.ok) throw new Error("Erro ao buscar dados de analytics.");
+
+            const data = await response.json();
+            dadosAnalyticsGlobal = data;
+            
+            const keys = Object.keys(data);
+            const kpiContainer = document.getElementById('kpi-cards-container');
+            const graficoContainer = document.getElementById('grafico-barras-container');
+            const tbody = document.getElementById('analytics-tbody');
+            
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            if (keys.length === 0) {
+                if (kpiContainer) kpiContainer.innerHTML = '';
+                if (graficoContainer) graficoContainer.innerHTML = '<p style="text-align: center; color: #666;">Nenhum clique registrado ainda.</p>';
+                tbody.innerHTML = '<tr><td colspan="3" style="padding: 15px; text-align: center; color: #666;">Nenhum clique registrado ainda.</td></tr>';
+                return;
+            }
+
+            let totalCliquesGeral = 0;
+            let totalBanners = 0;
+            let totalFaucets = 0;
+            let listaProcessada = [];
+
+            keys.forEach(function(key) {
+                const partes = key.replace('analytics:', '').split(':');
+                const tipo = (partes[0] || 'geral').toUpperCase();
+                const idItem = partes.slice(1).join(':') || 'desconhecido';
+                const cliques = Number(data[key]) || 0;
+
+                totalCliquesGeral += cliques;
+                if (tipo === 'BANNER') totalBanners += cliques;
+                if (tipo === 'FAUCET') totalFaucets += cliques;
+
+                listaProcessada.push({ tipo, idItem, cliques });
+            });
+
+            listaProcessada.sort((a, b) => b.cliques - a.cliques);
+
+            if (kpiContainer) {
+                kpiContainer.innerHTML = `
+                    <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #7a33eb; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                        <div style="font-size: 0.8em; color: #666; font-weight: bold; text-transform: uppercase;">Total de Cliques</div>
+                        <div style="font-size: 1.8em; font-weight: bold; color: #7a33eb; margin-top: 5px;">${totalCliquesGeral.toLocaleString()}</div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #1a73e8; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                        <div style="font-size: 0.8em; color: #666; font-weight: bold; text-transform: uppercase;">Cliques em Banners</div>
+                        <div style="font-size: 1.8em; font-weight: bold; color: #1a73e8; margin-top: 5px;">${totalBanners.toLocaleString()}</div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #34a853; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                        <div style="font-size: 0.8em; color: #666; font-weight: bold; text-transform: uppercase;">Cliques em Faucets</div>
+                        <div style="font-size: 1.8em; font-weight: bold; color: #34a853; margin-top: 5px;">${totalFaucets.toLocaleString()}</div>
+                    </div>
+                `;
+            }
+
+            const maiorClique = listaProcessada[0] ? listaProcessada[0].cliques : 1;
+            if (graficoContainer) {
+                graficoContainer.innerHTML = listaProcessada.slice(0, 6).map(item => {
+                    const percentual = Math.max(Math.round((item.cliques / maiorClique) * 100), 8);
+                    return `
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 4px; font-weight: 600; color: #444;">
+                                <span><span style="background: #e1f5fe; color: #0288d1; padding: 2px 6px; border-radius: 4px; font-size: 0.75em; margin-right: 6px;">${item.tipo}</span> ${escapeHtml(item.idItem)}</span>
+                                <span style="color: #7a33eb;">${item.cliques.toLocaleString()} cliques</span>
+                            </div>
+                            <div style="width: 100%; background: #e9ecef; height: 10px; border-radius: 5px; overflow: hidden;">
+                                <div style="width: ${percentual}%; background: linear-gradient(90deg, #7a33eb, #9b51e0); height: 100%; border-radius: 50px; transition: width 0.6s ease;"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            listaProcessada.forEach(function(item) {
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid #eee';
+                tr.innerHTML = '<td style="padding: 12px; text-transform: uppercase; font-weight: bold; font-size: 0.8em; color: #555;">' + item.tipo + '</td>' +
+                               '<td style="padding: 12px; color: #333;">' + escapeHtml(item.idItem) + '</td>' +
+                               '<td style="padding: 12px; text-align: right; font-weight: bold; color: #1a73e8;">' + item.cliques.toLocaleString() + '</td>';
+                tbody.appendChild(tr);
+            });
+
+        } catch (err) {
+            console.error(err);
+            const graficoContainer = document.getElementById('grafico-barras-container');
+            if (graficoContainer) graficoContainer.innerHTML = '<p style="text-align: center; color: red;">Erro ao carregar o relatório de analytics.</p>';
+        }
+    }
+
+    function toggleTabelaDetalhada() {
+        const wrapper = document.getElementById('wrapper-tabela-detalhada');
+        const btn = document.getElementById('btn-toggle-tabela');
+        if (wrapper.style.display === 'none') {
+            wrapper.style.display = 'block';
+            btn.innerText = 'Ocultar Tabela Completa ▲';
+        } else {
+            wrapper.style.display = 'none';
+            btn.innerText = 'Mostrar Tabela Completa ▼';
+        }
+    }
+
+    function copiarRelatorioPatrocinador() {
+        const keys = Object.keys(dadosAnalyticsGlobal);
+        if (keys.length === 0) return alert("Não há dados de analytics para copiar!");
+
+        let textoRelatorio = "📊 *Relatório de Desempenho e Cliques - Brazuka Faucets*\n";
+        textoRelatorio += "----------------------------------------\n";
+        
         keys.forEach(function(key) {
             const partes = key.replace('analytics:', '').split(':');
             const tipo = (partes[0] || 'geral').toUpperCase();
             const idItem = partes.slice(1).join(':') || 'desconhecido';
-            const cliques = Number(data[key]) || 0;
-
-            totalCliquesGeral += cliques;
-            if (tipo === 'BANNER') totalBanners += cliques;
-            if (tipo === 'FAUCET') totalFaucets += cliques;
-
-            listaProcessada.push({ tipo, idItem, cliques });
+            const cliques = dadosAnalyticsGlobal[key];
+            
+            textoRelatorio += `• [${tipo}] ${idItem}: *${cliques} cliques*\n`;
         });
-
-        // Ordena do mais clicado para o menos clicado
-        listaProcessada.sort((a, b) => b.cliques - a.cliques);
-
-        // 1. Renderiza os Cards KPI (Estilo Power BI)
-        if (kpiContainer) {
-            kpiContainer.innerHTML = `
-                <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #7a33eb; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                    <div style="font-size: 0.8em; color: #666; font-weight: bold; text-transform: uppercase;">Total de Cliques</div>
-                    <div style="font-size: 1.8em; font-weight: bold; color: #7a33eb; margin-top: 5px;">${totalCliquesGeral.toLocaleString()}</div>
-                </div>
-                <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #1a73e8; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                    <div style="font-size: 0.8em; color: #666; font-weight: bold; text-transform: uppercase;">Cliques em Banners</div>
-                    <div style="font-size: 1.8em; font-weight: bold; color: #1a73e8; margin-top: 5px;">${totalBanners.toLocaleString()}</div>
-                </div>
-                <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #34a853; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                    <div style="font-size: 0.8em; color: #666; font-weight: bold; text-transform: uppercase;">Cliques em Faucets</div>
-                    <div style="font-size: 1.8em; font-weight: bold; color: #34a853; margin-top: 5px;">${totalFaucets.toLocaleString()}</div>
-                </div>
-            `;
-        }
-
-        // 2. Renderiza o Gráfico de Barras Proporcionais (Top Itens)
-        const maiorClique = listaProcessada[0] ? listaProcessada[0].cliques : 1;
-        if (graficoContainer) {
-            graficoContainer.innerHTML = listaProcessada.slice(0, 6).map(item => {
-                const percentual = Math.max(Math.round((item.cliques / maiorClique) * 100), 8); // Mínimo de 8% para a barra aparecer bem
-                return `
-                    <div>
-                        <div style="display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 4px; font-weight: 600; color: #444;">
-                            <span><span style="background: #e1f5fe; color: #0288d1; padding: 2px 6px; border-radius: 4px; font-size: 0.75em; margin-right: 6px;">${item.tipo}</span> ${escapeHtml(item.idItem)}</span>
-                            <span style="color: #7a33eb;">${item.cliques.toLocaleString()} cliques</span>
-                        </div>
-                        <div style="width: 100%; background: #e9ecef; height: 10px; border-radius: 5px; overflow: hidden;">
-                            <div style="width: ${percentual}%; background: linear-gradient(90deg, #7a33eb, #9b51e0); height: 100%; border-radius: 50px; transition: width 0.6s ease;"></div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // 3. Preenche a tabela detalhada (caso aberta)
-        listaProcessada.forEach(function(item) {
-            const tr = document.createElement('tr');
-            tr.style.borderBottom = '1px solid #eee';
-            tr.innerHTML = '<td style="padding: 12px; text-transform: uppercase; font-weight: bold; font-size: 0.8em; color: #555;">' + item.tipo + '</td>' +
-                           '<td style="padding: 12px; color: #333;">' + escapeHtml(item.idItem) + '</td>' +
-                           '<td style="padding: 12px; text-align: right; font-weight: bold; color: #1a73e8;">' + item.cliques.toLocaleString() + '</td>';
-            tbody.appendChild(tr);
-        });
-
-    } catch (err) {
-        console.error(err);
-        const graficoContainer = document.getElementById('grafico-barras-container');
-        if (graficoContainer) graficoContainer.innerHTML = '<p style="text-align: center; color: red;">Erro ao carregar o relatório de analytics.</p>';
-    }
-}
-
-// Função para alternar a exibição da tabela completa
-function toggleTabelaDetalhada() {
-    const wrapper = document.getElementById('wrapper-tabela-detalhada');
-    const btn = document.getElementById('btn-toggle-tabela');
-    if (wrapper.style.display === 'none') {
-        wrapper.style.display = 'block';
-        btn.innerText = 'Ocultar Tabela Completa ▲';
-    } else {
-        wrapper.style.display = 'none';
-        btn.innerText = 'Mostrar Tabela Completa ▼';
-    }
-}
-
-// Função para Copiar Relatório formatado para Patrocinadores
-function copiarRelatorioPatrocinador() {
-    const keys = Object.keys(dadosAnalyticsGlobal);
-    if (keys.length === 0) return alert("Não há dados de analytics para copiar!");
-
-    let textoRelatorio = "📊 *Relatório de Desempenho e Cliques - Brazuka Faucets*\n";
-    textoRelatorio += "----------------------------------------\n";
-    
-    keys.forEach(function(key) {
-        const partes = key.replace('analytics:', '').split(':');
-        const tipo = (partes[0] || 'geral').toUpperCase();
-        const idItem = partes.slice(1).join(':') || 'desconhecido';
-        const cliques = dadosAnalyticsGlobal[key];
         
-        textoRelatorio += `• [${tipo}] ${idItem}: *${cliques} cliques*\n`;
-    });
-    
-    textoRelatorio += "----------------------------------------\n";
-    textoRelatorio += "🚀 Tráfego auditado em tempo real pelo Brazuka HUB.";
+        textoRelatorio += "----------------------------------------\n";
+        textoRelatorio += "🚀 Tráfego auditado em tempo real pelo Brazuka HUB.";
 
-    navigator.clipboard.writeText(textoRelatorio).then(function() {
-        alert("✅ Relatório formatado copiado para a área de transferência! Pronto para enviar no WhatsApp do patrocinador.");
-    });
-}
-        }
+        navigator.clipboard.writeText(textoRelatorio).then(function() {
+            alert("✅ Relatório formatado copiado para a área de transferência! Pronto para enviar no WhatsApp do patrocinador.");
+        });
+    }
 
-        // Executa a autenticação e carregamento inicial
-        verificarAutenticacaoEScarregar();
-    </script>
+    // Executa a autenticação e carregamento inicial
+    verificarAutenticacaoEScarregar();
+</script>
 </body>
 </html>
