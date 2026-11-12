@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/assets/logo-brazuka.png" sizes="32x32">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Dinâmico via JS -->
+    <title id="meta-title">Carregando Artigo | Brazuka Faucets</title>
+    <meta id="meta-desc" name="description" content="Carregando análise e conteúdos do Brazuka Faucets." />
+    <meta id="og-title" property="og:title" content="Brazuka Faucets" />
+    <meta id="og-desc" property="og:description" content="Análises e reviews de criptomoedas." />
+    <meta id="og-image" property="og:image" content="https://www.brazukafaucets.com.br/assets/brazuka-faucets-share-image.png" />
+    <link id="canonical-url" rel="canonical" href="https://www.brazukafaucets.com.br" />
+</head>
+<body>
+
+    <!-- BANNER TOPO GERAL -->
+    <div style="max-width: 900px; margin: 20px auto; padding: 0 15px;">
+        <div class="ad-slot-top" id="ad-zone-home-top" data-ad-zone="homeTop"></div>
+    </div>
+
+    <main class="container" style="max-width: 900px; padding: 20px 15px 60px 15px;">
+        <div style="margin-bottom: 20px;">
+            <a href="blog.html" style="color: #7a33eb; text-decoration: none; font-weight: 600; font-size: 0.9rem;">
+                ← Voltar para o Blog
+            </a>
+        </div>
+
+        <article style="background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #eaeaea;">
+            <div id="artigo-cabecalho" style="margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                <span id="artigo-categoria" style="background: #f3ebff; color: #7a33eb; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;">Categoria</span>
+                <h1 id="artigo-titulo" style="font-size: 2rem; margin: 15px 0 10px 0; color: #111; line-height: 1.3;">Carregando título...</h1>
+                <div id="artigo-data" style="font-size: 0.85rem; color: #777;">Publicado em --/--/----</div>
+            </div>
+
+            <!-- Imagem de Capa -->
+            <div id="artigo-imagem-container" style="margin-bottom: 25px; border-radius: 8px; overflow: hidden; display: none;">
+                <img id="artigo-imagem" src="" alt="" style="width: 100%; max-height: 450px; object-fit: cover;">
+            </div>
+
+            <!-- Corpo do Texto -->
+            <div id="artigo-corpo" style="font-size: 1.05rem; line-height: 1.7; color: #333;">
+                <p style="color: #777; text-align: center; padding: 40px;">Carregando conteúdo do artigo...</p>
+            </div>
+        </article>
+    </main>
+
+    <!-- Script Globais e Ads -->
+    <script src="js/script-global.js"></script>
+    <script src="js/ads-manager.js"></script>
+    <script>
+        const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
+
+        async function carregarArtigoIndividual() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const slug = urlParams.get('slug');
+
+            if (!slug) {
+                document.getElementById('artigo-corpo').innerHTML = '<h2 style="color:red; text-align:center;">Artigo não especificado.</h2>';
+                return;
+            }
+
+            try {
+                const res = await fetch(URL_WORKER + '/get-posts');
+                const posts = await res.json();
+
+                if (!Array.isArray(posts)) throw new Error("Formato inválido");
+
+                const post = posts.find(p => p.slug === slug);
+
+                if (!post) {
+                    document.getElementById('artigo-corpo').innerHTML = '<h2 style="text-align:center; color:#555;">Artigo não encontrado ou removido.</h2>';
+                    document.getElementById('artigo-titulo').innerText = "Artigo não encontrado";
+                    return;
+                }
+
+                // Atualiza SEO e Meta Tags na Head
+                document.title = post.title + " | Brazuka Faucets";
+                document.getElementById('meta-title').innerText = post.title + " | Brazuka Faucets";
+                if (post.metaDescription) {
+                    document.getElementById('meta-desc').setAttribute('content', post.metaDescription);
+                    document.getElementById('og-desc').setAttribute('content', post.metaDescription);
+                }
+                document.getElementById('og-title').setAttribute('content', post.title);
+                if (post.image) document.getElementById('og-image').setAttribute('content', post.image);
+                document.getElementById('canonical-url').setAttribute('href', window.location.href);
+
+                // Preenche os dados visuais
+                document.getElementById('artigo-categoria').innerText = post.category || 'Geral';
+                document.getElementById('artigo-titulo').innerText = post.title;
+                document.getElementById('artigo-data').innerText = "Publicado em " + new Date(post.createdAt).toLocaleDateString('pt-BR');
+
+                if (post.image) {
+                    const imgEl = document.getElementById('artigo-imagem');
+                    imgEl.src = post.image;
+                    imgEl.alt = post.title;
+                    document.getElementById('artigo-imagem-container').style.display = 'block';
+                }
+
+                document.getElementById('artigo-corpo').innerHTML = post.content;
+
+                // Reexecuta o gerenciador de anúncios para injetar banners que estejam dentro do texto do artigo
+                if (typeof BRAZUKA_ADS !== 'undefined' && typeof BRAZUKA_ADS.render === 'function') {
+                    BRAZUKA_ADS.render();
+                }
+
+            } catch (err) {
+                console.error("Erro ao carregar artigo:", err);
+                document.getElementById('artigo-corpo').innerHTML = '<p style="text-align: center; color: red;">Erro ao carregar o artigo. Tente atualizar a página.</p>';
+            }
+        }
+
+        carregarArtigoIndividual();
+    </script>
+</body>
+</html>
