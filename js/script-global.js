@@ -1,4 +1,6 @@
-// script-global.js - O Zelador do Portal (Versão Ultra Clean)
+/**
+ * script-global.js - O Zelador do Portal (Versão Ultra Clean & Blindada)
+ */
 
 async function loadEverything() {
     // 1. Configura a identidade visual
@@ -14,6 +16,12 @@ async function loadEverything() {
     // 3. Carrega o Footer e inicia os Widgets
     await loadTemplate('footer_template.html', 'footer-placeholder', 'beforeend');
     initFooterWidgets();
+
+    // Atualiza o ano do rodapé após o template ser injetado com sucesso
+    const yearEl = document.getElementById('current-year');
+    if (yearEl) {
+        yearEl.textContent = new Date().getFullYear();
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -220,9 +228,6 @@ function registrarClique(tipo, identificador) {
         body: JSON.stringify({ type: tipo, id: identificador })
     }).catch(err => console.log("Erro ao registrar analytics:", err));
 }
-
-
-document.getElementById('current-year').textContent = new Date().getFullYear();
 
 function copiarChaveDoacao(tipoMoeda, tooltipId, btnElement) {
     const chaves = {
