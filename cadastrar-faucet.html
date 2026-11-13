@@ -34,23 +34,61 @@
         }
         .hero-ads h1 { font-size: 2.5em; margin-bottom: 10px; }
         .hero-ads p { opacity: 0.9; font-size: 1.1em; }
+
+        /* ESTRUTURA DE 3 COLUNAS: BANNER ESQ + FORMULÁRIO + BANNER DIR */
+        .cadastro-layout-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Essencial para o sticky funcionar */
+            gap: 25px;
+            max-width: 1050px;
+            margin: -50px auto 40px;
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+        }
         
         .faucet-form-container {
-            max-width: 600px; margin: 50px auto; background: #ffffff;
-            padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            position: relative; z-index: 2;
+            flex: 1;
+            max-width: 600px;
+            background: var(--card-bg, #ffffff);
+            border: 1px solid var(--card-border, transparent);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease;
         }
+
+        /* BANNERS LATERAIS COLADOS AO FORMULÁRIO E COM ROLAGEM STICKY */
+        .banner-lateral-sticky {
+            position: sticky;
+            top: 20px; /* Distância do topo da tela ao rolar */
+            width: 160px;
+            min-height: 600px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            margin-top: 65px; /* Alinha exatamente abaixo da curva da hero-ads */
+        }
+
         .faucet-form h2 { color: #1a73e8; margin-bottom: 25px; text-align: center; font-size: 1.6em; }
-        .faucet-form label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; font-size: 0.95em; }
+        .faucet-form label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--text-color, #333); font-size: 0.95em; }
         .faucet-form input, .faucet-form select, .faucet-form textarea {
-            width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd;
+            width: 100%; padding: 12px; margin-bottom: 20px; 
+            border: 1px solid var(--card-border, #ddd);
+            background-color: var(--bg-color, #fff);
+            color: var(--text-color, #333);
             border-radius: 8px; font-size: 1em; box-sizing: border-box;
         }
         .recursos-group {
             display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-            margin-bottom: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px;
+            margin-bottom: 20px; 
+            background: var(--bg-color, #f9f9f9); 
+            border: 1px solid var(--card-border, #eee);
+            padding: 15px; border-radius: 8px;
         }
-        .recursos-item { display: flex; align-items: center; font-size: 0.9em; font-weight: normal !important; margin-bottom: 0 !important; }
+        .recursos-item { display: flex; align-items: center; font-size: 0.9em; font-weight: normal !important; margin-bottom: 0 !important; color: var(--text-color, #333); }
         .recursos-item input { width: auto; margin-bottom: 0; margin-right: 8px; }
         .faucet-form button {
             width: 100%; background-color: #1a73e8; color: white; padding: 15px;
@@ -60,28 +98,19 @@
         .faucet-form button:hover:not(:disabled) { background-color: #0d47a1; }
         .faucet-form button:disabled { opacity: 0.5; cursor: not-allowed; }
         
-        .banner-lateral {
-            position: fixed; top: 50%; transform: translateY(-50%);
-            width: 160px; height: 600px; z-index: 1;
-            display: flex; align-items: center; justify-content: center;
+        .campo-dinamico { 
+            background: rgba(26, 115, 232, 0.08); 
+            padding: 10px; border-radius: 8px; border: 1px dashed #1a73e8; margin-bottom: 20px; 
         }
-        .banner-left { left: 20px; } 
-        .banner-right { right: 20px; }
-        .campo-dinamico { background: #eef5ff; padding: 10px; border-radius: 8px; border: 1px dashed #1a73e8; margin-bottom: 20px; }
         
-        @media (max-width: 1200px) { .banner-lateral { display: none; } }
+        /* Esconde os banners laterais apenas quando não houver largura suficiente */
+        @media (max-width: 1024px) { 
+            .banner-lateral-sticky { display: none; }
+            .cadastro-layout-wrapper { margin-top: -50px; }
+        }
     </style>
 </head>
 <body>
-
-    <!-- Banners Laterais Esquerdo e Direito (Alinhados com a zona 'pageCadastro') -->
-    <div class="banner-lateral banner-left">
-        <div class="ad-slot-cadastro" id="ad-cadastro-left" data-ad-zone="pageCadastro"></div>
-    </div>
-
-    <div class="banner-lateral banner-right">
-        <div class="ad-slot-cadastro" id="ad-cadastro-right" data-ad-zone="pageCadastro"></div>
-    </div>
 
     <section class="hero-ads">
         <h1>Cadastre seu site</h1>
@@ -89,12 +118,18 @@
         <p><strong>IMPORTANTE!</strong>: Aceitamos links de indicação.</p>
     </section>
     
-    <main class="container">
+    <!-- Container Flex com Banner Esquerdo + Formulário Central + Banner Direito -->
+    <main class="cadastro-layout-wrapper">
+        
+        <!-- Banner Esquerdo -->
+        <aside class="banner-lateral-sticky">
+            <div class="ad-slot-cadastro" id="ad-cadastro-left" data-ad-zone="pageCadastro"></div>
+        </aside>
+
+        <!-- Formulário Central -->
         <div class="faucet-form-container">
-            <!-- Formulário Integrado ao Web3Forms -->
             <form action="https://api.web3forms.com/submit" method="POST" class="faucet-form">
                 
-                <!-- Sua Chave da Web3Forms -->
                 <input type="hidden" name="access_key" value="cada1ec3-4069-4b49-b426-dd2b5c53081a">
                 <input type="hidden" name="subject" value="🚀 Novo Cadastro / Auditoria - Brazuka Faucets">
                 <input type="hidden" name="from_name" value="Brazuka Faucets Form">
@@ -180,8 +215,8 @@
 
                 <label>Onde é feito o pagamento? *</label>
                 <div class="recursos-group">
-                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="FaucetPay"> FaucetPay</label>                        
-                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Metamask"> Metamask</label>                                        
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="FaucetPay"> FaucetPay</label>                         
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Metamask"> Metamask</label>                                         
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Base"> Base</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Coinbase"> Coinbase</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Bet Crypto"> Bet Crypto</label>
@@ -189,7 +224,7 @@
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Binance"> Binance</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="PIX"> PIX</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="PayPal"> PayPal</label> 
-                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Lightning Network"> Lightning Network</label>                        
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Lightning Network"> Lightning Network</label>                         
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Gift Cards"> Gift Cards</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Carteira Direta"> Carteira Direta</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Outros" id="check-outro-pagamento"> Outros</label>
@@ -213,6 +248,12 @@
                 <button type="submit" id="btn-cadastrar" disabled>🚀 Enviar para Auditoria</button>
             </form>
         </div>
+
+        <!-- Banner Direito -->
+        <aside class="banner-lateral-sticky">
+            <div class="ad-slot-cadastro" id="ad-cadastro-right" data-ad-zone="pageCadastro"></div>
+        </aside>
+
     </main>
 
     <script>
