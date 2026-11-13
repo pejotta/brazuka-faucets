@@ -591,42 +591,47 @@
     }
 
     async function salvarPostNoBanco() {
-        const title = document.getElementById('post-title').value.trim();
-        const category = document.getElementById('post-category').value;
-        const slug = document.getElementById('post-slug').value.trim();
-        const image = document.getElementById('post-image').value.trim();
-        let metaDescription = document.getElementById('post-meta').value.trim();
-        const content = document.getElementById('post-content').value.trim();
+    const title = document.getElementById('post-title').value.trim();
+    const category = document.getElementById('post-category').value;
+    const slug = document.getElementById('post-slug').value.trim();
+    const image = document.getElementById('post-image').value.trim();
+    let metaDescription = document.getElementById('post-meta').value.trim();
+    const content = document.getElementById('post-content').value.trim();
+    
+    // Novos campos de Destaque e Emblema
+    const badge = document.getElementById('post-badge') ? document.getElementById('post-badge').value : '';
+    const pinned = document.getElementById('post-pinned') ? document.getElementById('post-pinned').checked : false;
 
-        if (!title || !slug || !content) {
-            return alert("Preencha pelo menos o Título, o Slug e o Corpo do artigo!");
-        }
-
-        if (!metaDescription) {
-            const textoLimpo = content.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
-            metaDescription = textoLimpo.substring(0, 155) + (textoLimpo.length > 155 ? '...' : '');
-        }
-
-        try {
-            const res = await fetch(URL_WORKER + '/admin-save-post', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, category, slug, image, metaDescription, content })
-            });
-            const data = await res.json();
-
-            if (data.success) {
-                alert("✅ Artigo publicado/atualizado com sucesso!");
-                limparFormularioPost();
-                carregarPostsAdmin();
-            } else {
-                alert("❌ Erro ao salvar artigo: " + data.error);
-            }
-        } catch (err) {
-            alert("🚨 Erro de conexão ao salvar o artigo!");
-            console.error(err);
-        }
+    if (!title || !slug || !content) {
+        return alert("Preencha pelo menos o Título, o Slug e o Corpo do artigo!");
     }
+
+    // Gera meta descrição automática se estiver vazia
+    if (!metaDescription) {
+        const textoLimpo = content.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
+        metaDescription = textoLimpo.substring(0, 155) + (textoLimpo.length > 155 ? '...' : '');
+    }
+
+    try {
+        const res = await fetch(URL_WORKER + '/admin-save-post', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, category, slug, image, metaDescription, content, badge, pinned })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            alert("✅ Artigo publicado/atualizado com sucesso!");
+            limparFormularioPost();
+            carregarPostsAdmin();
+        } else {
+            alert("❌ Erro ao salvar artigo: " + data.error);
+        }
+    } catch (err) {
+        alert("🚨 Erro de conexão ao salvar o artigo!");
+        console.error(err);
+    }
+}
 
     async function excluirPostAdmin(slug) {
         if (!confirm("Tem certeza que deseja excluir este artigo permanentemente?")) return;
