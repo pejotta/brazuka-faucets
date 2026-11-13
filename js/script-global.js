@@ -6,9 +6,10 @@ async function loadEverything() {
     // 1. Configura a identidade visual
     setFavicon();
     
-    // 2. Carrega o Header/Menu
+    // 2. Carrega o Header/Menu e inicializa o tema logo em seguida
     await loadTemplate('menu_template.html', 'header-placeholder', 'afterbegin');
     initMobileMenu();
+    initThemeToggle(); // <--- CHAMA AQUI PARA GARANTIR QUE O BOTÃO JÁ EXISTE NO DOM
     
     // ANALISTA: Chama o ticker SÓ DEPOIS que o menu_template foi injetado
     carregarTicker(); 
@@ -24,7 +25,8 @@ async function loadEverything() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+// --- FUNÇÃO BLINDADA DO MODO ESCURO ---
+function initThemeToggle() {
     const themeToggleBtn = document.getElementById("theme-toggle");
     const themeIcon = document.getElementById("theme-icon");
     const htmlElement = document.documentElement;
@@ -36,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (themeIcon) themeIcon.className = "fas fa-sun";
     }
 
-    // Alterna ao clicar
+    // Alterna ao clicar (garantindo que o botão existe)
     if (themeToggleBtn) {
         themeToggleBtn.addEventListener("click", () => {
             const currentTheme = htmlElement.getAttribute("data-theme");
@@ -51,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-});
+}
 
 // ÚNICA E CORRETA FUNÇÃO DO TICKER (Puxando do Banco de Dados Cloudflare)
 async function carregarTicker() {
