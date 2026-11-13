@@ -615,22 +615,21 @@
     async function salvarPostNoBanco() {
     const title = document.getElementById('post-title').value.trim();
     const category = document.getElementById('post-category').value;
-    const badge = document.getElementById('post-badge').value;
-    const pinned = document.getElementById('post-pinned').checked;
     const slug = document.getElementById('post-slug').value.trim();
     const image = document.getElementById('post-image').value.trim();
     let metaDescription = document.getElementById('post-meta').value.trim();
     const content = document.getElementById('post-content').value.trim();
     
-    // Novos campos de Destaque e Emblema
-    const badge = document.getElementById('post-badge') ? document.getElementById('post-badge').value : '';
-    const pinned = document.getElementById('post-pinned') ? document.getElementById('post-pinned').checked : false;
+    // Captura segura dos campos novos
+    const badgeEl = document.getElementById('post-badge');
+    const pinnedEl = document.getElementById('post-pinned');
+    const badge = badgeEl ? badgeEl.value : '';
+    const pinned = pinnedEl ? pinnedEl.checked : false;
 
     if (!title || !slug || !content) {
         return alert("Preencha pelo menos o Título, o Slug e o Corpo do artigo!");
     }
 
-    // Gera meta descrição automática se estiver vazia
     if (!metaDescription) {
         const textoLimpo = content.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
         metaDescription = textoLimpo.substring(0, 155) + (textoLimpo.length > 155 ? '...' : '');
