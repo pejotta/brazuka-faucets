@@ -35,10 +35,10 @@
     <style>
         .lazy-section {
             content-visibility: auto;
-            contain-intrinsic-size: 1px 450px;
+            contain-intrinsic-size: 1px 650px;
             opacity: 0;
-            transform: translateY(15px);
-            transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+            transform: translateY(25px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
         .lazy-section.is-visible {
             opacity: 1;
@@ -239,35 +239,5 @@
     <script src="js/script-global.js"></script>
     <script src="js/script-home.js"></script>
     <script src="js/ads-manager.js"></script>
-
-    <!-- Motor de Ativação dos Blocos conforme Rolagem -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const lazySections = document.querySelectorAll('.lazy-section');
-
-            const sectionObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const target = entry.target;
-                        target.classList.add('is-visible');
-                        
-                        // Ativa lazy loading automático para imagens injetadas dentro deste bloco
-                        target.querySelectorAll('img:not([loading])').forEach(img => {
-                            img.setAttribute('loading', 'lazy');
-                        });
-
-                        observer.unobserve(target);
-                    }
-                });
-            }, {
-                rootMargin: '150px 0px', // Começa a preparar o bloco 150px antes de aparecer na tela
-                threshold: 0.05
-            });
-
-            lazySections.forEach(section => {
-                sectionObserver.observe(section);
-            });
-        });
-    </script>
 </body>
 </html>
