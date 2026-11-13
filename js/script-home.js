@@ -231,3 +231,61 @@ const startCounters = () => {
         updateCount();
     });
 };
+
+document.addEventListener("DOMContentLoaded", function() {
+    const observerOptions = {
+        root: null, // usa a janela do navegador como viewport
+        rootMargin: "200px", // começa a carregar 200px antes de o bloco aparecer na tela (para o usuário não ver carregando)
+        threshold: 0.01
+    };
+
+    const loadBlockContent = (entry, observer) => {
+        const block = entry.target;
+        const loadType = block.getAttribute('data-load-type');
+
+        // Evita carregar duas vezes
+        if (block.classList.contains('loaded')) return;
+        block.classList.add('loaded');
+
+        // Identifica qual bloco carregar baseado no atributo
+        if (loadType === 'faucets') {
+            carregarFaucetsDinamicas(block);
+        } else if (loadType === 'banners-patrocinados') {
+            carregarAnuncios(block);
+        }
+
+        // Para de observar o bloco depois que ele já foi carregado
+        observer.unobserve(block);
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                loadBlockContent(entry, observer);
+            }
+        });
+    }, observerOptions);
+
+    // Seleciona todos os blocos marcados como lazy na página
+    document.querySelectorAll('.lazy-block').forEach(block => {
+        observer.observe(block);
+    });
+});
+
+// Função exemplo que busca os dados da API/Worker só quando o bloco entra na tela
+async function carregarFaucetsDinamicas(container) {
+    try {
+        const res = await fetch(URL_WORKER + '/get-faucets'); // ou sua rota de listagem
+        const dados = await res.json();
+        
+        // Aqui você monta o HTML dos cards e injeta no container
+        container.innerHTML = dados.map(faucet => `
+            <div class="faucet-card">
+                <h3>${faucet.name}</h3>
+                <p>${faucet.description}</p>
+            </div>
+        `).join('');
+    } catch (err) {
+        container.innerHTML = '<p style="color: red;">Erro ao carregar conteúdo.</p>';
+    }
+}
