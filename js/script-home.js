@@ -14,9 +14,6 @@ const meusAnuncios = [
 let adIndex = Math.floor(Math.random() * meusAnuncios.length);
 let adTimer;
 
-/**
- * Renderiza o anúncio mantendo a altura fixa para não quebrar no mobile
- */
 function renderizarAd(index) {
     const container = document.getElementById("ad-content");
     if (!container) return;
@@ -52,29 +49,27 @@ function resetarTimer() {
     adTimer = setInterval(proximoAd, 15000); // 15 segundos
 }
 
-// --- EVENTO PRINCIPAL ---
+// --- EVENTO PRINCIPAL & LAZY LOADING POR SEÇÕES ---
 document.addEventListener('DOMContentLoaded', async () => {
-    // Inicia o Slider
+    // Inicia o Slider do Topo imediatamente
     renderizarAd(adIndex);
     resetarTimer();
 
-    // Listeners dos botões do Slider
     const btnNext = document.getElementById('ad-next');
     const btnPrev = document.getElementById('ad-prev');
     if (btnNext) btnNext.onclick = proximoAd;
     if (btnPrev) btnPrev.onclick = anteriorAd;
 
     try {
-        // Busca dados no Banco de Dados
+        // Busca todos os dados da Worker de uma vez para abastecer os blocos sob demanda
         const response = await fetch(`${WORKER_URL}/get-all-faucets?t=${Date.now()}`);
         const data = await response.json();
 
-        // 1. PREENCHER CATEGORIAS (BTC, ETH, etc)
-        const moedasHome = ['btc', 'eth', 'doge', 'trx', 'central', 'minerador', 'autofaucet', 'airdrop', 'ipo', 'bet'];
-
-        moedasHome.forEach(moeda => {
+        // Função que renderiza uma moeda específica no seu respectivo container
+        const renderizarBlocoMoeda = (moeda) => {
             const container = document.getElementById(`grid-${moeda}`);
-            if (!container) return;
+            if (!container || container.classList.contains('carregado')) return;
+            container.classList.add('carregado');
 
             const allInCategory = data.filter(f => Array.isArray(f.moeda) ? f.moeda.includes(moeda) : f.moeda === moeda);
             
@@ -115,6 +110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="faucet-icon">
                         <img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" 
                              style="width:32px; height:32px; border-radius:4px;"
+                             loading="lazy"
                              onerror="this.src='https://api.iconify.design/cryptocurrency:${Array.isArray(faucet.moeda) ? faucet.moeda[0] : faucet.moeda}.svg'">
                     </div>
                     <div class="faucet-info">
@@ -124,7 +120,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <span class="status-tag ${faucet.status}">${statusLabels[faucet.status] || 'Análise'}</span>
                 `;
 
-                // Dispara o registro de clique no Analytics ao clicar no card da faucet
                 cardHtml.addEventListener('click', () => {
                     if (typeof registrarClique === 'function') {
                         registrarClique('faucet', faucet.nome || faucet.id);
@@ -133,14 +128,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 container.appendChild(cardHtml);
             });
-        });
+        };
 
-        // 2. RECÉM ADICIONADOS
+        // 1. PRIMEIRA DOBRA CARREGA IMEDIATAMENTE (BTC e ETH)
+        renderizarBlocoMoeda('btc');
+        renderizarBlocoMoeda('eth');
+
+        // 2. DEMAIS BLOCOS CARREGAM APENAS QUANDO O USUÁRIO ROLA A PÁGINA (Lazy Observer)
+        const observerSecoes = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const section = entry.target;
+                    
+                    // Identifica quais grids estão dentro desta seção e renderiza
+                    section.querySelectorAll('[id^="grid-"]').forEach(gridEl => {
+                        const moedaId = gridEl.id.replace('grid-', '');
+                        if (['doge', 'trx', 'central', 'autofaucet', 'minerador', 'bet', 'airdrop', 'ipo'].includes(moedaId)) {
+                            renderizarBlocoMoeda(moedaId);
+                        }
+                    });
+
+                    section.classList.add('is-visible');
+                    observer.unobserve(section);
+                }
+            });
+        }, { rootMargin: '200px 0px', threshold: 0.01 });
+
+        document.querySelectorAll('.lazy-section').forEach(sec => observerSecoes.observe(sec));
+
+        // 3. RECÉM ADICIONADOS
         const recentContainer = document.getElementById('grid-recent');
         if (recentContainer) {
             recentContainer.innerHTML = [...data].reverse().slice(0, 5).map(f => `
                 <a href="faucet.html?id=${f.id}" class="mini-item" onclick="registrarClique('faucet', '${f.nome || f.id}')">
-                    <img src="https://www.google.com/s2/favicons?domain=${f.url.replace(/^(https?:\/\/)/, '').split('/')[0]}&sz=64">
+                    <img src="https://www.google.com/s2/favicons?domain=${f.url.replace(/^(https?:\/\/)/, '').split('/')[0]}&sz=64" loading="lazy">
                     <div class="mini-info">
                         <h4>${f.nome}</h4>
                         <p>Adicionada em: ${f.data_cadastro || 'Recente'}</p>
@@ -149,23 +170,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             `).join('');
         }
 
-        // 3. ESTATÍSTICAS E RANKING
+        // 4. ESTATÍSTICAS E RANKING
         loadHomeStats(data);
 
-        // Observer para os contadores
+        // Observer para os contadores numéricos
         const statsHero = document.querySelector('.stats-hero');
         if (statsHero) {
-            const observer = new IntersectionObserver((entries) => {
+            const observerStats = new IntersectionObserver((entries) => {
                 if(entries[0].isIntersecting) {
                     startCounters();
-                    observer.disconnect(); 
+                    observerStats.disconnect(); 
                 }
-            }, { threshold: 0.5 });
-            observer.observe(statsHero);
+            }, { threshold: 0.3 });
+            observerStats.observe(statsHero);
         }
 
     } catch (error) {
-        console.error("Erro ao carregar dados do Banco de Dados.");
+        console.error("Erro ao carregar dados do Banco de Dados:", error);
     }
 });
 
@@ -176,7 +197,6 @@ async function loadHomeStats(allFaucetsJson) {
         const res = await fetch(`${WORKER_URL}/get-global-stats`);
         const stats = await res.json();
 
-        // Comentários Recentes
         const commContainer = document.getElementById('grid-comments');
         if (commContainer && stats.recentComments) {
             commContainer.innerHTML = stats.recentComments.map(c => {
@@ -192,7 +212,6 @@ async function loadHomeStats(allFaucetsJson) {
             }).join('');
         }
 
-        // Top Avaliações
         const topContainer = document.getElementById('grid-top-rated');
         if (topContainer && stats.topRated) {
             topContainer.innerHTML = stats.topRated.map(f => {
@@ -231,61 +250,3 @@ const startCounters = () => {
         updateCount();
     });
 };
-
-document.addEventListener("DOMContentLoaded", function() {
-    const observerOptions = {
-        root: null, // usa a janela do navegador como viewport
-        rootMargin: "200px", // começa a carregar 200px antes de o bloco aparecer na tela (para o usuário não ver carregando)
-        threshold: 0.01
-    };
-
-    const loadBlockContent = (entry, observer) => {
-        const block = entry.target;
-        const loadType = block.getAttribute('data-load-type');
-
-        // Evita carregar duas vezes
-        if (block.classList.contains('loaded')) return;
-        block.classList.add('loaded');
-
-        // Identifica qual bloco carregar baseado no atributo
-        if (loadType === 'faucets') {
-            carregarFaucetsDinamicas(block);
-        } else if (loadType === 'banners-patrocinados') {
-            carregarAnuncios(block);
-        }
-
-        // Para de observar o bloco depois que ele já foi carregado
-        observer.unobserve(block);
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                loadBlockContent(entry, observer);
-            }
-        });
-    }, observerOptions);
-
-    // Seleciona todos os blocos marcados como lazy na página
-    document.querySelectorAll('.lazy-block').forEach(block => {
-        observer.observe(block);
-    });
-});
-
-// Função exemplo que busca os dados da API/Worker só quando o bloco entra na tela
-async function carregarFaucetsDinamicas(container) {
-    try {
-        const res = await fetch(URL_WORKER + '/get-faucets'); // ou sua rota de listagem
-        const dados = await res.json();
-        
-        // Aqui você monta o HTML dos cards e injeta no container
-        container.innerHTML = dados.map(faucet => `
-            <div class="faucet-card">
-                <h3>${faucet.name}</h3>
-                <p>${faucet.description}</p>
-            </div>
-        `).join('');
-    } catch (err) {
-        container.innerHTML = '<p style="color: red;">Erro ao carregar conteúdo.</p>';
-    }
-}
