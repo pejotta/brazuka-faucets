@@ -3,8 +3,30 @@
 
   <url>
     <loc>https://www.brazukafaucets.com.br/</loc>
-    <lastmod>2025-12-26</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <priority>1.00</priority>
+  </url>
+
+  <!-- Novas Páginas Principais e Ecossistema -->
+  <url>
+    <loc>https://www.brazukafaucets.com.br/blog.html</loc>
+    <lastmod>2026-11-13</lastmod>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://www.brazukafaucets.com.br/rankings.html</loc>
+    <lastmod>2026-11-13</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://www.brazukafaucets.com.br/nossas-faucets.html</loc>
+    <lastmod>2026-11-13</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://www.brazukafaucets.com.br/shortlinks.html</loc>
+    <lastmod>2026-11-13</lastmod>
+    <priority>0.90</priority>
   </url>
 
   <url>
@@ -23,6 +45,7 @@
     <priority>0.85</priority>
   </url>
 
+  <!-- Categorias de Criptomoedas -->
   <url><loc>https://www.brazukafaucets.com.br/todas-as-moedas</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
   <url><loc>https://www.brazukafaucets.com.br/bitcoin</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
   <url><loc>https://www.brazukafaucets.com.br/ethereum</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
@@ -47,6 +70,7 @@
   <url><loc>https://www.brazukafaucets.com.br/official-trump</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
   <url><loc>https://www.brazukafaucets.com.br/pepe</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
 
+  <!-- Fichas e Institucionais -->
   <url>
     <loc>https://www.brazukafaucets.com.br/faucet?id=1</loc>
     <lastmod>2025-12-26</lastmod>
