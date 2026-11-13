@@ -328,6 +328,24 @@
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+    <div>
+        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Selo / Emblema do Post:</label>
+        <select id="post-badge" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+            <option value="">Nenhum (Normal)</option>
+            <option value="Destaque">⭐ Destaque</option>
+            <option value="Patrocinado">🤝 Patrocinado</option>
+            <option value="Aviso">📢 Aviso Importante</option>
+        </select>
+    </div>
+    <div style="display: flex; align-items: center; padding-top: 25px;">
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600; color: #7a33eb;">
+            <input type="checkbox" id="post-pinned" style="width: 18px; height: 18px; accent-color: #7a33eb;"> 
+            Fixar no Topo do Blog (Destaque Principal)
+        </label>
+    </div>
+</div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
                 <div>
                     <label style="display: block; font-weight: 600; margin-bottom: 5px;">Slug (URL Amigável - Gerado Auto):</label>
                     <input type="text" id="post-slug" placeholder="vie-faucet-paga-mesmo-review" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; background: #f9f9f9; box-sizing: border-box;">
@@ -580,6 +598,8 @@
         document.getElementById('post-meta').value = post.metaDescription || '';
         document.getElementById('post-content').value = post.content || '';
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.getElementById('post-badge').value = post.badge || '';
+        document.getElementById('post-pinned').checked = post.pinned || false;
     }
 
     function limparFormularioPost() {
@@ -588,11 +608,15 @@
         document.getElementById('post-image').value = '';
         document.getElementById('post-meta').value = '';
         document.getElementById('post-content').value = '';
+        document.getElementById('post-badge').value = '';
+        document.getElementById('post-pinned').checked = false;
     }
 
     async function salvarPostNoBanco() {
     const title = document.getElementById('post-title').value.trim();
     const category = document.getElementById('post-category').value;
+    const badge = document.getElementById('post-badge').value;
+    const pinned = document.getElementById('post-pinned').checked;
     const slug = document.getElementById('post-slug').value.trim();
     const image = document.getElementById('post-image').value.trim();
     let metaDescription = document.getElementById('post-meta').value.trim();
