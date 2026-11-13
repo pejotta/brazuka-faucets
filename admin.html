@@ -592,14 +592,14 @@
         const post = listaPostsGlobal[index];
         if (!post) return;
         document.getElementById('post-title').value = post.title || '';
-        document.getElementById('post-category').value = post.category || 'Review';
+        document.getElementById('post-category').value = post.category || 'Review';        
+        document.getElementById('post-badge').value = post.badge || '';
+        document.getElementById('post-pinned').checked = post.pinned || false;
         document.getElementById('post-slug').value = post.slug || '';
         document.getElementById('post-image').value = post.image || '';
         document.getElementById('post-meta').value = post.metaDescription || '';
         document.getElementById('post-content').value = post.content || '';
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        document.getElementById('post-badge').value = post.badge || '';
-        document.getElementById('post-pinned').checked = post.pinned || false;
     }
 
     function limparFormularioPost() {
