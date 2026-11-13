@@ -31,6 +31,21 @@
     <meta name="twitter:image" content="https://www.brazukafaucets.com.br/assets/brazuka-faucets-share-image.png" />
     <meta name="theme-color" content="#1a73e8">
     
+    <!-- Otimização de Renderização por Blocos (Lazy Blocks) -->
+    <style>
+        .lazy-section {
+            content-visibility: auto;
+            contain-intrinsic-size: 1px 450px;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+        }
+        .lazy-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-11KQEGEBZ3"></script>
     <script>
@@ -43,21 +58,20 @@
 </head>
 <body>
      
-
     <section class="hero-ads">
-    <div class="hero-carousel">
-        <div class="carousel-container" id="carousel-track">
-            <!-- Os slides serão injetados dinamicamente aqui pelo gerenciador -->
+        <div class="hero-carousel">
+            <div class="carousel-container" id="carousel-track">
+                <!-- Os slides serão injetados dinamicamente aqui pelo gerenciador -->
+            </div>
+            
+            <button class="prev" onclick="moveSlide(-1)">❮</button>
+            <button class="next" onclick="moveSlide(1)">❯</button>
         </div>
-        
-        <button class="prev" onclick="moveSlide(-1)">❮</button>
-        <button class="next" onclick="moveSlide(1)">❯</button>
-    </div>
-</section>
+    </section>
 
     <main class="container">
         
-        <!-- BANNER TOPO GERAL -->
+        <!-- BANNER TOPO GERAL (Carrega Imediatamente) -->
         <div class="ad-slot-top" id="ad-zone-home-top" data-ad-zone="homeTop"></div>
         
         <section class="headline">
@@ -67,90 +81,104 @@
 
         <section class="faucet-grid-section">
             
-            <h2 class="coin-title">BITCOIN (BTC)</h2>
-            <div id="grid-btc" class="faucet-grid">
-                <p>Carregando faucets de Bitcoin...</p>
+            <!-- PRIMEIRA DOBRA (Carrega Imediatamente para SEO e Velocidade) -->
+            <div class="faucet-block">
+                <h2 class="coin-title">BITCOIN (BTC)</h2>
+                <div id="grid-btc" class="faucet-grid">
+                    <p>Carregando faucets de Bitcoin...</p>
+                </div>
+                <a href="bitcoin.html" class="view-more">Ver todas as Faucets BTC →</a>
             </div>
-            <a href="bitcoin.html" class="view-more">Ver todas as Faucets BTC &rarr;</a>
 
-            <h2 class="coin-title">ETHEREUM (ETH)</h2>
-            <div id="grid-eth" class="faucet-grid">
-                <p>Carregando faucets de Ethereum...</p>
-            </div>   
-            <a href="ethereum.html" class="view-more">Ver todas as Faucets ETH &rarr;</a>
+            <div class="faucet-block">
+                <h2 class="coin-title">ETHEREUM (ETH)</h2>
+                <div id="grid-eth" class="faucet-grid">
+                    <p>Carregando faucets de Ethereum...</p>
+                </div>   
+                <a href="ethereum.html" class="view-more">Ver todas as Faucets ETH →</a>
+            </div>
             
-            <!-- BANNER SETORIAL: BITCOIN & ETHEREUM -->
-            <div class="ad-slot-mid" id="ad-zone-home-btc-eth" data-ad-zone="homeBtcEth"></div>
+            <!-- BLOCOS ABAIXO DA DOBRA (Carregamento sob Demanda ao Rolar) -->
+            <div class="lazy-section">
+                <!-- BANNER SETORIAL: BITCOIN & ETHEREUM -->
+                <div class="ad-slot-mid" id="ad-zone-home-btc-eth" data-ad-zone="homeBtcEth"></div>
+                
+                <h2 class="coin-title">DOGECOIN (DOGE)</h2>
+                <div id="grid-doge" class="faucet-grid">
+                    <p>Carregando faucets de Dogecoin...</p>
+                </div>
+                <a href="dogecoin.html" class="view-more">Ver todas as Faucets DOGE →</a>
+
+                <h2 class="coin-title">TRON (TRX)</h2>
+                <div id="grid-trx" class="faucet-grid">
+                    <p>Carregando faucets de Tron...</p>
+                </div>
+                <a href="tron.html" class="view-more">Ver todas as Faucets TRX →</a>
+            </div>
             
-            <h2 class="coin-title">DOGECOIN (DOGE)</h2>
-            <div id="grid-doge" class="faucet-grid">
-                <p>Carregando faucets de Dogecoin...</p>
-            </div>
-            <a href="dogecoin.html" class="view-more">Ver todas as Faucets DOGE &rarr;</a>
+            <div class="lazy-section">
+                <!-- BANNER SETORIAL: DOGECOIN & TRON -->
+                <div class="ad-slot-mid" id="ad-zone-home-doge-trx" data-ad-zone="homeDogeTrx"></div>
+                
+                <h2 class="coin-title">CENTRAL MULTI TAREFAS</h2>
+                <div id="grid-central" class="faucet-grid">
+                    <p>Carregando Centrais Multitarefas...</p>
+                </div>
+                <a href="central.html" class="view-more">Ver todas as Centrais Multi Tarefas →</a>
 
-            <h2 class="coin-title">TRON (TRX)</h2>
-            <div id="grid-trx" class="faucet-grid">
-                <p>Carregando faucets de Tron...</p>
+                <h2 class="coin-title">AUTOFAUCETS</h2>
+                <div id="grid-autofaucet" class="faucet-grid">
+                    <p>Carregando Autofaucets...</p>
+                </div>
+                <a href="autofaucet.html" class="view-more">Ver todas as AutoFaucets →</a>
             </div>
-            <a href="tron.html" class="view-more">Ver todas as Faucets TRX &rarr;</a>
-            
-            <!-- BANNER SETORIAL: DOGECOIN & TRON -->
-            <div class="ad-slot-mid" id="ad-zone-home-doge-trx" data-ad-zone="homeDogeTrx"></div>
-            
-            <h2 class="coin-title">CENTRAL MULTI TAREFAS</h2>
-            <div id="grid-central" class="faucet-grid">
-                <p>Carregando Centrais Multitarefas...</p>
-            </div>
-            <a href="central.html" class="view-more">Ver todas as Centrais Multi Tarefas &rarr;</a>
 
-            <h2 class="coin-title">AUTOFAUCETS</h2>
-            <div id="grid-autofaucet" class="faucet-grid">
-                <p>Carregando Autofaucets...</p>
-            </div>
-            <a href="autofaucet.html" class="view-more">Ver todas as AutoFaucets &rarr;</a>
+            <div class="lazy-section">
+                <!-- BANNER SETORIAL: CENTRAL & AUTOFAUCETS -->
+                <div class="ad-slot-mid" id="ad-zone-home-central-auto" data-ad-zone="homeCentralAuto"></div>
+                
+                <h2 class="coin-title">MINERADORES</h2>
+                <div id="grid-minerador" class="faucet-grid">
+                    <p>Carregando Mineradores...</p>
+                </div>
+                <a href="minerador.html" class="view-more">Ver todos os Mineradores →</a>
 
-            <!-- BANNER SETORIAL: CENTRAL & AUTOFAUCETS -->
-            <div class="ad-slot-mid" id="ad-zone-home-central-auto" data-ad-zone="homeCentralAuto"></div>
-            
-            <h2 class="coin-title">MINERADORES</h2>
-            <div id="grid-minerador" class="faucet-grid">
-                <p>Carregando Mineradores...</p>
+                <h2 class="coin-title">BETS CRYPTO</h2>
+                <div id="grid-bet" class="faucet-grid">
+                    <p>Carregando Bets Crypto...</p>
+                </div>
+                <a href="bet.html" class="view-more">Ver todas as Bets Crypto →</a>
             </div>
-            <a href="minerador.html" class="view-more">Ver todos os Mineradores &rarr;</a>
 
-            <h2 class="coin-title">BETS CRYPTO</h2>
-            <div id="grid-bet" class="faucet-grid">
-                <p>Carregando Bets Crypto...</p>
-            </div>
-            <a href="bet.html" class="view-more">Ver todas as Bets Crypto &rarr;</a>
+            <div class="lazy-section">
+                <!-- BANNER SETORIAL: MINERADORES & BETS -->
+                <div class="ad-slot-mid" id="ad-zone-home-miner-bet" data-ad-zone="homeMinerBet"></div>
+                
+                <!-- AIRDROPS E IPOS -->
+                <h2 class="coin-title" style="margin-top: 40px;">AIRDROPS</h2>
+                <div id="grid-airdrop" class="faucet-grid">
+                    <p>Carregando Airdrops...</p>
+                </div>
+                <a href="airdrop.html" class="view-more">Ver todos os Aidrops →</a>
 
-            <!-- BANNER SETORIAL: MINERADORES & BETS -->
-            <div class="ad-slot-mid" id="ad-zone-home-miner-bet" data-ad-zone="homeMinerBet"></div>
-            
-            <!-- AIRDROPS E IPOS -->
-            <h2 class="coin-title" style="margin-top: 40px;">AIRDROPS</h2>
-            <div id="grid-airdrop" class="faucet-grid">
-                <p>Carregando Airdrops...</p>
+                <h2 class="coin-title">IPOs</h2>
+                <div id="grid-ipo" class="faucet-grid">
+                    <p>Carregando IPO's de Cryptos...</p>
+                </div>
+                <a href="ipo.html" class="view-more">Ver todas as IPO's de Cryptos →</a>
             </div>
-            <a href="airdrop.html" class="view-more">Ver todos os Aidrops &rarr;</a>
-
-            <h2 class="coin-title">IPOs</h2>
-            <div id="grid-ipo" class="faucet-grid">
-                <p>Carregando IPO's de Cryptos...</p>
-            </div>
-            <a href="ipo.html" class="view-more">Ver todas as IPO's de Cryptos &rarr;</a>
             
         </section>
 
         <!-- BANNER SETORIAL: AIRDROPS, IPOS, CURSOS E FERRAMENTAS -->
-        <div class="ad-slider-container" id="ad-zone-home-airdrop-ipo" data-ad-zone="homeAirdropIpo" style="position: relative; overflow: hidden; border-radius: 12px; height: 250px;">
+        <div class="ad-slider-container lazy-section" id="ad-zone-home-airdrop-ipo" data-ad-zone="homeAirdropIpo" style="position: relative; overflow: hidden; border-radius: 12px; height: 250px;">
             <div id="ad-content" style="transition: opacity 0.5s ease-in-out;"></div>
             <button id="ad-prev" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; padding: 10px; cursor: pointer; border-radius: 50%; z-index: 10;"><i class="fas fa-chevron-left"></i></button>
             <button id="ad-next" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; padding: 10px; cursor: pointer; border-radius: 50%; z-index: 10;"><i class="fas fa-chevron-right"></i></button>
             <div class="ad-label-curso" style="position: absolute; bottom: 10px; right: 10px; background: var(--warning); color: black; padding: 2px 8px; font-size: 0.7rem; font-weight: bold; border-radius: 4px;">Publicidade para Cursos</div>
         </div>
 
-        <section class="social-stats container" style="padding: 0; width: 100%;">
+        <section class="social-stats container lazy-section" style="padding: 0; width: 100%;">
             <div class="stats-grid" style="width: 100%;">
                 <div class="stats-column">
                     <h3><i class="fas fa-plus-circle"></i> Recém Adicionadas</h3>
@@ -177,7 +205,7 @@
 
     </main>
 
-    <section class="stats-hero">
+    <section class="stats-hero lazy-section">
         <div class="community-container">
             <h2 class="stats-title">Nossa Comunidade em Números</h2>
             <div class="stats-wrapper">
@@ -208,11 +236,38 @@
         </div>
     </section>
 
-    
     <script src="js/script-global.js"></script>
     <script src="js/script-home.js"></script>
     <script src="js/ads-manager.js"></script>
 
-    
+    <!-- Motor de Ativação dos Blocos conforme Rolagem -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const lazySections = document.querySelectorAll('.lazy-section');
+
+            const sectionObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        target.classList.add('is-visible');
+                        
+                        // Ativa lazy loading automático para imagens injetadas dentro deste bloco
+                        target.querySelectorAll('img:not([loading])').forEach(img => {
+                            img.setAttribute('loading', 'lazy');
+                        });
+
+                        observer.unobserve(target);
+                    }
+                });
+            }, {
+                rootMargin: '150px 0px', // Começa a preparar o bloco 150px antes de aparecer na tela
+                threshold: 0.05
+            });
+
+            lazySections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+        });
+    </script>
 </body>
 </html>
