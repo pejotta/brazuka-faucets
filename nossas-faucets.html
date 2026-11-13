@@ -23,7 +23,7 @@
         }
 
         /* --- LAYOUT GERAL --- */
-        body { font-family: 'Barlow', sans-serif; background-color: #f8f9fa; margin: 0; }
+        body { font-family: 'Barlow', sans-serif; background-color: var(--bg-color, #f8f9fa); color: var(--text-color, #333); margin: 0; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 15px; }
         
         .hero-faucets { background: var(--dark-blue); color: white; padding: 60px 0; text-align: center; margin-bottom: 40px; }
@@ -35,30 +35,32 @@
             gap: 20px; margin-bottom: 40px;
         }
 
-        .ad-label {margin-bottom: 0; text-align: center; padding: 5px;}
+        .ad-label { margin-bottom: 0; text-align: center; padding: 5px; }
 
         .internal-card {
-            background: white; border-radius: 15px; padding: 25px;
-            text-align: center; border: 1px solid #eee;
+            background: var(--card-bg, white); 
+            border-radius: 15px; padding: 25px;
+            text-align: center; border: 1px solid var(--card-border, #eee);
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s;
         }
         .internal-card:hover { transform: translateY(-5px); border-color: var(--brazuka-green); }
         .coin-logo { width: 50px; height: 50px; margin-bottom: 15px; }
 
-        /* --- MODAL RESPONSIVO (O CORAÇÃO DA MELHORIA) --- */
+        /* --- MODAL RESPONSIVO --- */
         #claim-modal {
             display: none; position: fixed; inset: 0;
             background: rgba(0,0,0,0.85); z-index: 10000;
             overflow-y: auto; padding: 15px;
         }
         .modal-content {
-            background: white; max-width: 800px; margin: 20px auto;
+            background: var(--card-bg, white); 
+            max-width: 800px; margin: 20px auto;
             border-radius: 20px; position: relative; padding: 30px;
             box-sizing: border-box;
-            color: #555;
+            color: var(--text-color, #555);
         }
         .modal-layout { display: flex; gap: 20px; align-items: flex-start; margin: 20px 0; }
-        .ad-lateral { width: 160px; flex-shrink: 0; }
+        .ad-lateral { width: 160px; flex-shrink: 0; display: flex; justify-content: center; }
         .modal-main { flex: 1; text-align: center; }
 
         /* Botão de Pegar Tokens */
@@ -71,10 +73,10 @@
         #btn-finish-claim:disabled { opacity: 0.5; cursor: not-allowed; }
 
         /* --- TABELAS RESPONSIVAS --- */
-        .extra-section { background: white; padding: 20px; border-radius: 15px; margin-bottom: 30px; border: 1px solid #eee; }
+        .extra-section { background: var(--card-bg, white); padding: 20px; border-radius: 15px; margin-bottom: 30px; border: 1px solid var(--card-border, #eee); }
         table { width: 100%; border-collapse: collapse; }
-        th { background: #f4f6f7; color: var(--dark-blue); padding: 12px; border-radius: 5px; }
-        td { padding: 12px; border-bottom: 1px solid #f0f0f0; text-align: center; }
+        th { background: var(--table-th-bg, #f4f6f7); color: var(--dark-blue); padding: 12px; border-radius: 5px; }
+        td { padding: 12px; border-bottom: 1px solid var(--card-border, #f0f0f0); text-align: center; }
 
         /* --- MEDIA QUERIES (MOBILE) --- */
         @media (max-width: 768px) {
@@ -85,7 +87,7 @@
             /* Tabela vira lista no mobile */
             table, thead, tbody, th, td, tr { display: block; }
             thead tr { position: absolute; top: -9999px; left: -9999px; }
-            tr { border: 1px solid #eee; margin-bottom: 10px; border-radius: 10px; padding: 10px;background: #f0f0f0;}
+            tr { border: 1px solid var(--card-border, #eee); margin-bottom: 10px; border-radius: 10px; padding: 10px; background: var(--table-th-bg, #f0f0f0); }
             td { border: none; position: relative; }
             td:before {
                 content: attr(data-label);
@@ -111,13 +113,13 @@
             <div class="internal-card">
                 <iconify-icon icon="fluent:wallet-credit-card-24-filled" width="60" style="color: var(--brazuka-blue)"></iconify-icon>
                 <h3>Seu E-mail FaucetPay</h3>
-                <input type="email" id="user-wallet" placeholder="exemplo@email.com" style="width: 100%; padding: 15px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 10px; margin: 15px 0;">
+                <input type="email" id="user-wallet" placeholder="exemplo@email.com" style="width: 100%; padding: 15px; box-sizing: border-box; border: 1px solid var(--card-border, #ddd); background: var(--bg-color, #fff); color: var(--text-color, #333); border-radius: 10px; margin: 15px 0;">
                 <button onclick="checkUser()" class="btn-finish-claim" style="background: var(--brazuka-green); color:white; border:none; width:100%; padding:15px; border-radius:10px; font-weight:bold; cursor:pointer;">ACESSAR PAINEL</button>
             </div>
         </div>
 
         <!-- Dashboard da Carteira (Oculto até logar) -->
-        <div id="dashboard-view" style="display: none; margin-top: -30px; color: #555;">
+        <div id="dashboard-view" style="display: none; margin-top: -30px; color: var(--text-color, #555);">
             <div class="internal-card" style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                 <span><i class="fas fa-user-circle"></i> <span id="display-wallet">...</span></span>
                 <div style="display: flex; gap: 20px;">
@@ -129,19 +131,19 @@
 
             <div class="faucet-grid">
                 <div class="internal-card">
-                    <p style="font-size: 1.2em; color: #ffffff; background: #ff0013; border-radius: 10px; margin: 0 auto 15px;">Saldo: <span id="balance-trx">...</span> TRX</p>
+                    <p style="font-size: 1.2em; color: #ffffff; background: #ff0013; border-radius: 10px; margin: 0 auto 15px; padding: 5px;">Saldo: <span id="balance-trx">...</span> TRX</p>
                     <img src="https://cryptologos.cc/logos/tron-trx-logo.svg?v=040" class="coin-logo">
                     <h3>Torneira TRX</h3>
-                    <p style="margin: 5px; background: #000000; color: white; width: max-content; padding: 5px 10px; justify-self: center; border-radius: 10px;">🎁 Ganhe <strong>0.001 TRX</strong></p>
-                    <button onclick="openClaimModal('trx')" id="btn-trx" style="background: #ff0013; color:white; border:none; width:100%; padding:15px; border-radius:10px; font-weight:bold; cursor:pointer;">REIVINDICAR</button>
+                    <p style="margin: 5px auto; background: #000000; color: white; width: max-content; padding: 5px 10px; border-radius: 10px;">🎁 Ganhe <strong>0.001 TRX</strong></p>
+                    <button onclick="openClaimModal('trx')" id="btn-trx" style="background: #ff0013; color:white; border:none; width:100%; padding:15px; border-radius:10px; font-weight:bold; cursor:pointer; margin-top:10px;">REIVINDICAR</button>
                 </div>
 
                 <div class="internal-card">
-                    <p style="font-size: 1.2em; color: #ffffff; background: #0088cc; border-radius: 10px; margin: 0 auto 15px;">Saldo: <span id="balance-ton">...</span> TON</p>
+                    <p style="font-size: 1.2em; color: #ffffff; background: #0088cc; border-radius: 10px; margin: 0 auto 15px; padding: 5px;">Saldo: <span id="balance-ton">...</span> TON</p>
                     <img src="https://cryptologos.cc/logos/toncoin-ton-logo.svg?v=040" class="coin-logo">
                     <h3>Torneira TON</h3>
-                    <p style="margin: 5px; background: #000000; color: white; width: max-content; padding: 5px 10px; justify-self: center; border-radius: 10px;">🎁 Ganhe <strong>0.00000005 TON</strong></p>    
-                    <button onclick="openClaimModal('ton')" id="btn-ton" style="background: #0088cc; color:white; border:none; width:100%; padding:15px; border-radius:10px; font-weight:bold; cursor:pointer;">REIVINDICAR</button>
+                    <p style="margin: 5px auto; background: #000000; color: white; width: max-content; padding: 5px 10px; border-radius: 10px;">🎁 Ganhe <strong>0.00000005 TON</strong></p>    
+                    <button onclick="openClaimModal('ton')" id="btn-ton" style="background: #0088cc; color:white; border:none; width:100%; padding:15px; border-radius:10px; font-weight:bold; cursor:pointer; margin-top:10px;">REIVINDICAR</button>
                 </div>
             </div>
 
@@ -165,22 +167,25 @@
         </div>
     </main>
 
-    <!-- Modal de Reivindicação -->
+    <!-- Modal de Reivindicação (Separado por Moeda via JS / Classes) -->
     <div id="claim-modal">
         <div class="modal-content">
             <span onclick="closeModal()" style="position: absolute; right: 20px; top: 15px; font-size: 30px; cursor: pointer;">×</span>
             
             <div class="modal-layout">                
-                <div class="ad-lateral" style="width:160px; height:600px; background:#f9f9f9; border:1px dashed #ccc;">
-                    <div id="ad-modal-left" data-ad-zone="sidebarTrx"></div>
+                <!-- Anúncio Lateral Esquerdo (Controlado via ID/Classe para alternar TRX/TON) -->
+                <div class="ad-lateral" style="width:160px; height:600px; background:var(--card-bg, #f9f9f9); border:1px dashed #ccc;">
+                    <div class="ad-slot-sidebar-trx modal-ad-trx" id="ad-modal-left-trx" data-ad-zone="sidebarTrx" style="display:none;"></div>
+                    <div class="ad-slot-sidebar-ton modal-ad-ton" id="ad-modal-left-ton" data-ad-zone="sidebarTon" style="display:none;"></div>
                 </div>
 
                 <div class="modal-main">
                     <h2 id="modal-title">Reivindicar</h2>
                     <p>Complete o desafio abaixo para liberar seus tokens.</p>
                     
-                    <div style="margin: 20px auto; background: #f0f0f0; border-radius: 10px;">
-                         <div id="ad-modal-center" data-ad-zone="home_central_auto"></div>
+                    <div style="margin: 20px auto; background: var(--bg-color, #f0f0f0); border-radius: 10px; min-height: 90px; display: flex; align-items: center; justify-content: center;">
+                         <div class="ad-ficha-trx modal-ad-trx" id="ad-modal-center-trx" data-ad-zone="fichaTecnicaTrx" style="display:none;"></div>
+                         <div class="ad-ficha-ton modal-ad-ton" id="ad-modal-center-ton" data-ad-zone="fichaTecnicaTon" style="display:none;"></div>
                     </div>
 
                     <div class="cf-turnstile" data-sitekey="0x4AAAAAACIz3XQpjGaXppF0" data-callback="onTurnstileSuccess"></div>
@@ -188,25 +193,53 @@
                     <button id="btn-finish-claim" disabled onclick="redirectToShortlink()">PEGAR TOKENS</button>
                 </div>
 
-                 <div class="ad-lateral" style="width:160px; height:600px; background:#f9f9f9; border:1px dashed #ccc;">
-                     <div id="ad-modal-right" data-ad-zone="sidebarTon"></div>
+                 <!-- Anúncio Lateral Direito -->
+                 <div class="ad-lateral" style="width:160px; height:600px; background:var(--card-bg, #f9f9f9); border:1px dashed #ccc;">
+                    <div class="ad-slot-sidebar-trx modal-ad-trx" id="ad-modal-right-trx" data-ad-zone="sidebarTrx" style="display:none;"></div>
+                    <div class="ad-slot-sidebar-ton modal-ad-ton" id="ad-modal-right-ton" data-ad-zone="sidebarTon" style="display:none;"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <style>@keyframes load { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }</style>
-
-    <!-- Scripts Restaurados Corretamente -->
+    <!-- Scripts -->
     <script src="js/script-global.js"></script>
     <script src="js/script-faucets.js"></script>
     <script src="js/ads-manager.js"></script>
 
     <script>
-       window.onclick = function(event) {
-           const modal = document.getElementById('claim-modal');
-           if (event.target == modal) closeModal();
-       }
+        window.onclick = function(event) {
+            const modal = document.getElementById('claim-modal');
+            if (event.target == modal) closeModal();
+        }
+
+        // Função ajustada para alternar os anúncios exibidos no modal de acordo com a moeda escolhida ('trx' ou 'ton')
+        function openClaimModal(moeda) {
+            const modal = document.getElementById('claim-modal');
+            modal.style.display = 'block';
+
+            const elementsTrx = document.querySelectorAll('.modal-ad-trx');
+            const elementsTon = document.querySelectorAll('.modal-ad-ton');
+
+            if (moeda === 'trx') {
+                elementsTrx.forEach(el => el.style.display = 'block');
+                elementsTon.forEach(el => el.style.display = 'none');
+                document.getElementById('modal-title').innerText = 'Reivindicar TRX';
+            } else if (moeda === 'ton') {
+                elementsTrx.forEach(el => el.style.display = 'none');
+                elementsTon.forEach(el => el.style.display = 'block');
+                document.getElementById('modal-title').innerText = 'Reivindicar TON';
+            }
+            
+            // Dispara a checagem do gerenciador de anúncios se necessário
+            if (typeof processarAnunciosDinamicos === 'function') {
+                processarAnunciosDinamicos();
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('claim-modal').style.display = 'none';
+        }
     </script>
 </body>
 </html>
