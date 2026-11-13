@@ -1,3 +1,36 @@
+/* --- SISTEMA DE CORES E VARIÁVEIS (TEMA CLARO E ESCURO) --- */
+:root {
+    --bg-color: #f4f4f9;
+    --text-color: #333333;
+    --card-bg: #ffffff;
+    --card-border: #ddd;
+    --header-bg: #ffffff;
+    --header-border: #eee;
+    --nav-text: #555555;
+    --footer-bg: #121212;
+    --footer-text: #999999;
+    --table-bg: #ffffff;
+    --table-th-bg: #f9f9f9;
+    --filter-bg: #ffffff;
+    --filter-border: #ddd;
+}
+
+[data-theme="dark"] {
+    --bg-color: #0f1115;
+    --text-color: #e0e6ed;
+    --card-bg: #161b22;
+    --card-border: #30363d;
+    --header-bg: #161b22;
+    --header-border: #30363d;
+    --nav-text: #c9d1d9;
+    --footer-bg: #0b0d10;
+    --footer-text: #8b949e;
+    --table-bg: #161b22;
+    --table-th-bg: #21262d;
+    --filter-bg: #161b22;
+    --filter-border: #30363d;
+}
+
 /* RESET BÁSICO */
 html, body {
     max-width: 100%;
@@ -13,9 +46,10 @@ html, body {
 }
 
 body {
-    background-color: #f4f4f9;
-    color: #333;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .logo-container img:hover {
@@ -31,23 +65,24 @@ body {
 
 /* HEADER/NAVBAR */
 .header {
-    background-color: #fff;
-    border-bottom: 2px solid #eee;
+    background-color: var(--header-bg);
+    border-bottom: 2px solid var(--header-border);
     padding: 0px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .banner-link {
-    display: none; /* Mantém a lógica do seu carrossel que oculta os inativos */
+    display: none; 
     text-decoration: none;
     color: inherit;
     background-size: cover;
     background-position: center;
     position: relative;
     width: 100%;
-    height: 100%; /* Ou a altura fixa que o seu carrossel utiliza */
+    height: 100%;
     box-sizing: border-box;
 }
 
@@ -58,23 +93,52 @@ body {
 .logo {
     font-size: 1.5em;
     font-weight: bold;
-    color: #1a73e8; /* Cor que remete a confiança */
+    color: #1a73e8; 
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .navbar a {
     text-decoration: none;
-    color: #555;
+    color: var(--nav-text);
     padding: 10px 15px;
     transition: color 0.3s;
 }
 
 .navbar a:hover {
-    color: #000;
+    color: #1a73e8;
+}
+
+/* BOTÃO DE MODO ESCURO */
+.theme-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+    transition: 0.3s;
+}
+
+.theme-toggle-btn:hover {
+    background-color: rgba(26, 115, 232, 0.1);
+    color: #1a73e8;
+    border-color: #1a73e8;
 }
 
 /* Botão de Cadastro/Submit */
 .submit-btn {
-    background-color: #4CAF50; /* Verde de Ação */
+    background-color: #4CAF50; 
     color: white !important;
     padding: 8px 15px !important;
     border-radius: 5px;
@@ -93,7 +157,7 @@ body {
 
 .dropbtn {
     background-color: transparent;
-    color: #555;
+    color: var(--nav-text);
     padding: 10px 15px;
     font-size: 16px;
     border: none;
@@ -103,21 +167,23 @@ body {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: var(--card-bg);
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
 }
 
 .dropdown-content a {
-    color: #555;
+    color: var(--text-color);
     padding: 12px 16px;
     text-decoration: none;
     display: block;
 }
 
 .dropdown-content a:hover {
-    background-color: #ddd;
+    background-color: rgba(26, 115, 232, 0.1);
 }
 
 .dropdown:hover .dropdown-content {
@@ -125,14 +191,14 @@ body {
 }
 
 .hero-ads {
-            text-align: center;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
-            color: white;
-            border-radius: 0 0 100px 100px;
-        }
+    text-align: center;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+    color: white;
+    border-radius: 0 0 100px 100px;
+}
 .hero-ads h1 { font-size: 2.5em; margin-bottom: 10px; }
- .hero-ads p { opacity: 0.9; font-size: 1.1em; }
+.hero-ads p { opacity: 0.9; font-size: 1.1em; }
 
 .hero-carousel {
     position: relative;
@@ -206,7 +272,7 @@ body {
 }
 
 .headline p {
-    color: #777;
+    color: var(--footer-text);
     margin-top: 5px;
 }
 
@@ -214,35 +280,34 @@ body {
 .coin-title {
     margin-top: 40px;
     padding-bottom: 10px;
-    border-bottom: 2px solid #eee;
+    border-bottom: 2px solid var(--card-border);
     font-size: 1.6em;
-    color: #333;
+    color: var(--text-color);
 }
 
 .faucet-grid {
     display: grid;
-    /* 5 colunas no desktop */
     grid-template-columns: repeat(5, 1fr); 
     gap: 15px;
     margin-top: 20px;
 }
 
 .faucet-card {
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
     border-radius: 8px;
     padding: 25px 5px;
     text-decoration: none;
-    color: #333;
+    color: var(--text-color);
     display: flex;
     align-items: center;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s, border-color 0.3s;
     position: relative;
 }
 
 .faucet-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .faucet-icon {
@@ -254,20 +319,22 @@ body {
 }
 
 .faucet-icon img {
-    image-rendering: -webkit-optimize-contrast; /* Melhora a nitidez em navegadores Chrome/Edge */
+    image-rendering: -webkit-optimize-contrast;
     object-fit: contain;
-    background: #fff; /* Fundo branco caso a logo seja transparente e borrada */
+    background: #fff; 
     padding: 2px;
+    border-radius: 4px;
 }
 
 .faucet-info h3 {
     font-size: 1.1em;
     margin: 0;
+    color: var(--text-color);
 }
 
 .faucet-info .url {
     font-size: 0.8em;
-    color: #777;
+    color: var(--footer-text);
 }
 
 .status-tag {
@@ -281,9 +348,9 @@ body {
     color: white;
 }
 
-.paying { background-color: #4CAF50; } /* Verde Paga */
-.pending { background-color: #ff9800; } /* Laranja Auto */
-.scam { background-color: #f44336; } /* Vermelho Scam/Fechada */
+.paying { background-color: #4CAF50; } 
+.pending { background-color: #ff9800; } 
+.scam { background-color: #f44336; } 
 
 .view-more {
     display: block;
@@ -301,34 +368,31 @@ body {
 /* MEDIA QUERIES para responsividade */
 @media (max-width: 900px) {
     .faucet-grid {
-        /* 3 colunas em tablets */
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
 @media (max-width: 600px) {
     .header {
-        flex-direction: column;
+        flex-direction: row;
     }
     .navbar {
-        margin-top: 10px;
+        margin-top: 0;
     }
     .navbar a, .dropbtn, .submit-btn {
         padding: 5px 8px;
         font-size: 0.9em;
     }
     .faucet-grid {
-        /* 2 colunas em celulares */
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-
 /* Filtros Organizados */
 .filter-controls {
-    background-color: #fff;
+    background-color: var(--filter-bg);
     padding: 15px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--filter-border);
     border-radius: 8px;
     margin-bottom: 20px;
     display: flex;
@@ -337,22 +401,22 @@ body {
     flex-wrap: wrap; 
 }
 
-/* Padronização de altura e estilo para inputs e selects */
 .filter-controls input[type="text"],
 .filter-controls select, 
 .filter-controls button {
-    height: 40px; /* Altura idêntica para todos */
+    height: 40px; 
     padding: 8px 12px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--filter-border);
+    background-color: var(--card-bg);
+    color: var(--text-color);
     border-radius: 5px;
-    box-sizing: border-box; /* Garante que o padding não aumente o tamanho */
+    box-sizing: border-box; 
 }
 
-/* Ajuste específico da barra de busca */
 #search-faucet {
-    flex: 1; /* Faz a barra ocupar o espaço restante se houver */
-    min-width: 200px; /* Não deixa ela ficar espremida */
-    border-radius: 5px; /* Mantendo o padrão quadrado/arredondado dos outros */
+    flex: 1; 
+    min-width: 200px; 
+    border-radius: 5px; 
     outline: none;
 }
 
@@ -363,7 +427,7 @@ body {
 
 .filter-controls label {
     font-weight: bold;
-    color: #555;
+    color: var(--text-color);
     font-size: 14px;
 }
 
@@ -383,32 +447,33 @@ body {
 
 /* Tabela */
 .table-responsive {
-    overflow-x: auto; /* Para a tabela não quebrar no mobile */
+    overflow-x: auto; 
 }
 
 .faucet-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fff;
+    background-color: var(--table-bg);
     box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    color: var(--text-color);
 }
 
 .faucet-table th, .faucet-table td {
     padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--card-border);
 }
 
 .faucet-table th {
-    background-color: #f9f9f9;
+    background-color: var(--table-th-bg);
     font-weight: bold;
-    color: #333;
+    color: var(--text-color);
     text-transform: uppercase;
     font-size: 0.9em;
 }
 
 .faucet-table tr:hover {
-    background-color: #f5f5f5;
+    background-color: rgba(26, 115, 232, 0.05);
 }
 
 /* Estrelas na Tabela */
@@ -417,7 +482,6 @@ body {
     font-size: 0.9em;
 }
 
-/* Botão Visitar na Tabela */
 .faucet-visit-btn {
     display: inline-block;
     background-color: #4CAF50;
@@ -439,19 +503,20 @@ body {
 }
 
 .coin-item:hover iconify-icon {
-    transform: scale(1.2); /* Dá um zoom no ícone quando passa o mouse */
+    transform: scale(1.2); 
 }
 
 .engagement-container {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Estrelas de um lado, botões do outro */
-    background: #f9f9f9;
+    justify-content: space-between; 
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     padding: 15px;
     border-radius: 12px;
     margin-top: 20px;
     gap: 20px;
-    flex-wrap: wrap; /* Importante para celular */
+    flex-wrap: wrap; 
 }
 
 .engagement-item {
@@ -471,7 +536,7 @@ body {
 #rating-status {
     font-size: 14px;
     font-weight: bold;
-    color: #666;
+    color: var(--footer-text);
     min-width: 60px;
 }
 
@@ -495,7 +560,6 @@ body {
 
 .btn-share:hover { transform: translateY(-3px); }
 
-/* Cores das Redes */
 .wa { background: #25d366; }
 .tg { background: #0088cc; }
 .fb { background: #1877f2; }
@@ -506,21 +570,22 @@ body {
 .input-group-row { display: flex; gap: 10px; margin-bottom: 10px; }
 .input-group-row input { flex: 1; }
 .comment-form input, .comment-form textarea {
-    width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px;
+    width: 100%; padding: 12px; border: 1px solid var(--card-border); background: var(--card-bg); color: var(--text-color); border-radius: 6px; margin-bottom: 10px;
 }
 .comment-item {
-    background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #1a73e8; margin-top: 15px;
+    background: var(--card-bg); border: 1px solid var(--card-border); padding: 15px; border-radius: 8px; border-left: 4px solid #1a73e8; margin-top: 15px;
 }
 .new-anim { animation: fadeIn 0.5s ease-in; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Container do anúncio para garantir centralização */
+/* Anúncios */
 .ad-slot-top, .ad-slot-mid, .ad-slot-sidebar, .ad-slot-pagegain {
     display: flex;
     text-align: center;
     margin: 15px auto;
     width: 100%;
-    background: #c0c0c03d;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     padding: 20px;
     border-radius: 15px;
     overflow: hidden;
@@ -535,63 +600,58 @@ body {
     zoom: 86%;
 }
 
-/* O texto "Publicidade" */
 .ad-label {
-    display: block;         /* Ocupa a linha toda, jogando o banner para baixo */
-    width: 100%;            /* Garante que ocupe a largura total */
-    text-align: left;       /* Alinha o texto no canto esquerdo, como você quer */
+    display: block;        
+    width: 100%;            
+    text-align: left;       
     font-size: 11px;
-    color: #999;
+    color: var(--footer-text);
     text-transform: uppercase;
-    padding-left: 5px;      /* Pequeno ajuste para não colar na borda */
+    padding-left: 5px;      
     margin-bottom: -17px;
 }
 
-/* Garante que imagens e iframes não quebrem o layout */
 .ad-slot-top img, .ad-slot-mid img, .ad-slot-sidebar img, 
 .ad-slot-top iframe, .ad-slot-sidebar iframe, .ad-slot-pagegain img, .ad-slot-pagegain iframe {
     max-width: 100%;
     display: block;
-    margin: 0 auto;         /* Centraliza o banner em si */
+    margin: 0 auto;          
     border: none;
 }
 
-/* --- GARANTINDO QUE O MENU APAREÇA --- */
+/* Menu Mobile */
 .menu-toggle {
-    display: none; /* Escondido no Desktop */
+    display: none; 
     background: none;
     border: none;
     cursor: pointer;
     padding: 10px;
-    z-index: 1001; /* Fica acima de tudo */
+    z-index: 1001; 
 }
 
-/* Ícone dentro do botão (Font Awesome ou Barrinhas) */
 .menu-toggle i, .menu-toggle span {
-    font-size: 28px; /* Tamanho grande para enxergar bem */
-    color: #333;    /* Cor escura para contrastar com o fundo branco */
+    font-size: 28px; 
+    color: var(--text-color);    
     display: block;
 }
 
-/* --- Mobile (Até 768px) --- */
 @media (max-width: 768px) {
-      .header {
+    .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        position: relative; /* Necessário para o menu absoluto funcionar */
-          flex-direction: row;
+        position: relative; 
+        flex-direction: row;
     }
 
     .menu-toggle {
-        display: block !important; /* Força o aparecimento no Mobile */
+        display: block !important; 
     }
 
-    /* Se você estiver usando 3 spans para fazer as barrinhas na mão */
     .bar {
         width: 25px;
         height: 3px;
-        background-color: #333;
+        background-color: var(--text-color);
         margin: 5px 0;
         transition: 0.4s;
         display: block;
@@ -602,16 +662,17 @@ body {
         align-items: center;
     }
 
-
-    /* Ajuste para a Navbar não empurrar tudo quando aberta */
     .navbar {
         display: none; 
         position: absolute;
-        top: 100%;                /* Aparece logo abaixo do header */
+        top: 100%;                
         left: 0;
         width: 100%;
-        background-color: #ffffff;
+        background-color: var(--header-bg);
+        border-bottom: 1px solid var(--header-border);
         z-index: 999;
+        flex-direction: column;
+        align-items: stretch;
     }
 
     .navbar.active {
@@ -620,15 +681,17 @@ body {
     }
 
     .navbar a, .dropdown {
-        width: 95%;
-        padding: 5px 20px;
-        border-bottom: 1px solid #eee;
+        width: 100%;
+        padding: 12px 20px;
+        border-bottom: 1px solid var(--header-border);
     }
 
     .dropdown-content {
-        position: static; /* Dropdown vira lista simples no mobile */
+        position: static; 
         box-shadow: none;
         padding-left: 20px;
+        border: none;
+        background: transparent;
     }
     .faucet-card {max-width: 195px;padding:5px;}
     .status-tag {
@@ -637,48 +700,43 @@ body {
         padding: 2px 3px;}
     .faucet-info .url {
         font-size: 0.6em;
-}
+    }
     .faucet-info {
         width: 100px;
-    overflow-wrap: break-word;}
+        overflow-wrap: break-word;}
     .faucet-icon img {
         height: 62px;
         object-fit: cover;
     }
-    
 }
 
-/* --- TAGS MINIMALISTAS (SÓ ÍCONES) --- */
 .tag-badge {
     position: absolute;
-    top: 5px; /* Ajustado para ficar dentro do card mas no topo */
+    top: 5px; 
     width: 22px;
     height: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 5px; /* Quadradinho levemente arredondado */
+    border-radius: 5px; 
     font-size: 11px;
     color: white;
     z-index: 10;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Estrela no canto direito */
 .tag-destaque {
     right: 5px;
-    background: #ffc107; /* Amarelo sólido mais limpo */
+    background: #ffc107; 
 }
 
-/* Ícone AD no canto esquerdo */
 .tag-patrocinado {
     left: 5px;
-    background: #1a73e8; /* Azul Brazuka */
+    background: #1a73e8; 
 }
 
-/* Ajuste no card para não encavalar com o ícone da faucet */
 .faucet-card {
-    padding-top: 25px !important; /* Dá um respiro pro ícone não bater na tag */
+    padding-top: 25px !important; 
 }
 .social-stats { margin: 40px auto; }
 .stats-grid {
@@ -687,11 +745,11 @@ body {
     gap: 20px;
 }
 .stats-column {
-    background: #fff;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    border: 1px solid #f0f0f0;
 }
 .stats-column h3 {
     font-size: 1.1rem;
@@ -700,33 +758,32 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    border-bottom: 2px solid #e8f0fe;
+    border-bottom: 2px solid var(--card-border);
     padding-bottom: 10px;
 }
 .mini-list { display: flex; flex-direction: column; gap: 12px; }
 
-/* Estilo dos itens dentro dos widgets */
 .mini-item {
     display: flex;
     align-items: center;
     gap: 10px;
     text-decoration: none;
-    color: #333;
+    color: var(--text-color);
     padding: 8px;
     border-radius: 8px;
     transition: background 0.2s;
 }
-.mini-item:hover { background: #f8fbff; }
+.mini-item:hover { background: rgba(26, 115, 232, 0.1); }
 .mini-item img { width: 24px; height: 24px; border-radius: 4px; }
-.mini-info h4 { font-size: 0.9rem; margin: 0; }
-.mini-info p { font-size: 0.75rem; color: #777; margin: 0; }
-.rating-pill { background: #fff8e1; color: #ffa000; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; }
+.mini-info h4 { font-size: 0.9rem; margin: 0; color: var(--text-color); }
+.mini-info p { font-size: 0.75rem; color: var(--footer-text); margin: 0; }
+.rating-pill { background: rgba(255, 160, 0, 0.15); color: #ffa000; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; }
 
 .stats-hero {
-    background: linear-gradient(135deg, #ececec 0%, #b6d6ff 100%);
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--header-border) 100%);
     padding: 60px 20px;
     text-align: center;
-    border-top: 1px solid #dee2e6;
+    border-top: 1px solid var(--card-border);
 }
 
 .stats-title {
@@ -745,7 +802,8 @@ body {
 }
 
 .stat-item {
-    background: #fff;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.05);
@@ -767,12 +825,12 @@ body {
 .number-container {
     font-size: 2.5em;
     font-weight: bold;
-    color: #333;
+    color: var(--text-color);
     margin-bottom: 5px;
 }
 
 .stat-item p {
-    color: #666;
+    color: var(--footer-text);
     font-weight: 500;
 }
 
@@ -784,30 +842,31 @@ body {
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    background-color: #f0f0f0; /* Fundo enquanto carrega */
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
 }
 
 .ad-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Garante que o GIF preencha o espaço sem esticar feio */
+    object-fit: cover; 
     transition: opacity 0.5s ease-in-out;
 }
 
 .ad-label-curso {
     font-size: 11px;
     text-transform: uppercase;
-    color: #999;
+    color: var(--footer-text);
     letter-spacing: 1px;
     text-align: center;
     font-weight: 500;
-    background-color: #d5d5d5;
+    background-color: var(--table-th-bg);
     padding: 10px;
     margin-top: -7px;
 }
-/* Efeito para os Patrocinados (Azul) */
+
 .faucet-card.card-patrocinado {
-    border: 1px solid rgba(26, 115, 232, 0.1); /* Borda bem clarinha em repouso */
+    border: 1px solid rgba(26, 115, 232, 0.3); 
 }
 
 .faucet-card.card-patrocinado:hover {
@@ -816,23 +875,21 @@ body {
     transform: translateY(-5px);
 }
 
-/* Efeito para os Destaques (Dourado) */
 .faucet-card.card-destaque {
-    border: 1px solid rgba(255, 215, 0, 0.1); /* Borda bem clarinha em repouso */
+    border: 1px solid rgba(255, 215, 0, 0.3); 
 }
 
 .faucet-card.card-destaque:hover {
-    border-color: #ffd700 !important; /* Gold */
+    border-color: #ffd700 !important; 
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
     transform: translateY(-5px);
 }
 
-/* Efeito para os Normais (Apenas Sombra) */
 .faucet-card:not(.card-patrocinado):not(.card-destaque):hover {
-    border-color: transparent;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
     transform: translateY(-5px);
 }
+
 .news-ticker-container {
     width: 100%;
     background: #1a1a1a;
@@ -870,12 +927,12 @@ body {
 .ticker-track {
     display: flex;
     white-space: nowrap;
-    padding-left: 100%; /* Começa fora da tela */
+    padding-left: 100%; 
     animation: ticker-scroll 90s linear infinite;
 }
 
 .ticker-track:hover {
-    animation-play-state: paused; /* Para ao passar o mouse */
+    animation-play-state: paused; 
 }
 
 .ticker-item {
@@ -897,19 +954,19 @@ body {
     50% { opacity: 0.5; }
 }
 
-/* Ajuste mobile */
 @media (max-width: 600px) {
-    .ticker-label span { display: none; } /* Deixa só o ícone no celular */
+    .ticker-label span { display: none; } 
 }
 
-/* --- FOOTER ATUALIZADO COM TOOLTIP "COPIADO!" --- */
+/* FOOTER */
 .footer {
-    background-color: #121212;
-    color: #999;
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
     padding: 50px 20px 30px 20px;
     margin-top: 50px;
     font-size: 1em;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid var(--card-border);
+    transition: background-color 0.3s ease;
 }
 
 .footer-container {
@@ -923,76 +980,25 @@ body {
     padding-bottom: 40px;
 }
 
-/* Colunas individuais */
 .footer-section {
     flex: 1;
     text-align: left;
 }
 
-.footer-col-1 {
-    flex: 1.1;
-}
+.footer-col-1 { flex: 1.1; }
+.footer-col-2 { flex: 1.2; }
+.footer-col-3 { flex: 1.3; }
 
-.footer-col-2 {
-    flex: 1.2;
-}
+.footer-logo-container { margin-bottom: 15px; }
+.footer-logo { max-width: 220px; height: auto; display: block; }
+.footer-slogan { font-size: 0.85em; color: var(--footer-text); line-height: 1.5; margin-bottom: 15px; }
 
-.footer-col-3 {
-    flex: 1.3;
-}
+.footer-nav-grid { display: flex; gap: 30px; }
+.footer-nav-column h4 { color: #fff; margin-bottom: 12px; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+.footer-nav-links { display: flex; flex-direction: column; gap: 8px; }
+.footer-nav-links a { color: var(--footer-text); text-decoration: none; font-size: 0.85em; transition: color 0.2s; }
+.footer-nav-links a:hover { color: #fff; }
 
-/* Logo no Rodapé */
-.footer-logo-container {
-    margin-bottom: 15px;
-}
-
-.footer-logo {
-    max-width: 220px;
-    height: auto;
-    display: block;
-}
-
-/* Slogan */
-.footer-slogan {
-    font-size: 0.85em;
-    color: #888;
-    line-height: 1.5;
-    margin-bottom: 15px;
-}
-
-/* Navegação Bipartida (Ganhe Cripto & Institucional) */
-.footer-nav-grid {
-    display: flex;
-    gap: 30px;
-}
-
-.footer-nav-column h4 {
-    color: #fff;
-    margin-bottom: 12px;
-    font-size: 0.9em;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-}
-
-.footer-nav-links {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.footer-nav-links a {
-    color: #999;
-    text-decoration: none;
-    font-size: 0.85em;
-    transition: color 0.2s;
-}
-
-.footer-nav-links a:hover {
-    color: #fff;
-}
-
-/* Seção de Doações (Coluna 3) */
 .footer-donate-section {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -1001,36 +1007,17 @@ body {
     text-align: left;
 }
 
-.footer-donate-header {
-    font-weight: bold;
-    font-size: 0.95em;
-    display: flex;
-    align-items: center;
-    margin-bottom: 6px;
-    color: #fff;
-}
-
-.footer-donate-desc {
-    font-size: 0.78em;
-    color: #888;
-    margin-bottom: 12px;
-    line-height: 1.4;
-}
-
-.footer-donate-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+.footer-donate-header { font-weight: bold; font-size: 0.95em; display: flex; align-items: center; margin-bottom: 6px; color: #fff; }
+.footer-donate-desc { font-size: 0.78em; color: var(--footer-text); margin-bottom: 12px; line-height: 1.4; }
+.footer-donate-grid { display: flex; flex-direction: column; gap: 10px; }
 
 .donate-item {
     display: flex;
     flex-direction: column;
     gap: 3px;
-    position: relative; /* Necessário para posicionar o aviso flutuante */
+    position: relative; 
 }
 
-/* Estilo do aviso "Copiado!" */
 .copy-tooltip {
     position: absolute;
     right: 0;
@@ -1046,50 +1033,14 @@ body {
     pointer-events: none;
 }
 
-.copy-tooltip.show {
-    opacity: 1;
-}
+.copy-tooltip.show { opacity: 1; }
 
-.donate-label {
-    font-size: 0.75em;
-    font-weight: 600;
-    color: #aaa;
-}
+.donate-label { font-size: 0.75em; font-weight: 600; color: #aaa; }
+.donate-input-group { display: flex; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 5px; overflow: hidden; }
+.donate-input-group input { background: transparent; border: none; color: #fff; padding: 6px 10px; font-family: monospace; font-size: 0.75em; width: 100%; outline: none; }
+.donate-input-group button { background: rgba(255, 255, 255, 0.06); border: none; color: #ccc; padding: 0 10px; cursor: pointer; transition: 0.2s; }
+.donate-input-group button:hover { background: var(--primary, #1a73e8); color: #fff; }
 
-.donate-input-group {
-    display: flex;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.donate-input-group input {
-    background: transparent;
-    border: none;
-    color: #fff;
-    padding: 6px 10px;
-    font-family: monospace;
-    font-size: 0.75em;
-    width: 100%;
-    outline: none;
-}
-
-.donate-input-group button {
-    background: rgba(255, 255, 255, 0.06);
-    border: none;
-    color: #ccc;
-    padding: 0 10px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.donate-input-group button:hover {
-    background: var(--primary, #1a73e8);
-    color: #fff;
-}
-
-/* Barra Inferior de Créditos */
 .footer-bottom-bar {
     max-width: 1280px;
     margin: 0 auto;
@@ -1101,50 +1052,17 @@ body {
     flex-wrap: wrap;
     gap: 15px;
     font-size: 0.85em;
-    color: #777;
+    color: var(--footer-text);
 }
 
-.footer-bottom-left {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
+.footer-bottom-left { display: flex; align-items: center; gap: 5px; }
+.hub-link { color: #3498db; text-decoration: none; font-weight: 600; }
+.hub-link:hover { text-decoration: underline; }
+.deus-louvado { color: #f1c40f; font-weight: 500; }
 
-.hub-link {
-    color: #3498db;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.hub-link:hover {
-    text-decoration: underline;
-}
-
-.deus-louvado {
-    color: #f1c40f;
-    font-weight: 500;
-}
-
-/* Responsivo para Celulares */
 @media (max-width: 900px) {
-    .footer-container {
-        flex-wrap: wrap;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 30px;
-    }
-    .footer-section {
-        width: 100%;
-        text-align: left;
-    }
-    .footer-nav-grid {
-        flex-direction: column;
-        gap: 20px;
-    }
-    .footer-bottom-bar {
-        flex-direction: column;
-        text-align: center;
-        justify-content: center;
-    }
+    .footer-container { flex-wrap: wrap; flex-direction: column; align-items: stretch; gap: 30px; }
+    .footer-section { width: 100%; text-align: left; }
+    .footer-nav-grid { flex-direction: column; gap: 20px; }
+    .footer-bottom-bar { flex-direction: column; text-align: center; justify-content: center; }
 }
-
