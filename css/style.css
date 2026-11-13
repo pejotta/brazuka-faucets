@@ -604,11 +604,11 @@ body {
     display: block;        
     width: 100%;            
     text-align: left;       
-    font-size: 11px;
+    font-size: 10px;
     color: var(--footer-text);
     text-transform: uppercase;
-    padding-left: 5px;      
-    margin-bottom: -17px;
+    padding-left: 0px;      
+    margin-bottom: 0px;
 }
 
 .ad-slot-top img, .ad-slot-mid img, .ad-slot-sidebar img, 
