@@ -1,5 +1,5 @@
 /**
- * BRAZUKA FAUCETS - HOME SCRIPT (LAZY LOADING REAL POR BLOCOS)
+ * BRAZUKA FAUCETS - HOME SCRIPT (LAZY LOADING REAL POR BLOCOS DE MOEDAS)
  * Analista responsável: Gemini
  */
 
@@ -49,10 +49,7 @@ function resetarTimer() {
     adTimer = setInterval(proximoAd, 15000); // 15 segundos
 }
 
-// Variável global para armazenar os dados cacheados e evitar múltiplos fetchs
-let cacheFaucetsData = [];
-
-// Função mestre que renderiza uma moeda específica no seu container
+// --- FUNÇÃO PARA RENDERIZAR UMA MOEDA ESPECÍFICA ---
 function renderizarBlocoMoeda(moeda, dados) {
     const container = document.getElementById(`grid-${moeda}`);
     if (!container || container.dataset.carregado === "true") return;
@@ -119,7 +116,6 @@ function renderizarBlocoMoeda(moeda, dados) {
 
 // --- EVENTO PRINCIPAL ---
 document.addEventListener('DOMContentLoaded', async () => {
-    // Inicia o Slider do Topo imediatamente
     renderizarAd(adIndex);
     resetarTimer();
 
@@ -129,35 +125,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (btnPrev) btnPrev.onclick = anteriorAd;
 
     try {
-        // 1. Busca os dados gerais na Worker
+        // Busca os dados globais uma única vez para termos em cache
         const response = await fetch(`${WORKER_URL}/get-all-faucets?t=${Date.now()}`);
-        cacheFaucetsData = await response.json();
+        const cacheFaucetsData = await response.json();
 
-        // 2. Renderiza APENAS a primeira dobra imediatamente (BTC e ETH)
+        // 1. Renderiza IMEDIATAMENTE apenas a primeira dobra (BTC e ETH)
         renderizarBlocoMoeda('btc', cacheFaucetsData);
         renderizarBlocoMoeda('eth', cacheFaucetsData);
 
-        // 3. Configura o Observador de Rolagem Real para as seções abaixo da dobra
+        // 2. Observador de Rolagem Real para cada .lazy-section individual
         const observerSecoes = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const section = entry.target;
                     
-                    // Varre os grids de moedas dentro desta seção específica e renderiza
+                    // Encontra todos os grids de moedas dentro dessa seção e os preenche
                     section.querySelectorAll('[id^="grid-"]').forEach(gridEl => {
                         const moedaId = gridEl.id.replace('grid-', '');
-                        renderizarBlocoMoeda(moedaId, cacheFaucetsData);
+                        if (['doge', 'trx', 'central', 'autofaucet', 'minerador', 'bet', 'airdrop', 'ipo'].includes(moedaId)) {
+                            renderizarBlocoMoeda(moedaId, cacheFaucetsData);
+                        }
                     });
 
                     section.classList.add('is-visible');
                     observer.unobserve(section);
                 }
             });
-        }, { rootMargin: '50px 0px', threshold: 0.05 });
+        }, { rootMargin: '100px 0px', threshold: 0.05 });
 
         document.querySelectorAll('.lazy-section').forEach(sec => observerSecoes.observe(sec));
 
-        // 4. Seção lateral/inferior de Recém Adicionados
+        // 3. Recém Adicionados
         const recentContainer = document.getElementById('grid-recent');
         if (recentContainer) {
             recentContainer.innerHTML = [...cacheFaucetsData].reverse().slice(0, 5).map(f => `
@@ -171,10 +169,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             `).join('');
         }
 
-        // 5. Estatísticas e Rankings globais
+        // 4. Estatísticas e Rankings
         loadHomeStats(cacheFaucetsData);
 
-        // Observador dos números contadores do rodapé
+        // Observador dos contadores numéricos
         const statsHero = document.querySelector('.stats-hero');
         if (statsHero) {
             const observerStats = new IntersectionObserver((entries) => {
