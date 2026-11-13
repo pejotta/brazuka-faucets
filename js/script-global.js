@@ -16,6 +16,35 @@ async function loadEverything() {
     initFooterWidgets();
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    const themeToggleBtn = document.getElementById("theme-toggle");
+    const themeIcon = document.getElementById("theme-icon");
+    const htmlElement = document.documentElement;
+
+    // Restaura o tema salvo anteriormente
+    const savedTheme = localStorage.getItem("brazuka_theme") || "light";
+    if (savedTheme === "dark") {
+        htmlElement.setAttribute("data-theme", "dark");
+        if (themeIcon) themeIcon.className = "fas fa-sun";
+    }
+
+    // Alterna ao clicar
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener("click", () => {
+            const currentTheme = htmlElement.getAttribute("data-theme");
+            if (currentTheme === "dark") {
+                htmlElement.removeAttribute("data-theme");
+                localStorage.setItem("brazuka_theme", "light");
+                if (themeIcon) themeIcon.className = "fas fa-moon";
+            } else {
+                htmlElement.setAttribute("data-theme", "dark");
+                localStorage.setItem("brazuka_theme", "dark");
+                if (themeIcon) themeIcon.className = "fas fa-sun";
+            }
+        });
+    }
+});
+
 // ÚNICA E CORRETA FUNÇÃO DO TICKER (Puxando do Banco de Dados Cloudflare)
 async function carregarTicker() {
     const tickerTrack = document.getElementById('ticker-track');
