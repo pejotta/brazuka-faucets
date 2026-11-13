@@ -1,5 +1,5 @@
 /**
- * BRAZUKA FAUCETS - HOME SCRIPT
+ * BRAZUKA FAUCETS - HOME SCRIPT (LAZY LOADING REAL POR BLOCOS)
  * Analista responsável: Gemini
  */
 
@@ -49,7 +49,75 @@ function resetarTimer() {
     adTimer = setInterval(proximoAd, 15000); // 15 segundos
 }
 
-// --- EVENTO PRINCIPAL & LAZY LOADING POR SEÇÕES ---
+// Variável global para armazenar os dados cacheados e evitar múltiplos fetchs
+let cacheFaucetsData = [];
+
+// Função mestre que renderiza uma moeda específica no seu container
+function renderizarBlocoMoeda(moeda, dados) {
+    const container = document.getElementById(`grid-${moeda}`);
+    if (!container || container.dataset.carregado === "true") return;
+    container.dataset.carregado = "true";
+
+    const allInCategory = dados.filter(f => Array.isArray(f.moeda) ? f.moeda.includes(moeda) : f.moeda === moeda);
+    
+    const vips = allInCategory.filter(f => f.patrocinado == "true" || f.patrocinado === true || f.destaque == "true" || f.destaque === true);
+    const normais = allInCategory.filter(f => !(f.patrocinado == "true" || f.patrocinado === true || f.destaque == "true" || f.destaque === true));
+    
+    const normaisEmbaralhados = normais.sort(() => Math.random() - 0.5);
+    vips.sort((a, b) => (a.patrocinado == "true" || a.patrocinado === true) ? -1 : 1);
+
+    const finalLista = [...vips, ...normaisEmbaralhados].slice(0, 5);
+    container.innerHTML = ''; 
+
+    if (!finalLista.length) {
+        container.innerHTML = '<p style="color:#777; padding:10px;">Novas oportunidades em breve!</p>';
+        return;
+    }
+
+    finalLista.forEach(faucet => {
+        let tagsHTML = '';
+        let destaqueClass = ''; 
+
+        if (faucet.patrocinado == "true" || faucet.patrocinado === true) {
+            tagsHTML = `<div class="tag-badge tag-patrocinado"><i class="fas fa-ad"></i></div>`;
+            destaqueClass = 'card-patrocinado';
+        } else if (faucet.destaque == "true" || faucet.destaque === true) {
+            tagsHTML = `<div class="tag-badge tag-destaque"><i class="fas fa-star"></i></div>`;
+            destaqueClass = 'card-destaque';
+        }
+
+        const domain = faucet.url.replace(/^(https?:\/\/)/, '').split('/')[0];
+        const statusLabels = { 'paying': 'Paga', 'pending': 'Análise', 'scam': 'SCAM/OFF' };
+
+        const cardHtml = document.createElement('a');
+        cardHtml.href = `faucet.html?id=${faucet.id}`;
+        cardHtml.className = `faucet-card ${destaqueClass}`;
+        cardHtml.innerHTML = `
+            ${tagsHTML}
+            <div class="faucet-icon">
+                <img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" 
+                     style="width:32px; height:32px; border-radius:4px;"
+                     loading="lazy"
+                     onerror="this.src='https://api.iconify.design/cryptocurrency:${Array.isArray(faucet.moeda) ? faucet.moeda[0] : faucet.moeda}.svg'">
+            </div>
+            <div class="faucet-info">
+                <h3>${faucet.nome}</h3>
+                <p class="url">${domain}</p>
+            </div>
+            <span class="status-tag ${faucet.status}">${statusLabels[faucet.status] || 'Análise'}</span>
+        `;
+
+        cardHtml.addEventListener('click', () => {
+            if (typeof registrarClique === 'function') {
+                registrarClique('faucet', faucet.nome || faucet.id);
+            }
+        });
+
+        container.appendChild(cardHtml);
+    });
+}
+
+// --- EVENTO PRINCIPAL ---
 document.addEventListener('DOMContentLoaded', async () => {
     // Inicia o Slider do Topo imediatamente
     renderizarAd(adIndex);
@@ -61,105 +129,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (btnPrev) btnPrev.onclick = anteriorAd;
 
     try {
-        // Busca todos os dados da Worker de uma vez para abastecer os blocos sob demanda
+        // 1. Busca os dados gerais na Worker
         const response = await fetch(`${WORKER_URL}/get-all-faucets?t=${Date.now()}`);
-        const data = await response.json();
+        cacheFaucetsData = await response.json();
 
-        // Função que renderiza uma moeda específica no seu respectivo container
-        const renderizarBlocoMoeda = (moeda) => {
-            const container = document.getElementById(`grid-${moeda}`);
-            if (!container || container.classList.contains('carregado')) return;
-            container.classList.add('carregado');
+        // 2. Renderiza APENAS a primeira dobra imediatamente (BTC e ETH)
+        renderizarBlocoMoeda('btc', cacheFaucetsData);
+        renderizarBlocoMoeda('eth', cacheFaucetsData);
 
-            const allInCategory = data.filter(f => Array.isArray(f.moeda) ? f.moeda.includes(moeda) : f.moeda === moeda);
-            
-            const vips = allInCategory.filter(f => f.patrocinado == "true" || f.patrocinado === true || f.destaque == "true" || f.destaque === true);
-            const normais = allInCategory.filter(f => !(f.patrocinado == "true" || f.patrocinado === true || f.destaque == "true" || f.destaque === true));
-            
-            const normaisEmbaralhados = normais.sort(() => Math.random() - 0.5);
-            vips.sort((a, b) => (a.patrocinado == "true" || a.patrocinado === true) ? -1 : 1);
-
-            const finalLista = [...vips, ...normaisEmbaralhados].slice(0, 5);
-            container.innerHTML = ''; 
-
-            if (!finalLista.length) {
-                container.innerHTML = '<p style="color:#777; padding:10px;">Novas oportunidades em breve!</p>';
-                return;
-            }
-
-            finalLista.forEach(faucet => {
-                let tagsHTML = '';
-                let destaqueClass = ''; 
-
-                if (faucet.patrocinado == "true" || faucet.patrocinado === true) {
-                    tagsHTML = `<div class="tag-badge tag-patrocinado"><i class="fas fa-ad"></i></div>`;
-                    destaqueClass = 'card-patrocinado';
-                } else if (faucet.destaque == "true" || faucet.destaque === true) {
-                    tagsHTML = `<div class="tag-badge tag-destaque"><i class="fas fa-star"></i></div>`;
-                    destaqueClass = 'card-destaque';
-                }
-
-                const domain = faucet.url.replace(/^(https?:\/\/)/, '').split('/')[0];
-                const statusLabels = { 'paying': 'Paga', 'pending': 'Análise', 'scam': 'SCAM/OFF' };
-
-                const cardHtml = document.createElement('a');
-                cardHtml.href = `faucet.html?id=${faucet.id}`;
-                cardHtml.className = `faucet-card ${destaqueClass}`;
-                cardHtml.innerHTML = `
-                    ${tagsHTML}
-                    <div class="faucet-icon">
-                        <img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" 
-                             style="width:32px; height:32px; border-radius:4px;"
-                             loading="lazy"
-                             onerror="this.src='https://api.iconify.design/cryptocurrency:${Array.isArray(faucet.moeda) ? faucet.moeda[0] : faucet.moeda}.svg'">
-                    </div>
-                    <div class="faucet-info">
-                        <h3>${faucet.nome}</h3>
-                        <p class="url">${domain}</p>
-                    </div>
-                    <span class="status-tag ${faucet.status}">${statusLabels[faucet.status] || 'Análise'}</span>
-                `;
-
-                cardHtml.addEventListener('click', () => {
-                    if (typeof registrarClique === 'function') {
-                        registrarClique('faucet', faucet.nome || faucet.id);
-                    }
-                });
-
-                container.appendChild(cardHtml);
-            });
-        };
-
-        // 1. PRIMEIRA DOBRA CARREGA IMEDIATAMENTE (BTC e ETH)
-        renderizarBlocoMoeda('btc');
-        renderizarBlocoMoeda('eth');
-
-        // 2. DEMAIS BLOCOS CARREGAM APENAS QUANDO O USUÁRIO ROLA A PÁGINA (Lazy Observer)
+        // 3. Configura o Observador de Rolagem Real para as seções abaixo da dobra
         const observerSecoes = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const section = entry.target;
                     
-                    // Identifica quais grids estão dentro desta seção e renderiza
+                    // Varre os grids de moedas dentro desta seção específica e renderiza
                     section.querySelectorAll('[id^="grid-"]').forEach(gridEl => {
                         const moedaId = gridEl.id.replace('grid-', '');
-                        if (['doge', 'trx', 'central', 'autofaucet', 'minerador', 'bet', 'airdrop', 'ipo'].includes(moedaId)) {
-                            renderizarBlocoMoeda(moedaId);
-                        }
+                        renderizarBlocoMoeda(moedaId, cacheFaucetsData);
                     });
 
                     section.classList.add('is-visible');
                     observer.unobserve(section);
                 }
             });
-        }, { rootMargin: '200px 0px', threshold: 0.01 });
+        }, { rootMargin: '50px 0px', threshold: 0.05 });
 
         document.querySelectorAll('.lazy-section').forEach(sec => observerSecoes.observe(sec));
 
-        // 3. RECÉM ADICIONADOS
+        // 4. Seção lateral/inferior de Recém Adicionados
         const recentContainer = document.getElementById('grid-recent');
         if (recentContainer) {
-            recentContainer.innerHTML = [...data].reverse().slice(0, 5).map(f => `
+            recentContainer.innerHTML = [...cacheFaucetsData].reverse().slice(0, 5).map(f => `
                 <a href="faucet.html?id=${f.id}" class="mini-item" onclick="registrarClique('faucet', '${f.nome || f.id}')">
                     <img src="https://www.google.com/s2/favicons?domain=${f.url.replace(/^(https?:\/\/)/, '').split('/')[0]}&sz=64" loading="lazy">
                     <div class="mini-info">
@@ -170,10 +171,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             `).join('');
         }
 
-        // 4. ESTATÍSTICAS E RANKING
-        loadHomeStats(data);
+        // 5. Estatísticas e Rankings globais
+        loadHomeStats(cacheFaucetsData);
 
-        // Observer para os contadores numéricos
+        // Observador dos números contadores do rodapé
         const statsHero = document.querySelector('.stats-hero');
         if (statsHero) {
             const observerStats = new IntersectionObserver((entries) => {
