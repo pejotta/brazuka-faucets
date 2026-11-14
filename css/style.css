@@ -368,7 +368,7 @@ body {
 /* MEDIA QUERIES para responsividade */
 @media (max-width: 900px) {
     .faucet-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -693,7 +693,7 @@ body {
         border: none;
         background: transparent;
     }
-    .faucet-card {max-width: 195px;padding:5px;}
+    .faucet-card {max-width: 100%;padding:5px;}
     .status-tag {
         bottom: 0;
         right: 0;
