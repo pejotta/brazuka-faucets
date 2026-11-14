@@ -63,7 +63,7 @@ function renderizarBlocoMoeda(moeda, dados) {
     const normaisEmbaralhados = normais.sort(() => Math.random() - 0.5);
     vips.sort((a, b) => (a.patrocinado == "true" || a.patrocinado === true) ? -1 : 1);
 
-    const finalLista = [...vips, ...normaisEmbaralhados].slice(0, 5);
+    const finalLista = [...vips, ...normaisEmbaralhados].slice(0, 4);
     container.innerHTML = ''; 
 
     if (!finalLista.length) {
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // 3. Recém Adicionados
         const recentContainer = document.getElementById('grid-recent');
         if (recentContainer) {
-            recentContainer.innerHTML = [...cacheFaucetsData].reverse().slice(0, 5).map(f => `
+            recentContainer.innerHTML = [...cacheFaucetsData].reverse().slice(0, 4).map(f => `
                 <a href="faucet.html?id=${f.id}" class="mini-item" onclick="registrarClique('faucet', '${f.nome || f.id}')">
                     <img src="https://www.google.com/s2/favicons?domain=${f.url.replace(/^(https?:\/\/)/, '').split('/')[0]}&sz=64" loading="lazy">
                     <div class="mini-info">
