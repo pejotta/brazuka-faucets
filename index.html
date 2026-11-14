@@ -81,40 +81,41 @@
 
         <section class="faucet-grid-section">
             
-            <!-- PRIMEIRA DOBRA (Carrega Imediatamente para SEO e Velocidade) -->
-            <div class="faucet-block">
-                <h2 class="coin-title">BITCOIN (BTC)</h2>
-                <div id="grid-btc" class="faucet-grid">
-                    <p>Carregando faucets de Bitcoin...</p>
-                </div>
-                <a href="bitcoin.html" class="view-more">Ver todas as Faucets BTC →</a>
-            </div>
+            <!-- PRIMEIRA DOBRA (Sem lazy-section para SEO e abertura instantânea) -->
+<div class="faucet-block">
+    <h2 class="coin-title">BITCOIN (BTC)</h2>
+    <div id="grid-btc" class="faucet-grid">
+        <p>Carregando faucets de Bitcoin...</p>
+    </div>
+    <a href="bitcoin.html" class="view-more">Ver todas as Faucets BTC →</a>
+</div>
 
-            <div class="faucet-block">
-                <h2 class="coin-title">ETHEREUM (ETH)</h2>
-                <div id="grid-eth" class="faucet-grid">
-                    <p>Carregando faucets de Ethereum...</p>
-                </div>   
-                <a href="ethereum.html" class="view-more">Ver todas as Faucets ETH →</a>
-            </div>
-            
-            <!-- BLOCOS ABAIXO DA DOBRA (Carregamento sob Demanda ao Rolar) -->
-            <div class="lazy-section">
-                <!-- BANNER SETORIAL: BITCOIN & ETHEREUM -->
-                <div class="ad-slot-mid" id="ad-zone-home-btc-eth" data-ad-zone="homeBtcEth"></div>
-                
-                <h2 class="coin-title">DOGECOIN (DOGE)</h2>
-                <div id="grid-doge" class="faucet-grid">
-                    <p>Carregando faucets de Dogecoin...</p>
-                </div>
-                <a href="dogecoin.html" class="view-more">Ver todas as Faucets DOGE →</a>
+<div class="faucet-block">
+    <h2 class="coin-title">ETHEREUM (ETH)</h2>
+    <div id="grid-eth" class="faucet-grid">
+        <p>Carregando faucets de Ethereum...</p>
+    </div>   
+    <a href="ethereum.html" class="view-more">Ver todas as Faucets ETH →</a>
+</div>
 
-                <h2 class="coin-title">TRON (TRX)</h2>
-                <div id="grid-trx" class="faucet-grid">
-                    <p>Carregando faucets de Tron...</p>
-                </div>
-                <a href="tron.html" class="view-more">Ver todas as Faucets TRX →</a>
-            </div>
+<!-- ABAIXO DA DOBRA (Cada unidade carrega no seu tempo) -->
+<div class="ad-slot-mid lazy-section" id="ad-zone-home-btc-eth" data-ad-zone="homeBtcEth"></div>
+
+<div class="faucet-block lazy-section">
+    <h2 class="coin-title">DOGECOIN (DOGE)</h2>
+    <div id="grid-doge" class="faucet-grid">
+        <p>Carregando faucets de Dogecoin...</p>
+    </div>
+    <a href="dogecoin.html" class="view-more">Ver todas as Faucets DOGE →</a>
+</div>
+
+<div class="faucet-block lazy-section">
+    <h2 class="coin-title">TRON (TRX)</h2>
+    <div id="grid-trx" class="faucet-grid">
+        <p>Carregando faucets de Tron...</p>
+    </div>
+    <a href="tron.html" class="view-more">Ver todas as Faucets TRX →</a>
+</div>
             
             <div class="lazy-section">
                 <!-- BANNER SETORIAL: DOGECOIN & TRON -->
