@@ -1,55 +1,106 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <link rel="icon" type="image/png" href="/assets/logo-brazuka.png" sizes="32x32">
+    <link rel="shortcut icon" href="/assets/logo-brazuka.png">
+    <link rel="apple-touch-icon" href="/assets/logo-brazuka.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="/assets/logo-brazuka.png" sizes="32x32">
+    
+    <!-- SEO Dinâmico e Canonical -->
+    <link rel="canonical" id="canonical-link" href="https://www.brazukafaucets.com.br/moeda.html" />
+    <meta name="description" id="meta-desc" content="Lista de faucets auditadas e confiáveis no Brazuka Faucets." />
+    <title id="page-title">Faucets de Criptomoedas | Brazuka Faucets</title>
+
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <!-- SEO Dinâmico (Canonical e Meta Description serão atualizados via JS) -->
-    <link rel="canonical" id="canonical-link" href="https://www.brazukafaucets.com.br/moeda.html" />
-    <meta name="description" id="meta-desc" content="Confira as melhores faucets auditadas para coletar criptomoedas gratuitamente no Brazuka Faucets." />
-    <title id="page-title">Faucets de Criptomoedas | Brazuka Faucets</title>
 </head>
-<body>
-
+<body id="body-moeda">
+    
     <div id="header-placeholder"></div>
-    <div class="ad-slot-top" style="margin: 20px auto;"></div>
 
     <main class="container">
-        <section class="headline" style="text-align: center;">
-            <h1 id="coin-heading">Carregando Faucets...</h1>
-            <p id="coin-subtitle">Confira as melhores opções verificadas para coletar gratuitamente.</p>
+        <h1 id="coin-heading">Carregando Faucets...</h1>
+
+        <div class="ad-slot-top"></div>
+
+        <section class="filter-controls">
+            <input type="text" id="search-faucet" placeholder="🔍 Buscar por nome...">
+
+            <label>Tipo:</label>
+            <select id="filter-tipo">
+                <option value="all">Todos</option>
+                <option value="padrao">Faucet Padrão</option>
+                <option value="auto">Auto Faucet</option>
+            </select>
+
+            <label>Avaliação:</label>
+            <select id="filter-avaliacao">
+                <option value="0">Qualquer</option>
+                <option value="4">4 Estrelas +</option>
+                <option value="3">3 Estrelas +</option>
+                <option value="2">2 Estrelas +</option>
+            </select>
+            
+            <label>Pagamento:</label>
+            <select id="filter-pagamento">
+                <option value="all">Qualquer</option>
+                <option value="faucetpay">FaucetPay</option>
+                <option value="direct">Direto</option>
+            </select>
+            
+            <button id="apply-filters">Aplicar Filtros</button>
         </section>
-
-        <!-- GRID ONDE AS FAUCETS DA MOEDA SERÃO CARREGADAS -->
-        <div id="dynamic-coin-grid" class="faucet-grid" style="margin: 30px 0 50px 0;">
-            <p style="text-align: center; color: #888;">Buscando faucets disponíveis...</p>
+        
+        <div class="table-responsive">
+            <table id="faucets-table" class="faucet-table">
+                <thead>
+                    <tr>
+                        <th>Nome / URL</th>
+                        <th>Tipo</th>
+                        <th>Min. Saque</th>
+                        <th>Tempo Saque</th>
+                        <th>Avaliação</th>
+                        <th>Status</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="faucets-tbody">
+                    <tr><td colspan="7" style="text-align: center;">Carregando faucets...</td></tr>
+                </tbody>
+            </table>
         </div>
+        
+        <div class="ad-slot-top"></div>
 
-        <div style="text-align: center; margin-bottom: 40px;">
+        <div style="text-align: center; margin: 30px 0;">
             <a href="todas-as-moedas.html" class="view-more">← Voltar para Todas as Moedas</a>
         </div>
     </main>
 
-    <div class="ad-slot-top" style="margin: 20px auto;"></div>
     <div id="footer-placeholder"></div>
 
-    <script src="js/script-global.js"></script>
+    <!-- Script principal de listagem que lê o data-coin -->
+    <script src="js/script-list.js"></script>
     <script src="js/ads-manager.js"></script>
+    <script src="js/script-global.js"></script>
+
+    <!-- Script inteligente que captura a sigla da URL e ajusta a página em tempo real -->
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            // 1. Pega a sigla da URL (ex: moeda.html?c=g$ -> "g$")
             const params = new URLSearchParams(window.location.search);
             const coinSigla = (params.get('c') || 'btc').toLowerCase().trim();
 
+            // Seta o atributo data-coin para o script-list.js funcionar idêntico às páginas estáticas
+            const bodyEl = document.getElementById('body-moeda');
+            bodyEl.setAttribute('data-coin', coinSigla);
+
             let nomeExibicao = coinSigla.toUpperCase();
 
-            // 2. Busca o nome completo da moeda direto no moedas.json (Zero edição manual!)
+            // Busca o nome bonito no moedas.json
             try {
                 const res = await fetch('moedas.json');
                 if (res.ok) {
@@ -59,23 +110,21 @@
                         nomeExibicao = `${moedaEncontrada.nome} (${moedaEncontrada.sigla.toUpperCase()})`;
                     }
                 }
-            } catch (erro) {
-                console.warn('Não foi possível ler moedas.json, usando sigla padrão:', erro);
+            } catch (e) {
+                console.warn('Erro ao carregar nome da moeda, usando padrão:', e);
             }
 
-            // 3. Atualiza SEO (Título, Canonical e Descrição) para o Google indexar como página única
+            // Atualiza SEO e Títulos
             const urlOficial = `https://www.brazukafaucets.com.br/moeda.html?c=${encodeURIComponent(coinSigla)}`;
             document.getElementById('canonical-link').setAttribute('href', urlOficial);
-            document.title = `Melhores Faucets de ${nomeExibicao} | Brazuka Faucets`;
-            document.getElementById('meta-desc').setAttribute('content', `Lista atualizada das melhores faucets pagando em ${nomeExibicao}. Colete grátis e direto na sua carteira.`);
+            document.title = `Lista de Faucets de ${nomeExibicao} | Brazuka Faucets`;
+            document.getElementById('meta-desc').setAttribute('content', `Lista de faucets auditadas e confiáveis pagando em ${nomeExibicao}.`);
+            document.getElementById('coin-heading').innerText = `Todas as Faucets de ${nomeExibicao}`;
 
-            // 4. Atualiza os textos visíveis na tela
-            document.getElementById('coin-heading').innerText = `Faucets de ${nomeExibicao}`;
-            document.getElementById('coin-subtitle').innerText = `Lista completa e auditada de faucets pagando em ${nomeExibicao}.`;
-
-            // 5. Chama a função que carrega as faucets no grid (ajustar conforme o nome da função no seu script-global.js)
-            if (typeof carregarFaucetsPorMoeda === 'function') {
-                carregarFaucetsPorMoeda(coinSigla, 'dynamic-coin-grid');
+            // Se o script-list já carregou antes do data-coin ser injetado via JS, 
+            // forçamos uma nova chamada caso a função de inicialização exista:
+            if (typeof carregarFaucets === 'function') {
+                carregarFaucets();
             }
         });
     </script>
