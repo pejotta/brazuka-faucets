@@ -1,20 +1,23 @@
+/**
+ * script-todas-moedas.js - Catálogo 100% Dinâmico e Automatizado
+ */
+
 let moedasDoBanco = [];
 let categoriaAtual = 'todas';
 
-// 1. Busca as moedas direto do Banco de Dados / API ao carregar a página
+// 1. Busca as moedas direto do moedas.json ao carregar a página
 async function carregarMoedasDoBanco() {
     const grid = document.getElementById('coins-grid');
     if (!grid) return;
 
     try {
-        // Altere para a URL real da sua API ou Worker que entrega as moedas ativas
-        const response = await fetch('/api/moedas'); 
+        const response = await fetch('moedas.json');
+        if (!response.ok) throw new Error("Erro ao carregar o arquivo de moedas.");
+
         moedasDoBanco = await response.json();
-        
         renderCoins(moedasDoBanco);
     } catch (error) {
-        console.error("Erro ao carregar moedas do banco:", error);
-        // Fallback visual caso ocorra algum problema de conexão
+        console.error("Erro ao carregar moedas:", error);
         grid.innerHTML = '<p class="no-results">Erro ao carregar as moedas. Tente novamente em instantes.</p>';
     }
 }
@@ -55,7 +58,10 @@ function setCategory(categoria, botao) {
 }
 
 function aplicarFiltros() {
-    const termoBusca = document.getElementById('coin-search').value.toLowerCase().trim();
+    const inputSearch = document.getElementById('coin-search');
+    if (!inputSearch) return;
+
+    const termoBusca = inputSearch.value.toLowerCase().trim();
     const grid = document.getElementById('coins-grid');
     const items = grid.getElementsByClassName('coin-item');
     let visiveis = 0;
