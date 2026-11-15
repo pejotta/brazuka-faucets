@@ -1,23 +1,21 @@
 /**
- * script-todas-moedas.js - Catálogo 100% Automatizado via Cloudflare Worker
+ * script-todas-moedas.js - Catálogo 100% Automatizado + Destaques Dinâmicos
  */
 
 const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 let moedasDoBanco = [];
 let categoriaAtual = 'todas';
 
-// 1. Busca todas as faucets do Cloudflare e extrai as moedas ativas de forma dinâmica
 async function carregarMoedasDoBanco() {
     const grid = document.getElementById('coins-grid');
     if (!grid) return;
 
     try {
         const response = await fetch(`${URL_WORKER}/get-all-faucets`);
-        if (!response.ok) throw new Error("Erro ao carregar dados do Cloudflare.");
+        if (!response.ok) throw new Error("Erro ao carregar dados do Banco de Dados.");
 
         const faucets = await response.json();
         
-        // Mapeamento padrão de nomes bonitos e categorias para as siglas conhecidas
         const metadadosMoedas = {
             btc: { nome: 'Bitcoin', categoria: 'principais' },
             eth: { nome: 'Ethereum', categoria: 'principais' },
@@ -45,18 +43,28 @@ async function carregarMoedasDoBanco() {
             'g$': { nome: 'GoodDollar', categoria: 'redes' }
         };
 
-        // Extrai todas as siglas únicas presentes nas faucets cadastradas
-        const siglasSet = new Set();
+        // Conta quantas faucets ativas cada moeda possui
+        const contagemFaucets = {};
         faucets.forEach(f => {
+            if (f.status === 'scam') return; // Ignora faucets marcadas como scam na contagem
+            
+            let lista = [];
             if (Array.isArray(f.moeda)) {
-                f.moeda.forEach(m => siglasSet.add(m.toLowerCase().trim()));
+                lista = f.moeda;
             } else if (typeof f.moeda === 'string') {
-                f.moeda.split(',').forEach(m => siglasSet.add(m.toLowerCase().trim()));
+                lista = f.moeda.split(',');
             }
+
+            lista.forEach(m => {
+                const sigla = m.toLowerCase().trim();
+                if (sigla) {
+                    contagemFaucets[sigla] = (contagemFaucets[sigla] || 0) + 1;
+                }
+            });
         });
 
-        // Monta o array final de moedas dinamicamente
-        moedasDoBanco = Array.from(siglasSet).map(sigla => {
+        // Monta o array final com a contagem de faucets embutida
+        moedasDoBanco = Object.keys(contagemFaucets).map(sigla => {
             const info = metadadosMoedas[sigla] || { 
                 nome: sigla.toUpperCase(), 
                 categoria: 'redes' 
@@ -64,21 +72,54 @@ async function carregarMoedasDoBanco() {
             return {
                 sigla: sigla,
                 nome: info.nome,
-                categoria: info.categoria
+                categoria: info.categoria,
+                totalFaucets: contagemFaucets[sigla]
             };
         });
 
-        // Ordena alfabeticamente pelo nome
-        moedasDoBanco.sort((a, b) => a.nome.localeCompare(b.nome));
+        // 1. Renderiza o Top 4 Mais Populares (ordenado por maior número de faucets)
+        renderPopularCoins([...moedasDoBanco]);
 
+        // 2. Ordena alfabeticamente para a grade geral e renderiza
+        moedasDoBanco.sort((a, b) => a.nome.localeCompare(b.nome));
         renderCoins(moedasDoBanco);
+
     } catch (error) {
-        console.error("Erro ao carregar moedas do Worker:", error);
+        console.error("Erro ao carregar moedas:", error);
         grid.innerHTML = '<p class="no-results">Erro ao carregar as moedas. Tente novamente em instantes.</p>';
     }
 }
 
-// 2. Renderiza os cards dinamicamente na tela
+// Renderiza o Top 4 no topo da página
+function renderPopularCoins(lista) {
+    const section = document.getElementById('popular-coins-section');
+    const popularGrid = document.getElementById('popular-coins-grid');
+    if (!section || !popularGrid || lista.length === 0) return;
+
+    // Pega as 4 moedas com mais faucets
+    const top4 = lista.sort((a, b) => b.totalFaucets - a.totalFaucets).slice(0, 4);
+
+    popularGrid.innerHTML = top4.map((m, index) => {
+        const coinLink = `moeda.html?c=${encodeURIComponent(m.sigla)}`;
+        const badgeText = index === 0 ? '👑 Top #1' : `🔥 Top #${index + 1}`;
+        const textoFaucets = m.totalFaucets === 1 ? '1 faucet' : `${m.totalFaucets} faucets`;
+
+        return `
+            <a href="${coinLink}" class="popular-card">
+                <span class="popular-badge">${badgeText}</span>
+                <img src="assets/logo-brazuka.png" alt="${m.nome}" style="width: 38px; height: 38px; object-fit: contain;">
+                <div style="text-align: left;">
+                    <div style="font-weight: 700; font-size: 0.95rem;">${m.nome}</div>
+                    <div style="font-size: 0.78rem; color: #aaa;">${m.sigla.toUpperCase()} • ${textoFaucets}</div>
+                </div>
+            </a>
+        `;
+    }).join('');
+
+    section.style.display = 'block';
+}
+
+// Renderiza a grade principal
 function renderCoins(lista) {
     const grid = document.getElementById('coins-grid');
     if (!grid) return;
@@ -90,20 +131,20 @@ function renderCoins(lista) {
 
     grid.innerHTML = lista.map(m => {
         const coinLink = `moeda.html?c=${encodeURIComponent(m.sigla)}`;
+        const textoFaucets = m.totalFaucets === 1 ? '1 faucet' : `${m.totalFaucets} faucets`;
         
         return `
             <a href="${coinLink}" class="coin-item" data-category="${m.categoria}" data-name="${m.nome.toLowerCase()} ${m.sigla.toLowerCase()}">
-                <div class="icon-wrapper" style="height: 50px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+                <div class="icon-wrapper" style="height: 50px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px;">
                     <img src="assets/logo-brazuka.png" alt="${m.nome}" style="width: 42px; height: 42px; object-fit: contain;">
                 </div>
-                <span style="font-weight: 500;">${m.nome}</span>
-                <small style="color: #888; font-size: 0.75rem; text-transform: uppercase;">${m.sigla}</small>
+                <span style="font-weight: 600;">${m.nome}</span>
+                <small style="color: #888; font-size: 0.75rem; text-transform: uppercase;">${m.sigla} • ${textoFaucets}</small>
             </a>
         `;
     }).join('');
 }
 
-// 3. Sistema de Filtros por Categoria e Busca por Texto
 function setCategory(categoria, botao) {
     categoriaAtual = categoria;
 
@@ -151,5 +192,4 @@ function aplicarFiltros() {
     }
 }
 
-// Dispara a carga inicial assim que o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', carregarMoedasDoBanco);
