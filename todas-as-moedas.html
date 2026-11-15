@@ -17,14 +17,14 @@
     <meta name="description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas. Analisamos as melhores opções para você ganhar BTC, LTC, DOGE e muito mais com segurança." />
     <meta name="author" content="Pejotta" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://www.brazukafaucets.com.br" />
+    <link rel="canonical" href="https://www.brazukafaucets.com.br/todas-as-moedas.html" />
 
     <meta property="og:title" content="Brazuka Faucets | As Melhores Faucets Auditadas" />
     <meta property="og:type" content="article" />
     <meta property="og:description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas. Analisamos as melhores opções para você ganhar BTC, LTC, DOGE e muito mais com segurança." />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:image" content="https://www.brazukafaucets.com.br/assets/brazuka-faucets-share-image.png" />
-    <meta property="og:url" content="https://www.brazukafaucets.com.br" />
+    <meta property="og:url" content="https://www.brazukafaucets.com.br/todas-as-moedas.html" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Brazuka Faucets | As Melhores Faucets Auditadas" />
@@ -72,6 +72,37 @@
             color: #888;
             font-size: 1.1rem;
         }
+
+        /* Estilo dos Botões de Categoria (Passo 1) */
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #ccc;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .filter-btn:hover {
+            border-color: #1a73e8;
+            color: #fff;
+        }
+        .filter-btn.active {
+            background: #1a73e8;
+            border-color: #1a73e8;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.35);
+        }
+
         .coins-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -98,9 +129,10 @@
             background: rgba(26, 115, 232, 0.05);
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
-        .coin-item i, .coin-item iconify-icon {
-            font-size: 2.2rem;
-            color: #1a73e8;
+        .coin-item img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
         }
         .coin-item span {
             font-weight: 600;
@@ -127,15 +159,24 @@
             <h1>💰 Todas as Moedas Disponíveis</h1>
             <p>Escolha sua criptomoeda favorita e encontre as melhores faucets para coletar agora.</p>
             
-            <!-- BARRA DE PESQUISA INSTANTERA -->
+            <!-- BARRA DE PESQUISA INSTANTÂNEA -->
             <div class="search-box-container">
                 <i class="fas fa-search"></i>
-                <input type="text" id="coin-search" placeholder="Pesquisar moeda (ex: Bitcoin, Tron, Doge)..." onkeyup="filterCoins()">
+                <input type="text" id="coin-search" placeholder="Pesquisar moeda (ex: Bitcoin, Tron, Doge)..." onkeyup="aplicarFiltros()">
+            </div>
+
+            <!-- FILTROS RÁPIDOS POR CATEGORIA (Passo 1) -->
+            <div class="filter-tabs">
+                <button class="filter-btn active" onclick="setCategory('todas', this)">Todas</button>
+                <button class="filter-btn" onclick="setCategory('principais', this)">Principais</button>
+                <button class="filter-btn" onclick="setCategory('redes', this)">Redes & Tokens</button>
+                <button class="filter-btn" onclick="setCategory('stablecoins', this)">Stablecoins</button>
+                <button class="filter-btn" onclick="setCategory('memes', this)">Memes</button>
             </div>
         </section>
 
         <div id="coins-grid" class="coins-container">
-            <!-- Os cards das moedas serão injetados dinamicamente via script-todas-moedas.js -->
+            <!-- Os cards das moedas serão injetados dinamicamente pelo script-todas-moedas.js puxando do moedas.json -->
         </div>
     </main>
 
@@ -145,38 +186,5 @@
     <script src="js/script-global.js"></script>
     <script src="js/ads-manager.js"></script>
     <script src="js/script-todas-moedas.js"></script>
-    <script>
-        // Função de filtro em tempo real para a barra de pesquisa
-        function filterCoins() {
-            const input = document.getElementById('coin-search').value.toLowerCase();
-            const grid = document.getElementById('coins-grid');
-            const items = grid.getElementsByClassName('coin-item');
-            let hasResults = false;
-
-            for (let i = 0; i < items.length; i++) {
-                const coinName = items[i].textContent || items[i].innerText;
-                if (coinName.toLowerCase().indexOf(input) > -1) {
-                    items[i].style.display = "";
-                    hasResults = true;
-                } else {
-                    items[i].style.display = "none";
-                }
-            }
-
-            // Tratamento caso nenhuma moeda seja encontrada
-            let noResultsMsg = document.getElementById('no-search-results');
-            if (!hasResults) {
-                if (!noResultsMsg) {
-                    noResultsMsg = document.createElement('div');
-                    noResultsMsg.id = 'no-search-results';
-                    noResultsMsg.className = 'no-results';
-                    noResultsMsg.innerHTML = '<i class="fas fa-search-minus" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>Nenhuma criptomoeda encontrada com esse termo.';
-                    grid.appendChild(noResultsMsg);
-                }
-            } else if (noResultsMsg) {
-                noResultsMsg.remove();
-            }
-        }
-    </script>
 </body>
 </html>
