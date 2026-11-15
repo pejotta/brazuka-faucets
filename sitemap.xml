@@ -3,82 +3,66 @@
 
   <url>
     <loc>https://www.brazukafaucets.com.br/</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-15</lastmod>
     <priority>1.00</priority>
   </url>
 
   <!-- Novas Páginas Principais e Ecossistema -->
   <url>
     <loc>https://www.brazukafaucets.com.br/blog.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-15</lastmod>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://www.brazukafaucets.com.br/rankings.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-15</lastmod>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://www.brazukafaucets.com.br/nossas-faucets.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-15</lastmod>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://www.brazukafaucets.com.br/shortlinks.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-15</lastmod>
     <priority>0.90</priority>
   </url>
 
   <url>
     <loc>https://www.brazukafaucets.com.br/guia-do-iniciante</loc>
-    <lastmod>2025-12-26</lastmod>
+    <lastmod>2026-11-15</lastmod>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://www.brazukafaucets.com.br/cadastrar-faucet.html</loc>
-    <lastmod>2025-12-26</lastmod>
+    <lastmod>2026-11-15</lastmod>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://www.brazukafaucets.com.br/anuncie.html</loc>
-    <lastmod>2025-12-26</lastmod>
+    <lastmod>2026-11-15</lastmod>
     <priority>0.85</priority>
   </url>
 
-  <!-- Categorias de Criptomoedas -->
-  <url><loc>https://www.brazukafaucets.com.br/todas-as-moedas</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/bitcoin</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/ethereum</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/dogecoin</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/tron</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/litecoin</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/bitcoin-cash</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/dash</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/digibyte</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/tether</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/feyorra</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/zcash</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/binance-coin</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/solana</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/ripple</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/polygon</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/cardano</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/toncoin</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/usd-coin</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/monero</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/taraxa</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/official-trump</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/pepe</loc><lastmod>2025-12-26</lastmod><priority>0.80</priority></url>
+  <!-- Categorias e Seções Principais -->
+  <url><loc>https://www.brazukafaucets.com.br/todas-as-moedas</loc><lastmod>2026-11-15</lastmod><priority>0.80</priority></url>
+  <url><loc>https://www.brazukafaucets.com.br/central</loc><lastmod>2026-11-15</lastmod><priority>0.80</priority></url>
+  <url><loc>https://www.brazukafaucets.com.br/minerador</loc><lastmod>2026-11-15</lastmod><priority>0.80</priority></url>
+  <url><loc>https://www.brazukafaucets.com.br/autofaucet</loc><lastmod>2026-11-15</lastmod><priority>0.80</priority></url>
+  <url><loc>https://www.brazukafaucets.com.br/bet</loc><lastmod>2026-11-15</lastmod><priority>0.80</priority></url>
+  <url><loc>https://www.brazukafaucets.com.br/ipo</loc><lastmod>2026-11-15</lastmod><priority>0.80</priority></url>
+  <url><loc>https://www.brazukafaucets.com.br/airdrop</loc><lastmod>2026-11-15</lastmod><priority>0.80</priority></url>
 
   <!-- Fichas e Institucionais -->
   <url>
     <loc>https://www.brazukafaucets.com.br/faucet?id=1</loc>
-    <lastmod>2025-12-26</lastmod>
+    <lastmod>2026-11-15</lastmod>
     <priority>0.70</priority>
   </url>
-  <url><loc>https://www.brazukafaucets.com.br/contato.html</loc><lastmod>2025-12-26</lastmod><priority>0.50</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/sobre.html</loc><lastmod>2025-12-26</lastmod><priority>0.50</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/privacidade.html</loc><lastmod>2025-12-26</lastmod><priority>0.30</priority></url>
-  <url><loc>https://www.brazukafaucets.com.br/termos.html</loc><lastmod>2025-12-26</lastmod><priority>0.30</priority></url>
+  <url><loc>https://www.brazukafaucets.com.br/contato.html</loc><lastmod>2026-11-15</lastmod><priority>0.50</priority></url>
+  <url><loc>https://www.brazukafaucets.com.br/sobre.html</loc><lastmod>2026-11-15</lastmod><priority>0.50</priority></url>
+  <url><loc>https://www.brazukafaucets.com.br/privacidade.html</loc><lastmod>2026-11-15</lastmod><priority>0.30</priority></url>
+  <url><loc>https://www.brazukafaucets.com.br/termos.html</loc><lastmod>2026-11-15</lastmod><priority>0.30</priority></url>
 
 </urlset>
