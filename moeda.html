@@ -19,6 +19,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body id="body-moeda">
+
+    <!-- INJEÇÃO IMEDIATA DO DATA-COIN (Antes do script-list.js rodar) -->
+    <script>
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const coinSigla = (params.get('c') || 'btc').toLowerCase().trim();
+            document.body.setAttribute('data-coin', coinSigla);
+        })();
+    </script>
     
     <div id="header-placeholder"></div>
 
@@ -83,49 +92,35 @@
 
     <div id="footer-placeholder"></div>
 
-    <!-- Script principal de listagem que lê o data-coin -->
+    <!-- Script principal de listagem agora encontra o data-coin já preenchido -->
     <script src="js/script-list.js"></script>
     <script src="js/ads-manager.js"></script>
     <script src="js/script-global.js"></script>
 
-    <!-- Script inteligente que captura a sigla da URL e ajusta a página em tempo real -->
+    <!-- Atualiza SEO, Títulos e Cabeçalho H1 -->
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const params = new URLSearchParams(window.location.search);
-            const coinSigla = (params.get('c') || 'btc').toLowerCase().trim();
+        document.addEventListener('DOMContentLoaded', () => {
+            const coinSigla = document.body.getAttribute('data-coin') || 'btc';
 
-            // Seta o atributo data-coin para o script-list.js funcionar idêntico às páginas estáticas
-            const bodyEl = document.getElementById('body-moeda');
-            bodyEl.setAttribute('data-coin', coinSigla);
+            const nomesBonitos = {
+                btc: 'Bitcoin', eth: 'Ethereum', doge: 'Dogecoin', ltc: 'Litecoin',
+                bch: 'Bitcoin Cash', dash: 'Dash', dgb: 'DigiByte', trx: 'Tron',
+                usdt: 'Tether', fey: 'Feyorra', zec: 'Zcash', bnb: 'Binance Coin',
+                sol: 'Solana', xrp: 'Ripple', pol: 'Polygon', ada: 'Cardano',
+                ton: 'Toncoin', xlm: 'Stellar', usdc: 'USD Coin', xmr: 'Monero',
+                tara: 'Taraxa', trump: 'Official Trump', pepe: 'Pepe', 'g$': 'GoodDollar'
+            };
 
-            let nomeExibicao = coinSigla.toUpperCase();
-
-            // Busca o nome bonito no moedas.json
-            try {
-                const res = await fetch('moedas.json');
-                if (res.ok) {
-                    const listaMoedas = await res.json();
-                    const moedaEncontrada = listaMoedas.find(m => m.sigla.toLowerCase() === coinSigla);
-                    if (moedaEncontrada) {
-                        nomeExibicao = `${moedaEncontrada.nome} (${moedaEncontrada.sigla.toUpperCase()})`;
-                    }
-                }
-            } catch (e) {
-                console.warn('Erro ao carregar nome da moeda, usando padrão:', e);
-            }
+            const nomeCompleto = nomesBonitos[coinSigla] 
+                ? `${nomesBonitos[coinSigla]} (${coinSigla.toUpperCase()})` 
+                : coinSigla.toUpperCase();
 
             // Atualiza SEO e Títulos
             const urlOficial = `https://www.brazukafaucets.com.br/moeda.html?c=${encodeURIComponent(coinSigla)}`;
             document.getElementById('canonical-link').setAttribute('href', urlOficial);
-            document.title = `Lista de Faucets de ${nomeExibicao} | Brazuka Faucets`;
-            document.getElementById('meta-desc').setAttribute('content', `Lista de faucets auditadas e confiáveis pagando em ${nomeExibicao}.`);
-            document.getElementById('coin-heading').innerText = `Todas as Faucets de ${nomeExibicao}`;
-
-            // Se o script-list já carregou antes do data-coin ser injetado via JS, 
-            // forçamos uma nova chamada caso a função de inicialização exista:
-            if (typeof carregarFaucets === 'function') {
-                carregarFaucets();
-            }
+            document.title = `Lista de Faucets de ${nomeCompleto} | Brazuka Faucets`;
+            document.getElementById('meta-desc').setAttribute('content', `Lista de faucets auditadas e confiáveis pagando em ${nomeCompleto}.`);
+            document.getElementById('coin-heading').innerText = `Todas as Faucets de ${nomeCompleto}`;
         });
     </script>
 </body>
