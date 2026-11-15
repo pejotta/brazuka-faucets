@@ -183,65 +183,65 @@
             </div>
         </div>
 
-        <!-- ABA 3: ALERTAS & NOTIFICAÇÕES (UNIFICADA)[cite: 2] -->
-        <div id="aba-alertas-notificacoes" class="tab-content">
-            
-            <!-- BLOCO 1: ALERTA FLUTUANTE (POP-UP GLOBAL)[cite: 2] -->
-            <div class="panel-container" style="margin-bottom: 25px;">
-                <div class="panel-header">
-    <div>
-        <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-bell"></i> Alerta Flutuante (Pop-up Global)</h3>
-        <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Dispare avisos em tempo real que aparecem no canto inferior da tela dos usuários.</p>
-    </div>
-    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <button class="btn-action" onclick="desativarAlertaGlobal()" style="background: var(--danger);">
-            <i class="fa-solid fa-ban"></i> Desativar Alerta
-        </button>
-        <button class="btn-action" onclick="salvarAlertaGlobal()" style="background: var(--success);">
-            <i class="fa-solid fa-paper-plane"></i> Publicar Alerta
-        </button>
-    </div>
-</div>
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <div>
-                        <label style="font-weight: 600; font-size: 0.85em; display: block; margin-bottom: 5px;">Título do Alerta:</label>
-                        <input type="text" id="admin-alert-title" placeholder="Ex: 🔥 Nova Faucet Adicionada!" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
-                    </div>
-                    <div>
-                        <label style="font-weight: 600; font-size: 0.85em; display: block; margin-bottom: 5px;">Mensagem Curta:</label>
-                        <textarea id="admin-alert-text" placeholder="Ex: Venha conferir a nova faucet pagando em TRX com saque imediato..." style="width: 100%; height: 70px; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; box-sizing: border-box;"></textarea>
-                    </div>
-                    <div>
-                        <label style="font-weight: 600; font-size: 0.85em; display: block; margin-bottom: 5px;">Link de Destino (Ao clicar no balão):</label>
-                        <input type="text" id="admin-alert-link" placeholder="Ex: moeda.html?c=trx ou faucet.html?id=12" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
-                    </div>
-                </div>
-            </div> </div>
-
-            <!-- BLOCO 2: TICKER DO TOPO (MURAL ROTATIVO)[cite: 2] -->
-            <div class="panel-container">
-                <div class="panel-header">
-                    <div>
-                        <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-scroll"></i> Ticker do Topo (Mural de Avisos)</h3>
-                        <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Gerencie as frases que passam rolando no topo de todas as páginas.</p>
-                    </div>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn-action" onclick="adicionarCampoTicker()" style="background: var(--primary);">
-                            <i class="fa-solid fa-plus"></i> Novo Aviso
-                        </button>
-                        <button class="btn-action" onclick="salvarTickerNoBanco()" style="background: var(--success);">
-                            <i class="fa-solid fa-floppy-disk"></i> Salvar Ticker
-                        </button>
-                    </div>
-                </div>
-
-                <div id="ticker-editor-container" style="display: flex; flex-direction: column; gap: 10px;">
-                    <!-- Itens carregados dinamicamente via JS -->
-                </div>
+       <!-- ABA 3: ALERTAS & NOTIFICAÇÕES (UNIFICADA) -->
+<div id="aba-alertas-notificacoes" class="tab-content">
+    
+    <!-- BLOCO 1: ALERTA FLUTUANTE (POP-UP GLOBAL) -->
+    <div class="panel-container" style="margin-bottom: 25px;">
+        <div class="panel-header">
+            <div>
+                <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-bell"></i> Alerta Flutuante (Pop-up Global)</h3>
+                <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Dispare avisos em tempo real que aparecem no canto inferior da tela dos usuários.</p>
             </div>
-  </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="btn-action" onclick="desativarAlertaGlobal()" style="background: var(--danger);">
+                    <i class="fa-solid fa-ban"></i> Desativar Alerta
+                </button>
+                <button class="btn-action" onclick="salvarAlertaGlobal()" style="background: var(--success);">
+                    <i class="fa-solid fa-paper-plane"></i> Publicar Alerta
+                </button>
+            </div>
         </div>
 
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div>
+                <label style="font-weight: 600; font-size: 0.85em; display: block; margin-bottom: 5px;">Título do Alerta:</label>
+                <input type="text" id="admin-alert-title" placeholder="Ex: 🔥 Nova Faucet Adicionada!" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+            </div>
+            <div>
+                <label style="font-weight: 600; font-size: 0.85em; display: block; margin-bottom: 5px;">Mensagem Curta:</label>
+                <textarea id="admin-alert-text" placeholder="Ex: Venha conferir a nova faucet pagando em TRX com saque imediato..." style="width: 100%; height: 70px; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; box-sizing: border-box;"></textarea>
+            </div>
+            <div>
+                <label style="font-weight: 600; font-size: 0.85em; display: block; margin-bottom: 5px;">Link de Destino (Ao clicar no balão):</label>
+                <input type="text" id="admin-alert-link" placeholder="Ex: moeda.html?c=trx ou faucet.html?id=12" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+            </div>
+        </div>
+    </div>
+
+    <!-- BLOCO 2: TICKER DO TOPO (MURAL ROTATIVO) -->
+    <div class="panel-container">
+        <div class="panel-header">
+            <div>
+                <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-scroll"></i> Ticker do Topo (Mural de Avisos)</h3>
+                <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Gerencie as frases que passam rolando no topo de todas as páginas.</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-action" onclick="adicionarCampoTicker()" style="background: var(--primary);">
+                    <i class="fa-solid fa-plus"></i> Novo Aviso
+                </button>
+                <button class="btn-action" onclick="salvarTickerNoBanco()" style="background: var(--success);">
+                    <i class="fa-solid fa-floppy-disk"></i> Salvar Ticker
+                </button>
+            </div>
+        </div>
+
+        <div id="ticker-editor-container" style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- Itens carregados dinamicamente via JS -->
+        </div>
+    </div>
+
+</div>
         <!-- ABA 4: ANALYTICS -->
         <div id="aba-analytics" class="tab-content">
             <div style="background: #fff; padding: 25px; border-radius: 12px; border: 1px solid #e0e0e0;">
