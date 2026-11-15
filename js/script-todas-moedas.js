@@ -43,28 +43,8 @@ async function carregarMoedasDoBanco() {
             'g$': { nome: 'GoodDollar', categoria: 'redes' }
         };
 
-        // Conta quantas faucets ativas cada moeda possui
+        // Conta as faucets ativas IGNORANDO termos indesejados da lista negra
         const contagemFaucets = {};
-        faucets.forEach(f => {
-            if (f.status === 'scam') return; // Ignora faucets marcadas como scam na contagem
-            
-            let lista = [];
-            if (Array.isArray(f.moeda)) {
-                lista = f.moeda;
-            } else if (typeof f.moeda === 'string') {
-                lista = f.moeda.split(',');
-            }
-
-            lista.forEach(m => {
-                const sigla = m.toLowerCase().trim();
-                if (sigla) {
-                    contagemFaucets[sigla] = (contagemFaucets[sigla] || 0) + 1;
-                }
-            });
-        });
-
-        // Extrai todas as siglas únicas presentes nas faucets cadastradas, ignorando categorias incorretas
-        const siglasSet = new Set();
         const ignoreList = ['central', 'autofaucet', 'mineradora', 'bet', 'jogo', 'bet crypto', 'jogos', 'padrao'];
 
         faucets.forEach(f => {
@@ -79,14 +59,13 @@ async function carregarMoedasDoBanco() {
 
             lista.forEach(m => {
                 const sigla = m.toLowerCase().trim();
-                // Só adiciona se a sigla existir e NÃO estiver na lista de termos proibidos
                 if (sigla && !ignoreList.includes(sigla)) {
-                    siglasSet.add(sigla);
+                    contagemFaucets[sigla] = (contagemFaucets[sigla] || 0) + 1;
                 }
             });
         });
-        
-        // Monta o array final com a contagem de faucets embutida
+
+        // Monta o array final com a contagem embutida
         moedasDoBanco = Object.keys(contagemFaucets).map(sigla => {
             const info = metadadosMoedas[sigla] || { 
                 nome: sigla.toUpperCase(), 
@@ -119,7 +98,6 @@ function renderPopularCoins(lista) {
     const popularGrid = document.getElementById('popular-coins-grid');
     if (!section || !popularGrid || lista.length === 0) return;
 
-    // Pega as 4 moedas com mais faucets
     const top4 = lista.sort((a, b) => b.totalFaucets - a.totalFaucets).slice(0, 4);
 
     popularGrid.innerHTML = top4.map((m, index) => {
