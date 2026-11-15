@@ -1,51 +1,93 @@
-const moedas = [
-    { nome: 'Bitcoin', sigla: 'btc', icon: 'cryptocurrency:btc' },
-    { nome: 'Ethereum', sigla: 'eth', icon: 'cryptocurrency:eth' },
-    { nome: 'Dogecoin', sigla: 'doge', icon: 'cryptocurrency:doge' },
-    { nome: 'Litecoin', sigla: 'ltc', icon: 'cryptocurrency:ltc' },
-    { nome: 'Bitcoin Cash', sigla: 'bch', icon: 'cryptocurrency:bch' },
-    { nome: 'Dash', sigla: 'dash', icon: 'cryptocurrency:dash' },
-    { nome: 'DigiByte', sigla: 'dgb', icon: 'cryptocurrency:dgb' },
-    { nome: 'Tron', sigla: 'trx', icon: 'cryptocurrency:trx' },
-    { nome: 'Tether', sigla: 'usdt', icon: 'cryptocurrency:usdt' },
-    { nome: 'Feyorra', sigla: 'fey', icon: 'cryptocurrency:fey' },
-    { nome: 'Zcash', sigla: 'zec', icon: 'cryptocurrency:zec' },
-    { nome: 'Binance Coin', sigla: 'bnb', icon: 'cryptocurrency:bnb' },
-    { nome: 'Solana', sigla: 'sol', icon: 'cryptocurrency:sol' },
-    { nome: 'Ripple', sigla: 'xrp', icon: 'cryptocurrency:xrp' },
-    { nome: 'Polygon', sigla: 'pol', icon: 'cryptocurrency:pol' },
-    { nome: 'Cardano', sigla: 'ada', icon: 'cryptocurrency:ada' },
-    { nome: 'Toncoin', sigla: 'ton', icon: 'cryptocurrency:ton' },
-    { nome: 'Stellar', sigla: 'xlm', icon: 'cryptocurrency:xlm' },
-    { nome: 'USD Coin', sigla: 'usdc', icon: 'cryptocurrency:usdc' },
-    { nome: 'Monero', sigla: 'xmr', icon: 'cryptocurrency:xmr' },
-    { nome: 'Taraxa', sigla: 'tara', icon: 'cryptocurrency:tara' },
-    { nome: 'Official Trump', sigla: 'trump', icon: 'cryptocurrency:trump' },
-    { nome: 'Pepe', sigla: 'pepe', icon: 'cryptocurrency:pepe' }
-];
+let moedasDoBanco = [];
+let categoriaAtual = 'todas';
 
-function renderCoins() {
+// 1. Busca as moedas direto do Banco de Dados / API ao carregar a página
+async function carregarMoedasDoBanco() {
     const grid = document.getElementById('coins-grid');
     if (!grid) return;
 
-    grid.innerHTML = moedas.map(m => {
-        // Gera o slug para o link (ex: binance-coin.html)
-        const coinSlug = m.nome.toLowerCase().replace(/\s+/g, '-');
-        const coinLink = `${coinSlug}.html`;
+    try {
+        // Altere para a URL real da sua API ou Worker que entrega as moedas ativas
+        const response = await fetch('/api/moedas'); 
+        moedasDoBanco = await response.json();
         
-        // Agora TODAS usam o assets/logo-brazuka.png
-        const iconHTML = `<img src="assets/logo-brazuka.png" alt="Brazuka" style="width: 42px; height: 42px; object-fit: contain;">`;
+        renderCoins(moedasDoBanco);
+    } catch (error) {
+        console.error("Erro ao carregar moedas do banco:", error);
+        // Fallback visual caso ocorra algum problema de conexão
+        grid.innerHTML = '<p class="no-results">Erro ao carregar as moedas. Tente novamente em instantes.</p>';
+    }
+}
 
+// 2. Renderiza os cards dinamicamente na tela
+function renderCoins(lista) {
+    const grid = document.getElementById('coins-grid');
+    if (!grid) return;
+
+    if (lista.length === 0) {
+        grid.innerHTML = '<p class="no-results">Nenhuma moeda encontrada.</p>';
+        return;
+    }
+
+    grid.innerHTML = lista.map(m => {
+        const coinLink = `moeda.html?c=${m.sigla.toLowerCase()}`;
+        
         return `
-            <a href="${coinLink}" class="coin-item">
+            <a href="${coinLink}" class="coin-item" data-category="${m.categoria || 'geral'}" data-name="${m.nome.toLowerCase()} ${m.sigla.toLowerCase()}">
                 <div class="icon-wrapper" style="height: 50px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
-                    ${iconHTML}
+                    <img src="assets/logo-brazuka.png" alt="${m.nome}" style="width: 42px; height: 42px; object-fit: contain;">
                 </div>
                 <span style="font-weight: 500;">${m.nome}</span>
+                <small style="color: #888; font-size: 0.75rem; text-transform: uppercase;">${m.sigla}</small>
             </a>
         `;
     }).join('');
 }
 
-// Executa assim que o DOM estiver pronto
-document.addEventListener('DOMContentLoaded', renderCoins);
+// 3. Sistema de Filtros por Categoria e Busca por Texto
+function setCategory(categoria, botao) {
+    categoriaAtual = categoria;
+
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    if (botao) botao.classList.add('active');
+
+    aplicarFiltros();
+}
+
+function aplicarFiltros() {
+    const termoBusca = document.getElementById('coin-search').value.toLowerCase().trim();
+    const grid = document.getElementById('coins-grid');
+    const items = grid.getElementsByClassName('coin-item');
+    let visiveis = 0;
+
+    for (let i = 0; i < items.length; i++) {
+        const itemCat = items[i].getAttribute('data-category');
+        const itemName = items[i].getAttribute('data-name');
+
+        const bateCategoria = (categoriaAtual === 'todas' || itemCat === categoriaAtual);
+        const bateBusca = (itemName.indexOf(termoBusca) > -1);
+
+        if (bateCategoria && bateBusca) {
+            items[i].style.display = "";
+            visiveis++;
+        } else {
+            items[i].style.display = "none";
+        }
+    }
+
+    let noResultsMsg = document.getElementById('no-search-results');
+    if (visiveis === 0) {
+        if (!noResultsMsg) {
+            noResultsMsg = document.createElement('div');
+            noResultsMsg.id = 'no-search-results';
+            noResultsMsg.className = 'no-results';
+            noResultsMsg.innerHTML = '<i class="fas fa-search-minus" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>Nenhuma criptomoeda encontrada para esse filtro.';
+            grid.appendChild(noResultsMsg);
+        }
+    } else if (noResultsMsg) {
+        noResultsMsg.remove();
+    }
+}
+
+// Dispara a carga inicial assim que o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', carregarMoedasDoBanco);
