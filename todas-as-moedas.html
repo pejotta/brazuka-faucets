@@ -7,10 +7,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <meta http-equiv="content-language" content="pt-BR" />
     <title>Todas as Moedas | Brazuka Faucets</title>
     <meta name="description" content="Brazuka Faucets: A lista definitiva de faucets de criptomoedas. Analisamos as melhores opções para você ganhar BTC, LTC, DOGE e muito mais com segurança." />
@@ -40,21 +41,51 @@
 
     gtag('config', 'G-11KQEGEBZ3');
     </script>
+    
     <style>
+        .search-box-container {
+            max-width: 500px;
+            margin: 20px auto 10px auto;
+            position: relative;
+        }
+        .search-box-container input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .search-box-container input:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 15px rgba(26, 115, 232, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .search-box-container i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 1.1rem;
+        }
         .coins-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 20px;
-            padding: 40px 0;
+            padding: 30px 0 50px 0;
         }
         .coin-item {
-            background: white;
+            background: rgba(255, 255, 255, 0.03);
             padding: 20px;
             border-radius: 12px;
             text-align: center;
             text-decoration: none;
-            color: #333;
-            border: 1px solid #eee;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
@@ -64,40 +95,88 @@
         .coin-item:hover {
             transform: translateY(-5px);
             border-color: #1a73e8;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            background: rgba(26, 115, 232, 0.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
-        .coin-item i {
-            font-size: 2em;
+        .coin-item i, .coin-item iconify-icon {
+            font-size: 2.2rem;
             color: #1a73e8;
         }
         .coin-item span {
-            font-weight: bold;
+            font-weight: 600;
             text-transform: uppercase;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            font-size: 1.1rem;
         }
     </style>
 </head>
 <body>
- 
 
     <div id="header-placeholder"></div>
-     <div class="ad-slot-top"></div>
+    <div class="ad-slot-top" style="margin: 20px auto;"></div>
 
     <main class="container">
-        <section class="headline">
+        <section class="headline" style="text-align: center; margin-bottom: 20px;">
             <h1>💰 Todas as Moedas Disponíveis</h1>
             <p>Escolha sua criptomoeda favorita e encontre as melhores faucets para coletar agora.</p>
+            
+            <!-- BARRA DE PESQUISA INSTANTERA -->
+            <div class="search-box-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="coin-search" placeholder="Pesquisar moeda (ex: Bitcoin, Tron, Doge)..." onkeyup="filterCoins()">
+            </div>
         </section>
 
         <div id="coins-grid" class="coins-container">
-            </div>
+            <!-- Os cards das moedas serão injetados dinamicamente via script-todas-moedas.js -->
+        </div>
     </main>
 
-     <div class="ad-slot-top"></div>
+    <div class="ad-slot-top" style="margin: 20px auto;"></div>
     <div id="footer-placeholder"></div>
 
-    
-<script src="js/script-global.js"></script>
+    <script src="js/script-global.js"></script>
     <script src="js/ads-manager.js"></script>
     <script src="js/script-todas-moedas.js"></script>
+    <script>
+        // Função de filtro em tempo real para a barra de pesquisa
+        function filterCoins() {
+            const input = document.getElementById('coin-search').value.toLowerCase();
+            const grid = document.getElementById('coins-grid');
+            const items = grid.getElementsByClassName('coin-item');
+            let hasResults = false;
+
+            for (let i = 0; i < items.length; i++) {
+                const coinName = items[i].textContent || items[i].innerText;
+                if (coinName.toLowerCase().indexOf(input) > -1) {
+                    items[i].style.display = "";
+                    hasResults = true;
+                } else {
+                    items[i].style.display = "none";
+                }
+            }
+
+            // Tratamento caso nenhuma moeda seja encontrada
+            let noResultsMsg = document.getElementById('no-search-results');
+            if (!hasResults) {
+                if (!noResultsMsg) {
+                    noResultsMsg = document.createElement('div');
+                    noResultsMsg.id = 'no-search-results';
+                    noResultsMsg.className = 'no-results';
+                    noResultsMsg.innerHTML = '<i class="fas fa-search-minus" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>Nenhuma criptomoeda encontrada com esse termo.';
+                    grid.appendChild(noResultsMsg);
+                }
+            } else if (noResultsMsg) {
+                noResultsMsg.remove();
+            }
+        }
+    </script>
 </body>
 </html>
