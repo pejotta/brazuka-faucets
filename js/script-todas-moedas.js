@@ -63,6 +63,29 @@ async function carregarMoedasDoBanco() {
             });
         });
 
+        // Extrai todas as siglas únicas presentes nas faucets cadastradas, ignorando categorias incorretas
+        const siglasSet = new Set();
+        const ignoreList = ['central', 'autofaucet', 'mineradora', 'bet', 'jogo', 'bet crypto', 'jogos', 'padrao'];
+
+        faucets.forEach(f => {
+            if (f.status === 'scam') return;
+            
+            let lista = [];
+            if (Array.isArray(f.moeda)) {
+                lista = f.moeda;
+            } else if (typeof f.moeda === 'string') {
+                lista = f.moeda.split(',');
+            }
+
+            lista.forEach(m => {
+                const sigla = m.toLowerCase().trim();
+                // Só adiciona se a sigla existir e NÃO estiver na lista de termos proibidos
+                if (sigla && !ignoreList.includes(sigla)) {
+                    siglasSet.add(sigla);
+                }
+            });
+        });
+        
         // Monta o array final com a contagem de faucets embutida
         moedasDoBanco = Object.keys(contagemFaucets).map(sigla => {
             const info = metadadosMoedas[sigla] || { 
