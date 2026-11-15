@@ -183,10 +183,10 @@
             </div>
         </div>
 
-        <!-- ABA 3: ALERTAS & NOTIFICAÇÕES (UNIFICADA) -->
+        <!-- ABA 3: ALERTAS & NOTIFICAÇÕES (UNIFICADA)[cite: 2] -->
         <div id="aba-alertas-notificacoes" class="tab-content">
             
-            <!-- BLOCO 1: ALERTA FLUTUANTE (POP-UP GLOBAL) -->
+            <!-- BLOCO 1: ALERTA FLUTUANTE (POP-UP GLOBAL)[cite: 2] -->
             <div class="panel-container" style="margin-bottom: 25px;">
                 <div class="panel-header">
                     <div>
@@ -214,7 +214,7 @@
                 </div>
             </div>
 
-            <!-- BLOCO 2: TICKER DO TOPO (MURAL ROTATIVO) -->
+            <!-- BLOCO 2: TICKER DO TOPO (MURAL ROTATIVO)[cite: 2] -->
             <div class="panel-container">
                 <div class="panel-header">
                     <div>
@@ -834,7 +834,6 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
-            const data = await res.json();
             if (res.ok) {
                 alert("✅ Alerta flutuante disparado com sucesso para o site inteiro!");
             } else {
