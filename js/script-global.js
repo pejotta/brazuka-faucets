@@ -504,3 +504,69 @@ function dispararFeedbackCopia(btnElement, tooltipElement) {
         initAlerts();
     }
 })();
+
+// --- INÍCIO DO MÓDULO DE LGPD E COOKIES ---
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. Injeta o HTML do Banner de Cookies no final do corpo da página automaticamente se não existir
+    if (!document.getElementById('brazuka-cookie-banner')) {
+        const bannerHTML = `
+            <div id="brazuka-cookie-banner" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg, #161b22); color: var(--text-color, #e0e6ed); border-top: 1px solid var(--card-border, #30363d); padding: 20px; z-index: 99999; box-shadow: 0 -5px 25px rgba(0,0,0,0.3); font-family: 'Barlow', sans-serif; box-sizing: border-box;">
+                <div style="max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 280px;">
+                        <h4 style="margin: 0 0 8px 0; font-size: 1.1rem; color: var(--primary, #1a73e8);"><i class="fa-solid fa-shield-halved"></i> Sua Privacidade & Cookies</h4>
+                        <p style="margin: 0; font-size: 0.9rem; line-height: 1.5; opacity: 0.85;">
+                            Utilizamos cookies e tecnologias semelhantes para melhorar sua experiência, analisar tráfego e exibir anúncios personalizados. Você pode gerenciar suas preferências a qualquer momento.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                        <button onclick="salvarPreferenciasCookies('parcial')" style="background: transparent; color: var(--text-color); border: 1px solid var(--card-border, #555); padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: 0.3s;">
+                            Apenas Essenciais
+                        </button>
+                        <button onclick="salvarPreferenciasCookies('tudo')" style="background: var(--primary, #1a73e8); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: 0.3s;">
+                            Aceitar Todos
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', bannerHTML);
+    }
+
+    // 2. Verifica se o usuário já consentiu
+    const consentimento = localStorage.getItem('brazuka_consentimento_cookies');
+    const banner = document.getElementById('brazuka-cookie-banner');
+    if (!consentimento && banner) {
+        banner.style.display = 'block';
+    }
+});
+
+function salvarPreferenciasCookies(tipo) {
+    localStorage.setItem('brazuka_consentimento_cookies', tipo);
+    localStorage.setItem('brazuka_consentimento_data', new Date().toISOString());
+    
+    const banner = document.getElementById('brazuka-cookie-banner');
+    if (banner) {
+        banner.style.display = 'none';
+    }
+}
+
+function abrirPainelPrivacidade() {
+    let escolhaAtual = localStorage.getItem('brazuka_consentimento_cookies') || 'Não definido';
+    let acao = prompt(`Gerenciar Privacidade - Brazuka Faucets\n\nStatus atual: ${escolhaAtual.toUpperCase()}\n\nDigite:\n1 - Aceitar Todos os Cookies\n2 - Permitir Apenas Essenciais\n3 - Limpar/Revogar meus dados`, "1");
+    
+    if (acao === "1") {
+        salvarPreferenciasCookies('tudo');
+        alert("✅ Preferências atualizadas: Todos os cookies aceitos!");
+    } else if (acao === "2") {
+        salvarPreferenciasCookies('parcial');
+        alert("✅ Preferências atualizadas: Apenas essenciais.");
+    } else if (acao === "3") {
+        if (confirm("Tem certeza que deseja limpar suas preferências de cookies salvas?")) {
+            localStorage.removeItem('brazuka_consentimento_cookies');
+            localStorage.removeItem('brazuka_consentimento_data');
+            alert("🗑️ Dados limpos. Atualize a página para ver o banner novamente.");
+            location.reload();
+        }
+    }
+}
+// --- FIM DO MÓDULO DE LGPD E COOKIES ---
