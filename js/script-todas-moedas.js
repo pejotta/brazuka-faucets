@@ -1,23 +1,79 @@
 /**
- * script-todas-moedas.js - Catálogo 100% Dinâmico e Automatizado
+ * script-todas-moedas.js - Catálogo 100% Automatizado via Cloudflare Worker
  */
 
+const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
 let moedasDoBanco = [];
 let categoriaAtual = 'todas';
 
-// 1. Busca as moedas direto do moedas.json ao carregar a página
+// 1. Busca todas as faucets do Cloudflare e extrai as moedas ativas de forma dinâmica
 async function carregarMoedasDoBanco() {
     const grid = document.getElementById('coins-grid');
     if (!grid) return;
 
     try {
-        const response = await fetch('moedas.json');
-        if (!response.ok) throw new Error("Erro ao carregar o arquivo de moedas.");
+        const response = await fetch(`${URL_WORKER}/get-all-faucets`);
+        if (!response.ok) throw new Error("Erro ao carregar dados do Cloudflare.");
 
-        moedasDoBanco = await response.json();
+        const faucets = await response.json();
+        
+        // Mapeamento padrão de nomes bonitos e categorias para as siglas conhecidas
+        const metadadosMoedas = {
+            btc: { nome: 'Bitcoin', categoria: 'principais' },
+            eth: { nome: 'Ethereum', categoria: 'principais' },
+            doge: { nome: 'Dogecoin', categoria: 'memes' },
+            ltc: { nome: 'Litecoin', categoria: 'principais' },
+            bch: { nome: 'Bitcoin Cash', categoria: 'principais' },
+            dash: { nome: 'Dash', categoria: 'principais' },
+            dgb: { nome: 'DigiByte', categoria: 'redes' },
+            trx: { nome: 'Tron', categoria: 'redes' },
+            usdt: { nome: 'Tether', categoria: 'stablecoins' },
+            fey: { nome: 'Feyorra', categoria: 'redes' },
+            zec: { nome: 'Zcash', categoria: 'principais' },
+            bnb: { nome: 'Binance Coin', categoria: 'redes' },
+            sol: { nome: 'Solana', categoria: 'redes' },
+            xrp: { nome: 'Ripple', categoria: 'redes' },
+            pol: { nome: 'Polygon', categoria: 'redes' },
+            ada: { nome: 'Cardano', categoria: 'redes' },
+            ton: { nome: 'Toncoin', categoria: 'redes' },
+            xlm: { nome: 'Stellar', categoria: 'redes' },
+            usdc: { nome: 'USD Coin', categoria: 'stablecoins' },
+            xmr: { nome: 'Monero', categoria: 'principais' },
+            tara: { nome: 'Taraxa', categoria: 'redes' },
+            trump: { nome: 'Official Trump', categoria: 'memes' },
+            pepe: { nome: 'Pepe', categoria: 'memes' },
+            'g$': { nome: 'GoodDollar', categoria: 'redes' }
+        };
+
+        // Extrai todas as siglas únicas presentes nas faucets cadastradas
+        const siglasSet = new Set();
+        faucets.forEach(f => {
+            if (Array.isArray(f.moeda)) {
+                f.moeda.forEach(m => siglasSet.add(m.toLowerCase().trim()));
+            } else if (typeof f.moeda === 'string') {
+                f.moeda.split(',').forEach(m => siglasSet.add(m.toLowerCase().trim()));
+            }
+        });
+
+        // Monta o array final de moedas dinamicamente
+        moedasDoBanco = Array.from(siglasSet).map(sigla => {
+            const info = metadadosMoedas[sigla] || { 
+                nome: sigla.toUpperCase(), 
+                categoria: 'redes' 
+            };
+            return {
+                sigla: sigla,
+                nome: info.nome,
+                categoria: info.categoria
+            };
+        });
+
+        // Ordena alfabeticamente pelo nome
+        moedasDoBanco.sort((a, b) => a.nome.localeCompare(b.nome));
+
         renderCoins(moedasDoBanco);
     } catch (error) {
-        console.error("Erro ao carregar moedas:", error);
+        console.error("Erro ao carregar moedas do Worker:", error);
         grid.innerHTML = '<p class="no-results">Erro ao carregar as moedas. Tente novamente em instantes.</p>';
     }
 }
@@ -33,10 +89,10 @@ function renderCoins(lista) {
     }
 
     grid.innerHTML = lista.map(m => {
-        const coinLink = `moeda.html?c=${m.sigla.toLowerCase()}`;
+        const coinLink = `moeda.html?c=${encodeURIComponent(m.sigla)}`;
         
         return `
-            <a href="${coinLink}" class="coin-item" data-category="${m.categoria || 'geral'}" data-name="${m.nome.toLowerCase()} ${m.sigla.toLowerCase()}">
+            <a href="${coinLink}" class="coin-item" data-category="${m.categoria}" data-name="${m.nome.toLowerCase()} ${m.sigla.toLowerCase()}">
                 <div class="icon-wrapper" style="height: 50px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
                     <img src="assets/logo-brazuka.png" alt="${m.nome}" style="width: 42px; height: 42px; object-fit: contain;">
                 </div>
