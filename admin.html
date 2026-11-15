@@ -189,20 +189,19 @@
             <!-- BLOCO 1: ALERTA FLUTUANTE (POP-UP GLOBAL)[cite: 2] -->
             <div class="panel-container" style="margin-bottom: 25px;">
                 <div class="panel-header">
-                    <div>
-                        <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-bell"></i> Alerta Flutuante (Pop-up Global)</h3>
-                        <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Dispare avisos em tempo real que aparecem no canto inferior da tela dos usuários.</p>
-                    </div>
-                    <div style="display: flex; gap: 10px;">
-                    <button class="btn-action" onclick="salvarAlertaGlobal()" style="background: var(--success);">
-                        <i class="fa-solid fa-paper-plane"></i> Publicar Alerta
-                    </button>                    
-    <button class="btn-action" onclick="desativarAlertaGlobal()" style="background: var(--danger);">
-        <i class="fa-solid fa-ban"></i> Desativar Alerta
-    </button>
-    <button class="btn-action" onclick="salvarAlertaGlobal()" style="background: var(--success);">
-        <i class="fa-solid fa-paper-plane"></i> Publicar Alerta
-    </button>
+    <div>
+        <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-bell"></i> Alerta Flutuante (Pop-up Global)</h3>
+        <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Dispare avisos em tempo real que aparecem no canto inferior da tela dos usuários.</p>
+    </div>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="btn-action" onclick="desativarAlertaGlobal()" style="background: var(--danger);">
+            <i class="fa-solid fa-ban"></i> Desativar Alerta
+        </button>
+        <button class="btn-action" onclick="salvarAlertaGlobal()" style="background: var(--success);">
+            <i class="fa-solid fa-paper-plane"></i> Publicar Alerta
+        </button>
+    </div>
+</div>
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -870,6 +869,32 @@ async function carregarAlertaAdmin() {
         }
     } catch (e) {
         console.error("Erro ao carregar alerta ativo no admin:", e);
+    }
+}
+
+        // Desativa / Remove o alerta ativo do site instantaneamente
+async function desativarAlertaGlobal() {
+    if (!confirm("Tem certeza que deseja desativar o alerta flutuante do site?")) return;
+
+    const payload = { ativo: false, titulo: "", texto: "", link: "" };
+
+    try {
+        const res = await fetch(`${URL_WORKER}/save-alert`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+            document.getElementById('admin-alert-title').value = '';
+            document.getElementById('admin-alert-text').value = '';
+            document.getElementById('admin-alert-link').value = '';
+            alert("🗑️ Alerta desativado com sucesso! Ele sumirá do site.");
+        } else {
+            alert("❌ Erro ao desativar alerta.");
+        }
+    } catch (e) {
+        alert("🚨 Erro de conexão ao desativar.");
+        console.error(e);
     }
 }
 
