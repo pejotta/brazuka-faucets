@@ -850,6 +850,20 @@
             console.error(e);
         }
     }
+        // Busca o alerta ativo atual para exibir nos inputs do admin
+async function carregarAlertaAdmin() {
+    try {
+        const res = await fetch(`${URL_WORKER}/get-active-alert`);
+        const data = await res.json();
+        if (data && data.ativo) {
+            document.getElementById('admin-alert-title').value = data.titulo || '';
+            document.getElementById('admin-alert-text').value = data.texto || '';
+            document.getElementById('admin-alert-link').value = data.link || '';
+        }
+    } catch (e) {
+        console.error("Erro ao carregar alerta ativo no admin:", e);
+    }
+}
 
     // Leads e Analytics
     function renderizarTabela(dados) {
