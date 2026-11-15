@@ -45,7 +45,7 @@ async function carregarMoedasDoBanco() {
 
         // Conta as faucets ativas IGNORANDO termos indesejados da lista negra
         const contagemFaucets = {};
-        const ignoreList = ['central', 'autofaucet', 'mineradora', 'bet', 'jogo', 'bet crypto', 'jogos', 'padrao'];
+        const ignoreList = ['central', 'autofaucet', 'minerador', 'bet', 'jogo', 'bet crypto', 'jogos', 'padrao'];
 
         faucets.forEach(f => {
             if (f.status === 'scam') return;
