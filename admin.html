@@ -746,7 +746,12 @@
 
     function escapeHtml(text) {
         if (text == null) return "";
-        return String(text).replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, """).replace(/'/g, "'");
+        return String(text)
+            .replace(/&/g, "&")
+            .replace(/</g, "<")
+            .replace(/>/g, ">")
+            .replace(/"/g, """)
+            .replace(/'/g, "'");
     }
 
     // Gerenciador de Ticker
