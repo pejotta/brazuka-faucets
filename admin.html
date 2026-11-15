@@ -85,8 +85,8 @@
             <button class="tab-btn" onclick="mudarAba('anuncios', event)">
                 <i class="fa-solid fa-rectangle-ad"></i> Gerenciador de Anúncios
             </button>
-            <button class="tab-btn" onclick="mudarAba('ticker', event)">
-                <i class="fa-solid fa-bullhorn"></i> Gerenciar Ticker
+            <button class="tab-btn" onclick="mudarAba('alertas-notificacoes', event)">
+                <i class="fa-solid fa-bullhorn"></i> Alertas & Notificações
             </button>
             <button class="tab-btn" onclick="mudarAba('analytics', event)">
                 <i class="fa-solid fa-chart-pie"></i> Analytics & Cliques
@@ -150,20 +150,20 @@
                     <div style="flex: 1; min-width: 250px;">
                         <label style="font-weight: bold; font-size: 0.9em; display: block; margin-bottom: 5px;">Selecione a Posição/Slot:</label>
                         <select id="ad-slot-select" onchange="carregarSlotSelecionado()" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
-    <option value="heroCarousel">Carrossel Home - Mega Exposição (1200x350)</option>
-    <option value="homeTop">Home / Topo Geral - (728x90)</option>
-    <option value="homeBtcEth">Home - Setorial BTC & ETH - (728x90)</option>
-    <option value="homeDogeTrx">Home - Setorial DOGE & TRX - (728x90)</option>
-    <option value="homeCentralAuto">Home - Setorial Central & AutoFaucets - (728x90)</option>
-    <option value="homeMinerBet">Home - Setorial Mineradores & Bets - (728x90)</option>
-    <option value="homeAirdropIpo">Home - Cursos, Ferramentas & IPOs - (900x250)</option>
-    <option value="fichaTecnica">Ficha Técnica - Banner Quadrado - (300x250)</option>
-    <option value="fichaTecnicaTrx">Retângulo Médio - Faucet TRX - (300x250)</option>
-    <option value="fichaTecnicaTon">Retângulo Médio - Faucet TON - (300x250)</option>
-    <option value="sidebarTrx">Skyscraper Exclusivo - Faucet TRX - (160x600)</option>
-    <option value="sidebarTon">Skyscraper Exclusivo - Faucet TON - (160x600)</option>
-    <option value="pageCadastro">Página de Cadastro - Skyscraper Lateral - (160x600)</option>
-</select>
+                            <option value="heroCarousel">Carrossel Home - Mega Exposição (1200x350)</option>
+                            <option value="homeTop">Home / Topo Geral - (728x90)</option>
+                            <option value="homeBtcEth">Home - Setorial BTC & ETH - (728x90)</option>
+                            <option value="homeDogeTrx">Home - Setorial DOGE & TRX - (728x90)</option>
+                            <option value="homeCentralAuto">Home - Setorial Central & AutoFaucets - (728x90)</option>
+                            <option value="homeMinerBet">Home - Setorial Mineradores & Bets - (728x90)</option>
+                            <option value="homeAirdropIpo">Home - Cursos, Ferramentas & IPOs - (900x250)</option>
+                            <option value="fichaTecnica">Ficha Técnica - Banner Quadrado - (300x250)</option>
+                            <option value="fichaTecnicaTrx">Retângulo Médio - Faucet TRX - (300x250)</option>
+                            <option value="fichaTecnicaTon">Retângulo Médio - Faucet TON - (300x250)</option>
+                            <option value="sidebarTrx">Skyscraper Exclusivo - Faucet TRX - (160x600)</option>
+                            <option value="sidebarTon">Skyscraper Exclusivo - Faucet TON - (160x600)</option>
+                            <option value="pageCadastro">Página de Cadastro - Skyscraper Lateral - (160x600)</option>
+                        </select>
                     </div>
                 </div>
 
@@ -183,118 +183,113 @@
             </div>
         </div>
 
-        <!-- ABA 3: GERENCIAR TICKER -->
-        <!-- ABA: ALERTAS & NOTIFICAÇÕES -->
-<div id="aba-alertas-notificacoes" class="tab-content">
-    
-    <!-- BLOCO 1: ALERTA FLUATUANTE (POP-UP LATERAL) -->
-    <div class="panel-container" style="margin-bottom: 25px;">
-        <div class="panel-header">
-            <div>
-                <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-bell"></i> Alerta Flutuante (Pop-up Global)</h3>
-                <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Dispare avisos em tempo real que aparecem no canto inferior da tela dos usuários.</p>
-            </div>
-            <button class="btn-action" onclick="salvarAlertaGlobal()" style="background: var(--success);">
-                <i class="fa-solid fa-paper-plane"></i> Publicar Alerta
-            </button>
-        </div>
+        <!-- ABA 3: ALERTAS & NOTIFICAÇÕES (UNIFICADA) -->
+        <div id="aba-alertas-notificacoes" class="tab-content">
+            
+            <!-- BLOCO 1: ALERTA FLUTUANTE (POP-UP GLOBAL) -->
+            <div class="panel-container" style="margin-bottom: 25px;">
+                <div class="panel-header">
+                    <div>
+                        <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-bell"></i> Alerta Flutuante (Pop-up Global)</h3>
+                        <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Dispare avisos em tempo real que aparecem no canto inferior da tela dos usuários.</p>
+                    </div>
+                    <button class="btn-action" onclick="salvarAlertaGlobal()" style="background: var(--success);">
+                        <i class="fa-solid fa-paper-plane"></i> Publicar Alerta
+                    </button>
+                </div>
 
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-            <div>
-                <label style="font-weight: 600; font-size: 0.85em; display: block; margin-bottom: 5px;">Título do Alerta:</label>
-                <input type="text" id="admin-alert-title" placeholder="Ex: 🔥 Nova Faucet Adicionada!" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div>
+                        <label style="font-weight: 600; font-size: 0.85em; display: block; margin-bottom: 5px;">Título do Alerta:</label>
+                        <input type="text" id="admin-alert-title" placeholder="Ex: 🔥 Nova Faucet Adicionada!" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="font-weight: 600; font-size: 0.85em; display: block; margin-bottom: 5px;">Mensagem Curta:</label>
+                        <textarea id="admin-alert-text" placeholder="Ex: Venha conferir a nova faucet pagando em TRX com saque imediato..." style="width: 100%; height: 70px; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; box-sizing: border-box;"></textarea>
+                    </div>
+                    <div>
+                        <label style="font-weight: 600; font-size: 0.85em; display: block; margin-bottom: 5px;">Link de Destino (Ao clicar no balão):</label>
+                        <input type="text" id="admin-alert-link" placeholder="Ex: moeda.html?c=trx ou faucet.html?id=12" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+                    </div>
+                </div>
             </div>
-            <div>
-                <label style="font-weight: 600; font-size: 0.85em; display: block; margin-bottom: 5px;">Mensagem Curta:</label>
-                <textarea id="admin-alert-text" placeholder="Ex: Venha conferir a nova faucet pagando em TRX com saque imediato..." style="width: 100%; height: 70px; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; box-sizing: border-box;"></textarea>
-            </div>
-            <div>
-                <label style="font-weight: 600; font-size: 0.85em; display: block; margin-bottom: 5px;">Link de Destino (Ao clicar no balão):</label>
-                <input type="text" id="admin-alert-link" placeholder="Ex: moeda.html?c=trx ou faucet.html?id=12" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
-            </div>
-        </div>
-    </div>
 
-    <!-- BLOCO 2: TICKER DO TOPO (MURAL ROTATIVO) -->
-    <div class="panel-container">
-        <div class="panel-header">
-            <div>
-                <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-scroll"></i> Ticker do Topo (Mural de Avisos)</h3>
-                <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Gerencie as frases que passam rolando no topo de todas as páginas.</p>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn-action" onclick="adicionarCampoTicker()" style="background: var(--primary);">
-                    <i class="fa-solid fa-plus"></i> Novo Aviso
-                </button>
-                <button class="btn-action" onclick="salvarTickerNoBanco()" style="background: var(--success);">
-                    <i class="fa-solid fa-floppy-disk"></i> Salvar Ticker
-                </button>
-            </div>
-        </div>
+            <!-- BLOCO 2: TICKER DO TOPO (MURAL ROTATIVO) -->
+            <div class="panel-container">
+                <div class="panel-header">
+                    <div>
+                        <h3 style="margin:0; font-size: 1.1em; color: #333;"><i class="fa-solid fa-scroll"></i> Ticker do Topo (Mural de Avisos)</h3>
+                        <p style="margin: 5px 0 0; color: #777; font-size: 0.85em;">Gerencie as frases que passam rolando no topo de todas as páginas.</p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn-action" onclick="adicionarCampoTicker()" style="background: var(--primary);">
+                            <i class="fa-solid fa-plus"></i> Novo Aviso
+                        </button>
+                        <button class="btn-action" onclick="salvarTickerNoBanco()" style="background: var(--success);">
+                            <i class="fa-solid fa-floppy-disk"></i> Salvar Ticker
+                        </button>
+                    </div>
+                </div>
 
-        <div id="ticker-editor-container" style="display: flex; flex-direction: column; gap: 10px;">
-            <!-- Itens carregados dinamicamente via JS -->
-        </div>
-    </div>
+                <div id="ticker-editor-container" style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Itens carregados dinamicamente via JS -->
+                </div>
+            </div>
 
-</div>
+        </div>
 
         <!-- ABA 4: ANALYTICS -->
         <div id="aba-analytics" class="tab-content">
-    <div style="background: #fff; padding: 25px; border-radius: 12px; border: 1px solid #e0e0e0;">
-        
-        <!-- Cabeçalho com Ações Comerciais -->
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px;">
-            <div>
-                <h3 style="margin: 0; color: #7a33eb;"><i class="fa-solid fa-chart-pie"></i> Dashboard de Analytics & Desempenho</h3>
-                <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9em;">Métricas de engajamento em tempo real para auditoria e patrocinadores.</p>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button onclick="copiarRelatorioPatrocinador()" style="background: #1a73e8; color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9em;">
-                    <i class="fa-solid fa-copy"></i> Copiar Relatório p/ Patrocinador
-                </button>
+            <div style="background: #fff; padding: 25px; border-radius: 12px; border: 1px solid #e0e0e0;">
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px;">
+                    <div>
+                        <h3 style="margin: 0; color: #7a33eb;"><i class="fa-solid fa-chart-pie"></i> Dashboard de Analytics & Desempenho</h3>
+                        <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9em;">Métricas de engajamento em tempo real para auditoria e patrocinadores.</p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="copiarRelatorioPatrocinador()" style="background: #1a73e8; color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9em;">
+                            <i class="fa-solid fa-copy"></i> Copiar Relatório p/ Patrocinador
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;" id="kpi-cards-container">
+                    <!-- Preenchido via JS -->
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h4 style="margin-bottom: 15px; color: #333; border-left: 4px solid #7a33eb; padding-left: 8px;">Top Engajamento por Elemento</h4>
+                    <div id="grafico-barras-container" style="display: flex; flex-direction: column; gap: 12px; background: #f8f9fa; padding: 20px; border-radius: 10px; border: 1px solid #eaeaea;">
+                        <p style="text-align: center; color: #777;">Carregando métricas visuais...</p>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h4 style="margin: 0; color: #333;">Detalhamento Completo de Cliques</h4>
+                        <button onclick="toggleTabelaDetalhada()" id="btn-toggle-tabela" style="background: none; border: none; color: #7a33eb; font-weight: 600; cursor: pointer; font-size: 0.9em;">
+                            Mostrar Tabela Completa ▼
+                        </button>
+                    </div>
+                    <div id="wrapper-tabela-detalhada" style="display: none; overflow-x: auto; max-height: 300px; border: 1px solid #eee; border-radius: 8px;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9em;">
+                            <thead>
+                                <tr style="background: #f1f3f5; color: #495057; border-bottom: 2px solid #dee2e6;">
+                                    <th style="padding: 12px;">Tipo</th>
+                                    <th style="padding: 12px;">Identificador</th>
+                                    <th style="padding: 12px; text-align: right;">Cliques</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-tbody">
+                                <!-- Dados da tabela -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
         </div>
-
-        <!-- Cards de Resumo (KPIs estilo Power BI) -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;" id="kpi-cards-container">
-            <!-- Preenchido via JS -->
-        </div>
-
-        <!-- Seção de Gráficos Visuais (Barras Proporcionais) -->
-        <div style="margin-bottom: 30px;">
-            <h4 style="margin-bottom: 15px; color: #333; border-left: 4px solid #7a33eb; padding-left: 8px;">Top Engajamento por Elemento</h4>
-            <div id="grafico-barras-container" style="display: flex; flex-direction: column; gap: 12px; background: #f8f9fa; padding: 20px; border-radius: 10px; border: 1px solid #eaeaea;">
-                <p style="text-align: center; color: #777;">Carregando métricas visuais...</p>
-            </div>
-        </div>
-
-        <!-- Tabela Compacta Ocultável / Detalhada -->
-        <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <h4 style="margin: 0; color: #333;">Detalhamento Completo de Cliques</h4>
-                <button onclick="toggleTabelaDetalhada()" id="btn-toggle-tabela" style="background: none; border: none; color: #7a33eb; font-weight: 600; cursor: pointer; font-size: 0.9em;">
-                    Mostrar Tabela Completa ▼
-                </button>
-            </div>
-            <div id="wrapper-tabela-detalhada" style="display: none; overflow-x: auto; max-height: 300px; border: 1px solid #eee; border-radius: 8px;">
-                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9em;">
-                    <thead>
-                        <tr style="background: #f1f3f5; color: #495057; border-bottom: 2px solid #dee2e6;">
-                            <th style="padding: 12px;">Tipo</th>
-                            <th style="padding: 12px;">Identificador</th>
-                            <th style="padding: 12px; text-align: right;">Cliques</th>
-                        </tr>
-                    </thead>
-                    <tbody id="analytics-tbody">
-                        <!-- Dados da tabela -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </div>
-</div>
 
         <!-- ABA 5: BASE DE LEADS -->
         <div id="aba-leads" class="tab-content">
@@ -314,7 +309,6 @@
                     </div>
                 </div>
 
-                <!-- Barra de Pesquisa de Leads -->
                 <div style="margin-bottom: 20px;">
                     <input type="text" id="filtro-email" placeholder="🔍 Pesquisar e-mail na base..." onkeyup="filtrarTabela()" style="padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; width: 100%; box-sizing: border-box; font-size: 0.9em;">
                 </div>
@@ -335,116 +329,108 @@
                 </div>
             </div>
         </div>
+
+        <!-- ABA 6: BLOG -->
         <div id="aba-blog" class="tab-content">
-    <div style="display: grid; grid-template-columns: 1fr; gap: 25px;">
-        
-        <!-- Formulário de Criação / Edição -->
-        <div style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0;">
-            <h3 style="margin-top: 0; color: #7a33eb;"><i class="fa-solid fa-pen-to-square"></i> Escrever ou Editar Artigo</h3>
-            
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px; margin-bottom: 15px;">
-                <div>
-                    <label style="display: block; font-weight: 600; margin-bottom: 5px;">Título do Artigo (SEO):</label>
-                    <input type="text" id="post-title" oninput="gerarSlugAutomatico()" placeholder="Ex: Vie Faucet Paga Mesmo? Review Completa 2026" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
-                </div>
-                <div>
-                    <label style="display: block; font-weight: 600; margin-bottom: 5px;">Categoria / Marcador:</label>
-                    <select id="post-category" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
-                        <option value="Review">Review de Faucet</option>
-                        <option value="Patrocinado">Review Patrocinada</option>
-                        <option value="Notícia">Notícia Cripto</option>
-                        <option value="Tutorial">Guia & Tutorial</option>
-                    </select>
-                </div>
-            </div>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 25px;">
+                
+                <div style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0;">
+                    <h3 style="margin-top: 0; color: #7a33eb;"><i class="fa-solid fa-pen-to-square"></i> Escrever ou Editar Artigo</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">Título do Artigo (SEO):</label>
+                            <input type="text" id="post-title" oninput="gerarSlugAutomatico()" placeholder="Ex: Vie Faucet Paga Mesmo? Review Completa 2026" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">Categoria / Marcador:</label>
+                            <select id="post-category" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+                                <option value="Review">Review de Faucet</option>
+                                <option value="Patrocinado">Review Patrocinada</option>
+                                <option value="Notícia">Notícia Cripto</option>
+                                <option value="Tutorial">Guia & Tutorial</option>
+                            </select>
+                        </div>
+                    </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-    <div>
-        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Selo / Emblema do Post:</label>
-        <select id="post-badge" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
-            <option value="">Nenhum (Normal)</option>
-            <option value="Destaque">⭐ Destaque</option>
-            <option value="Patrocinado">🤝 Patrocinado</option>
-            <option value="Aviso">📢 Aviso Importante</option>
-        </select>
-    </div>
-    <div style="display: flex; align-items: center; padding-top: 25px;">
-        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600; color: #7a33eb;">
-            <input type="checkbox" id="post-pinned" style="width: 18px; height: 18px; accent-color: #7a33eb;"> 
-            Fixar no Topo do Blog (Destaque Principal)
-        </label>
-    </div>
-</div>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                <div>
-                    <label style="display: block; font-weight: 600; margin-bottom: 5px;">Slug (URL Amigável - Gerado Auto):</label>
-                    <input type="text" id="post-slug" placeholder="vie-faucet-paga-mesmo-review" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; background: #f9f9f9; box-sizing: border-box;">
-                </div>
-                <div>
-                    <label style="display: block; font-weight: 600; margin-bottom: 5px;">URL da Imagem de Capa (1200x630):</label>
-                    <input type="text" id="post-image" placeholder="https://..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
-                </div>
-            </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">Selo / Emblema do Post:</label>
+                            <select id="post-badge" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+                                <option value="">Nenhum (Normal)</option>
+                                <option value="Destaque">⭐ Destaque</option>
+                                <option value="Patrocinado">🤝 Patrocinado</option>
+                                <option value="Aviso">📢 Aviso Importante</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; align-items: center; padding-top: 25px;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600; color: #7a33eb;">
+                                <input type="checkbox" id="post-pinned" style="width: 18px; height: 18px; accent-color: #7a33eb;"> 
+                                Fixar no Topo do Blog (Destaque Principal)
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">Slug (URL Amigável - Gerado Auto):</label>
+                            <input type="text" id="post-slug" placeholder="vie-faucet-paga-mesmo-review" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; background: #f9f9f9; box-sizing: border-box;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">URL da Imagem de Capa (1200x630):</label>
+                            <input type="text" id="post-image" placeholder="https://..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+                        </div>
+                    </div>
 
-            <div style="margin-bottom: 15px;">
-                <label style="display: block; font-weight: 600; margin-bottom: 5px;">Meta Descrição (Opcional - Se vazio, pega início do texto):</label>
-                <input type="text" id="post-meta" maxlength="160" placeholder="Resumo curto para aparecer no Google (máx. 160 caracteres)..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
-            </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Meta Descrição (Opcional):</label>
+                        <input type="text" id="post-meta" maxlength="160" placeholder="Resumo curto para aparecer no Google (máx. 160 caracteres)..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
+                    </div>
 
-            <div style="margin-bottom: 15px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 5px;">
-                    <label style="font-weight: 600;">Corpo do Artigo (Aceita HTML):</label>
-                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                        <button type="button" onclick="inserirTagPost('<h2>', '</h2>')" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; background: #f4f4f4; font-weight: bold;">H2</button>
-                        <button type="button" onclick="inserirTagPost('<strong>', '</strong>')" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; background: #f4f4f4; font-weight: bold;">B</button>
-                        <button type="button" onclick="inserirTagPost('<p>', '</p>')" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; background: #f4f4f4;">Parágrafo</button>
-                        <button type="button" onclick="inserirLinkPost()" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; background: #f4f4f4;"><i class="fa-solid fa-link"></i> Link</button>
-                        <button type="button" onclick="inserirAdNoPost()" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #7a33eb; cursor: pointer; background: #f3ebff; color: #7a33eb; font-weight: 600;"><i class="fa-solid fa-rectangle-ad"></i> Inserir Banner</button>
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 5px;">
+                            <label style="font-weight: 600;">Corpo do Artigo (Aceita HTML):</label>
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                <button type="button" onclick="inserirTagPost('<h2>', '</h2>')" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; background: #f4f4f4; font-weight: bold;">H2</button>
+                                <button type="button" onclick="inserirTagPost('<strong>', '</strong>')" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; background: #f4f4f4; font-weight: bold;">B</button>
+                                <button type="button" onclick="inserirTagPost('<p>', '</p>')" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; background: #f4f4f4;">Parágrafo</button>
+                                <button type="button" onclick="inserirLinkPost()" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; background: #f4f4f4;"><i class="fa-solid fa-link"></i> Link</button>
+                                <button type="button" onclick="inserirAdNoPost()" style="padding: 4px 10px; border-radius: 5px; border: 1px solid #7a33eb; cursor: pointer; background: #f3ebff; color: #7a33eb; font-weight: 600;"><i class="fa-solid fa-rectangle-ad"></i> Inserir Banner</button>
+                            </div>
+                        </div>
+                        <textarea id="post-content" rows="12" placeholder="Escreva o conteúdo completo do artigo aqui..." style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; line-height: 1.5; box-sizing: border-box;"></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" onclick="salvarPostNoBanco()" style="background: #7a33eb; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                            <i class="fa-solid fa-paper-plane"></i> Publicar / Atualizar Artigo
+                        </button>
+                        <button type="button" onclick="limparFormularioPost()" style="background: #eee; color: #333; border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer;">
+                            Limpar Campos
+                        </button>
                     </div>
                 </div>
-                <textarea id="post-content" rows="12" placeholder="Escreva o conteúdo completo do artigo aqui..." style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; line-height: 1.5; box-sizing: border-box;"></textarea>
-            </div>
 
-            <div style="display: flex; gap: 10px;">
-                <button type="button" onclick="salvarPostNoBanco()" style="background: #7a33eb; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer;">
-                    <i class="fa-solid fa-paper-plane"></i> Publicar / Atualizar Artigo
-                </button>
-                <button type="button" onclick="limparFormularioPost()" style="background: #eee; color: #333; border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer;">
-                    Limpar Campos
-                </button>
-            </div>
-        </div>
-
-        <!-- Lista de Artigos Publicados -->
-        <div style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0;">
-            <h3 style="margin-top: 0;"><i class="fa-solid fa-list"></i> Artigos Publicados</h3>
-            <div id="lista-posts-admin" style="display: flex; flex-direction: column; gap: 10px;">
-                <p style="color: #777; text-align: center;">Carregando artigos...</p>
-            </div>
+                <div style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0;">
+                    <h3 style="margin-top: 0;"><i class="fa-solid fa-list"></i> Artigos Publicados</h3>
+                    <div id="lista-posts-admin" style="display: flex; flex-direction: column; gap: 10px;">
+                        <p style="color: #777; text-align: center;">Carregando artigos...</p>
+                    </div>
                 </div>
 
             </div>
         </div>
+
     </div>
 
     <script>
     const URL_WORKER = "https://brazuka-faucets.moneynanet-yt.workers.dev";
     let listaEmailsGlobal = [];
     let objetoAdsGlobal = {
-        heroCarousel: [],
-        homeTop: [],
-        homeBtcEth: [],
-        homeDogeTrx: [],
-        homeCentralAuto: [],
-        homeMinerBet: [],
-        homeAirdropIpo: [],
-        fichaTecnica: [],
-        fichaTecnicaTrx: [],
-        fichaTecnicaTon: [],
-        sidebarTrx: [],
-        sidebarTon: [],
-        pageCadastro: []
+        heroCarousel: [], homeTop: [], homeBtcEth: [], homeDogeTrx: [],
+        homeCentralAuto: [], homeMinerBet: [], homeAirdropIpo: [],
+        fichaTecnica: [], fichaTecnicaTrx: [], fichaTecnicaTon: [],
+        sidebarTrx: [], sidebarTon: [], pageCadastro: []
     };
     let tickerItens = [];
 
@@ -462,7 +448,7 @@
         if (evento && evento.currentTarget) evento.currentTarget.classList.add('active');
     }
 
-    // 1. Função de Autenticação Segura (Bloqueante)
+    // Autenticação Segura (Bloqueante)
     async function verificarAutenticacaoEScarregar() {
         let acesso = sessionStorage.getItem('autenticado');
 
@@ -503,10 +489,9 @@
         carregarPostsAdmin();
     }
 
-    // 2. Busca de Dados na Worker (Leads, Faucets, Ads e Ticker)
+    // Busca de Dados na Worker
     async function carregarDadosPainel() {
         try {
-            // Puxa e-mails
             const resEmails = await fetch(URL_WORKER + '/admin-get-emails');
             const emailsData = await resEmails.json();
             if (Array.isArray(emailsData)) {
@@ -516,7 +501,6 @@
                 renderizarTabela(emailsData);
             }
 
-            // Puxa faucets
             const resFaucets = await fetch(URL_WORKER + '/get-all-faucets');
             const faucetsData = await resFaucets.json();
             if (Array.isArray(faucetsData)) {
@@ -524,7 +508,6 @@
                 if (elFaucets) elFaucets.innerText = faucetsData.length;
             }
 
-            // Puxa Ads do Banco de Dados
             const resAds = await fetch(URL_WORKER + '/admin-get-ads');
             const adsData = await resAds.json();
             if (adsData && typeof adsData === 'object') {
@@ -532,13 +515,12 @@
                 atualizarContadorAnuncios();
                 carregarSlotSelecionado();
             }
-
         } catch (err) {
             console.error("Erro ao carregar dados do painel:", err);
         }
     }
 
-    // --- LÓGICA DO GERENCIADOR DE BLOG ---
+    // Gerenciador de Blog
     let listaPostsGlobal = [];
 
     async function carregarPostsAdmin() {
@@ -586,13 +568,7 @@
 
     function gerarSlugAutomatico() {
         const titulo = document.getElementById('post-title').value;
-        const slug = titulo
-            .toLowerCase()
-            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            .replace(/[^a-z0-9\s-]/g, '')
-            .trim()
-            .replace(/\s+/g, '-')
-            .replace(/-+/g, '-');
+        const slug = titulo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/-+/g, '-');
         document.getElementById('post-slug').value = slug;
     }
 
@@ -614,8 +590,7 @@
 
     function inserirAdNoPost() {
         const textarea = document.getElementById('post-content');
-        const adBlock = '\n<div class="ad-slot-mid" id="ad-zone-home-top" style="margin: 25px 0;" data-ad-zone="homeTop"></div>\n';
-        textarea.value += adBlock;
+        textarea.value += '\n<div class="ad-slot-mid" id="ad-zone-home-top" style="margin: 25px 0;" data-ad-zone="homeTop"></div>\n';
         textarea.focus();
     }
 
@@ -644,52 +619,44 @@
     }
 
     async function salvarPostNoBanco() {
-    const title = document.getElementById('post-title').value.trim();
-    const category = document.getElementById('post-category').value;
-    const slug = document.getElementById('post-slug').value.trim();
-    const image = document.getElementById('post-image').value.trim();
-    let metaDescription = document.getElementById('post-meta').value.trim();
-    const content = document.getElementById('post-content').value.trim();
-    
-    // Captura segura dos campos novos
-    const badgeEl = document.getElementById('post-badge');
-    const pinnedEl = document.getElementById('post-pinned');
-    const badge = badgeEl ? badgeEl.value : '';
-    const pinned = pinnedEl ? pinnedEl.checked : false;
+        const title = document.getElementById('post-title').value.trim();
+        const category = document.getElementById('post-category').value;
+        const slug = document.getElementById('post-slug').value.trim();
+        const image = document.getElementById('post-image').value.trim();
+        let metaDescription = document.getElementById('post-meta').value.trim();
+        const content = document.getElementById('post-content').value.trim();
+        const badge = document.getElementById('post-badge').value;
+        const pinned = document.getElementById('post-pinned').checked;
 
-    if (!title || !slug || !content) {
-        return alert("Preencha pelo menos o Título, o Slug e o Corpo do artigo!");
-    }
+        if (!title || !slug || !content) return alert("Preencha pelo menos o Título, o Slug e o Corpo do artigo!");
 
-    if (!metaDescription) {
-        const textoLimpo = content.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
-        metaDescription = textoLimpo.substring(0, 155) + (textoLimpo.length > 155 ? '...' : '');
-    }
-
-    try {
-        const res = await fetch(URL_WORKER + '/admin-save-post', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title, category, slug, image, metaDescription, content, badge, pinned })
-        });
-        const data = await res.json();
-
-        if (data.success) {
-            alert("✅ Artigo publicado/atualizado com sucesso!");
-            limparFormularioPost();
-            carregarPostsAdmin();
-        } else {
-            alert("❌ Erro ao salvar artigo: " + data.error);
+        if (!metaDescription) {
+            const textoLimpo = content.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
+            metaDescription = textoLimpo.substring(0, 155) + (textoLimpo.length > 155 ? '...' : '');
         }
-    } catch (err) {
-        alert("🚨 Erro de conexão ao salvar o artigo!");
-        console.error(err);
+
+        try {
+            const res = await fetch(URL_WORKER + '/admin-save-post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, category, slug, image, metaDescription, content, badge, pinned })
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert("✅ Artigo publicado/atualizado com sucesso!");
+                limparFormularioPost();
+                carregarPostsAdmin();
+            } else {
+                alert("❌ Erro ao salvar artigo: " + data.error);
+            }
+        } catch (err) {
+            alert("🚨 Erro de conexão ao salvar o artigo!");
+            console.error(err);
+        }
     }
-}
 
     async function excluirPostAdmin(slug) {
         if (!confirm("Tem certeza que deseja excluir este artigo permanentemente?")) return;
-
         try {
             const res = await fetch(URL_WORKER + '/admin-delete-post', {
                 method: 'POST',
@@ -697,7 +664,6 @@
                 body: JSON.stringify({ slug })
             });
             const data = await res.json();
-
             if (data.success) {
                 alert("🗑️ Artigo excluído com sucesso!");
                 carregarPostsAdmin();
@@ -710,56 +676,47 @@
         }
     }
 
-    // --- LÓGICA DO GERENCIADOR DE ADS ---
+    // Gerenciador de Ads
     function atualizarContadorAnuncios() {
         let total = 0;
-        Object.keys(objetoAdsGlobal).forEach(function(slot) {
-            if (Array.isArray(objetoAdsGlobal[slot])) {
-                total += objetoAdsGlobal[slot].length;
-            }
+        Object.keys(objetoAdsGlobal).forEach(slot => {
+            if (Array.isArray(objetoAdsGlobal[slot])) total += objetoAdsGlobal[slot].length;
         });
         const elAds = document.getElementById('total-ads');
         if (elAds) elAds.innerText = total;
     }
 
     function carregarSlotSelecionado() {
-        const elSelect = document.getElementById('ad-slot-select');
+        const slot = document.getElementById('ad-slot-select').value;
         const listaContainer = document.getElementById('lista-ads-slot');
-        if (!elSelect || !listaContainer) return;
+        if (!slot || !listaContainer) return;
 
-        const slot = elSelect.value;
         const adsDoSlot = objetoAdsGlobal[slot] || [];
-
         if (adsDoSlot.length === 0) {
             listaContainer.innerHTML = '<p style="color: #777; font-size: 0.9em; text-align: center;">Nenhum anúncio cadastrado para este slot ainda.</p>';
             return;
         }
 
-        let htmlContent = "";
-        for (let i = 0; i < adsDoSlot.length; i++) {
-            let codigo = adsDoSlot[i];
-            htmlContent += '<div class="ad-item">';
-            htmlContent += '<div class="ad-code-preview">' + escapeHtml(codigo) + '</div>';
-            htmlContent += '<button class="btn-del" onclick="removerAnuncioDoSlot(' + i + ')"><i class="fa-solid fa-trash"></i> Excluir</button>';
-            htmlContent += '</div>';
-        }
-        listaContainer.innerHTML = htmlContent;
+        listaContainer.innerHTML = adsDoSlot.map((codigo, i) => `
+            <div class="ad-item">
+                <div class="ad-code-preview">${escapeHtml(codigo)}</div>
+                <button class="btn-del" onclick="removerAnuncioDoSlot(${i})"><i class="fa-solid fa-trash"></i> Excluir</button>
+            </div>
+        `).join('');
     }
 
     function adicionarAnuncioAoSlot() {
         const slot = document.getElementById('ad-slot-select').value;
         const campoCodigo = document.getElementById('novo-ad-codigo');
         const codigo = campoCodigo.value.trim();
-
         if (!codigo) return alert("Cole o código do anúncio primeiro!");
 
         if (!objetoAdsGlobal[slot]) objetoAdsGlobal[slot] = [];
         objetoAdsGlobal[slot].push(codigo);
         campoCodigo.value = "";
-
         carregarSlotSelecionado();
         atualizarContadorAnuncios();
-        alert("Anúncio adicionado à lista local! Não se esqueça de clicar em 'Salvar Anúncios no Banco de Dados'.");
+        alert("Anúncio adicionado localmente! Clique em 'Salvar Anúncios no Banco de Dados'.");
     }
 
     function removerAnuncioDoSlot(index) {
@@ -779,11 +736,8 @@
                 body: JSON.stringify(objetoAdsGlobal)
             });
             const res = await response.json();
-            if (res.success) {
-                alert("✅ Excelente! Todos os anúncios foram atualizados e salvos no Banco de Dados.");
-            } else {
-                alert("❌ Erro ao salvar: " + res.error);
-            }
+            if (res.success) alert("✅ Anúncios salvos no Banco de Dados!");
+            else alert("❌ Erro ao salvar: " + res.error);
         } catch (err) {
             alert("🚨 Erro de conexão ao salvar anúncios!");
             console.error(err);
@@ -791,17 +745,11 @@
     }
 
     function escapeHtml(text) {
-    if (text == null) return "";
+        if (text == null) return "";
+        return String(text).replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, """).replace(/'/g, "'");
+    }
 
-    return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-}
-
-    // --- LÓGICA DO GERENCIADOR DE TICKER ---
+    // Gerenciador de Ticker
     async function carregarTickerAdmin() {
         try {
             const res = await fetch(URL_WORKER + '/admin-get-ticker');
@@ -822,19 +770,13 @@
             return;
         }
 
-        let htmlContent = "";
-        for (let i = 0; i < tickerItens.length; i++) {
-            let item = tickerItens[i];
-            let safeTitle = escapeHtml(item.title || '');
-            let safeLink = escapeHtml(item.link || '');
-            
-            htmlContent += '<div style="display: flex; gap: 10px; align-items: center; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #e9ecef;">';
-            htmlContent += '<input type="text" value="' + safeTitle + '" id="t-title-' + i + '" placeholder="Texto (ex: 🔥 Novo site pagando!)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">';
-            htmlContent += '<input type="text" value="' + safeLink + '" id="t-link-' + i + '" placeholder="Link de destino (URL)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">';
-            htmlContent += '<button class="btn-del" onclick="removerTicker(' + i + ')"><i class="fa-solid fa-trash"></i></button>';
-            htmlContent += '</div>';
-        }
-        container.innerHTML = htmlContent;
+        container.innerHTML = tickerItens.map((item, i) => `
+            <div style="display: flex; gap: 10px; align-items: center; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #e9ecef;">
+                <input type="text" value="${escapeHtml(item.title || '')}" id="t-title-${i}" placeholder="Texto (ex: 🔥 Novo site pagando!)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">
+                <input type="text" value="${escapeHtml(item.link || '')}" id="t-link-${i}" placeholder="Link de destino (URL)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9em;">
+                <button class="btn-del" onclick="removerTicker(${i})"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        `).join('');
     }
 
     function adicionarCampoTicker() {
@@ -863,10 +805,9 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ mensagensFixas: tickerItens })
             });
-
             const result = await res.json();
             if (result.success) {
-                alert("✅ Ticker atualizado com sucesso no Banco de Dados!");
+                alert("✅ Ticker atualizado com sucesso!");
                 carregarTickerAdmin();
             } else {
                 alert("❌ Erro ao salvar ticker: " + result.error);
@@ -877,7 +818,35 @@
         }
     }
 
-    // --- LÓGICA DE LEADS ---
+    // Gestão do Alerta Flutuante Global
+    async function salvarAlertaGlobal() {
+        const titulo = document.getElementById('admin-alert-title').value.trim();
+        const texto = document.getElementById('admin-alert-text').value.trim();
+        const link = document.getElementById('admin-alert-link').value.trim();
+
+        if (!titulo || !texto) return alert("Preencha o Título e a Mensagem do alerta!");
+
+        const payload = { ativo: true, titulo, texto, link };
+
+        try {
+            const res = await fetch(`${URL_WORKER}/save-alert`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (res.ok) {
+                alert("✅ Alerta flutuante disparado com sucesso para o site inteiro!");
+            } else {
+                alert("❌ Erro ao salvar alerta.");
+            }
+        } catch (e) {
+            alert("🚨 Erro de conexão ao disparar alerta.");
+            console.error(e);
+        }
+    }
+
+    // Leads e Analytics
     function renderizarTabela(dados) {
         const tbody = document.getElementById('tabela-emails');
         if (!tbody) return;
@@ -887,59 +856,41 @@
             return;
         }
 
-        let htmlContent = "";
-        for (let i = 0; i < dados.length; i++) {
-            let item = dados[i];
-            let emailStr = "";
-            if (typeof item === 'string') {
-                emailStr = item;
-            } else if (item && typeof item === 'object') {
-                emailStr = item.email || item.wallet || "";
-            }
-
-            htmlContent += '<tr>';
-            htmlContent += '<td>' + (i + 1) + '</td>';
-            htmlContent += '<td style="font-weight: 600; color: #1a73e8;">' + (emailStr || 'E-mail não identificado') + '</td>';
-            htmlContent += '<td><span style="background: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 4px; font-size: 0.8em;">Dashboard Local</span></td>';
-            htmlContent += '</tr>';
-        }
-        tbody.innerHTML = htmlContent;
+        tbody.innerHTML = dados.map((item, i) => {
+            let emailStr = typeof item === 'string' ? item : (item.email || item.wallet || "");
+            return `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td style="font-weight: 600; color: #1a73e8;">${emailStr || 'E-mail não identificado'}</td>
+                    <td><span style="background: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 4px; font-size: 0.8em;">Dashboard Local</span></td>
+                </tr>
+            `;
+        }).join('');
     }
 
     function filtrarTabela() {
-        const campoFiltro = document.getElementById('filtro-email');
-        if (!campoFiltro) return;
-
-        const termo = (campoFiltro.value || "").toLowerCase().trim();
-        const filtrados = listaEmailsGlobal.filter(function(item) {
+        const termo = (document.getElementById('filtro-email').value || "").toLowerCase().trim();
+        const filtrados = listaEmailsGlobal.filter(item => {
             if (!item) return false;
             let emailStr = typeof item === 'string' ? item : (item.email || item.wallet || "");
             return emailStr.toLowerCase().includes(termo);
         });
-
         renderizarTabela(filtrados);
     }
 
     function copiarTodosEmails() {
         if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para copiar!");
-        const apenasEmails = listaEmailsGlobal.map(function(item) {
-            return typeof item === 'string' ? item : (item.email || item.wallet || "");
-        }).filter(Boolean).join(', ');
-
-        navigator.clipboard.writeText(apenasEmails).then(function() {
-            alert("✅ Todos os e-mails foram copiados para a área de transferência!");
-        });
+        const apenasEmails = listaEmailsGlobal.map(item => typeof item === 'string' ? item : (item.email || item.wallet || "")).filter(Boolean).join(', ');
+        navigator.clipboard.writeText(apenasEmails).then(() => alert("✅ E-mails copiados!"));
     }
 
     function baixarCSV() {
         if (listaEmailsGlobal.length === 0) return alert("Não há e-mails para exportar!");
-
         let csvContent = "data:text/csv;charset=utf-8,Email,Origem\n";
-        listaEmailsGlobal.forEach(function(item) {
+        listaEmailsGlobal.forEach(item => {
             let email = typeof item === 'string' ? item : (item.email || item.wallet || "");
-            if (email) csvContent += '"' + email + '","Dashboard Local"\n';
+            if (email) csvContent += `"${email}","Dashboard Local"\n`;
         });
-
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
@@ -952,36 +903,28 @@
     async function baixarBackupKV() {
         try {
             const response = await fetch(URL_WORKER + '/admin-backup-data');
-            if (!response.ok) throw new Error("Erro ao gerar backup na Worker.");
-
+            if (!response.ok) throw new Error("Erro ao gerar backup.");
             const data = await response.json();
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
-            
             const link = document.createElement("a");
             link.setAttribute("href", dataStr);
-            
-            const dataAtual = new Date().toISOString().slice(0, 10);
-            link.setAttribute("download", "brazuka_backup_" + dataAtual + ".json");
-            
+            link.setAttribute("download", "brazuka_backup_" + new Date().toISOString().slice(0, 10) + ".json");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-
-            alert("✅ Backup completo baixado com sucesso!");
+            alert("✅ Backup baixado com sucesso!");
         } catch (err) {
             console.error(err);
-            alert("❌ Erro ao realizar o backup do Banco de Dados.");
+            alert("❌ Erro ao realizar backup.");
         }
     }
 
-    // --- LÓGICA DE ANALYTICS & BI DASHBOARD ---
     let dadosAnalyticsGlobal = {};
 
     async function carregarAnalyticsAdmin() {
         try {
             const response = await fetch(URL_WORKER + '/admin-get-analytics');
-            if (!response.ok) throw new Error("Erro ao buscar dados de analytics.");
-
+            if (!response.ok) throw new Error("Erro ao buscar analytics.");
             const data = await response.json();
             dadosAnalyticsGlobal = data;
             
@@ -989,7 +932,6 @@
             const kpiContainer = document.getElementById('kpi-cards-container');
             const graficoContainer = document.getElementById('grafico-barras-container');
             const tbody = document.getElementById('analytics-tbody');
-            
             if (!tbody) return;
             tbody.innerHTML = '';
 
@@ -1000,12 +942,10 @@
                 return;
             }
 
-            let totalCliquesGeral = 0;
-            let totalBanners = 0;
-            let totalFaucets = 0;
+            let totalCliquesGeral = 0, totalBanners = 0, totalFaucets = 0;
             let listaProcessada = [];
 
-            keys.forEach(function(key) {
+            keys.forEach(key => {
                 const partes = key.replace('analytics:', '').split(':');
                 const tipo = (partes[0] || 'geral').toUpperCase();
                 const idItem = partes.slice(1).join(':') || 'desconhecido';
@@ -1014,7 +954,6 @@
                 totalCliquesGeral += cliques;
                 if (tipo === 'BANNER') totalBanners += cliques;
                 if (tipo === 'FAUCET') totalFaucets += cliques;
-
                 listaProcessada.push({ tipo, idItem, cliques });
             });
 
@@ -1022,25 +961,24 @@
 
             if (kpiContainer) {
                 kpiContainer.innerHTML = `
-                    <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #7a33eb; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                    <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #7a33eb; border: 1px solid #eee;">
                         <div style="font-size: 0.8em; color: #666; font-weight: bold; text-transform: uppercase;">Total de Cliques</div>
                         <div style="font-size: 1.8em; font-weight: bold; color: #7a33eb; margin-top: 5px;">${totalCliquesGeral.toLocaleString()}</div>
                     </div>
-                    <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #1a73e8; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                    <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #1a73e8; border: 1px solid #eee;">
                         <div style="font-size: 0.8em; color: #666; font-weight: bold; text-transform: uppercase;">Cliques em Banners</div>
                         <div style="font-size: 1.8em; font-weight: bold; color: #1a73e8; margin-top: 5px;">${totalBanners.toLocaleString()}</div>
                     </div>
-                    <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #34a853; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                    <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; border-left: 4px solid #34a853; border: 1px solid #eee;">
                         <div style="font-size: 0.8em; color: #666; font-weight: bold; text-transform: uppercase;">Cliques em Faucets</div>
                         <div style="font-size: 1.8em; font-weight: bold; color: #34a853; margin-top: 5px;">${totalFaucets.toLocaleString()}</div>
                     </div>
                 `;
             }
 
-            // 2. Renderiza o Gráfico de Barras Proporcionais (Top Itens)
             const maiorClique = listaProcessada[0] ? listaProcessada[0].cliques : 1;
             if (graficoContainer) {
-                graficoContainer.innerHTML = listaProcessada.slice(0, 6).map(function(item) {
+                graficoContainer.innerHTML = listaProcessada.slice(0, 6).map(item => {
                     const percentual = Math.max(Math.round((item.cliques / maiorClique) * 100), 8);
                     return `
                         <div>
@@ -1049,26 +987,23 @@
                                 <span style="color: #7a33eb;">${item.cliques.toLocaleString()} cliques</span>
                             </div>
                             <div style="width: 100%; background: #e9ecef; height: 10px; border-radius: 5px; overflow: hidden;">
-                                <div style="width: ${percentual}%; background: linear-gradient(90deg, #7a33eb, #9b51e0); height: 100%; border-radius: 50px; transition: width 0.6s ease;"></div>
+                                <div style="width: ${percentual}%; background: linear-gradient(90deg, #7a33eb, #9b51e0); height: 100%; border-radius: 50px;"></div>
                             </div>
                         </div>
                     `;
                 }).join('');
             }
             
-            listaProcessada.forEach(function(item) {
+            listaProcessada.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.style.borderBottom = '1px solid #eee';
-                tr.innerHTML = '<td style="padding: 12px; text-transform: uppercase; font-weight: bold; font-size: 0.8em; color: #555;">' + item.tipo + '</td>' +
-                               '<td style="padding: 12px; color: #333;">' + escapeHtml(item.idItem) + '</td>' +
-                               '<td style="padding: 12px; text-align: right; font-weight: bold; color: #1a73e8;">' + item.cliques.toLocaleString() + '</td>';
+                tr.innerHTML = `<td style="padding: 12px; text-transform: uppercase; font-weight: bold; font-size: 0.8em; color: #555;">${item.tipo}</td>` +
+                               `<td style="padding: 12px; color: #333;">${escapeHtml(item.idItem)}</td>` +
+                               `<td style="padding: 12px; text-align: right; font-weight: bold; color: #1a73e8;">${item.cliques.toLocaleString()}</td>`;
                 tbody.appendChild(tr);
             });
-
         } catch (err) {
             console.error(err);
-            const graficoContainer = document.getElementById('grafico-barras-container');
-            if (graficoContainer) graficoContainer.innerHTML = '<p style="text-align: center; color: red;">Erro ao carregar o relatório de analytics.</p>';
         }
     }
 
@@ -1086,49 +1021,20 @@
 
     function copiarRelatorioPatrocinador() {
         const keys = Object.keys(dadosAnalyticsGlobal);
-        if (keys.length === 0) return alert("Não há dados de analytics para copiar!");
-
-        let textoRelatorio = "📊 *Relatório de Desempenho e Cliques - Brazuka Faucets*\n";
-        textoRelatorio += "----------------------------------------\n";
-        
-        keys.forEach(function(key) {
+        if (keys.length === 0) return alert("Sem dados para copiar!");
+        let textoRelatorio = "📊 *Relatório de Desempenho - Brazuka Faucets*\n----------------------------------------\n";
+        keys.forEach(key => {
             const partes = key.replace('analytics:', '').split(':');
             const tipo = (partes[0] || 'geral').toUpperCase();
             const idItem = partes.slice(1).join(':') || 'desconhecido';
-            const cliques = dadosAnalyticsGlobal[key];
-            
-            textoRelatorio += `• [${tipo}] ${idItem}: *${cliques} cliques*\n`;
+            textoRelatorio += `• [${tipo}] ${idItem}: *${dadosAnalyticsGlobal[key]} cliques*\n`;
         });
-        
-        textoRelatorio += "----------------------------------------\n";
-        textoRelatorio += "🚀 Tráfego auditado em tempo real pelo Brazuka HUB.";
-
-        navigator.clipboard.writeText(textoRelatorio).then(function() {
-            alert("✅ Relatório formatado copiado para a área de transferência! Pronto para enviar no WhatsApp do patrocinador.");
-        });
+        textoRelatorio += "----------------------------------------\n🚀 Auditado via Brazuka HUB.";
+        navigator.clipboard.writeText(textoRelatorio).then(() => alert("✅ Relatório copiado para o WhatsApp!"));
     }
 
-            async function salvarAlertaGlobal() {
-    const titulo = document.getElementById('admin-alert-title').value;
-    const texto = document.getElementById('admin-alert-text').value;
-    const link = document.getElementById('admin-alert-link').value;
-
-    const payload = { ativo: true, titulo, texto, link };
-
-    const res = await fetch("https://brazuka-faucets.moneynanet-yt.workers.dev/save-alert", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-    });
-
-    if (res.ok) {
-        alert("Alerta disparado com sucesso para o site inteiro!");
-    } else {
-        alert("Erro ao salvar alerta.");
-    }
-}
-    // Executa a autenticação e carregamento inicial
+    // Inicialização geral do painel
     verificarAutenticacaoEScarregar();
-</script>
+    </script>
 </body>
 </html>
