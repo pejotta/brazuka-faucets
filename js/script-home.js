@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // 3. Recém Adicionados
         const recentContainer = document.getElementById('grid-recent');
         if (recentContainer) {
-            recentContainer.innerHTML = [...cacheFaucetsData].reverse().slice(0, 4).map(f => `
+            recentContainer.innerHTML = [...cacheFaucetsData].reverse().slice(0, 5).map(f => `
                 <a href="faucet.html?id=${f.id}" class="mini-item" onclick="registrarClique('faucet', '${f.nome || f.id}')">
                     <img src="https://www.google.com/s2/favicons?domain=${f.url.replace(/^(https?:\/\/)/, '').split('/')[0]}&sz=64" loading="lazy">
                     <div class="mini-info">
