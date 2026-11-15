@@ -11,7 +11,7 @@ async function loadEverything() {
     initMobileMenu();
     initThemeToggle(); // <--- CHAMA AQUI PARA GARANTIR QUE O BOTÃO JÁ EXISTE NO DOM
     
-    // Chama o ticker após o menu_template ser injetado
+    // ANALISTA: Chama o ticker SÓ DEPOIS que o menu_template foi injetado
     carregarTicker(); 
 
     // 3. Carrega o Footer e inicia os Widgets
@@ -31,12 +31,14 @@ function initThemeToggle() {
     const themeIcon = document.getElementById("theme-icon");
     const htmlElement = document.documentElement;
 
+    // Restaura o tema salvo anteriormente
     const savedTheme = localStorage.getItem("brazuka_theme") || "light";
     if (savedTheme === "dark") {
         htmlElement.setAttribute("data-theme", "dark");
         if (themeIcon) themeIcon.className = "fas fa-sun";
     }
 
+    // Alterna ao clicar (garantindo que o botão existe)
     if (themeToggleBtn) {
         themeToggleBtn.addEventListener("click", () => {
             const currentTheme = htmlElement.getAttribute("data-theme");
@@ -53,7 +55,58 @@ function initThemeToggle() {
     }
 }
 
+// ÚNICA E CORRETA FUNÇÃO DO TICKER (Puxando do Banco de Dados Cloudflare)
+async function carregarTicker() {
+    const tickerTrack = document.getElementById('ticker-track');
+    
+    // Se o elemento não existir na página atual, aborta de forma segura sem quebrar o console
+    if (!tickerTrack) return;
+
+    try {
+        const response = await fetch("https://brazuka-faucets.moneynanet-yt.workers.dev/admin-get-ticker");
+        if (!response.ok) throw new Error("Erro de rede ao buscar ticker");
+
+        const data = await response.json();
+        const mensagens = data.mensagensFixas || [];
+
+        if (mensagens.length === 0) {
+            tickerTrack.innerHTML = '<span class="ticker-item">Nenhum aviso no momento.</span>';
+            return;
+        }
+
+        tickerTrack.innerHTML = ''; 
+
+        // Multiplicamos a lista para o scroll ser fluido e infinito
+        const listaExibicao = [...mensagens, ...mensagens, ...mensagens];
+
+        listaExibicao.forEach(item => {
+            const link = document.createElement('a');
+            link.href = item.link || "#";
+            link.className = 'ticker-item';
+            link.target = "_blank";
+            
+            let icone = "fa-bullhorn";
+            if (item.title && item.title.includes("🔥")) icone = "fa-fire";
+            else if (item.title && item.title.includes("🏆")) icone = "fa-trophy";
+            else if (item.title && item.title.includes("💡")) icone = "fa-lightbulb";
+
+            link.innerHTML = `<i class="fa-solid ${icone}" style="font-size: 10px; margin-right: 8px; color: #1a73e8;"></i> ${item.title}`;
+            tickerTrack.appendChild(link);
+        });
+    } catch (e) {
+        console.warn("Aviso do Ticker (usando fallback local ou aguardando conexão):", e);
+    }
+}
+
+// Garante que só roda após o DOM carregar completamente
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', carregarTicker);
+} else {
+    carregarTicker();
+}
+
 function initFooterWidgets() {
+    // --- LÓGICA DO GOOGLE TRANSLATE ---
     window.googleTranslateElementInit = function() {
         new google.translate.TranslateElement({
             pageLanguage: 'pt', 
@@ -130,7 +183,7 @@ function moveSlide(direction) {
     track.style.transform = `translateX(-${currentSlide * 100}%)`;
 }
 
-// Inicia o carregamento de tudo de forma segura
+// Inicia o carregamento de tudo
 loadEverything();
 
 // Auto-play do carrossel
@@ -153,21 +206,23 @@ function atualizarSEO(titulo, descricao) {
     metaDescription.content = descricao;
 }
 
+// Execução de SEO por página
 if (window.location.pathname.includes("cadastrar")) {
     atualizarSEO("Cadastrar Faucet", "Envie sua faucet para o Brazuka Faucets.");
 } else if (window.location.pathname.includes("anuncie")) {
     atualizarSEO("Anuncie Conosco", "Anuncie no Brazuka Faucets.");
 }
 
-// Captura o padrinho pela URL (?ref=...)
+// ANALISTA: Captura o padrinho pela URL (?ref=email@faucetpay.com)
 const urlParams = new URLSearchParams(window.location.search);
 const ref = urlParams.get('ref');
 
 if (ref) {
     localStorage.setItem('brazuka_ref', ref);
+    console.log("Padrinho detectado e salvo:", ref);
 }
 
-// Registrar cliques (Analytics)
+// Função para registrar o clique na Cloudflare Worker (Analytics)
 function registrarClique(tipo, identificador) {
     fetch("https://brazuka-faucets.moneynanet-yt.workers.dev/track-click", {
         method: "POST",
@@ -186,279 +241,266 @@ function copiarChaveDoacao(tipoMoeda, tooltipId, btnElement) {
 
     const textoParaCopiar = chaves[tipoMoeda];
     const tooltipElement = document.getElementById(tooltipId);
+
     if (!textoParaCopiar) return;
 
-    navigator.clipboard.writeText(textoParaCopiar).then(() => {
+    const tempEl = document.createElement('textarea');
+    tempEl.value = textoParaCopiar;
+    tempEl.setAttribute('readonly', '');
+    tempEl.style.position = 'fixed';
+    tempEl.style.opacity = '0';
+    document.body.appendChild(tempEl);
+    
+    tempEl.select();
+    tempEl.setSelectionRange(0, 99999);
+
+    let copiado = false;
+    try {
+        copiado = document.execCommand('copy');
+    } catch (e) {
+        console.error("Erro no execCommand", e);
+    }
+
+    document.body.removeChild(tempEl);
+
+    if (!copiado && navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textoParaCopiar).then(() => {
+            dispararFeedbackCopia(btnElement, tooltipElement);
+        }).catch(err => {
+            console.error("Clipboard API falhou:", err);
+            alert("Erro ao copiar. Copie manualmente: " + textoParaCopiar);
+        });
+    } else if (copiado) {
         dispararFeedbackCopia(btnElement, tooltipElement);
-    }).catch(() => {
-        alert("Cópia manual: " + textoParaCopiar);
-    });
+    } else {
+        alert("Erro ao copiar. Copie manualmente: " + textoParaCopiar);
+    }
 }
 
 function dispararFeedbackCopia(btnElement, tooltipElement) {
     const iconeOriginal = btnElement.innerHTML;
+
     btnElement.innerHTML = '<i class="fa-solid fa-check" style="color: #27ae60;"></i>';
     btnElement.style.background = '#e8f8f5';
-    if (tooltipElement) tooltipElement.classList.add('show');
+
+    if (tooltipElement) {
+        tooltipElement.classList.add('show');
+    }
 
     setTimeout(() => {
         btnElement.innerHTML = iconeOriginal;
         btnElement.style.background = '';
-        if (tooltipElement) tooltipElement.classList.remove('show');
+        if (tooltipElement) {
+            tooltipElement.classList.remove('show');
+        }
     }, 2000);
 }
 
 
 // =========================================================================
-// 🚀 COMUNICAÇÃO AO VIVO: TICKER DO TOPO + WIDGET DE ALERTAS INTELIGENTES
+// 🚀 MÓDULO ISOLADO: WIDGET DE ALERTAS FLUTUANTES INTELIGENTES
 // =========================================================================
+(function() {
+    const WORKER_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
+    let originalTitle = document.title;
+    let blinkInterval = null;
 
-const WORKER_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
-let originalTitle = document.title;
-let blinkInterval = null;
+    function injetarHTMLWidget() {
+        if (document.getElementById('brazuka-floating-alert')) return;
 
-// --- 1. GESTÃO DO TICKER DO TOPO ---
-async function carregarTicker() {
-    const tickerTrack = document.getElementById('ticker-track');
-    if (!tickerTrack) return;
+        const div = document.createElement('div');
+        div.id = 'brazuka-floating-alert';
+        div.innerHTML = `
+            <div class="bz-alert-card" id="bz-alert-box">
+                <div class="bz-alert-icon">
+                    <img src="assets/logo-brazuka.png" alt="Brazuka">
+                </div>
+                <div class="bz-alert-content">
+                    <h4 id="bz-alert-title">Carregando...</h4>
+                    <p id="bz-alert-text">...</p>
+                </div>
+                <button class="bz-alert-close" id="bz-close-btn">×</button>
+            </div>
+        `;
+        document.body.appendChild(div);
 
-    try {
-        const response = await fetch(`${WORKER_URL}/admin-get-ticker`);
-        if (!response.ok) throw new Error("Erro ao buscar ticker");
+        const style = document.createElement('style');
+        style.innerHTML = `
+            #brazuka-floating-alert {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 2147483646;
+                font-family: inherit;
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+                transform: translateY(120px);
+                opacity: 0;
+                pointer-events: none;
+            }
+            #brazuka-floating-alert.show {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: auto;
+            }
+            .bz-alert-card {
+                background: var(--bg-card, #1a1a2e);
+                color: var(--text-color, #fff);
+                border: 1px solid rgba(26, 115, 232, 0.4);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                border-radius: 14px;
+                padding: 14px 16px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                max-width: 320px;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
+            }
+            .bz-alert-card::before {
+                content: '';
+                position: absolute;
+                top: 0; left: 0; width: 4px; height: 100%;
+                background: #1a73e8;
+            }
+            .bz-alert-icon img {
+                width: 36px;
+                height: 36px;
+                object-fit: contain;
+                border-radius: 50%;
+            }
+            .bz-alert-content {
+                flex: 1;
+            }
+            .bz-alert-content h4 {
+                font-size: 0.9rem;
+                margin: 0 0 3px 0;
+                font-weight: 700;
+                color: #f39c12;
+            }
+            .bz-alert-content p {
+                font-size: 0.78rem;
+                margin: 0;
+                color: #ccc;
+                line-height: 1.3;
+            }
+            .bz-alert-close {
+                background: transparent;
+                border: none;
+                color: #aaa;
+                font-size: 1.2rem;
+                cursor: pointer;
+                padding: 0 4px;
+                transition: color 0.2s;
+            }
+            .bz-alert-close:hover {
+                color: #fff;
+            }
+        `;
+        document.head.appendChild(style);
 
-        const data = await response.json();
-        const mensagens = data.mensagensFixas || [];
-
-        if (mensagens.length === 0) {
-            tickerTrack.innerHTML = '<span class="ticker-item">Nenhum aviso no momento.</span>';
-            return;
-        }
-
-        tickerTrack.innerHTML = ''; 
-        const listaExibicao = [...mensagens, ...mensagens, ...mensagens];
-
-        listaExibicao.forEach(item => {
-            const link = document.createElement('a');
-            link.href = item.link || "#";
-            link.className = 'ticker-item';
-            link.target = "_blank";
-            
-            let icone = "fa-bullhorn";
-            if (item.title && item.title.includes("🔥")) icone = "fa-fire";
-            else if (item.title && item.title.includes("🏆")) icone = "fa-trophy";
-            else if (item.title && item.title.includes("💡")) icone = "fa-lightbulb";
-
-            link.innerHTML = `<i class="fa-solid ${icone}" style="font-size: 10px; margin-right: 8px; color: #1a73e8;"></i> ${item.title}`;
-            tickerTrack.appendChild(link);
+        document.getElementById('bz-close-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            fecharAlerta();
         });
-    } catch (e) {
-        console.warn("Ticker em modo de espera");
     }
-}
 
+    function mostrarAlerta(titulo, texto, linkDestino, alertId) {
+        injetarHTMLWidget();
+        
+        const dismissedId = localStorage.getItem('bz_dismissed_alert_id');
+        if (dismissedId === String(alertId)) return;
 
-// --- 2. GESTÃO DO WIDGET DE ALERTAS FLUTUANTES ---
+        const titleEl = document.getElementById('bz-alert-title');
+        const textEl = document.getElementById('bz-alert-text');
+        const widgetContainer = document.getElementById('brazuka-floating-alert');
+        const cardCard = document.getElementById('bz-alert-box');
 
-function injetarHTMLWidget() {
-    if (document.getElementById('brazuka-floating-alert')) return;
+        if (!widgetContainer) return;
 
-    const div = document.createElement('div');
-    div.id = 'brazuka-floating-alert';
-    div.innerHTML = `
-        <div class="bz-alert-card" id="bz-alert-box">
-            <div class="bz-alert-icon">
-                <img src="assets/logo-brazuka.png" alt="Brazuka">
-            </div>
-            <div class="bz-alert-content">
-                <h4 id="bz-alert-title">Carregando...</h4>
-                <p id="bz-alert-text">...</p>
-            </div>
-            <button class="bz-alert-close" id="bz-close-btn">×</button>
-        </div>
-    `;
-    document.body.appendChild(div);
+        titleEl.textContent = titulo;
+        textEl.textContent = texto;
 
-    const style = document.createElement('style');
-    style.innerHTML = `
-        #brazuka-floating-alert {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 2147483646;
-            font-family: inherit;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
-            transform: translateY(120px);
-            opacity: 0;
-            pointer-events: none;
-        }
-        #brazuka-floating-alert.show {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .bz-alert-card {
-            background: var(--bg-card, #1a1a2e);
-            color: var(--text-color, #fff);
-            border: 1px solid rgba(26, 115, 232, 0.4);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            border-radius: 14px;
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            max-width: 320px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        .bz-alert-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 4px; height: 100%;
-            background: #1a73e8;
-        }
-        .bz-alert-icon img {
-            width: 36px;
-            height: 36px;
-            object-fit: contain;
-            border-radius: 50%;
-        }
-        .bz-alert-content {
-            flex: 1;
-        }
-        .bz-alert-content h4 {
-            font-size: 0.9rem;
-            margin: 0 0 3px 0;
-            font-weight: 700;
-            color: #f39c12;
-        }
-        .bz-alert-content p {
-            font-size: 0.78rem;
-            margin: 0;
-            color: #ccc;
-            line-height: 1.3;
-        }
-        .bz-alert-close {
-            background: transparent;
-            border: none;
-            color: #aaa;
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0 4px;
-            transition: color 0.2s;
-        }
-        .bz-alert-close:hover {
-            color: #fff;
-        }
-    `;
-    document.head.appendChild(style);
+        cardCard.onclick = (e) => {
+            if (e.target.id === 'bz-close-btn') return;
+            localStorage.setItem('bz_dismissed_alert_id', String(alertId));
+            if (linkDestino) window.location.href = linkDestino;
+        };
 
-    document.getElementById('bz-close-btn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        fecharAlerta();
-    });
-}
+        widgetContainer.setAttribute('data-current-id', alertId);
 
-function mostrarAlerta(titulo, texto, linkDestino, alertId) {
-    injetarHTMLWidget();
-    
-    // Verifica se este alerta específico já foi dispensado pelo usuário
-    const dismissedId = localStorage.getItem('bz_dismissed_alert_id');
-    if (dismissedId === String(alertId)) return;
-
-    const titleEl = document.getElementById('bz-alert-title');
-    const textEl = document.getElementById('bz-alert-text');
-    const widgetContainer = document.getElementById('brazuka-floating-alert');
-    const cardCard = document.getElementById('bz-alert-box');
-
-    if (!widgetContainer) return;
-
-    titleEl.textContent = titulo;
-    textEl.textContent = texto;
-
-    cardCard.onclick = (e) => {
-        if (e.target.id === 'bz-close-btn') return;
-        // Salva o ID atual como dispensado ao clicar para ir ao link também
-        localStorage.setItem('bz_dismissed_alert_id', String(alertId));
-        if (linkDestino) window.location.href = linkDestino;
-    };
-
-    // Guarda o ID atual no elemento para fechar corretamente
-    widgetContainer.setAttribute('data-current-id', alertId);
-
-    setTimeout(() => {
-        widgetContainer.classList.add('show');
-        iniciarPiscarAba(titulo);
-    }, 2000);
-}
-
-function fecharAlerta() {
-    const widgetContainer = document.getElementById('brazuka-floating-alert');
-    if (widgetContainer) {
-        widgetContainer.classList.remove('show');
-        const currentId = widgetContainer.getAttribute('data-current-id');
-        if (currentId) {
-            localStorage.setItem('bz_dismissed_alert_id', currentId);
-        }
+        setTimeout(() => {
+            widgetContainer.classList.add('show');
+            iniciarPiscarAba(titulo);
+        }, 2500);
     }
-    pararPiscarAba();
-}
 
-function iniciarPiscarAba(avisoTitulo) {
-    let state = false;
-    window.addEventListener('blur', () => {
-        if (blinkInterval) return;
-        blinkInterval = setInterval(() => {
-            document.title = state ? `🔔 (1) ${avisoTitulo}` : originalTitle;
-            state = !state;
-        }, 2000);
-    });
-
-    window.addEventListener('focus', () => {
-        pararPiscarAba();
-    });
-}
-
-function pararPiscarAba() {
-    if (blinkInterval) {
-        clearInterval(blinkInterval);
-        blinkInterval = null;
-    }
-    document.title = originalTitle;
-}
-
-// --- 3. DISPARADOR ASSÍNCRONO BLINDADO (NÃO BLOQUEIA A HOME) ---
-async function carregarAlertasInteligentes() {
-    try {
-        const resAlert = await fetch(`${WORKER_URL}/get-active-alert`);
-        const alertaAdmin = await resAlert.json();
-
-        if (alertaAdmin && alertaAdmin.ativo) {
-            // Usa o título ou um hash como ID único do alerta do admin
-            const alertId = alertaAdmin.titulo || "admin_manual";
-            mostrarAlerta(alertaAdmin.titulo, alertaAdmin.texto, alertaAdmin.link, alertId);
-        } else {
-            const resFaucets = await fetch(`${WORKER_URL}/get-all-faucets`);
-            const faucets = await resFaucets.json();
-            if (faucets && faucets.length > 0) {
-                const ultima = faucets[faucets.length - 1];
-                const alertId = `faucet_${ultima.id || ultima.nome}`;
-                mostrarAlerta(
-                    "🔥 Nova Oportunidade!", 
-                    `A faucet "${ultima.nome}" acabou de ser adicionada. Venha conferir!`, 
-                    `faucet.html?id=${ultima.id}`,
-                    alertId
-                );
+    function fecharAlerta() {
+        const widgetContainer = document.getElementById('brazuka-floating-alert');
+        if (widgetContainer) {
+            widgetContainer.classList.remove('show');
+            const currentId = widgetContainer.getAttribute('data-current-id');
+            if (currentId) {
+                localStorage.setItem('bz_dismissed_alert_id', currentId);
             }
         }
-    } catch (e) {
-        console.log("Alertas inteligentes em pausa.");
+        pararPiscarAba();
     }
-}
 
-// Dispara os alertas com segurança após o carregamento da página
-if (document.readyState === 'loading') {
-    window.addEventListener('DOMContentLoaded', carregarAlertasInteligentes);
-} else {
-    carregarAlertasInteligentes();
-}
+    function iniciarPiscarAba(avisoTitulo) {
+        let state = false;
+        window.addEventListener('blur', () => {
+            if (blinkInterval) return;
+            blinkInterval = setInterval(() => {
+                document.title = state ? `🔔 (1) ${avisoTitulo}` : originalTitle;
+                state = !state;
+            }, 2000);
+        });
+
+        window.addEventListener('focus', () => {
+            pararPiscarAba();
+        });
+    }
+
+    function pararPiscarAba() {
+        if (blinkInterval) {
+            clearInterval(blinkInterval);
+            blinkInterval = null;
+        }
+        document.title = originalTitle;
+    }
+
+    // Disparador isolado com IIFE (roda de forma independente sem mexer no carregamento principal)
+    async function initAlerts() {
+        try {
+            const resAlert = await fetch(`${WORKER_URL}/get-active-alert`);
+            const alertaAdmin = await resAlert.json();
+
+            if (alertaAdmin && alertaAdmin.ativo) {
+                const alertId = alertaAdmin.titulo || "admin_manual";
+                mostrarAlerta(alertaAdmin.titulo, alertaAdmin.texto, alertaAdmin.link, alertId);
+            } else {
+                const resFaucets = await fetch(`${WORKER_URL}/get-all-faucets`);
+                const faucets = await resFaucets.json();
+                if (faucets && faucets.length > 0) {
+                    const ultima = faucets[faucets.length - 1];
+                    const alertId = `faucet_${ultima.id || ultima.nome}`;
+                    mostrarAlerta(
+                        "🔥 Nova Oportunidade!", 
+                        `A faucet "${ultima.nome}" acabou de ser adicionada. Venha conferir!`, 
+                        `faucet.html?id=${ultima.id}`,
+                        alertId
+                    );
+                }
+            }
+        } catch (e) {
+            console.log("Módulo de alertas aguardando rede...");
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        window.addEventListener('DOMContentLoaded', initAlerts);
+    } else {
+        initAlerts();
+    }
+})();
