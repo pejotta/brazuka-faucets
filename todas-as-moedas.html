@@ -147,6 +147,61 @@
             color: #888;
             font-size: 1.1rem;
         }
+        /* Seção de Destaques / Mais Populares (Passo 2) */
+.popular-section {
+    margin: 25px auto 35px auto;
+    padding: 20px;
+    background: linear-gradient(145deg, rgba(26, 115, 232, 0.08), rgba(13, 71, 161, 0.03));
+    border: 1px solid rgba(26, 115, 232, 0.25);
+    border-radius: 16px;
+}
+.popular-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.popular-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+.popular-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    transition: all 0.25s ease;
+}
+.popular-card:hover {
+    transform: translateY(-3px);
+    border-color: #f39c12;
+    background: rgba(243, 156, 18, 0.08);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+}
+.popular-badge {
+    position: absolute;
+    top: -8px;
+    right: 10px;
+    background: linear-gradient(90deg, #f39c12, #e67e22);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
     </style>
 </head>
 <body>
@@ -155,6 +210,12 @@
     <div class="ad-slot-top" style="margin: 20px auto;"></div>
 
     <main class="container">
+        <!-- SEÇÃO DE DESTAQUES AUTOMÁTICOS (Passo 2) -->
+<section id="popular-coins-section" class="popular-section" style="display: none;">
+    <h2 class="popular-title"><i class="fas fa-fire" style="color: #f39c12;"></i> Mais Populares no Brazuka Faucets</h2>
+    <div id="popular-coins-grid" class="popular-grid"></div>
+</section>
+        
         <section class="headline" style="text-align: center; margin-bottom: 20px;">
             <h1>💰 Todas as Moedas Disponíveis</h1>
             <p>Escolha sua criptomoeda favorita e encontre as melhores faucets para coletar agora.</p>
