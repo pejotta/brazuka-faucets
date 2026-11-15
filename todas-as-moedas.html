@@ -43,166 +43,197 @@
     </script>
     
     <style>
-        .search-box-container {
-            max-width: 500px;
-            margin: 20px auto 10px auto;
-            position: relative;
-        }
-        .search-box-container input {
-            width: 100%;
-            padding: 14px 20px 14px 45px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            color: #fff;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        .search-box-container input:focus {
-            border-color: #1a73e8;
-            box-shadow: 0 0 15px rgba(26, 115, 232, 0.2);
-            background: rgba(255, 255, 255, 0.08);
-        }
-        .search-box-container i {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #888;
-            font-size: 1.1rem;
-        }
+    /* Correção de cores para o modo claro e escuro */
+    body {
+        color: #333; /* Texto padrão escuro */
+    }
+    [data-theme="dark"] body {
+        color: #fff; /* Texto branco apenas no modo escuro */
+    }
 
-        /* Estilo dos Botões de Categoria (Passo 1) */
-        .filter-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .filter-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #ccc;
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-        .filter-btn:hover {
-            border-color: #1a73e8;
-            color: #fff;
-        }
-        .filter-btn.active {
-            background: #1a73e8;
-            border-color: #1a73e8;
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.35);
-        }
+    .search-box-container {
+        max-width: 500px;
+        margin: 20px auto 10px auto;
+        position: relative;
+    }
+    .search-box-container input {
+        width: 100%;
+        padding: 14px 20px 14px 45px;
+        background: rgba(0, 0, 0, 0.03);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 12px;
+        color: #333;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+    [data-theme="dark"] .search-box-container input {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #fff;
+    }
+    .search-box-container input:focus {
+        border-color: #1a73e8;
+        box-shadow: 0 0 15px rgba(26, 115, 232, 0.2);
+    }
+    .search-box-container i {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #888;
+        font-size: 1.1rem;
+    }
 
-        .coins-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 20px;
-            padding: 30px 0 50px 0;
-        }
-        .coin-item {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            text-decoration: none;
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        .coin-item:hover {
-            transform: translateY(-5px);
-            border-color: #1a73e8;
-            background: rgba(26, 115, 232, 0.05);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .coin-item img {
-            width: 42px;
-            height: 42px;
-            object-fit: contain;
-        }
-        .coin-item span {
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.95rem;
-            letter-spacing: 0.5px;
-        }
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 40px;
-            color: #888;
-            font-size: 1.1rem;
-        }
-        /* Seção de Destaques / Mais Populares (Passo 2) */
-.popular-section {
-    margin: 25px auto 35px auto;
-    padding: 20px;
-    background: linear-gradient(145deg, rgba(26, 115, 232, 0.08), rgba(13, 71, 161, 0.03));
-    border: 1px solid rgba(26, 115, 232, 0.25);
-    border-radius: 16px;
-}
-.popular-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #fff;
-    margin: 0 0 15px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-.popular-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 15px;
-}
-.popular-card {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 15px;
-    text-decoration: none;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: relative;
-    transition: all 0.25s ease;
-}
-.popular-card:hover {
-    transform: translateY(-3px);
-    border-color: #f39c12;
-    background: rgba(243, 156, 18, 0.08);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
-}
-.popular-badge {
-    position: absolute;
-    top: -8px;
-    right: 10px;
-    background: linear-gradient(90deg, #f39c12, #e67e22);
-    color: #fff;
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-    </style>
+    /* Estilo dos Botões de Categoria */
+    .filter-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    .filter-btn {
+        background: rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        color: #555;
+        padding: 8px 18px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.25s ease;
+    }
+    [data-theme="dark"] .filter-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.12);
+        color: #ccc;
+    }
+    .filter-btn:hover {
+        border-color: #1a73e8;
+        color: #1a73e8;
+    }
+    [data-theme="dark"] .filter-btn:hover {
+        color: #fff;
+    }
+    .filter-btn.active {
+        background: #1a73e8;
+        border-color: #1a73e8;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(26, 115, 232, 0.35);
+    }
+
+    /* Seção de Destaques */
+    .popular-section {
+        margin: 25px auto 35px auto;
+        padding: 20px;
+        background: linear-gradient(145deg, rgba(26, 115, 232, 0.05), rgba(13, 71, 161, 0.02));
+        border: 1px solid rgba(26, 115, 232, 0.2);
+        border-radius: 16px;
+    }
+    .popular-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin: 0 0 15px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    .popular-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+    }
+    .popular-card {
+        background: rgba(0, 0, 0, 0.02);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        padding: 15px;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+        transition: all 0.25s ease;
+    }
+    [data-theme="dark"] .popular-card {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }
+    .popular-card:hover {
+        transform: translateY(-3px);
+        border-color: #f39c12;
+        background: rgba(243, 156, 18, 0.06);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+    }
+    .popular-badge {
+        position: absolute;
+        top: -8px;
+        right: 10px;
+        background: linear-gradient(90deg, #f39c12, #e67e22);
+        color: #fff;
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Grid de Moedas */
+    .coins-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 20px;
+        padding: 30px 0 50px 0;
+    }
+    .coin-item {
+        background: rgba(0, 0, 0, 0.02);
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        text-decoration: none;
+        color: inherit;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    [data-theme="dark"] .coin-item {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: rgba(255, 255, 255, 0.08);
+        color: #fff;
+    }
+    .coin-item:hover {
+        transform: translateY(-5px);
+        border-color: #1a73e8;
+        background: rgba(26, 115, 232, 0.04);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .coin-item img {
+        width: 42px;
+        height: 42px;
+        object-fit: contain;
+    }
+    .coin-item span {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+    }
+    .no-results {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 40px;
+        color: #888;
+        font-size: 1.1rem;
+    }
+</style>
 </head>
 <body>
 
