@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <meta http-equiv="content-language" content="pt-BR" />
-    <title>Cadastre seu site | Brazuka Faucets</title>
-    <meta name="description" content="Brazuka Faucets: Cadastre sua Faucet, Airdrop, Mineradora, Bet Crypto ou Pré-venda na nossa lista oficial." />
+    <title>Cadastre seu Site ou App | Brazuka Faucets</title>
+    <meta name="description" content="Brazuka Faucets: Cadastre sua Faucet, App, Airdrop, Mineradora, Bet Crypto ou Pré-venda na nossa lista oficial." />
     <meta name="author" content="Pejotta" />
     <meta name="theme-color" content="#1a73e8">
     
@@ -88,7 +88,7 @@
             border: 1px solid var(--card-border, #eee);
             padding: 15px; border-radius: 8px;
         }
-        .recursos-item { display: flex; align-items: center; font-size: 0.9em; font-weight: normal !important; margin-bottom: 0 !important; color: var(--text-color, #333); }
+        .recursos-item { display: flex; align-items: center; font-size: 0.9em; font-weight: normal !important; margin-bottom: 0 !important; color: var(--text-color, #333); cursor: pointer; }
         .recursos-item input { width: auto; margin-bottom: 0; margin-right: 8px; }
         .faucet-form button {
             width: 100%; background-color: #1a73e8; color: white; padding: 15px;
@@ -112,7 +112,7 @@
 <body>
 
     <section class="hero-ads">
-        <h1>Cadastre seu site</h1>
+        <h1>Cadastre seu site ou app</h1>
         <p>Airdrop, Faucet, Mineradora, Bet Crypto, IPO, Jogo ou Autofaucet.</p>
         <p><strong>IMPORTANTE!</strong>: Aceitamos links de indicação.</p>
     </section>
@@ -127,7 +127,7 @@
 
         <!-- Formulário Central -->
         <div class="faucet-form-container">
-            <form action="https://api.web3forms.com/submit" method="POST" class="faucet-form">
+            <form action="https://api.web3forms.com/submit" method="POST" class="faucet-form" id="form-auditoria">
                 
                 <input type="hidden" name="access_key" value="cada1ec3-4069-4b49-b426-dd2b5c53081a">
                 <input type="hidden" name="subject" value="🚀 Novo Cadastro / Auditoria - Brazuka Faucets">
@@ -135,11 +135,17 @@
 
                 <h2><i class="fa-solid fa-magnifying-glass-chart"></i> Auditoria de Nova Plataforma</h2>
                 
-                <label>Nome do Site / Projeto *</label>
+                <label>Nome do Site / App / Projeto *</label>
                 <input type="text" name="nome" placeholder="Ex: Brazuka Claimer" required>
 
-                <label>URL / Link de Indicação *</label>
+                <label>URL / Link de Indicação ou Loja *</label>
                 <input type="url" name="url" placeholder="https://..." required>
+
+                <label>Plataforma de Acesso *</label>
+                <div class="recursos-group">
+                    <label class="recursos-item"><input type="checkbox" name="plataforma" class="check-plataforma" value="Site (Web/PC)" checked> 🌐 Site (Web / PC)</label>
+                    <label class="recursos-item"><input type="checkbox" name="plataforma" class="check-plataforma" value="App (Android/iOS)"> 📱 App (Android / iOS)</label>
+                </div>
 
                 <label>E-mail para contato *</label>
                 <input type="email" name="email" placeholder="seu-email@exemplo.com" required>
@@ -215,7 +221,7 @@
 
                 <label>Onde é feito o pagamento? *</label>
                 <div class="recursos-group">
-                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="FaucetPay"> FaucetPay</label>                       
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="FaucetPay"> FaucetPay</label>                        
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Metamask"> Metamask</label>                            
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Base"> Base</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Coinbase"> Coinbase</label>
@@ -224,7 +230,7 @@
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Binance"> Binance</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="PIX"> PIX</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="PayPal"> PayPal</label> 
-                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Lightning Network"> Lightning Network</label>                       
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Lightning Network"> Lightning Network</label>                        
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Gift Cards"> Gift Cards</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Carteira Direta"> Carteira Direta</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Outros" id="check-outro-pagamento"> Outros</label>
@@ -276,6 +282,15 @@
         }
         configurarToggleOutro('check-outra-moeda', 'campo-outra-moeda', 'input-outra-moeda');
         configurarToggleOutro('check-outro-pagamento', 'campo-outro-pagamento', 'input-outro-pagamento');
+
+        // Garante que pelo menos uma plataforma (Site ou App) esteja selecionada antes de enviar
+        document.getElementById('form-auditoria').addEventListener('submit', function(e) {
+            const plataformasMarcadas = document.querySelectorAll('.check-plataforma:checked').length;
+            if (plataformasMarcadas === 0) {
+                e.preventDefault();
+                alert('Por favor, selecione pelo menos uma Plataforma de Acesso (Site ou App).');
+            }
+        });
     </script>
     
     <script src="js/script-global.js"></script>
