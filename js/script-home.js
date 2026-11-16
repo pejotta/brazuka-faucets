@@ -49,7 +49,7 @@ function resetarTimer() {
     adTimer = setInterval(proximoAd, 15000); // 15 segundos
 }
 
-// --- FUNÇÃO AJUSTADA PARA FIXAR DESTAQUE APENAS NA PRIMEIRA CATEGORIA ---
+// --- FUNÇÃO AJUSTADA PARA FIXAR DESTAQUE APENAS NA PRIMEIRA CATEGORIA + BADGE DE PLATAFORMA ---
 function renderizarBlocoMoeda(moedaAlvo, dados) {
     const container = document.getElementById(`grid-${moedaAlvo}`);
     if (!container || container.dataset.carregado === "true") return;
@@ -113,6 +113,17 @@ function renderizarBlocoMoeda(moedaAlvo, dados) {
             destaqueClass = 'card-destaque';
         }
 
+        // SISTEMA DE BADGE DE PLATAFORMA NOS CARDS DA HOME
+        const plats = Array.isArray(faucet.plataforma) ? faucet.plataforma : (faucet.plataforma ? [faucet.plataforma] : ['site']);
+        let badgePlatHTML = '';
+        if (plats.includes('app') && plats.includes('site')) {
+            badgePlatHTML = `<span style="background: rgba(21, 101, 192, 0.15); color: #1565c0; font-size: 0.65em; padding: 2px 6px; border-radius: 4px; margin-left: 5px; font-weight: bold; display: inline-block;">[SITE + APP]</span>`;
+        } else if (plats.includes('app')) {
+            badgePlatHTML = `<span style="background: rgba(46, 125, 50, 0.15); color: #2e7d32; font-size: 0.65em; padding: 2px 6px; border-radius: 4px; margin-left: 5px; font-weight: bold; display: inline-block;">[APP]</span>`;
+        } else {
+            badgePlatHTML = `<span style="background: rgba(95, 99, 104, 0.15); color: #5f6368; font-size: 0.65em; padding: 2px 6px; border-radius: 4px; margin-left: 5px; font-weight: bold; display: inline-block;">[SITE]</span>`;
+        }
+
         const domain = faucet.url.replace(/^(https?:\/\/)/, '').split('/')[0];
         const statusLabels = { 'paying': 'Paga', 'pending': 'Análise', 'scam': 'SCAM/OFF' };
 
@@ -128,7 +139,7 @@ function renderizarBlocoMoeda(moedaAlvo, dados) {
                      onerror="this.src='https://api.iconify.design/cryptocurrency:${Array.isArray(faucet.moeda) ? faucet.moeda[0] : faucet.moeda}.svg'">
             </div>
             <div class="faucet-info">
-                <h3>${faucet.nome}</h3>
+                <h3>${faucet.nome} ${badgePlatHTML}</h3>
                 <p class="url">${domain}</p>
             </div>
             <span class="status-tag ${faucet.status}">${statusLabels[faucet.status] || 'Análise'}</span>
