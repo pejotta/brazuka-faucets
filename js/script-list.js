@@ -96,9 +96,20 @@ async function renderTable(data, allRatings) {
             ? `<div><i class="fas fa-star" style="color: gold;"></i> <strong>${parseFloat(notaExibicao).toFixed(1)}</strong></div>`
             : `<span style="font-size: 0.8em; color: #007bff; font-style: italic;">Avalie!</span>`;
 
+        // Lógica de Plataforma (Site / App)
+        let plats = Array.isArray(f.plataforma) ? f.plataforma : (f.plataforma ? [f.plataforma] : ['site']);
+        let badgePlatHTML = '';
+        if (plats.includes('app') && plats.includes('site')) {
+            badgePlatHTML = `<span style="background: #e3f2fd; color: #1565c0; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold;">[SITE + APP]</span>`;
+        } else if (plats.includes('app')) {
+            badgePlatHTML = `<span style="background: #e8f5e9; color: #2e7d32; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold;">[APP]</span>`;
+        } else {
+            badgePlatHTML = `<span style="background: #f1f3f4; color: #5f6368; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold;">[SITE]</span>`;
+        }
+
         return `
             <tr>
-                <td><strong>${f.nome}</strong></td>
+                <td><strong>${f.nome}</strong> ${badgePlatHTML}</td>
                 <td>${f.tipo_principal || 'Padrão'}</td>
                 <td>${f.minimo_saque || '---'}</td>
                 <td>${f.tempo_saque || 'Imediato'}</td>
