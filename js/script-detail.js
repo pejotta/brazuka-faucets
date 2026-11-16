@@ -65,6 +65,19 @@ function fillPageData(faucet) {
             recursosContainer.innerHTML = '<span style="color:#999; font-size:0.9em;">Nenhum recurso listado.</span>';
         }
     }
+
+    // Adicionar dentro de fillPageData(faucet):
+    const plats = Array.isArray(faucet.plataforma) ? faucet.plataforma : (faucet.plataforma ? [faucet.plataforma] : ['site']);
+    let textoPlataforma = '🌐 Apenas Site (Web / PC)';
+    if (plats.includes('app') && plats.includes('site')) {
+        textoPlataforma = '🌐 Site & 📱 Aplicativo Disponível';
+    } else if (plats.includes('app')) {
+        textoPlataforma = '📱 Aplicativo Dedicado (Android / iOS)';
+    }
+    
+    // Se você tiver um span com id="faucet-platform" na ficha técnica do faucet.html:
+    const elPlat = document.getElementById('faucet-platform');
+    if (elPlat) elPlat.textContent = textoPlataforma;
 }
 
 // 2. Busca dados dinâmicos (Votos e Comentários) no Banco de Dados
