@@ -39,7 +39,7 @@
         .cadastro-layout-wrapper {
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Essencial para o sticky funcionar */
+            align-items: flex-start;
             gap: 25px;
             max-width: 1050px;
             margin: -50px auto 40px;
@@ -62,14 +62,14 @@
         /* BANNERS LATERAIS COLADOS AO FORMULÁRIO E COM ROLAGEM STICKY */
         .banner-lateral-sticky {
             position: sticky;
-            top: 20px; /* Distância do topo da tela ao rolar */
+            top: 20px;
             width: 160px;
             min-height: 600px;
             flex-shrink: 0;
             display: flex;
             align-items: flex-start;
             justify-content: center;
-            margin-top: 65px; /* Alinha exatamente abaixo da curva da hero-ads */
+            margin-top: 65px;
         }
 
         .faucet-form h2 { color: #1a73e8; margin-bottom: 25px; text-align: center; font-size: 1.6em; }
@@ -103,7 +103,6 @@
             padding: 10px; border-radius: 8px; border: 1px dashed #1a73e8; margin-bottom: 20px; 
         }
         
-        /* Esconde os banners laterais apenas quando não houver largura suficiente */
         @media (max-width: 1024px) { 
             .banner-lateral-sticky { display: none; }
             .cadastro-layout-wrapper { margin-top: -50px; }
@@ -114,7 +113,7 @@
 
     <section class="hero-ads">
         <h1>Cadastre seu site</h1>
-        <p>Airdrop, Faucet, Mineradora, Bet Crypto, IPO ou Autofaucet.</p>
+        <p>Airdrop, Faucet, Mineradora, Bet Crypto, IPO, Jogo ou Autofaucet.</p>
         <p><strong>IMPORTANTE!</strong>: Aceitamos links de indicação.</p>
     </section>
     
@@ -189,13 +188,14 @@
                     <label class="recursos-item"><input type="checkbox" name="recursos" value="Ver Vídeos"> Ver Vídeos</label>
                     <label class="recursos-item"><input type="checkbox" name="recursos" value="Concurso/Contest"> Concurso/Contest</label>
                     <label class="recursos-item"><input type="checkbox" name="recursos" value="Mineração"> Mineração</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Shortlinks"> Shortlinks</label>        
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Shortlinks"> Shortlinks</label>    
                     <label class="recursos-item"><input type="checkbox" name="recursos" value="Surveys (Pesquisas)"> Surveys (Pesquisas)</label>
                     <label class="recursos-item"><input type="checkbox" name="recursos" value="Staking"> Staking</label>
                     <label class="recursos-item"><input type="checkbox" name="recursos" value="Trabalhos"> Trabalhos</label>
                     <label class="recursos-item"><input type="checkbox" name="recursos" value="SurfAds"> SurfAds</label>
                     <label class="recursos-item"><input type="checkbox" name="recursos" value="Micro Tarefas"> Micro Tarefas</label>
-                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Jogos/Dice"> Jogos/Dice</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Jogos"> Jogos</label>
+                    <label class="recursos-item"><input type="checkbox" name="recursos" value="Slots/Dice"> Slots/Dice</label>
                     <label class="recursos-item"><input type="checkbox" name="recursos" value="Offerwalls"> Offerwalls</label>
                     <label class="recursos-item"><input type="checkbox" name="recursos" value="Referências/Afiliados"> Referências/Afiliados</label>
                 </div>
@@ -215,8 +215,8 @@
 
                 <label>Onde é feito o pagamento? *</label>
                 <div class="recursos-group">
-                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="FaucetPay"> FaucetPay</label>                         
-                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Metamask"> Metamask</label>                                         
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="FaucetPay"> FaucetPay</label>                       
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Metamask"> Metamask</label>                            
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Base"> Base</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Coinbase"> Coinbase</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Bet Crypto"> Bet Crypto</label>
@@ -224,7 +224,7 @@
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Binance"> Binance</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="PIX"> PIX</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="PayPal"> PayPal</label> 
-                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Lightning Network"> Lightning Network</label>                         
+                    <label class="recursos-item"><input type="checkbox" name="pagamento" value="Lightning Network"> Lightning Network</label>                       
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Gift Cards"> Gift Cards</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Carteira Direta"> Carteira Direta</label>
                     <label class="recursos-item"><input type="checkbox" name="pagamento" value="Outros" id="check-outro-pagamento"> Outros</label>
@@ -262,18 +262,20 @@
             btn.disabled = false;
         };
 
-        function toggleOutro(checkId, containerId, inputId) {
+        function configurarToggleOutro(checkId, containerId, inputId) {
             const check = document.getElementById(checkId);
             const container = document.getElementById(containerId);
             const input = document.getElementById(inputId);
-            check.addEventListener('change', function() {
-                container.style.display = this.checked ? 'block' : 'none';
-                if(this.checked) input.setAttribute('required', 'required');
-                else input.removeAttribute('required');
-            });
+            if (check && container && input) {
+                check.addEventListener('change', function() {
+                    container.style.display = this.checked ? 'block' : 'none';
+                    if (this.checked) input.setAttribute('required', 'required');
+                    else input.removeAttribute('required');
+                });
+            }
         }
-        toggleOutro('check-outra-moeda', 'campo-outra-moeda', 'input-outra-moeda');
-        toggleOutro('check-outro-pagamento', 'campo-outro-pagamento', 'input-outro-pagamento');
+        configurarToggleOutro('check-outra-moeda', 'campo-outra-moeda', 'input-outra-moeda');
+        configurarToggleOutro('check-outro-pagamento', 'campo-outro-pagamento', 'input-outro-pagamento');
     </script>
     
     <script src="js/script-global.js"></script>
