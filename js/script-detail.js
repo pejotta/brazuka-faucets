@@ -33,23 +33,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// 1. Preenche os dados fixos (Trata os nomes e recursos do Banco de Dados)
+// 1. Preenche os dados fixos (Trata os nomes, logo e recursos do Banco de Dados)
 function fillPageData(faucet) {
     document.title = `${faucet.nome} | Brazuka Faucets`;
 
-    // Lógica de Plataforma (Site / App) para gerar o Badge visual no título e o texto na ficha
+    // Extrai o domínio e define a logo automaticamente via favicon do Google
+    const domain = (faucet.url || '').replace(/^(https?:\/\/)/, '').split('/')[0];
+    const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+    const imgLogo = document.getElementById('faucet-logo');
+    if (imgLogo) {
+        imgLogo.src = faviconUrl;
+        imgLogo.alt = faucet.nome;
+    }
+
+    // Lógica de Plataforma (Site / App) para gerar o Badge visual no título
     const plats = Array.isArray(faucet.plataforma) ? faucet.plataforma : (faucet.plataforma ? [faucet.plataforma] : ['site']);
     let badgeHtml = '';
     let textoPlataforma = '🌐 Apenas Site (Web / PC)';
 
     if (plats.includes('app') && plats.includes('site')) {
-        badgeHtml = `<span style="background: rgba(21, 101, 192, 0.15); color: #1565c0; font-size: 0.6em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">📱💻 [SITE + APP]</span>`;
+        badgeHtml = `<span style="background: rgba(21, 101, 192, 0.15); color: #1565c0; font-size: 0.55em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">📱💻 [SITE + APP]</span>`;
         textoPlataforma = '🌐 Site & 📱 Aplicativo Disponível';
     } else if (plats.includes('app')) {
-        badgeHtml = `<span style="background: rgba(46, 125, 50, 0.15); color: #2e7d32; font-size: 0.6em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">📱 [APLICATIVO]</span>`;
+        badgeHtml = `<span style="background: rgba(46, 125, 50, 0.15); color: #2e7d32; font-size: 0.55em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">📱 [APLICATIVO]</span>`;
         textoPlataforma = '📱 Aplicativo Dedicado (Android / iOS)';
     } else {
-        badgeHtml = `<span style="background: rgba(95, 99, 104, 0.15); color: #5f6368; font-size: 0.6em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">🌐 [SITE]</span>`;
+        badgeHtml = `<span style="background: rgba(95, 99, 104, 0.15); color: #5f6368; font-size: 0.55em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">🌐 [SITE]</span>`;
     }
 
     // Exibe o nome junto com o badge de plataforma no topo da página de detalhes
@@ -83,7 +92,6 @@ function fillPageData(faucet) {
         }
     }
 
-    // Atualiza o elemento de plataforma na ficha técnica (caso exista o span no HTML)
     const elPlat = document.getElementById('faucet-platform');
     if (elPlat) elPlat.textContent = textoPlataforma;
 }
