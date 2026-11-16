@@ -36,7 +36,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 // 1. Preenche os dados fixos (Trata os nomes e recursos do Banco de Dados)
 function fillPageData(faucet) {
     document.title = `${faucet.nome} | Brazuka Faucets`;
-    document.getElementById('faucet-name').textContent = faucet.nome;
+
+    // Lógica de Plataforma (Site / App) para gerar o Badge visual no título e o texto na ficha
+    const plats = Array.isArray(faucet.plataforma) ? faucet.plataforma : (faucet.plataforma ? [faucet.plataforma] : ['site']);
+    let badgeHtml = '';
+    let textoPlataforma = '🌐 Apenas Site (Web / PC)';
+
+    if (plats.includes('app') && plats.includes('site')) {
+        badgeHtml = `<span style="background: rgba(21, 101, 192, 0.15); color: #1565c0; font-size: 0.6em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">📱💻 [SITE + APP]</span>`;
+        textoPlataforma = '🌐 Site & 📱 Aplicativo Disponível';
+    } else if (plats.includes('app')) {
+        badgeHtml = `<span style="background: rgba(46, 125, 50, 0.15); color: #2e7d32; font-size: 0.6em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">📱 [APLICATIVO]</span>`;
+        textoPlataforma = '📱 Aplicativo Dedicado (Android / iOS)';
+    } else {
+        badgeHtml = `<span style="background: rgba(95, 99, 104, 0.15); color: #5f6368; font-size: 0.6em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">🌐 [SITE]</span>`;
+    }
+
+    // Exibe o nome junto com o badge de plataforma no topo da página de detalhes
+    document.getElementById('faucet-name').innerHTML = `${faucet.nome} ${badgeHtml}`;
 
     const moedaTexto = Array.isArray(faucet.moeda) ? faucet.moeda.join(' / ') : faucet.moeda;
     document.getElementById('faucet-coin').textContent = (moedaTexto || '').toUpperCase();
@@ -66,16 +83,7 @@ function fillPageData(faucet) {
         }
     }
 
-    // Adicionar dentro de fillPageData(faucet):
-    const plats = Array.isArray(faucet.plataforma) ? faucet.plataforma : (faucet.plataforma ? [faucet.plataforma] : ['site']);
-    let textoPlataforma = '🌐 Apenas Site (Web / PC)';
-    if (plats.includes('app') && plats.includes('site')) {
-        textoPlataforma = '🌐 Site & 📱 Aplicativo Disponível';
-    } else if (plats.includes('app')) {
-        textoPlataforma = '📱 Aplicativo Dedicado (Android / iOS)';
-    }
-    
-    // Se você tiver um span com id="faucet-platform" na ficha técnica do faucet.html:
+    // Atualiza o elemento de plataforma na ficha técnica (caso exista o span no HTML)
     const elPlat = document.getElementById('faucet-platform');
     if (elPlat) elPlat.textContent = textoPlataforma;
 }
