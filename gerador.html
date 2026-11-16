@@ -111,8 +111,14 @@
         <label>URL de Indicação</label>
         <input type="url" id="f_url" placeholder="https://...">
 
-        <label>Moedas / Categorias de Exibição (Separe por vírgula)</label>
-        <input type="text" id="f_moedas" placeholder="btc, eth, doge, jogos, airdrop, ipo">
+        <h3>Plataforma de Acesso</h3>
+        <div class="checkbox-grid" style="grid-template-columns: repeat(2, 1fr);">
+            <label class="check-item"><input type="checkbox" class="plataforma-c" value="site" checked> 🌐 Site (Web / PC)</label>
+            <label class="check-item"><input type="checkbox" class="plataforma-c" value="app"> 📱 App (Android / iOS)</label>
+        </div>
+
+        <label>Moedas / Categorias de Exibição (Separe por vírgula — aceita qualquer moeda nova)</label>
+        <input type="text" id="f_moedas" placeholder="btc, eth, doge, jogos, airdrop, ipo, banano...">
 
         <label>Data Cadastro</label>
         <input type="text" id="f_data" placeholder="16/11/2026">
@@ -179,6 +185,9 @@
             <label class="check-item"><input type="checkbox" class="pagto-c" value="Gift Cards"> Gift Cards</label>
             <label class="check-item"><input type="checkbox" class="pagto-c" value="Carteira Direta"> Carteira Direta</label>
         </div>
+
+        <label>Outras Carteiras / Métodos Extras (Opcional — separe por vírgula)</label>
+        <input type="text" id="f_pagto_extra" placeholder="Ex: Trust Wallet, Rabby, Phantom...">
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
             <div>
@@ -264,7 +273,7 @@
                 if (f) {
                     document.getElementById('f_nome').value = f.nome || '';
                     document.getElementById('f_url').value = f.url || '';
-                    document.getElementById('f_moedas').value = Array.isArray(f.moeda) ? f.moeda.join(', ') : f.moeda;
+                    document.getElementById('f_moedas').value = Array.isArray(f.moeda) ? f.moeda.join(', ') : (f.moeda || '');
                     document.getElementById('f_data').value = f.data_cadastro || new Date().toLocaleDateString('pt-BR');
                     document.getElementById('f_timer').value = f.intervalo || '';
                     document.getElementById('f_minimo').value = f.minimo_saque || '';
@@ -273,11 +282,18 @@
                     document.getElementById('f_destaque').value = String(f.destaque);
                     document.getElementById('f_patrocinado').value = String(f.patrocinado);
 
+                    // Carregar Plataforma (retrocompatível: se não existir no registro antigo, marca 'site')
+                    const plats = Array.isArray(f.plataforma) ? f.plataforma : (f.plataforma ? [f.plataforma] : ['site']);
+                    document.querySelectorAll('.plataforma-c').forEach(cb => {
+                        cb.checked = plats.includes(cb.value);
+                    });
+
                     const marcarChecks = (seletor, valorString) => {
                         const listaValores = valorString ? valorString.split(/[,/]/).map(v => v.trim()) : [];
                         document.querySelectorAll(seletor).forEach(cb => {
                             cb.checked = listaValores.includes(cb.value);
                         });
+                        return listaValores;
                     };
 
                     const listaTipos = f.tipo_principal ? f.tipo_principal.split(' e ').map(v => v.trim()) : [];
@@ -288,7 +304,12 @@
                     });
 
                     marcarChecks('.captcha-c', f.captcha);
-                    marcarChecks('.pagto-c', f.pagamento);
+                    
+                    // Carregar Pagamentos + separar o que for carteira extra no input livre
+                    const todosPagtos = marcarChecks('.pagto-c', f.pagamento);
+                    const valoresPadraoPagto = Array.from(document.querySelectorAll('.pagto-c')).map(cb => cb.value);
+                    const extrasPagto = todosPagtos.filter(item => item && !valoresPadraoPagto.includes(item));
+                    document.getElementById('f_pagto_extra').value = extrasPagto.join(', ');
 
                     alert("✅ Dados de '" + f.nome + "' carregados! Pode editar agora.");
                 } else {
@@ -303,20 +324,27 @@
         }
 
         function gerarJSON() {
+            const plataformas = Array.from(document.querySelectorAll('.plataforma-c:checked')).map(c => c.value);
             const tipos = Array.from(document.querySelectorAll('.tipo-p:checked')).map(c => c.value);
             const recursos = Array.from(document.querySelectorAll('.recurso:checked')).map(c => c.value);
-            const pagtos = Array.from(document.querySelectorAll('.pagto-c:checked')).map(c => c.value);
             const captchas = Array.from(document.querySelectorAll('.captcha-c:checked')).map(c => c.value);
             
+            // Combina os checkboxes de pagamento com o campo livre de carteiras extras
+            const pagtosCheck = Array.from(document.querySelectorAll('.pagto-c:checked')).map(c => c.value);
+            const pagtoExtraInput = document.getElementById('f_pagto_extra').value;
+            const pagtosExtras = pagtoExtraInput ? pagtoExtraInput.split(',').map(p => p.trim()).filter(Boolean) : [];
+            const todosPagtos = [...new Set([...pagtosCheck, ...pagtosExtras])];
+            
             const moedasInput = document.getElementById('f_moedas').value;
-            const moedas = moedasInput ? moedasInput.split(',').map(m => m.trim().toLowerCase()) : [];
+            const moedas = moedasInput ? moedasInput.split(',').map(m => m.trim().toLowerCase()).filter(Boolean) : [];
 
             ultimoObjetoGerado = {
                 id: parseInt(document.getElementById('f_id').value) || 0,
                 nome: document.getElementById('f_nome').value,
                 url: document.getElementById('f_url').value,
+                plataforma: plataformas.length > 0 ? plataformas : ["site"],
                 moeda: moedas,
-                pagamento: pagtos.join(', '),
+                pagamento: todosPagtos.join(', '),
                 tipo_principal: tipos.join(' e '),
                 recursos: recursos,
                 intervalo: document.getElementById('f_timer').value,
@@ -340,7 +368,7 @@
             btn.disabled = true;
 
             try {
-                const response = statusResponse = await fetch(`${URL_WORKER}/admin-save-faucet`, {
+                const response = await fetch(`${URL_WORKER}/admin-save-faucet`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(ultimoObjetoGerado)
