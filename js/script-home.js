@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     // Encontra todos os grids de moedas dentro dessa seção e os preenche
                     section.querySelectorAll('[id^="grid-"]').forEach(gridEl => {
                         const moedaId = gridEl.id.replace('grid-', '');
-                        if (['doge', 'trx', 'central', 'autofaucet', 'minerador', 'bet', 'airdrop', 'ipo'].includes(moedaId)) {
+                        if (['doge', 'trx', 'central', 'autofaucet', 'minerador', 'bet', 'airdrop', 'ipo', 'jogos'].includes(moedaId)) {
                             renderizarBlocoMoeda(moedaId, cacheFaucetsData);
                         }
                     });
