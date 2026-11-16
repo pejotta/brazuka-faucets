@@ -52,13 +52,13 @@ function fillPageData(faucet) {
     let textoPlataforma = '🌐 Apenas Site (Web / PC)';
 
     if (plats.includes('app') && plats.includes('site')) {
-        badgeHtml = `<span style="background: rgba(21, 101, 192, 0.15); color: #1565c0; font-size: 0.55em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">📱💻 [SITE + APP]</span>`;
+        badgeHtml = `<span style="background: rgba(21, 101, 192, 0.15); color: #1565c0; font-size: 0.55em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">💻 SITE + APP 📱</span>`;
         textoPlataforma = '🌐 Site & 📱 Aplicativo Disponível';
     } else if (plats.includes('app')) {
-        badgeHtml = `<span style="background: rgba(46, 125, 50, 0.15); color: #2e7d32; font-size: 0.55em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">📱 [APLICATIVO]</span>`;
+        badgeHtml = `<span style="background: rgba(46, 125, 50, 0.15); color: #2e7d32; font-size: 0.55em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">📱 APLICATIVO</span>`;
         textoPlataforma = '📱 Aplicativo Dedicado (Android / iOS)';
     } else {
-        badgeHtml = `<span style="background: rgba(95, 99, 104, 0.15); color: #5f6368; font-size: 0.55em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">🌐 [SITE]</span>`;
+        badgeHtml = `<span style="background: rgba(95, 99, 104, 0.15); color: #5f6368; font-size: 0.55em; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; display: inline-block;">💻 SITE</span>`;
     }
 
     // Exibe o nome junto com o badge de plataforma no topo da página de detalhes
