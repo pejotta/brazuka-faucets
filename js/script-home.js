@@ -49,7 +49,7 @@ function resetarTimer() {
     adTimer = setInterval(proximoAd, 15000); // 15 segundos
 }
 
-// --- FUNÇÃO PARA RENDERIZAR UMA MOEDA ESPECÍFICA ---
+// --- FUNÇÃO PARA RENDERIZAR UMA MOEDA / SEÇÃO ESPECÍFICA ---
 function renderizarBlocoMoeda(moeda, dados) {
     const container = document.getElementById(`grid-${moeda}`);
     if (!container || container.dataset.carregado === "true") return;
@@ -142,6 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     // Encontra todos os grids de moedas dentro dessa seção e os preenche
                     section.querySelectorAll('[id^="grid-"]').forEach(gridEl => {
                         const moedaId = gridEl.id.replace('grid-', '');
+                        // Adicionada a verificação da nova categoria 'jogos'
                         if (['doge', 'trx', 'central', 'autofaucet', 'minerador', 'bet', 'airdrop', 'ipo', 'jogos'].includes(moedaId)) {
                             renderizarBlocoMoeda(moedaId, cacheFaucetsData);
                         }
