@@ -49,16 +49,45 @@ function resetarTimer() {
     adTimer = setInterval(proximoAd, 15000); // 15 segundos
 }
 
-// --- FUNÇÃO PARA RENDERIZAR UMA MOEDA / SEÇÃO ESPECÍFICA ---
-function renderizarBlocoMoeda(moeda, dados) {
-    const container = document.getElementById(`grid-${moeda}`);
+// --- FUNÇÃO AJUSTADA PARA FIXAR DESTAQUE APENAS NA PRIMEIRA CATEGORIA ---
+function renderizarBlocoMoeda(moedaAlvo, dados) {
+    const container = document.getElementById(`grid-${moedaAlvo}`);
     if (!container || container.dataset.carregado === "true") return;
     container.dataset.carregado = "true";
 
-    const allInCategory = dados.filter(f => Array.isArray(f.moeda) ? f.moeda.includes(moeda) : f.moeda === moeda);
-    
-    const vips = allInCategory.filter(f => f.patrocinado == "true" || f.patrocinado === true || f.destaque == "true" || f.destaque === true);
-    const normais = allInCategory.filter(f => !(f.patrocinado == "true" || f.patrocinado === true || f.destaque == "true" || f.destaque === true));
+    // 1. Pega todos os itens que pertencem a esta categoria (seja primária ou secundária)
+    const allInCategory = dados.filter(f => {
+        if (Array.isArray(f.moeda)) {
+            return f.moeda.map(m => m.trim().toLowerCase()).includes(moedaAlvo.toLowerCase());
+        } else if (typeof f.moeda === "string") {
+            const listaMoedas = f.moeda.split(',').map(m => m.trim().toLowerCase());
+            return listaMoedas.includes(moedaAlvo.toLowerCase());
+        }
+        return false;
+    });
+
+    // 2. Descobre se esta moedaAlvo é a PRIMEIRA categoria oficial do projeto
+    const ehPrimeiraCategoria = (faucet) => {
+        let primeira = "";
+        if (Array.isArray(faucet.moeda)) {
+            primeira = faucet.moeda[0] ? faucet.moeda[0].trim().toLowerCase() : "";
+        } else if (typeof faucet.moeda === "string") {
+            primeira = faucet.moeda.split(',')[0].trim().toLowerCase();
+        }
+        return primeira === moedaAlvo.toLowerCase();
+    };
+
+    // 3. SEPARAÇÃO INTELIGENTE: Só considera VIP/Destaque se for a primeira categoria!
+    const vips = allInCategory.filter(f => {
+        const isVipOuDestaque = (f.patrocinado == "true" || f.patrocinado === true || f.destaque == "true" || f.destaque === true);
+        return isVipOuDestaque && ehPrimeiraCategoria(f);
+    });
+
+    // Os normais incluem quem não é VIP + os VIPs que estão em categorias secundárias (tratados como comuns aqui)
+    const normais = allInCategory.filter(f => {
+        const isVipOuDestaque = (f.patrocinado == "true" || f.patrocinado === true || f.destaque == "true" || f.destaque === true);
+        return !(isVipOuDestaque && ehPrimeiraCategoria(f));
+    });
     
     const normaisEmbaralhados = normais.sort(() => Math.random() - 0.5);
     vips.sort((a, b) => (a.patrocinado == "true" || a.patrocinado === true) ? -1 : 1);
@@ -75,10 +104,11 @@ function renderizarBlocoMoeda(moeda, dados) {
         let tagsHTML = '';
         let destaqueClass = ''; 
 
-        if (faucet.patrocinado == "true" || faucet.patrocinado === true) {
+        // O selo visual e a classe VIP só aparecem se REALMENTE for VIP e estiver na primeira categoria
+        if ((faucet.patrocinado == "true" || faucet.patrocinado === true) && ehPrimeiraCategoria(faucet)) {
             tagsHTML = `<div class="tag-badge tag-patrocinado"><i class="fas fa-ad"></i></div>`;
             destaqueClass = 'card-patrocinado';
-        } else if (faucet.destaque == "true" || faucet.destaque === true) {
+        } else if ((faucet.destaque == "true" || faucet.destaque === true) && ehPrimeiraCategoria(faucet)) {
             tagsHTML = `<div class="tag-badge tag-destaque"><i class="fas fa-star"></i></div>`;
             destaqueClass = 'card-destaque';
         }
