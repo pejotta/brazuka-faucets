@@ -117,11 +117,11 @@ function renderizarBlocoMoeda(moedaAlvo, dados) {
         const plats = Array.isArray(faucet.plataforma) ? faucet.plataforma : (faucet.plataforma ? [faucet.plataforma] : ['site']);
         let badgePlatHTML = '';
         if (plats.includes('app') && plats.includes('site')) {
-            badgePlatHTML = `<span style="background: rgba(21, 101, 192, 0.15); color: #1565c0; font-size: 0.65em; padding: 2px 6px; border-radius: 4px; margin-left: 5px; font-weight: bold; display: inline-block;">[SITE + APP]</span>`;
+            badgePlatHTML = `<span style="background: rgba(21, 101, 192, 0.15); color: #1565c0; font-size: 0.65em; padding: 2px 6px; border-radius: 4px; margin-left: 5px; font-weight: bold; display: inline-block;">SITE + APP</span>`;
         } else if (plats.includes('app')) {
-            badgePlatHTML = `<span style="background: rgba(46, 125, 50, 0.15); color: #2e7d32; font-size: 0.65em; padding: 2px 6px; border-radius: 4px; margin-left: 5px; font-weight: bold; display: inline-block;">[APP]</span>`;
+            badgePlatHTML = `<span style="background: rgba(46, 125, 50, 0.15); color: #2e7d32; font-size: 0.65em; padding: 2px 6px; border-radius: 4px; margin-left: 5px; font-weight: bold; display: inline-block;">APP</span>`;
         } else {
-            badgePlatHTML = `<span style="background: rgba(95, 99, 104, 0.15); color: #5f6368; font-size: 0.65em; padding: 2px 6px; border-radius: 4px; margin-left: 5px; font-weight: bold; display: inline-block;">[SITE]</span>`;
+            badgePlatHTML = `<span style="background: rgba(95, 99, 104, 0.15); color: #5f6368; font-size: 0.65em; padding: 2px 6px; border-radius: 4px; margin-left: 5px; font-weight: bold; display: inline-block;">SITE</span>`;
         }
 
         const domain = faucet.url.replace(/^(https?:\/\/)/, '').split('/')[0];
