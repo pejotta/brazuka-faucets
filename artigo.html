@@ -137,6 +137,7 @@
             text-decoration: none;
             font-size: 20px;
             transition: 0.3s;
+            cursor: pointer;
         }
 
         .btn-share:hover { transform: translateY(-3px); }
@@ -195,12 +196,12 @@
             </div>
 
             <div class="engagement-item social-grid">
-                <a href="#" id="share-wa" target="_blank" rel="noopener" class="btn-share wa"><iconify-icon icon="ic:baseline-whatsapp"></iconify-icon></a>
-                <a href="#" id="share-tg" target="_blank" rel="noopener" class="btn-share tg"><iconify-icon icon="ic:baseline-telegram"></iconify-icon></a>
-                <a href="#" id="share-fb" target="_blank" rel="noopener" class="btn-share fb"><iconify-icon icon="ic:baseline-facebook"></iconify-icon></a>
-                <a href="#" id="share-tw" target="_blank" rel="noopener" class="btn-share tw"><iconify-icon icon="simple-icons:x"></iconify-icon></a>
-                <a href="#" id="share-rd" target="_blank" rel="noopener" class="btn-share rd"><iconify-icon icon="ic:baseline-reddit"></iconify-icon></a>
-                <a href="#" id="share-ml" target="_blank" rel="noopener" class="btn-share ml"><iconify-icon icon="ic:baseline-email"></iconify-icon></a>
+                <button type="button" id="share-wa" class="btn-share wa" style="border:none;"><iconify-icon icon="ic:baseline-whatsapp"></iconify-icon></button>
+                <button type="button" id="share-tg" class="btn-share tg" style="border:none;"><iconify-icon icon="ic:baseline-telegram"></iconify-icon></button>
+                <button type="button" id="share-fb" class="btn-share fb" style="border:none;"><iconify-icon icon="ic:baseline-facebook"></iconify-icon></button>
+                <button type="button" id="share-tw" class="btn-share tw" style="border:none;"><iconify-icon icon="simple-icons:x"></iconify-icon></button>
+                <button type="button" id="share-rd" class="btn-share rd" style="border:none;"><iconify-icon icon="ic:baseline-reddit"></iconify-icon></button>
+                <button type="button" id="share-ml" class="btn-share ml" style="border:none;"><iconify-icon icon="ic:baseline-email"></iconify-icon></button>
             </div>
         </div>
     </main>
@@ -280,10 +281,17 @@
         document.addEventListener("DOMContentLoaded", () => {
             carregarArtigoIndividual();
 
-            const urlAtual = encodeURIComponent(window.location.href);
-            const tituloAtual = encodeURIComponent(document.title);
+            // Configuração dinâmica dos botões sociais puxando os dados reais da página
+            const getShareData = () => {
+                const urlAtual = encodeURIComponent(window.location.href);
+                const tituloLimpo = document.title.replace(" | Brazuka Faucets", "").trim();
+                const tituloAtual = encodeURIComponent(tituloLimpo);
+                const metaDescEl = document.querySelector('meta[name="description"]');
+                const descTexto = metaDescEl ? metaDescEl.getAttribute('content') : tituloLimpo;
+                const descAtual = encodeURIComponent(descTexto);
+                return { urlAtual, tituloAtual, descAtual, tituloLimpo };
+            };
 
-            // Configuração dos links de compartilhamento (abrindo em nova aba)
             const wa = document.getElementById('share-wa');
             const tg = document.getElementById('share-tg');
             const fb = document.getElementById('share-fb');
@@ -291,30 +299,67 @@
             const rd = document.getElementById('share-rd');
             const ml = document.getElementById('share-ml');
 
-            if (wa) wa.href = `https://api.whatsapp.com/send?text=${tituloAtual}%20-%20${urlAtual}`;
-            if (tg) tg.href = `https://t.me/share/url?url=${urlAtual}&text=${tituloAtual}`;
-            if (fb) fb.href = `https://www.facebook.com/sharer/sharer.php?u=${urlAtual}`;
-            if (tw) tw.href = `https://twitter.com/intent/tweet?text=${tituloAtual}&url=${urlAtual}`;
-            if (rd) rd.href = `https://reddit.com/submit?url=${urlAtual}&title=${tituloAtual}`;
-            if (ml) ml.href = `mailto:?subject=${tituloAtual}&body=Confira%20este%20artigo%20incrível:%20${urlAtual}`;
+            if (wa) {
+                wa.addEventListener('click', () => {
+                    const data = getShareData();
+                    const texto = encodeURIComponent(`🔥 *${data.tituloLimpo}*\n\nConfira os detalhes completos aqui: `) + data.urlAtual;
+                    window.open(`https://api.whatsapp.com/send?text=${texto}`, '_blank', 'noopener');
+                });
+            }
+
+            if (tg) {
+                tg.addEventListener('click', () => {
+                    const data = getShareData();
+                    window.open(`https://t.me/share/url?url=${data.urlAtual}&text=${data.tituloAtual}`, '_blank', 'noopener');
+                });
+            }
+
+            if (fb) {
+                fb.addEventListener('click', () => {
+                    const data = getShareData();
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${data.urlAtual}`, '_blank', 'noopener');
+                });
+            }
+
+            if (tw) {
+                tw.addEventListener('click', () => {
+                    const data = getShareData();
+                    window.open(`https://twitter.com/intent/tweet?text=${data.tituloAtual}&url=${data.urlAtual}`, '_blank', 'noopener');
+                });
+            }
+
+            if (rd) {
+                rd.addEventListener('click', () => {
+                    const data = getShareData();
+                    window.open(`https://reddit.com/submit?url=${data.urlAtual}&title=${data.tituloAtual}`, '_blank', 'noopener');
+                });
+            }
+
+            if (ml) {
+                ml.addEventListener('click', () => {
+                    const data = getShareData();
+                    window.open(`mailto:?subject=${data.tituloAtual}&body=Confira%20este%20artigo:%20${data.urlAtual}`, '_blank');
+                });
+            }
 
             // Lógica de Avaliação por Estrelas
             const estrelas = document.querySelectorAll('#user-rating iconify-icon');
             const statusRating = document.getElementById('rating-status');
-            const urlParams = new URLSearchParams(window.location.search);
-            const slug = urlParams.get('slug');
 
             estrelas.forEach((estrela, index) => {
-                // Efeito visual ao passar o mouse
                 estrela.addEventListener('mouseenter', () => {
                     estrelas.forEach((s, i) => {
                         s.setAttribute('icon', i <= index ? 'ic:round-star' : 'ic:round-star-border');
                     });
                 });
 
-                // Clique para salvar a avaliação
                 estrela.addEventListener('click', async () => {
                     const nota = parseInt(estrela.getAttribute('data-value')) || (index + 1);
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const slug = urlParams.get('slug');
+
+                    if (!slug) return alert("Slug do artigo não encontrado.");
+
                     try {
                         const res = await fetch(URL_WORKER + '/rate-post', {
                             method: 'POST',
@@ -327,6 +372,8 @@
                             estrelas.forEach((s, i) => {
                                 s.setAttribute('icon', i < nota ? 'ic:round-star' : 'ic:round-star-border');
                             });
+                        } else {
+                            alert("Erro ao registrar avaliação: " + (data.error || 'Desconhecido'));
                         }
                     } catch (err) {
                         console.error("Erro ao enviar avaliação:", err);
@@ -335,11 +382,10 @@
                 });
             });
 
-            // Remove o destaque ao tirar o mouse das estrelas
             const userRatingContainer = document.getElementById('user-rating');
             if (userRatingContainer) {
                 userRatingContainer.addEventListener('mouseleave', () => {
-                    // Mantém o estado atual se já clicou ou reseta se preferir
+                    // Mantém o estado atual
                 });
             }
         });
