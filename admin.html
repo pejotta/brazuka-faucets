@@ -461,6 +461,7 @@
                         <button type="button" onclick="salvarPostNoBanco()" style="background: #7a33eb; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer;">
                             <i class="fa-solid fa-paper-plane"></i> Publicar / Atualizar Artigo
                         </button>
+                        <input type="datetime-local" style="background: #ffffff;color: #7a33eb;border: none;padding: 12px 24px;border-radius: 8px;font-weight: bold;cursor: pointer;" id="post-agendamento">
                         <button type="button" onclick="limparFormularioPost()" style="background: var(--card-border); color: var(--text-color); border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer;">
                             Limpar Campos
                         </button>
@@ -676,41 +677,55 @@
     }
 
     async function salvarPostNoBanco() {
-        const title = document.getElementById('post-title').value.trim();
-        const category = document.getElementById('post-category').value;
-        const slug = document.getElementById('post-slug').value.trim();
-        const image = document.getElementById('post-image').value.trim();
-        let metaDescription = document.getElementById('post-meta').value.trim();
-        const content = document.getElementById('post-content').value.trim();
-        const badge = document.getElementById('post-badge').value;
-        const pinned = document.getElementById('post-pinned').checked;
+    const title = document.getElementById('post-title').value.trim();
+    const category = document.getElementById('post-category').value;
+    const slug = document.getElementById('post-slug').value.trim();
+    const image = document.getElementById('post-image').value.trim();
+    let metaDescription = document.getElementById('post-meta').value.trim();
+    const content = document.getElementById('post-content').value.trim();
+    const badge = document.getElementById('post-badge').value;
+    const pinned = document.getElementById('post-pinned').checked;
+    
+    // Captura o agendamento e converte para ISO (respeitando o seu fuso horário)
+    const agendamentoRaw = document.getElementById('post-agendamento').value;
+    const scheduledAt = agendamentoRaw ? new Date(agendamentoRaw).toISOString() : null;
 
-        if (!title || !slug || !content) return alert("Preencha pelo menos o Título, o Slug e o Corpo do artigo!");
+    if (!title || !slug || !content) return alert("Preencha pelo menos o Título, o Slug e o Corpo do artigo!");
 
-        if (!metaDescription) {
-            const textoLimpo = content.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
-            metaDescription = textoLimpo.substring(0, 155) + (textoLimpo.length > 155 ? '...' : '');
-        }
-
-        try {
-            const res = await fetch(URL_WORKER + '/admin-save-post', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, category, slug, image, metaDescription, content, badge, pinned })
-            });
-            const data = await res.json();
-            if (data.success) {
-                alert("✅ Artigo publicado/atualizado com sucesso!");
-                limparFormularioPost();
-                carregarPostsAdmin();
-            } else {
-                alert("❌ Erro ao salvar artigo: " + data.error);
-            }
-        } catch (err) {
-            alert("🚨 Erro de conexão ao salvar o artigo!");
-            console.error(err);
-        }
+    if (!metaDescription) {
+        const textoLimpo = content.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
+        metaDescription = textoLimpo.substring(0, 155) + (textoLimpo.length > 155 ? '...' : '');
     }
+
+    try {
+        const res = await fetch(URL_WORKER + '/admin-save-post', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                title, 
+                category, 
+                slug, 
+                image, 
+                metaDescription, 
+                content, 
+                badge, 
+                pinned,
+                scheduledAt // Enviando a data/hora programada para o Banco de Dados
+            })
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert(scheduledAt ? "⏰ Artigo agendado com sucesso!" : "✅ Artigo publicado/atualizado com sucesso!");
+            limparFormularioPost();
+            carregarPostsAdmin();
+        } else {
+            alert("❌ Erro ao salvar artigo: " + data.error);
+        }
+    } catch (err) {
+        alert("🚨 Erro de conexão ao salvar o artigo!");
+        console.error(err);
+    }
+}
 
     async function excluirPostAdmin(slug) {
         if (!confirm("Tem certeza que deseja excluir este artigo permanentemente?")) return;
