@@ -156,6 +156,8 @@
                             <div style="margin-bottom: 10px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
                                 <span style="background: #f3ebff; color: #7a33eb; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;">${post.category || 'Geral'}</span>
                                 ${post.badge ? `<span style="background: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">${post.badge}</span>` : ''}
+                                  <!-- Contador de visualizações -->
+                                <span style="font-size: 0.85rem; color: var(--nav-text, #888);">👁️ ${postFixado.views || 0} visualizações</span>
                                 <span style="font-size: 0.8rem; color: var(--nav-text, #888); margin-left: auto;">${new Date(post.createdAt).toLocaleDateString('pt-BR')}</span>
                             </div>
                             <h2 style="font-size: 1.25rem; margin: 0 0 10px 0; line-height: 1.4;">
