@@ -310,7 +310,9 @@
             if (tg) {
                 tg.addEventListener('click', () => {
                     const data = getShareData();
-                    window.open(`https://t.me/share/url?url=${data.urlAtual}&text=${data.tituloAtual}`, '_blank', 'noopener');
+                    // Junta o título e a URL com quebra de linha no parâmetro 'url'
+                    const textoTelegram = encodeURIComponent(`${data.tituloLimpo}\n\n${decodeURIComponent(data.urlAtual)}`);
+                    window.open(`https://t.me/share/url?url=${textoTelegram}`, '_blank', 'noopener');
                 });
             }
 
