@@ -247,12 +247,14 @@
                 document.getElementById('og-title').setAttribute('content', post.title);
                 document.getElementById('og-desc').setAttribute('content', descricaoFinal);
                 
+                // INJEÇÃO DA IMAGEM ESPECÍFICA DO POST NO OPEN GRAPH
                 if (post.image) {
                     document.getElementById('og-image').setAttribute('content', post.image);
                 }
+                
                 document.getElementById('canonical-url').setAttribute('href', window.location.href);
 
-                // 3. PREENCHIMENTO VISUAL DA PÁGINA
+                // 3. PREENCHIMENTO VISUAL DA PÁGINA (A sua caixinha da imagem que você mandou)
                 document.getElementById('artigo-categoria').innerText = post.category || 'Geral';
                 document.getElementById('artigo-titulo').innerText = post.title;
                 document.getElementById('artigo-data').innerText = "Publicado em " + new Date(post.createdAt).toLocaleDateString('pt-BR');
