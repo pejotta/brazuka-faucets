@@ -274,15 +274,26 @@
         // 6. EXIBE AS VIEWS ATUAIS JÁ CARREGADAS DO POST
         const viewsEl = document.getElementById('artigo-views');
         if (viewsEl) {
-            viewsEl.innerText = `${post.views || 0} visualizações`;
+            viewsEl.innerText = `👁️ ${post.views || 0} visualizações`;
         }
 
-        // 7. DISPARA O INCREMENTO DE VIEW EM SEGUNDO PLANO (SILENCIOSO)
-        fetch(URL_WORKER + '/track-view', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ slug })
-        }).catch(err => console.error("Erro ao registrar view:", err));
+        // 7. DISPARA O INCREMENTO DE VIEW APENAS SE AINDA NÃO FOI VISTO NESTA SESSÃO
+        const viewKey = `view_registrada_${slug}`;
+        if (!sessionStorage.getItem(viewKey)) {
+            fetch(URL_WORKER + '/track-view', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ slug })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    sessionStorage.setItem(viewKey, "true"); // Marca que já contou nesta aba/sessão
+                    if (viewsEl) viewsEl.innerText = `👁️ ${data.views} visualizações`;
+                }
+            })
+            .catch(err => console.error("Erro ao registrar view:", err));
+        }
 
         // 8. RENDERIZA AS ESTRELAS COM BASE NA MÉDIA JÁ SALVA NO BANCO
         const mediaAtual = post.mediaRating ? parseFloat(post.mediaRating) : 0;
