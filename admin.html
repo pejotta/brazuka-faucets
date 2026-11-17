@@ -120,7 +120,32 @@
     </style>
 </head>
 <body>
+    
+<!-- Tela de Login do Admin -->
+<div id="admin-login-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; z-index: 9999; justify-content: center; align-items: center;">
+    <form onsubmit="fazerLoginAdmin(event)" style="background: var(--card-bg, #1e293b); padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 15px; border: 1px solid var(--card-border, #334155);">
+        
+        <h2 style="color: var(--text-color, #fff); text-align: center; margin-bottom: 10px;">🔐 Painel Admin</h2>
+        
+        <!-- Campo invisível de username para o navegador associar a senha corretamente -->
+        <input type="text" name="username" value="admin-brazuka" autocomplete="username" style="display: none;">
 
+        <div style="position: relative;">
+            <input type="password" 
+                   id="admin-pass-input" 
+                   name="password" 
+                   placeholder="Digite a senha mestra..." 
+                   autocomplete="current-password" 
+                   required 
+                   style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--card-border, #475569); background: var(--input-bg, #0f172a); color: var(--text-color, #fff); box-sizing: border-box; outline: none;">
+        </div>
+
+        <button type="submit" style="background: #7a33eb; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.2s;">
+            Entrar no Painel
+        </button>
+    </form>
+</div>
+    
     <section class="hero-ads">
         <h1 style="margin:0; font-size: 1.8em;">Brazuka Command Center</h1>
         <p style="margin:5px 0 0; opacity: 0.9;">Painel de Controle Administrativo, Publicidade e Leads</p>
@@ -505,47 +530,65 @@
         if (evento && evento.currentTarget) evento.currentTarget.classList.add('active');
     }
 
-    // Autenticação Segura (Bloqueante)
-    async function verificarAutenticacaoEScarregar() {
-        let acesso = sessionStorage.getItem('autenticado');
+    // Autenticação Segura baseada em Formulário (Permite o navegador salvar a senha)
+async function verificarAutenticacaoEScarregar() {
+    let acesso = sessionStorage.getItem('autenticado');
 
-        if (acesso !== 'true') {
-            let tentativa = prompt("Acesso Administrativo! Digite a senha mestra:");
-            if (!tentativa) {
-                alert("Acesso negado!");
-                window.location.replace("index.html");
-                return;
-            }
+    if (acesso !== 'true') {
+        // Exibe a tela de login customizada se não estiver autenticado
+        const overlay = document.getElementById('admin-login-overlay');
+        if (overlay) overlay.style.display = 'flex';
+        return; // Interrompe a execução até o usuário submeter o formulário
+    }
 
-            try {
-                const response = await fetch(URL_WORKER + '/admin-login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ senha: tentativa })
-                });
-                const res = await response.json();
+    iniciarPainelAdmin();
+}
 
-                if (!res.success) {
-                    alert("Senha incorreta! Acesso negado.");
-                    window.location.replace("index.html");
-                    return;
-                } else {
-                    sessionStorage.setItem('autenticado', 'true');
-                }
-            } catch (err) {
-                alert("Erro ao validar credenciais com o servidor.");
-                window.location.replace("index.html");
-                return;
-            }
+// Função disparada ao enviar o formulário de login
+async function fazerLoginAdmin(event) {
+    event.preventDefault(); // Evita reload da página para o navegador processar o salvamento da senha
+    
+    const tentativa = document.getElementById('admin-pass-input').value;
+    if (!tentativa) return;
+
+    try {
+        const response = await fetch(URL_WORKER + '/admin-login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ senha: tentativa })
+        });
+        const res = await response.json();
+
+        if (!res.success) {
+            alert("Senha incorreta! Acesso negado.");
+            document.getElementById('admin-pass-input').value = '';
+            return;
         }
 
-        document.body.style.display = 'flex';
-        carregarDadosPainel();
-        carregarAnalyticsAdmin();
-        carregarTickerAdmin();
-        carregarPostsAdmin();
-        carregarAlertaAdmin();
+        // Sucesso no login
+        sessionStorage.setItem('autenticado', 'true');
+        
+        // Esconde a tela de login
+        const overlay = document.getElementById('admin-login-overlay');
+        if (overlay) overlay.style.display = 'none';
+
+        iniciarPainelAdmin();
+
+    } catch (err) {
+        alert("Erro ao validar credenciais com o servidor.");
+        console.error(err);
     }
+}
+
+// Função auxiliar para disparar os carregamentos do painel
+function iniciarPainelAdmin() {
+    document.body.style.display = 'flex';
+    carregarDadosPainel();
+    carregarAnalyticsAdmin();
+    carregarTickerAdmin();
+    carregarPostsAdmin();
+    carregarAlertaAdmin();
+}
 
     // Busca de Dados na Worker
     async function carregarDadosPainel() {
