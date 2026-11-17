@@ -234,18 +234,24 @@
                     return;
                 }
 
-                // Atualiza SEO e Meta Tags na Head
-                document.title = post.title + " | Brazuka Faucets";
-                document.getElementById('meta-title').innerText = post.title + " | Brazuka Faucets";
-                if (post.metaDescription) {
-                    document.getElementById('meta-desc').setAttribute('content', post.metaDescription);
-                    document.getElementById('og-desc').setAttribute('content', post.metaDescription);
-                }
+                // 1. TÍTULO DA ABA E SEO IMEDIATO
+                const tituloCompleto = post.title + " | Brazuka Faucets";
+                document.title = tituloCompleto;
+                
+                // 2. ATUALIZAÇÃO FORÇADA DAS META TAGS DE COMPARTILHAMENTO (OPEN GRAPH)
+                document.getElementById('meta-title').innerText = tituloCompleto;
+                
+                const descricaoFinal = post.metaDescription || post.title;
+                document.getElementById('meta-desc').setAttribute('content', descricaoFinal);
                 document.getElementById('og-title').setAttribute('content', post.title);
-                if (post.image) document.getElementById('og-image').setAttribute('content', post.image);
+                document.getElementById('og-desc').setAttribute('content', descricaoFinal);
+                
+                if (post.image) {
+                    document.getElementById('og-image').setAttribute('content', post.image);
+                }
                 document.getElementById('canonical-url').setAttribute('href', window.location.href);
 
-                // Preenche os dados visuais
+                // 3. PREENCHIMENTO VISUAL DA PÁGINA
                 document.getElementById('artigo-categoria').innerText = post.category || 'Geral';
                 document.getElementById('artigo-titulo').innerText = post.title;
                 document.getElementById('artigo-data').innerText = "Publicado em " + new Date(post.createdAt).toLocaleDateString('pt-BR');
@@ -259,7 +265,7 @@
 
                 document.getElementById('artigo-corpo').innerHTML = post.content;
 
-                // Reexecuta o gerenciador de anúncios para injetar banners que estejam dentro do texto do artigo
+                // Reexecuta o gerenciador de anúncios para injetar banners dentro do texto
                 if (typeof BRAZUKA_ADS !== 'undefined' && typeof BRAZUKA_ADS.render === 'function') {
                     BRAZUKA_ADS.render();
                 }
@@ -270,54 +276,14 @@
             }
         }
 
+        // Inicialização única após carregar o DOM
         document.addEventListener("DOMContentLoaded", () => {
+            carregarArtigoIndividual();
+
             const urlAtual = encodeURIComponent(window.location.href);
             const tituloAtual = encodeURIComponent(document.title);
 
-            // Lógica de Avaliação por Estrelas
-document.addEventListener("DOMContentLoaded", () => {
-    const estrelas = document.querySelectorAll('#user-rating iconify-icon');
-    const statusRating = document.getElementById('rating-status');
-    const urlParams = new URLSearchParams(window.location.search);
-    const slug = urlParams.get('slug');
-
-    estrelas.forEach((estrela, index) => {
-        // Efeito visual ao passar o mouse
-        estrela.addEventListener('mouseenter', () => {
-            estrelas.forEach((s, i) => {
-                s.setAttribute('icon', i <= index ? 'ic:round-star' : 'ic:round-star-border');
-            });
-        });
-
-        // Clique para salvar a avaliação
-        estrela.addEventListener('click', async () => {
-            const nota = index + 1;
-            try {
-                const res = await fetch(URL_WORKER + '/rate-post', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ slug, rating: nota })
-                });
-                const data = await res.json();
-                if (data.success) {
-                    statusRating.innerText = `Obrigado! (${nota}/5)`;
-                    estrelas.forEach((s, i) => {
-                        s.setAttribute('icon', i < nota ? 'ic:round-star' : 'ic:round-star-border');
-                    });
-                }
-            } catch (err) {
-                console.error("Erro ao enviar avaliação:", err);
-            }
-        });
-    });
-
-    // Remove o destaque ao tirar o mouse se não clicou
-    document.getElementById('user-rating').addEventListener('mouseleave', () => {
-        // Aqui você pode resetar ou manter o estado atual se já avaliou
-    });
-});
-            
-            // Links de compartilhamento nativos das redes sociais
+            // Configuração dos links de compartilhamento (abrindo em nova aba)
             const wa = document.getElementById('share-wa');
             const tg = document.getElementById('share-tg');
             const fb = document.getElementById('share-fb');
@@ -331,9 +297,52 @@ document.addEventListener("DOMContentLoaded", () => {
             if (tw) tw.href = `https://twitter.com/intent/tweet?text=${tituloAtual}&url=${urlAtual}`;
             if (rd) rd.href = `https://reddit.com/submit?url=${urlAtual}&title=${tituloAtual}`;
             if (ml) ml.href = `mailto:?subject=${tituloAtual}&body=Confira%20este%20artigo%20incrível:%20${urlAtual}`;
+
+            // Lógica de Avaliação por Estrelas
+            const estrelas = document.querySelectorAll('#user-rating iconify-icon');
+            const statusRating = document.getElementById('rating-status');
+            const urlParams = new URLSearchParams(window.location.search);
+            const slug = urlParams.get('slug');
+
+            estrelas.forEach((estrela, index) => {
+                // Efeito visual ao passar o mouse
+                estrela.addEventListener('mouseenter', () => {
+                    estrelas.forEach((s, i) => {
+                        s.setAttribute('icon', i <= index ? 'ic:round-star' : 'ic:round-star-border');
+                    });
+                });
+
+                // Clique para salvar a avaliação
+                estrela.addEventListener('click', async () => {
+                    const nota = parseInt(estrela.getAttribute('data-value')) || (index + 1);
+                    try {
+                        const res = await fetch(URL_WORKER + '/rate-post', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ slug, rating: nota })
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                            statusRating.innerText = `Obrigado! (${nota}/5)`;
+                            estrelas.forEach((s, i) => {
+                                s.setAttribute('icon', i < nota ? 'ic:round-star' : 'ic:round-star-border');
+                            });
+                        }
+                    } catch (err) {
+                        console.error("Erro ao enviar avaliação:", err);
+                        alert("Erro de conexão ao enviar avaliação.");
+                    }
+                });
+            });
+
+            // Remove o destaque ao tirar o mouse das estrelas
+            const userRatingContainer = document.getElementById('user-rating');
+            if (userRatingContainer) {
+                userRatingContainer.addEventListener('mouseleave', () => {
+                    // Mantém o estado atual se já clicou ou reseta se preferir
+                });
+            }
         });
-            
-        carregarArtigoIndividual();
     </script>
 </body>
 </html>
