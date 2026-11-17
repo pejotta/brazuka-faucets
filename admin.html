@@ -531,64 +531,61 @@
     }
 
     // Autenticação Segura baseada em Formulário (Permite o navegador salvar a senha)
-async function verificarAutenticacaoEScarregar() {
-    let acesso = sessionStorage.getItem('autenticado');
+    async function verificarAutenticacaoEScarregar() {
+        let acesso = sessionStorage.getItem('autenticado');
 
-    if (acesso !== 'true') {
-        // Exibe a tela de login customizada se não estiver autenticado
-        const overlay = document.getElementById('admin-login-overlay');
-        if (overlay) overlay.style.display = 'flex';
-        return; // Interrompe a execução até o usuário submeter o formulário
-    }
-
-    iniciarPainelAdmin();
-}
-
-// Função disparada ao enviar o formulário de login
-async function fazerLoginAdmin(event) {
-    event.preventDefault(); // Evita reload da página para o navegador processar o salvamento da senha
-    
-    const tentativa = document.getElementById('admin-pass-input').value;
-    if (!tentativa) return;
-
-    try {
-        const response = await fetch(URL_WORKER + '/admin-login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ senha: tentativa })
-        });
-        const res = await response.json();
-
-        if (!res.success) {
-            alert("Senha incorreta! Acesso negado.");
-            document.getElementById('admin-pass-input').value = '';
+        if (acesso !== 'true') {
+            const overlay = document.getElementById('admin-login-overlay');
+            if (overlay) overlay.style.display = 'flex';
             return;
         }
 
-        // Sucesso no login
-        sessionStorage.setItem('autenticado', 'true');
-        
-        // Esconde a tela de login
-        const overlay = document.getElementById('admin-login-overlay');
-        if (overlay) overlay.style.display = 'none';
-
         iniciarPainelAdmin();
-
-    } catch (err) {
-        alert("Erro ao validar credenciais com o servidor.");
-        console.error(err);
     }
-}
 
-// Função auxiliar para disparar os carregamentos do painel
-function iniciarPainelAdmin() {
-    document.body.style.display = 'flex';
-    carregarDadosPainel();
-    carregarAnalyticsAdmin();
-    carregarTickerAdmin();
-    carregarPostsAdmin();
-    carregarAlertaAdmin();
-}
+    // Função disparada ao enviar o formulário de login
+    async function fazerLoginAdmin(event) {
+        event.preventDefault();
+        
+        const tentativa = document.getElementById('admin-pass-input').value;
+        if (!tentativa) return;
+
+        try {
+            const response = await fetch(URL_WORKER + '/admin-login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ senha: tentativa })
+            });
+            const res = await response.json();
+
+            if (!res.success) {
+                alert("Senha incorreta! Acesso negado.");
+                document.getElementById('admin-pass-input').value = '';
+                return;
+            }
+
+            sessionStorage.setItem('autenticado', 'true');
+            
+            const overlay = document.getElementById('admin-login-overlay');
+            if (overlay) overlay.style.display = 'none';
+
+            iniciarPainelAdmin();
+
+        } catch (err) {
+            alert("Erro ao validar credenciais com o servidor.");
+            console.error(err);
+        }
+    }
+
+    // Função auxiliar para disparar os carregamentos do painel
+    function iniciarPainelAdmin() {
+        document.body.style.display = 'flex';
+        carregarDadosPainel();
+        carregarAnalyticsAdmin();
+        carregarTickerAdmin();
+        carregarPostsAdmin();
+        carregarAlertaAdmin();
+    }
 
     // Busca de Dados na Worker
     async function carregarDadosPainel() {
@@ -626,7 +623,7 @@ function iniciarPainelAdmin() {
 
     async function carregarPostsAdmin() {
         try {
-            const res = await fetch(URL_WORKER + '/get-posts');
+            const res = await fetch(URL_WORKER + '/get-posts?admin=true');
             const posts = await res.json();
             if (Array.isArray(posts)) {
                 listaPostsGlobal = posts;
@@ -646,25 +643,31 @@ function iniciarPainelAdmin() {
             return;
         }
 
-        container.innerHTML = listaPostsGlobal.map((post, index) => `
-            <div class="sub-box" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 0;">
-                <div>
-                    <span style="background: #7a33eb; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; margin-right: 8px;">${escapeHtml(post.category)}</span>
-                    <strong style="font-size: 1em;" class="text-title">${escapeHtml(post.title)}</strong>
-                    <div style="font-size: 0.8em; margin-top: 4px;" class="text-muted">
-                        Slug: <code>${escapeHtml(post.slug)}</code> • Data: ${new Date(post.createdAt).toLocaleDateString('pt-BR')}
+        container.innerHTML = listaPostsGlobal.map((post, index) => {
+            const isAgendado = post.scheduledAt && new Date(post.scheduledAt) > new Date();
+            const badgeAgendamento = isAgendado ? `<span style="background: #f39c12; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; margin-left: 8px;">⏰ Agendado</span>` : '';
+            
+            return `
+                <div class="sub-box" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 0;">
+                    <div>
+                        <span style="background: #7a33eb; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; margin-right: 8px;">${escapeHtml(post.category)}</span>
+                        <strong style="font-size: 1em;" class="text-title">${escapeHtml(post.title)}</strong>
+                        ${badgeAgendamento}
+                        <div style="font-size: 0.8em; margin-top: 4px;" class="text-muted">
+                            Slug: <code>${escapeHtml(post.slug)}</code> • Criado: ${new Date(post.createdAt).toLocaleDateString('pt-BR')}
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="editarPostAdmin(${index})" style="background: #1a73e8; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em;">
+                            <i class="fa-solid fa-pen"></i> Editar
+                        </button>
+                        <button class="btn-del" onclick="excluirPostAdmin('${escapeHtml(post.slug)}')">
+                            <i class="fa-solid fa-trash"></i> Excluir
+                        </button>
                     </div>
                 </div>
-                <div style="display: flex; gap: 8px;">
-                    <button onclick="editarPostAdmin(${index})" style="background: #1a73e8; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em;">
-                        <i class="fa-solid fa-pen"></i> Editar
-                    </button>
-                    <button class="btn-del" onclick="excluirPostAdmin('${escapeHtml(post.slug)}')">
-                        <i class="fa-solid fa-trash"></i> Excluir
-                    </button>
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
 
     function gerarSlugAutomatico() {
@@ -706,6 +709,19 @@ function iniciarPainelAdmin() {
         document.getElementById('post-image').value = post.image || '';
         document.getElementById('post-meta').value = post.metaDescription || '';
         document.getElementById('post-content').value = post.content || '';
+        
+        if (post.scheduledAt) {
+            const dataLocal = new Date(post.scheduledAt);
+            const ano = dataLocal.getFullYear();
+            const mes = String(dataLocal.getMonth() + 1).padStart(2, '0');
+            const dia = String(dataLocal.getDate()).padStart(2, '0');
+            const hora = String(dataLocal.getHours()).padStart(2, '0');
+            const minuto = String(dataLocal.getMinutes()).padStart(2, '0');
+            document.getElementById('post-agendamento').value = `${ano}-${mes}-${dia}T${hora}:${minuto}`;
+        } else {
+            document.getElementById('post-agendamento').value = '';
+        }
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -717,58 +733,58 @@ function iniciarPainelAdmin() {
         document.getElementById('post-content').value = '';
         document.getElementById('post-badge').value = '';
         document.getElementById('post-pinned').checked = false;
+        document.getElementById('post-agendamento').value = '';
     }
 
     async function salvarPostNoBanco() {
-    const title = document.getElementById('post-title').value.trim();
-    const category = document.getElementById('post-category').value;
-    const slug = document.getElementById('post-slug').value.trim();
-    const image = document.getElementById('post-image').value.trim();
-    let metaDescription = document.getElementById('post-meta').value.trim();
-    const content = document.getElementById('post-content').value.trim();
-    const badge = document.getElementById('post-badge').value;
-    const pinned = document.getElementById('post-pinned').checked;
-    
-    // Captura o agendamento e converte para ISO (respeitando o seu fuso horário)
-    const agendamentoRaw = document.getElementById('post-agendamento').value;
-    const scheduledAt = agendamentoRaw ? new Date(agendamentoRaw).toISOString() : null;
+        const title = document.getElementById('post-title').value.trim();
+        const category = document.getElementById('post-category').value;
+        const slug = document.getElementById('post-slug').value.trim();
+        const image = document.getElementById('post-image').value.trim();
+        let metaDescription = document.getElementById('post-meta').value.trim();
+        const content = document.getElementById('post-content').value.trim();
+        const badge = document.getElementById('post-badge').value;
+        const pinned = document.getElementById('post-pinned').checked;
+        
+        const agendamentoRaw = document.getElementById('post-agendamento').value;
+        const scheduledAt = agendamentoRaw ? new Date(agendamentoRaw).toISOString() : null;
 
-    if (!title || !slug || !content) return alert("Preencha pelo menos o Título, o Slug e o Corpo do artigo!");
+        if (!title || !slug || !content) return alert("Preencha pelo menos o Título, o Slug e o Corpo do artigo!");
 
-    if (!metaDescription) {
-        const textoLimpo = content.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
-        metaDescription = textoLimpo.substring(0, 155) + (textoLimpo.length > 155 ? '...' : '');
-    }
-
-    try {
-        const res = await fetch(URL_WORKER + '/admin-save-post', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                title, 
-                category, 
-                slug, 
-                image, 
-                metaDescription, 
-                content, 
-                badge, 
-                pinned,
-                scheduledAt // Enviando a data/hora programada para o Banco de Dados
-            })
-        });
-        const data = await res.json();
-        if (data.success) {
-            alert(scheduledAt ? "⏰ Artigo agendado com sucesso!" : "✅ Artigo publicado/atualizado com sucesso!");
-            limparFormularioPost();
-            carregarPostsAdmin();
-        } else {
-            alert("❌ Erro ao salvar artigo: " + data.error);
+        if (!metaDescription) {
+            const textoLimpo = content.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
+            metaDescription = textoLimpo.substring(0, 155) + (textoLimpo.length > 155 ? '...' : '');
         }
-    } catch (err) {
-        alert("🚨 Erro de conexão ao salvar o artigo!");
-        console.error(err);
+
+        try {
+            const res = await fetch(URL_WORKER + '/admin-save-post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    title, 
+                    category, 
+                    slug, 
+                    image, 
+                    metaDescription, 
+                    content, 
+                    badge, 
+                    pinned,
+                    scheduledAt 
+                })
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert(scheduledAt ? "⏰ Artigo agendado com sucesso!" : "✅ Artigo publicado/atualizado com sucesso!");
+                limparFormularioPost();
+                carregarPostsAdmin();
+            } else {
+                alert("❌ Erro ao salvar artigo: " + data.error);
+            }
+        } catch (err) {
+            alert("🚨 Erro de conexão ao salvar o artigo!");
+            console.error(err);
+        }
     }
-}
 
     async function excluirPostAdmin(slug) {
         if (!confirm("Tem certeza que deseja excluir este artigo permanentemente?")) return;
@@ -860,15 +876,15 @@ function iniciarPainelAdmin() {
     }
 
     function escapeHtml(text) {
-    if (text == null) return "";
+        if (text == null) return "";
 
-    return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-}
+        return String(text)
+            .replace(/&/g, "&")
+            .replace(/</g, "<")
+            .replace(/>/g, ">")
+            .replace(/"/g, """)
+            .replace(/'/g, "'");
+    }
 
     // Gerenciador de Ticker
     async function carregarTickerAdmin() {
