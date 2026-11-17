@@ -195,12 +195,12 @@
             </div>
 
             <div class="engagement-item social-grid">
-                <a href="#" id="share-wa" class="btn-share wa"><iconify-icon icon="ic:baseline-whatsapp"></iconify-icon></a>
-                <a href="#" id="share-tg" class="btn-share tg"><iconify-icon icon="ic:baseline-telegram"></iconify-icon></a>
-                <a href="#" id="share-fb" class="btn-share fb"><iconify-icon icon="ic:baseline-facebook"></iconify-icon></a>
-                <a href="#" id="share-tw" class="btn-share tw"><iconify-icon icon="simple-icons:x"></iconify-icon></a>
-                <a href="#" id="share-rd" class="btn-share rd"><iconify-icon icon="ic:baseline-reddit"></iconify-icon></a>
-                <a href="#" id="share-ml" class="btn-share ml"><iconify-icon icon="ic:baseline-email"></iconify-icon></a>
+                <a href="#" id="share-wa" target="_blank" rel="noopener" class="btn-share wa"><iconify-icon icon="ic:baseline-whatsapp"></iconify-icon></a>
+                <a href="#" id="share-tg" target="_blank" rel="noopener" class="btn-share tg"><iconify-icon icon="ic:baseline-telegram"></iconify-icon></a>
+                <a href="#" id="share-fb" target="_blank" rel="noopener" class="btn-share fb"><iconify-icon icon="ic:baseline-facebook"></iconify-icon></a>
+                <a href="#" id="share-tw" target="_blank" rel="noopener" class="btn-share tw"><iconify-icon icon="simple-icons:x"></iconify-icon></a>
+                <a href="#" id="share-rd" target="_blank" rel="noopener" class="btn-share rd"><iconify-icon icon="ic:baseline-reddit"></iconify-icon></a>
+                <a href="#" id="share-ml" target="_blank" rel="noopener" class="btn-share ml"><iconify-icon icon="ic:baseline-email"></iconify-icon></a>
             </div>
         </div>
     </main>
@@ -274,6 +274,49 @@
             const urlAtual = encodeURIComponent(window.location.href);
             const tituloAtual = encodeURIComponent(document.title);
 
+            // Lógica de Avaliação por Estrelas
+document.addEventListener("DOMContentLoaded", () => {
+    const estrelas = document.querySelectorAll('#user-rating iconify-icon');
+    const statusRating = document.getElementById('rating-status');
+    const urlParams = new URLSearchParams(window.location.search);
+    const slug = urlParams.get('slug');
+
+    estrelas.forEach((estrela, index) => {
+        // Efeito visual ao passar o mouse
+        estrela.addEventListener('mouseenter', () => {
+            estrelas.forEach((s, i) => {
+                s.setAttribute('icon', i <= index ? 'ic:round-star' : 'ic:round-star-border');
+            });
+        });
+
+        // Clique para salvar a avaliação
+        estrela.addEventListener('click', async () => {
+            const nota = index + 1;
+            try {
+                const res = await fetch(URL_WORKER + '/rate-post', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ slug, rating: nota })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    statusRating.innerText = `Obrigado! (${nota}/5)`;
+                    estrelas.forEach((s, i) => {
+                        s.setAttribute('icon', i < nota ? 'ic:round-star' : 'ic:round-star-border');
+                    });
+                }
+            } catch (err) {
+                console.error("Erro ao enviar avaliação:", err);
+            }
+        });
+    });
+
+    // Remove o destaque ao tirar o mouse se não clicou
+    document.getElementById('user-rating').addEventListener('mouseleave', () => {
+        // Aqui você pode resetar ou manter o estado atual se já avaliou
+    });
+});
+            
             // Links de compartilhamento nativos das redes sociais
             const wa = document.getElementById('share-wa');
             const tg = document.getElementById('share-tg');
