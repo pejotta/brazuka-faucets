@@ -123,26 +123,28 @@
                 if (postFixado) {
                     htmlFinal += `
                         <article class="blog-featured-card">
-                            ${postFixado.image ? `<div style="min-height: 250px; overflow: hidden;"><img src="${postFixado.image}" alt="${postFixado.title}" style="width: 100%; height: 100%; object-fit: cover;"></div>` : ''}
-                            <div style="padding: 30px; display: flex; flex-direction: column; justify-content: center;">
-                                <div style="margin-bottom: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                                    <span style="background: #7a33eb; color: #fff; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase;">⭐ DESTAQUE FIXO</span>
-                                    ${postFixado.badge ? `<span style="background: #e1f5fe; color: #0288d1; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: bold;">${postFixado.badge}</span>` : ''}
-                                    <span style="font-size: 0.85rem; color: var(--nav-text, #888);">${new Date(postFixado.createdAt).toLocaleDateString('pt-BR')}</span>
-                                </div>
-                                <h2 style="font-size: 1.8rem; margin: 0 0 15px 0; line-height: 1.3;">
-                                    <a href="artigo.html?slug=${postFixado.slug}" style="text-decoration: none;">${postFixado.title}</a>
-                                </h2>
-                                <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 25px;">
-                                    ${postFixado.metaDescription || ''}
-                                </p>
-                                <div>
-                                    <a href="artigo.html?slug=${postFixado.slug}" style="display: inline-block; background: #7a33eb; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.95rem;">
-                                        Ler Matéria em Destaque →
-                                    </a>
-                                </div>
+                        ${postFixado.image ? `<div style="min-height: 250px; overflow: hidden;"><img src="${postFixado.image}" alt="${postFixado.title}" style="width: 100%; height: 100%; object-fit: cover;"></div>` : ''}
+                        <div style="padding: 30px; display: flex; flex-direction: column; justify-content: center;">
+                            <div style="margin-bottom: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                <span style="background: #7a33eb; color: #fff; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase;">⭐ DESTAQUE FIXO</span>
+                                ${postFixado.badge ? `<span style="background: #e1f5fe; color: #0288d1; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: bold;">${postFixado.badge}</span>` : ''}
+                                <span style="font-size: 0.85rem; color: var(--nav-text, #888);">${new Date(postFixado.createdAt).toLocaleDateString('pt-BR')}</span>
+                                <!-- Contador de visualizações -->
+                                <span style="font-size: 0.85rem; color: var(--nav-text, #888);">👁️ ${postFixado.views || 0} visualizações</span>
                             </div>
-                        </article>
+                            <h2 style="font-size: 1.8rem; margin: 0 0 15px 0; line-height: 1.3;">
+                                <a href="artigo.html?slug=${postFixado.slug}" style="text-decoration: none;">${postFixado.title}</a>
+                            </h2>
+                            <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 25px;">
+                                ${postFixado.metaDescription || ''}
+                            </p>
+                            <div>
+                                <a href="artigo.html?slug=${postFixado.slug}" style="display: inline-block; background: #7a33eb; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.95rem;">
+                                    Ler Matéria em Destaque →
+                                </a>
+                            </div>
+                        </div>
+                    </article>
                     `;
                 }
 
