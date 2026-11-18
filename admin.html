@@ -239,6 +239,7 @@
                             <option value="sidebarTrx">Skyscraper Exclusivo - Faucet TRX - (160x600)</option>
                             <option value="sidebarTon">Skyscraper Exclusivo - Faucet TON - (160x600)</option>
                             <option value="pageCadastro">Página de Cadastro - Skyscraper Lateral - (160x600)</option>
+                            <option value="adBlog">AD Blog - Home & Posts - (728x90)</option>
                         </select>
                     </div>
                 </div>
@@ -511,7 +512,7 @@
         heroCarousel: [], homeTop: [], homeBtcEth: [], homeDogeTrx: [],
         homeCentralAuto: [], homeMinerBet: [], homeAirdropIpo: [], homeJogos: [],
         fichaTecnica: [], fichaTecnicaTrx: [], fichaTecnicaTon: [],
-        sidebarTrx: [], sidebarTon: [], pageCadastro: []
+        sidebarTrx: [], sidebarTon: [], pageCadastro: [], adBlog: []
     };
     let tickerItens = [];
 
@@ -696,7 +697,7 @@
 
     function inserirAdNoPost() {
         const textarea = document.getElementById('post-content');
-        textarea.value += '\n<div class="ad-slot-mid" id="ad-zone-home-top" style="margin: 25px 0;" data-ad-zone="homeTop"></div>\n';
+        textarea.value += '\n<div class="ad-slot-mid" id="ad-zone-blog-post" style="margin: 25px 0;" data-ad-zone="adBlog"></div>\n';
         textarea.focus();
     }
 
