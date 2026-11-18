@@ -63,6 +63,7 @@ const BRAZUKA_ADS = {
         this.injectRandom('#ad-zone-home-miner-bet', this.pools.homeMinerBet || [], 'homeMinerBet');
         this.injectRandom('#ad-zone-home-airdrop-ipo', this.pools.homeAirdropIpo || [], 'homeAirdropIpo');        
         this.injectRandom('#ad-zone-home-jogos', this.pools.homeJogos || [], 'homeJogos');
+        this.injectRandom('#ad-zone-blog-post', this.pools.adBlog || [], 'adBlog');
 
         // --- BANNERS DE PÁGINAS ESPECÍFICAS / RETÂNGULOS E SKYSCRAPERS EXCLUSIVOS ---
         this.injectRandom('.ad-slot-cadastro', this.pools.pageCadastro || [], 'pageCadastro');
