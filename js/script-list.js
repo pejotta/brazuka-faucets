@@ -100,11 +100,11 @@ async function renderTable(data, allRatings) {
         let plats = Array.isArray(f.plataforma) ? f.plataforma : (f.plataforma ? [f.plataforma] : ['site']);
         let badgePlatHTML = '';
         if (plats.includes('app') && plats.includes('site')) {
-            badgePlatHTML = `<span style="background: #e3f2fd; color: #1565c0; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold;">[SITE + APP]</span>`;
+            badgePlatHTML = `<span style="background: #e3f2fd; color: #1565c0; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold;">SITE + APP</span>`;
         } else if (plats.includes('app')) {
-            badgePlatHTML = `<span style="background: #e8f5e9; color: #2e7d32; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold;">[APP]</span>`;
+            badgePlatHTML = `<span style="background: #e8f5e9; color: #2e7d32; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold;">APP</span>`;
         } else {
-            badgePlatHTML = `<span style="background: #f1f3f4; color: #5f6368; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold;">[SITE]</span>`;
+            badgePlatHTML = `<span style="background: #f1f3f4; color: #5f6368; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold;">SITE</span>`;
         }
 
         return `
