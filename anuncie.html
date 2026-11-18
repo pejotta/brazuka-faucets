@@ -48,11 +48,13 @@
             --gold: #ff9800;
         }
 
+        /* Estilo Padrão (Light Mode base) */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #12151c; 
-            color: #e4e6eb;
+            background-color: #f4f7f6; 
+            color: #333333;
             margin: 0; 
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .media-kit-container {
@@ -61,72 +63,6 @@
             padding: 20px;
         }
 
-        /* ================= DARK MODE STYLES (PADRÃO) ================= */
-        .stat-card,
-        .ad-box {
-            background: #1a1e29;
-            border: 1px solid #2a2f3d;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            color: #e4e6eb;
-        }
-
-        .ad-box:hover {
-            border-color: var(--primary-blue);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            transform: translateY(-5px);
-        }
-
-        .ad-box h4,
-        .section-title,
-        .stat-card h3 {
-            color: #ffffff;
-        }
-
-        .ad-box p {
-            color: #b0b3b8;
-            font-size: 0.95em;
-            line-height: 1.5;
-            margin: 5px 0;
-        }
-
-        .category-header { 
-            font-size: 1.5em; 
-            color: #64b5f6; 
-            margin: 30px 0 15px; 
-            border-left: 5px solid var(--primary-blue); 
-            padding-left: 10px; 
-        }
-
-        .vagas-badge {
-            display: inline-block;
-            background: #1e3a5f;
-            color: #90caf9;
-            padding: 3px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: bold;
-        }
-
-        .ad-box.featured-space { 
-            border-left: 5px solid var(--gold); 
-            background: #25221b; 
-        }
-
-        .price-tag {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px dashed #2a2f3d;
-        }
-
-        .consult-label { 
-            display: block; 
-            color: var(--success-green); 
-            font-weight: bold; 
-            font-size: 1.1em; 
-            margin-bottom: 5px; 
-        }
-
-        /* Cards de Estatísticas */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -135,17 +71,19 @@
         }
 
         .stat-card {
+            background: white;
             padding: 25px;
             border-radius: 12px;
             text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             border-bottom: 4px solid var(--primary-blue);
         }
 
         .stat-card i { font-size: 2em; color: var(--primary-blue); margin-bottom: 10px; }
-        .stat-card h3 { font-size: 1.8em; margin: 10px 0; }
+        .stat-card h3 { font-size: 1.8em; margin: 10px 0; color: #333; }
 
-        /* Títulos de Seções */
-        .section-title { text-align: center; margin: 40px 0 20px; font-size: 2em; }
+        .section-title { text-align: center; margin: 40px 0 20px; font-size: 2em; color: #333; }
+        .category-header { font-size: 1.5em; color: var(--primary-dark); margin: 30px 0 15px; border-left: 5px solid var(--primary-blue); padding-left: 10px; }
 
         .ad-options {
             display: grid;
@@ -155,17 +93,41 @@
         }
 
         .ad-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
             border-radius: 15px;
             padding: 25px;
             transition: 0.3s;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
         }
 
-        .ad-box h4 { margin-top: 0; font-size: 1.25em; }
+        .ad-box:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-color: var(--primary-blue); }
+        .ad-box h4 { color: var(--primary-blue); margin-top: 0; font-size: 1.25em; }
+        .ad-box p { color: #666; font-size: 0.95em; line-height: 1.5; margin: 5px 0; }
 
-        /* Botão Principal */
+        .price-tag {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed #eee;
+        }
+
+        .consult-label { display: block; color: var(--success-green); font-weight: bold; font-size: 1.1em; margin-bottom: 5px; }
+
+        .vagas-badge {
+            display: inline-block;
+            background: #eef5ff;
+            color: var(--primary-blue);
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .ad-box.featured-space { border-left: 5px solid var(--gold); background: #fffdf5; }
+
         .btn-contato {
             display: flex;
             align-items: center;
@@ -196,21 +158,15 @@
         }
 
         .modal-ads-content {
-            background: #1a1e29; color: #e4e6eb;
-            margin: 2% auto; padding: 30px;
+            background: #fff; margin: 2% auto; padding: 30px;
             border-radius: 15px; width: 90%; max-width: 550px;
             position: relative; max-height: 90vh; overflow-y: auto;
         }
 
-        .close-modal { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #b0b3b8; }
+        .close-modal { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #666; }
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-weight: bold; margin-bottom: 5px; }
-        .input-group input, .input-group textarea { 
-            width: 100%; padding: 12px; 
-            background: #12151c; border: 1px solid #2a2f3d; color: #ffffff;
-            border-radius: 8px; box-sizing: border-box; 
-        }
-        .input-group input::placeholder, .input-group textarea::placeholder { color: #6c757d; }
+        .input-group input, .input-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
 
         .recursos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
         .check-item { font-size: 0.9em; display: flex; align-items: center; cursor: pointer; }
@@ -230,8 +186,76 @@
             margin-top: 15px;
         }
 
-        .btn-enviar-ads:hover {
-            background: var(--primary-dark);
+        .btn-enviar-ads:hover { background: var(--primary-dark); }
+
+
+        /* ================= ESTILOS DO DARK MODE (ATIVADO VIA CLASSE NO BODY) ================= */
+        body.dark-mode {
+            background-color: #12151c;
+            color: #e4e6eb;
+        }
+
+        body.dark-mode .stat-card,
+        body.dark-mode .ad-box {
+            background: #1a1e29;
+            border-color: #2a2f3d;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            color: #e4e6eb;
+        }
+
+        body.dark-mode .ad-box:hover {
+            border-color: var(--primary-blue);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        body.dark-mode .ad-box h4,
+        body.dark-mode .section-title,
+        body.dark-mode .stat-card h3 {
+            color: #ffffff;
+        }
+
+        body.dark-mode .ad-box p {
+            color: #b0b3b8;
+        }
+
+        body.dark-mode .category-header {
+            color: #64b5f6;
+            border-left-color: var(--primary-blue);
+        }
+
+        body.dark-mode .vagas-badge {
+            background: #1e3a5f;
+            color: #90caf9;
+        }
+
+        body.dark-mode .ad-box.featured-space {
+            background: #25221b;
+            border-left-color: var(--gold);
+        }
+
+        body.dark-mode .price-tag {
+            border-top-color: #2a2f3d;
+        }
+
+        body.dark-mode .modal-ads-content {
+            background: #1a1e29;
+            color: #e4e6eb;
+        }
+
+        body.dark-mode .close-modal {
+            color: #b0b3b8;
+        }
+
+        body.dark-mode .input-group input,
+        body.dark-mode .input-group textarea {
+            background: #12151c;
+            border-color: #2a2f3d;
+            color: #ffffff;
+        }
+
+        body.dark-mode .input-group input::placeholder,
+        body.dark-mode .input-group textarea::placeholder {
+            color: #6c757d;
         }
 
         @media (max-width: 768px) {
@@ -502,6 +526,6 @@
         window.onclick = (event) => { if (event.target == adModal) adModal.style.display = "none"; }
     </script>
     
-<script src="js/script-global.js"></script>
+    <script src="js/script-global.js"></script>
 </body>
 </html>
