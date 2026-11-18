@@ -607,7 +607,7 @@ body {
     font-size: 10px;
     color: var(--footer-text);
     text-transform: uppercase;
-    padding-left: 0px;      
+    padding-left: 10px;      
     margin-bottom: 0px;
 }
 
