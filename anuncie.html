@@ -190,73 +190,29 @@
 
 
         /* ================= ESTILOS DO DARK MODE (ATIVADO VIA CLASSE NO BODY) ================= */
-        body.dark-mode {
-            background-color: #12151c;
-            color: #e4e6eb;
-        }
+       /* CORRIGIDO - coloca no lugar do seu bloco body.dark-mode */
+body.dark-mode .stat-card,
+body.dark-mode .ad-box,
+body.dark-mode .modal-ads-content {
+    background: #1a1e29 !important;
+    border-color: #2a2f3d !important;
+    color: #e4e6eb !important;
+}
 
-        body.dark-mode .stat-card,
-        body.dark-mode .ad-box {
-            background: #1a1e29;
-            border-color: #2a2f3d;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            color: #e4e6eb;
-        }
+body.dark-mode .stat-card h3,
+body.dark-mode .section-title,
+body.dark-mode .ad-box h4 {
+    color: #fff !important;
+}
 
-        body.dark-mode .ad-box:hover {
-            border-color: var(--primary-blue);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-        }
+body.dark-mode .stat-card p,
+body.dark-mode .ad-box p {
+    color: #b0b3b8 !important;
+}
 
-        body.dark-mode .ad-box h4,
-        body.dark-mode .section-title,
-        body.dark-mode .stat-card h3 {
-            color: #ffffff;
-        }
-
-        body.dark-mode .ad-box p {
-            color: #b0b3b8;
-        }
-
-        body.dark-mode .category-header {
-            color: #64b5f6;
-            border-left-color: var(--primary-blue);
-        }
-
-        body.dark-mode .vagas-badge {
-            background: #1e3a5f;
-            color: #90caf9;
-        }
-
-        body.dark-mode .ad-box.featured-space {
-            background: #25221b;
-            border-left-color: var(--gold);
-        }
-
-        body.dark-mode .price-tag {
-            border-top-color: #2a2f3d;
-        }
-
-        body.dark-mode .modal-ads-content {
-            background: #1a1e29;
-            color: #e4e6eb;
-        }
-
-        body.dark-mode .close-modal {
-            color: #b0b3b8;
-        }
-
-        body.dark-mode .input-group input,
-        body.dark-mode .input-group textarea {
-            background: #12151c;
-            border-color: #2a2f3d;
-            color: #ffffff;
-        }
-
-        body.dark-mode .input-group input::placeholder,
-        body.dark-mode .input-group textarea::placeholder {
-            color: #6c757d;
-        }
+body.dark-mode .price-tag {
+    border-top-color: #2a2f3d !important;
+}
 
         @media (max-width: 768px) {
             .ad-options { grid-template-columns: 1fr; }
