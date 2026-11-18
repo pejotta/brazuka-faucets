@@ -41,18 +41,60 @@
     gtag('config', 'G-11KQEGEBZ3');
     </script>
     <style>
+        /* ================= VARIÁVEIS DE TEMA (LIGHT & DARK NO ROOT) ================= */
         :root {
             --primary-blue: #1a73e8;
             --primary-dark: #0d47a1;
             --success-green: #27ae60;
             --gold: #ff9800;
+
+            /* Padrão Light Mode */
+            --bg-body: #f4f7f6;
+            --text-main: #333333;
+            --card-bg: #ffffff;
+            --card-border: #e0e0e0;
+            --card-shadow: rgba(0,0,0,0.03);
+            --card-hover-shadow: rgba(0,0,0,0.08);
+            --text-muted: #666666;
+            --price-border: #eeeeee;
+            --badge-bg: #eef5ff;
+            --badge-text: var(--primary-blue);
+            --featured-bg: #fffdf5;
+            --featured-border: var(--gold);
+            --modal-bg: #ffffff;
+            --modal-text: #333333;
+            --input-bg: #ffffff;
+            --input-border: #ddd;
+            --input-text: #333333;
+            --input-placeholder: #999;
         }
 
-        /* Estilo Padrão (Light Mode base) */
+        /* Variáveis quando a classe dark-mode estiver ativa no body */
+        body.dark-mode {
+            --bg-body: #12151c;
+            --text-main: #e4e6eb;
+            --card-bg: #1a1e29;
+            --card-border: #2a2f3d;
+            --card-shadow: rgba(0,0,0,0.2);
+            --card-hover-shadow: rgba(0,0,0,0.4);
+            --text-muted: #b0b3b8;
+            --price-border: #2a2f3d;
+            --badge-bg: #1e3a5f;
+            --badge-text: #90caf9;
+            --featured-bg: #25221b;
+            --featured-border: var(--gold);
+            --modal-bg: #1a1e29;
+            --modal-text: #e4e6eb;
+            --input-bg: #12151c;
+            --input-border: #2a2f3d;
+            --input-text: #ffffff;
+            --input-placeholder: #6c757d;
+        }
+
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #f4f7f6; 
-            color: #333333;
+            background-color: var(--bg-body); 
+            color: var(--text-main);
             margin: 0; 
             transition: background-color 0.3s ease, color 0.3s ease;
         }
@@ -71,19 +113,22 @@
         }
 
         .stat-card {
-            background: white;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             padding: 25px;
             border-radius: 12px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px var(--card-shadow);
             border-bottom: 4px solid var(--primary-blue);
+            transition: 0.3s;
         }
 
         .stat-card i { font-size: 2em; color: var(--primary-blue); margin-bottom: 10px; }
-        .stat-card h3 { font-size: 1.8em; margin: 10px 0; color: #333; }
+        .stat-card h3 { font-size: 1.8em; margin: 10px 0; color: var(--text-main); }
+        .stat-card p { color: var(--text-muted); }
 
-        .section-title { text-align: center; margin: 40px 0 20px; font-size: 2em; color: #333; }
-        .category-header { font-size: 1.5em; color: var(--primary-dark); margin: 30px 0 15px; border-left: 5px solid var(--primary-blue); padding-left: 10px; }
+        .section-title { text-align: center; margin: 40px 0 20px; font-size: 2em; color: var(--text-main); }
+        .category-header { font-size: 1.5em; color: var(--primary-blue); margin: 30px 0 15px; border-left: 5px solid var(--primary-blue); padding-left: 10px; }
 
         .ad-options {
             display: grid;
@@ -93,40 +138,48 @@
         }
 
         .ad-box {
-            background: #fff;
-            border: 1px solid #e0e0e0;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             border-radius: 15px;
             padding: 25px;
             transition: 0.3s;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            box-shadow: 0 2px 10px var(--card-shadow);
         }
 
-        .ad-box:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-color: var(--primary-blue); }
+        .ad-box:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 25px var(--card-hover-shadow); 
+            border-color: var(--primary-blue); 
+        }
+        
         .ad-box h4 { color: var(--primary-blue); margin-top: 0; font-size: 1.25em; }
-        .ad-box p { color: #666; font-size: 0.95em; line-height: 1.5; margin: 5px 0; }
+        .ad-box p { color: var(--text-muted); font-size: 0.95em; line-height: 1.5; margin: 5px 0; }
 
         .price-tag {
             margin-top: 20px;
             padding-top: 15px;
-            border-top: 1px dashed #eee;
+            border-top: 1px dashed var(--price-border);
         }
 
         .consult-label { display: block; color: var(--success-green); font-weight: bold; font-size: 1.1em; margin-bottom: 5px; }
 
         .vagas-badge {
             display: inline-block;
-            background: #eef5ff;
-            color: var(--primary-blue);
+            background: var(--badge-bg);
+            color: var(--badge-text);
             padding: 3px 12px;
             border-radius: 20px;
             font-size: 0.85em;
             font-weight: bold;
         }
 
-        .ad-box.featured-space { border-left: 5px solid var(--gold); background: #fffdf5; }
+        .ad-box.featured-space { 
+            border-left: 5px solid var(--featured-border); 
+            background: var(--featured-bg); 
+        }
 
         .btn-contato {
             display: flex;
@@ -158,18 +211,31 @@
         }
 
         .modal-ads-content {
-            background: #fff; margin: 2% auto; padding: 30px;
+            background: var(--modal-bg); 
+            color: var(--modal-text);
+            margin: 2% auto; padding: 30px;
             border-radius: 15px; width: 90%; max-width: 550px;
             position: relative; max-height: 90vh; overflow-y: auto;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        .close-modal { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #666; }
+        .close-modal { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: var(--text-muted); }
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-weight: bold; margin-bottom: 5px; }
-        .input-group input, .input-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .input-group label { display: block; font-weight: bold; margin-bottom: 5px; color: var(--text-main); }
+        
+        .input-group input, .input-group textarea { 
+            width: 100%; padding: 12px; 
+            background: var(--input-bg); 
+            border: 1px solid var(--input-border); 
+            color: var(--input-text);
+            border-radius: 8px; box-sizing: border-box; 
+            transition: 0.3s;
+        }
+        
+        .input-group input::placeholder, .input-group textarea::placeholder { color: var(--input-placeholder); }
 
         .recursos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .check-item { font-size: 0.9em; display: flex; align-items: center; cursor: pointer; }
+        .check-item { font-size: 0.9em; display: flex; align-items: center; cursor: pointer; color: var(--text-main); }
         .check-item input { margin-right: 8px; }
 
         .btn-enviar-ads {
@@ -187,32 +253,6 @@
         }
 
         .btn-enviar-ads:hover { background: var(--primary-dark); }
-
-
-        /* ================= ESTILOS DO DARK MODE (ATIVADO VIA CLASSE NO BODY) ================= */
-       /* CORRIGIDO - coloca no lugar do seu bloco body.dark-mode */
-body.dark-mode .stat-card,
-body.dark-mode .ad-box,
-body.dark-mode .modal-ads-content {
-    background: #1a1e29 !important;
-    border-color: #2a2f3d !important;
-    color: #e4e6eb !important;
-}
-
-body.dark-mode .stat-card h3,
-body.dark-mode .section-title,
-body.dark-mode .ad-box h4 {
-    color: #fff !important;
-}
-
-body.dark-mode .stat-card p,
-body.dark-mode .ad-box p {
-    color: #b0b3b8 !important;
-}
-
-body.dark-mode .price-tag {
-    border-top-color: #2a2f3d !important;
-}
 
         @media (max-width: 768px) {
             .ad-options { grid-template-columns: 1fr; }
@@ -343,14 +383,14 @@ body.dark-mode .price-tag {
             </div>
 
             <!-- 8. Faucet em Destaque -->
-            <div class="ad-box" style="border-color: var(--gold);">
+            <div class="ad-box featured-space">
                 <div>
                     <h4><i class="fas fa-star" style="color: var(--gold);"></i> Faucet em Destaque</h4>
                     <p>Sua faucet fixada no topo absoluto da lista principal da Home.</p>
                 </div>
                 <div class="price-tag">
                     <span class="consult-label">R$ 100 / mês</span>
-                    <span class="vagas-badge" style="background: #3d2c1d; color: #ffb74d;">3 Vagas</span>
+                    <span class="vagas-badge">3 Vagas</span>
                 </div>
             </div>
         </div>
@@ -418,7 +458,7 @@ body.dark-mode .price-tag {
             <i class="fas fa-paper-plane"></i> Solicitar Orçamento Agora
         </button>
         
-        <p style="text-align: center; color: #999; font-size: 0.85em; margin-top: 20px;">
+        <p style="text-align: center; color: var(--text-muted); font-size: 0.85em; margin-top: 20px;">
             Aceitamos pagamentos em PIX, BTC, LTC, TRX, TON e USDT.
         </p>
     </div>
@@ -444,7 +484,7 @@ body.dark-mode .price-tag {
                     <input type="text" name="contato" placeholder="@seu_usuario ou email@..." required>
                 </div>
 
-                <label style="font-weight: bold; display: block; margin-top: 20px;">Espaços de Interesse:</label>
+                <label style="font-weight: bold; display: block; margin-top: 20px; color: var(--text-main);">Espaços de Interesse:</label>
                 <div class="recursos-grid">
                     <label class="check-item"><input type="checkbox" name="espaço[]" value="Carrossel Home"> Carrossel Home</label>
                     <label class="check-item"><input type="checkbox" name="espaço[]" value="Banner Topo Geral"> Banner Topo Geral</label>
