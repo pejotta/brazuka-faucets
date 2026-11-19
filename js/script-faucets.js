@@ -38,7 +38,7 @@ async function checkUser(manualWallet = null) {
         const data = await response.json();
         
         if (data.success) {
-            // Sincroniza as chaves para o site todo falar a mesma língua [cite: 2026-01-02]
+            // Sincroniza as chaves para o site todo falar a mesma língua
             localStorage.setItem('brazuka_wallet', wallet);
             localStorage.setItem('brazuka_user_email', wallet);
 
@@ -48,7 +48,7 @@ async function checkUser(manualWallet = null) {
             const displayEl = document.getElementById('display-wallet');
             if (displayEl) displayEl.innerText = wallet;
             
-            // Contadores de Claims vindos do Banco de Dados [cite: 2025-12-26]
+            // Contadores de Claims vindos do Banco de Dados
             if (document.getElementById('stat-trx')) document.getElementById('stat-trx').innerText = data.stats.claims_trx || 0;
             if (document.getElementById('stat-ton')) document.getElementById('stat-ton').innerText = data.stats.claims_ton || 0;
 
@@ -153,13 +153,51 @@ function onTurnstileSuccess(token) {
     }
 }
 
-function redirectToShortlink() {
+async function redirectToShortlink() {
     const wallet = localStorage.getItem('brazuka_wallet');
+    const coinKey = (currentCoin || '').toLowerCase();
     const valores = { 'trx': 0.001, 'ton': 0.00000005 };
-    const valor = valores[currentCoin];
-    const callbackLimpo = `${API_URL}/pago-faucet/${wallet}/${currentCoin}/${valor}`;
-    const API_OUO = "t2RuZtW4";
-    window.location.href = `https://ouo.io/qs/${API_OUO}?s=${encodeURIComponent(callbackLimpo)}`;
+    const valor = valores[coinKey];
+
+    if (!wallet || !valor) {
+        alert("Carteira ou moeda inválida para o claim.");
+        return;
+    }
+
+    const btn = document.getElementById('btn-finish-claim');
+    const textoOriginal = btn ? btn.innerText : 'PEGAR TOKENS';
+
+    if (btn) {
+        btn.disabled = true;
+        btn.innerText = "GERANDO LINK...";
+        btn.style.cursor = 'not-allowed';
+        btn.style.opacity = '0.7';
+    }
+
+    const callbackLimpo = `${API_URL}/pago-faucet/${wallet}/${coinKey}/${valor}`;
+    const API_ENCURTA = "382904fbdf461a90a005f0c88b89e8617da37ba3"; //[cite: 1]
+    const endpointEncurta = `https://encurta.net/api?api=${API_ENCURTA}&url=${encodeURIComponent(callbackLimpo)}&format=text`; //[cite: 1]
+
+    try {
+        const res = await fetch(endpointEncurta);
+        const shortUrl = (await res.text()).trim();
+
+        if (shortUrl && shortUrl.startsWith('http')) {
+            window.location.href = shortUrl;
+            return;
+        }
+
+        throw new Error('Link encurtado inválido retornado pelo Encurta.Net');
+    } catch (error) {
+        console.error("Erro ao gerar link no Encurta.Net:", error);
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = textoOriginal;
+            btn.style.cursor = 'pointer';
+            btn.style.opacity = '1';
+        }
+        alert("Não foi possível gerar o link agora. Tente novamente em instantes.");
+    }
 }
 
 function closeModal() {
@@ -230,4 +268,3 @@ function mascararEmail(email) {
 function formatarData(timestamp) {
     return new Date(timestamp).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'UTC' });
 }
-
