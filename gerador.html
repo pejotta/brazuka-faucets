@@ -120,7 +120,7 @@
         <label>Moedas / Categorias de Exibição (Separe por vírgula — aceita qualquer moeda nova)</label>
         <input type="text" id="f_moedas" placeholder="btc, eth, doge, jogos, airdrop, ipo, banano...">
 
-        <label>Data Cadastro</label>
+        <label>Data de Cadastro</label>
         <input type="text" id="f_data" placeholder="16/11/2026">
 
         <h3>Classificação</h3>
@@ -399,6 +399,15 @@
             document.execCommand("copy");
             alert("Copiado! Backup garantido.");
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+    const inputData = document.getElementById("f_data");
+    if (inputData && !inputData.value.trim()) {
+      inputData.value = new Date().toLocaleDateString("pt-BR");
+      inputData.dispatchEvent(new Event("input", { bubbles: true }));
+      inputData.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+  });
     </script>
 </body>
 </html>
