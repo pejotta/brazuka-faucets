@@ -218,7 +218,7 @@ function showRecommended(allFaucets, currentFaucet) {
         const currentMoedas = Array.isArray(currentFaucet.moeda) ? currentFaucet.moeda : [currentFaucet.moeda];
         const targetMoedas = Array.isArray(f.moeda) ? f.moeda : [f.moeda];
         return currentMoedas.some(m => targetMoedas.includes(m));
-    }).slice(0, 5);
+    }).slice(0, 4);
 
     if (related.length === 0) {
         container.innerHTML = '<p>Continue explorando para ganhar mais!</p>';
