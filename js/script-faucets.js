@@ -28,13 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
 // FUNÇÃO DE LOGIN E DASHBOARD
 async function checkUser(manualWallet = null) {
     const inputEl = document.getElementById('user-wallet') || document.getElementById('wallet-input');
-    const wallet = manualWallet || (inputEl ? inputEl.value : null);
+    const wallet = (manualWallet || (inputEl ? inputEl.value : '') || '').trim();
     
     if (!wallet || wallet.length < 5) return;
 
     try {
         // ANALISTA: Adicionado timestamp para evitar cache do navegador
-        const response = await fetch(`${API_URL}/get-user-stats?wallet=${wallet}&t=${Date.now()}`);
+        const response = await fetch(`${API_URL}/get-user-stats?wallet=${encodeURIComponent(wallet)}&t=${Date.now()}`);
         const data = await response.json();
         
         if (data.success) {
@@ -89,7 +89,7 @@ async function aplicarCooldownBotoes() {
 
     for (const moeda of moedas) {
         try {
-            const response = await fetch(`${API_URL}/check-cooldown?wallet=${wallet}&coin=${moeda}`);
+            const response = await fetch(`${API_URL}/check-cooldown?wallet=${encodeURIComponent(wallet)}&coin=${moeda}`);
             const data = await response.json();
             
             const btn = document.querySelector(`button[onclick="openClaimModal('${moeda}')"]`);
@@ -127,10 +127,10 @@ function iniciarContagemRegressiva(btn, minutos, moeda) {
 
 // LÓGICA DO MODAL E CAPTCHA
 async function openClaimModal(coin) {
-    currentCoin = coin;
+    currentCoin = (coin || '').trim().toLowerCase();
     const modalTitle = document.getElementById('modal-title');
     const modal = document.getElementById('claim-modal');
-    if (modalTitle) modalTitle.innerText = `Reivindicar ${coin.toUpperCase()}`;
+    if (modalTitle) modalTitle.innerText = `Reivindicar ${currentCoin.toUpperCase()}`;
     if (modal) modal.style.display = 'block';
     
     const btn = document.getElementById('btn-finish-claim');
@@ -154,15 +154,31 @@ function onTurnstileSuccess(token) {
 }
 
 async function redirectToShortlink() {
-    const wallet = localStorage.getItem('brazuka_wallet');
-    const coinKey = (currentCoin || '').toLowerCase();
+    const inputEl = document.getElementById('user-wallet') || document.getElementById('wallet-input');
+    const wallet = (
+        localStorage.getItem('brazuka_wallet') ||
+        localStorage.getItem('brazuka_user_email') ||
+        (inputEl ? inputEl.value : '') ||
+        ''
+    ).trim();
+
+    const coinKey = (currentCoin || '').trim().toLowerCase();
     const valores = { 'trx': 0.001, 'ton': 0.00000005 };
     const valor = valores[coinKey];
 
-    if (!wallet || !valor) {
-        alert("Carteira ou moeda inválida para o claim.");
+    if (!wallet || wallet.length < 5) {
+        alert("Carteira não encontrada. Faça login ou informe sua carteira FaucetPay antes de reivindicar.");
         return;
     }
+
+    if (!coinKey || valor === undefined) {
+        alert(`Moeda inválida para o claim (${currentCoin || 'vazia'}). Abra o modal novamente.`);
+        return;
+    }
+
+    // Garante que a carteira fique salva para os próximos passos
+    localStorage.setItem('brazuka_wallet', wallet);
+    localStorage.setItem('brazuka_user_email', wallet);
 
     const btn = document.getElementById('btn-finish-claim');
     const textoOriginal = btn ? btn.innerText : 'PEGAR TOKENS';
@@ -174,9 +190,9 @@ async function redirectToShortlink() {
         btn.style.opacity = '0.7';
     }
 
-    const callbackLimpo = `${API_URL}/pago-faucet/${wallet}/${coinKey}/${valor}`;
-    const API_ENCURTA = "382904fbdf461a90a005f0c88b89e8617da37ba3"; //[cite: 1]
-    const endpointEncurta = `https://encurta.net/api?api=${API_ENCURTA}&url=${encodeURIComponent(callbackLimpo)}&format=text`; //[cite: 1]
+    const callbackLimpo = `${API_URL}/pago-faucet/${encodeURIComponent(wallet)}/${coinKey}/${valor}`;
+    const API_ENCURTA = "382904fbdf461a90a005f0c88b89e8617da37ba3";
+    const endpointEncurta = `https://encurta.net/api?api=${API_ENCURTA}&url=${encodeURIComponent(callbackLimpo)}&format=text`;
 
     try {
         const res = await fetch(endpointEncurta);
