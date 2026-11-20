@@ -162,7 +162,19 @@ async function redirectToShortlink() {
         ''
     ).trim();
 
-    const coinKey = (currentCoin || '').trim().toLowerCase();
+    // Tenta pegar currentCoin; se estiver vazia, busca em possíveis elementos da tela
+    const coinSelect = document.getElementById('claim-coin') || document.getElementById('select-coin') || document.querySelector('select[name="coin"]');
+    const modalEl = document.getElementById('claim-modal');
+    const btnFinish = document.getElementById('btn-finish-claim');
+
+    const coinBruta =
+        currentCoin ||
+        (coinSelect ? coinSelect.value : '') ||
+        (btnFinish ? btnFinish.dataset.coin : '') ||
+        (modalEl ? modalEl.dataset.coin : '') ||
+        '';
+
+    const coinKey = String(coinBruta).trim().toLowerCase();
     const valores = { 'trx': 0.001, 'ton': 0.00000005 };
     const valor = valores[coinKey];
 
@@ -172,22 +184,24 @@ async function redirectToShortlink() {
     }
 
     if (!coinKey || valor === undefined) {
-        alert(`Moeda inválida para o claim (${currentCoin || 'vazia'}). Abra o modal novamente.`);
+        alert(`Moeda inválida para o claim (${coinBruta || 'vazia'}). Abra o modal novamente.`);
         return;
     }
+
+    // Sincroniza currentCoin para manter consistência
+    currentCoin = coinKey;
 
     // Garante que a carteira fique salva para os próximos passos
     localStorage.setItem('brazuka_wallet', wallet);
     localStorage.setItem('brazuka_user_email', wallet);
 
-    const btn = document.getElementById('btn-finish-claim');
-    const textoOriginal = btn ? btn.innerText : 'PEGAR TOKENS';
+    const textoOriginal = btnFinish ? btnFinish.innerText : 'PEGAR TOKENS';
 
-    if (btn) {
-        btn.disabled = true;
-        btn.innerText = "GERANDO LINK...";
-        btn.style.cursor = 'not-allowed';
-        btn.style.opacity = '0.7';
+    if (btnFinish) {
+        btnFinish.disabled = true;
+        btnFinish.innerText = "GERANDO LINK...";
+        btnFinish.style.cursor = 'not-allowed';
+        btnFinish.style.opacity = '0.7';
     }
 
     const callbackLimpo = `${API_URL}/pago-faucet/${encodeURIComponent(wallet)}/${coinKey}/${valor}`;
@@ -206,11 +220,11 @@ async function redirectToShortlink() {
         throw new Error('Link encurtado inválido retornado pelo Encurta.Net');
     } catch (error) {
         console.error("Erro ao gerar link no Encurta.Net:", error);
-        if (btn) {
-            btn.disabled = false;
-            btn.innerText = textoOriginal;
-            btn.style.cursor = 'pointer';
-            btn.style.opacity = '1';
+        if (btnFinish) {
+            btnFinish.disabled = false;
+            btnFinish.innerText = textoOriginal;
+            btnFinish.style.cursor = 'pointer';
+            btnFinish.style.opacity = '1';
         }
         alert("Não foi possível gerar o link agora. Tente novamente em instantes.");
     }
