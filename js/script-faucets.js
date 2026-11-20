@@ -28,13 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
 // FUNÇÃO DE LOGIN E DASHBOARD
 async function checkUser(manualWallet = null) {
     const inputEl = document.getElementById('user-wallet') || document.getElementById('wallet-input');
-    const wallet = (manualWallet || (inputEl ? inputEl.value : '') || '').trim();
+    const wallet = manualWallet || (inputEl ? inputEl.value : null);
     
     if (!wallet || wallet.length < 5) return;
 
     try {
         // ANALISTA: Adicionado timestamp para evitar cache do navegador
-        const response = await fetch(`${API_URL}/get-user-stats?wallet=${encodeURIComponent(wallet)}&t=${Date.now()}`);
+        const response = await fetch(`${API_URL}/get-user-stats?wallet=${wallet}&t=${Date.now()}`);
         const data = await response.json();
         
         if (data.success) {
@@ -89,7 +89,7 @@ async function aplicarCooldownBotoes() {
 
     for (const moeda of moedas) {
         try {
-            const response = await fetch(`${API_URL}/check-cooldown?wallet=${encodeURIComponent(wallet)}&coin=${moeda}`);
+            const response = await fetch(`${API_URL}/check-cooldown?wallet=${wallet}&coin=${moeda}`);
             const data = await response.json();
             
             const btn = document.querySelector(`button[onclick="openClaimModal('${moeda}')"]`);
@@ -125,50 +125,39 @@ function iniciarContagemRegressiva(btn, minutos, moeda) {
     }, 1000);
 }
 
-function extrairMoedaAtiva() {
-    const coinSelect = document.getElementById('claim-coin') || document.getElementById('select-coin') || document.querySelector('select[name="coin"]');
-    const modalEl = document.getElementById('claim-modal');
-    const btnFinish = document.getElementById('btn-finish-claim');
-    const modalTitleText = (document.getElementById('modal-title')?.innerText || '').toLowerCase();
-
-    let moedaDoTitulo = '';
-    if (modalTitleText.includes('trx')) moedaDoTitulo = 'trx';
-    else if (modalTitleText.includes('ton')) moedaDoTitulo = 'ton';
-
-    const bruta =
-        currentCoin ||
-        (btnFinish ? btnFinish.dataset.coin : '') ||
-        (modalEl ? modalEl.dataset.coin : '') ||
-        (coinSelect ? coinSelect.value : '') ||
-        moedaDoTitulo ||
-        '';
-
-    return String(bruta).trim().toLowerCase();
-}
-
 // LÓGICA DO MODAL E CAPTCHA
 async function openClaimModal(coin) {
-    const coinLimpa = String(coin || '').trim().toLowerCase();
-    currentCoin = coinLimpa;
+    const moeda = String(coin || '').trim().toLowerCase();
+    currentCoin = moeda;
 
     const modalTitle = document.getElementById('modal-title');
     const modal = document.getElementById('claim-modal');
-    const btn = document.getElementById('btn-finish-claim');
+    if (modalTitle && moeda) modalTitle.innerText = `Reivindicar ${moeda.toUpperCase()}`;
+    if (modal) modal.style.display = 'block';
 
-    if (modal) {
-        if (coinLimpa) modal.dataset.coin = coinLimpa;
-        modal.style.display = 'block';
+    // Alterna banners de TRX / TON dentro do modal
+    const elementsTrx = document.querySelectorAll('.modal-ad-trx');
+    const elementsTon = document.querySelectorAll('.modal-ad-ton');
+
+    if (moeda === 'trx') {
+        elementsTrx.forEach(el => el.style.display = 'block');
+        elementsTon.forEach(el => el.style.display = 'none');
+    } else if (moeda === 'ton') {
+        elementsTrx.forEach(el => el.style.display = 'none');
+        elementsTon.forEach(el => el.style.display = 'block');
     }
+
+    if (typeof processarAnunciosDinamicos === 'function') {
+        processarAnunciosDinamicos();
+    }
+    
+    const btn = document.getElementById('btn-finish-claim');
     if (btn) {
-        if (coinLimpa) btn.dataset.coin = coinLimpa;
         btn.disabled = true;
         btn.innerText = "Aguarde o Captcha...";
         btn.style.opacity = '0.5';
     }
-    if (modalTitle && coinLimpa) {
-        modalTitle.innerText = `Reivindicar ${coinLimpa.toUpperCase()}`;
-    }
-
+    
     if (window.turnstile) turnstile.reset();
 }
 
@@ -183,66 +172,60 @@ function onTurnstileSuccess(token) {
 }
 
 async function redirectToShortlink() {
-    const inputEl = document.getElementById('user-wallet') || document.getElementById('wallet-input');
-    const wallet = (
-        localStorage.getItem('brazuka_wallet') ||
-        localStorage.getItem('brazuka_user_email') ||
-        (inputEl ? inputEl.value : '') ||
-        ''
-    ).trim();
-
-    const coinKey = extrairMoedaAtiva();
+    const wallet = localStorage.getItem('brazuka_wallet');
     const valores = { 'trx': 0.001, 'ton': 0.00000005 };
-    const valor = valores[coinKey];
+    const valor = valores[currentCoin];
 
-    if (!wallet || wallet.length < 5) {
-        alert("Carteira não encontrada. Faça login ou informe sua carteira FaucetPay antes de reivindicar.");
+    if (!wallet || !valor) {
+        alert("Carteira ou moeda inválida para o claim.");
         return;
     }
 
-    if (!coinKey || valor === undefined) {
-        alert(`Moeda inválida para o claim (${coinKey || 'vazia'}). Abra o modal novamente.`);
-        return;
+    const btn = document.getElementById('btn-finish-claim');
+    const textoOriginal = btn ? btn.innerText : 'PEGAR TOKENS';
+
+    if (btn) {
+        btn.disabled = true;
+        btn.innerText = "GERANDO LINK...";
+        btn.style.opacity = '0.7';
     }
 
-    // Sincroniza currentCoin para manter consistência
-    currentCoin = coinKey;
-
-    // Garante que a carteira fique salva para os próximos passos
-    localStorage.setItem('brazuka_wallet', wallet);
-    localStorage.setItem('brazuka_user_email', wallet);
-
-    const btnFinish = document.getElementById('btn-finish-claim');
-    const textoOriginal = btnFinish ? btnFinish.innerText : 'PEGAR TOKENS';
-
-    if (btnFinish) {
-        btnFinish.disabled = true;
-        btnFinish.innerText = "GERANDO LINK...";
-        btnFinish.style.cursor = 'not-allowed';
-        btnFinish.style.opacity = '0.7';
-    }
-
-    const callbackLimpo = `${API_URL}/pago-faucet/${encodeURIComponent(wallet)}/${coinKey}/${valor}`;
+    const callbackLimpo = `${API_URL}/pago-faucet/${wallet}/${currentCoin}/${valor}`;
     const API_ENCURTA = "382904fbdf461a90a005f0c88b89e8617da37ba3";
-    const endpointEncurta = `https://encurta.net/api?api=${API_ENCURTA}&url=${encodeURIComponent(callbackLimpo)}&format=text`;
+    const urlEncurta = `https://encurta.net/api?api=${API_ENCURTA}&url=${encodeURIComponent(callbackLimpo)}&format=text`;
 
     try {
-        const res = await fetch(endpointEncurta);
-        const shortUrl = (await res.text()).trim();
+        // 1. Tenta via Worker (evita bloqueio de CORS no navegador e esconde o token)
+        const workerRes = await fetch(`${API_URL}/gerar-link-faucet`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ wallet, coin: currentCoin, amount: valor, url: callbackLimpo })
+        });
+
+        if (workerRes.ok) {
+            const workerData = await workerRes.json();
+            if (workerData.success && workerData.url) {
+                window.location.href = workerData.url;
+                return;
+            }
+        }
+
+        // 2. Fallback direto caso a rota do Worker ainda não exista
+        const directRes = await fetch(urlEncurta);
+        const shortUrl = (await directRes.text()).trim();
 
         if (shortUrl && shortUrl.startsWith('http')) {
             window.location.href = shortUrl;
             return;
         }
 
-        throw new Error('Link encurtado inválido retornado pelo Encurta.Net');
+        throw new Error("URL inválida retornada pela API do Encurta.Net");
     } catch (error) {
-        console.error("Erro ao gerar link no Encurta.Net:", error);
-        if (btnFinish) {
-            btnFinish.disabled = false;
-            btnFinish.innerText = textoOriginal;
-            btnFinish.style.cursor = 'pointer';
-            btnFinish.style.opacity = '1';
+        console.error("Erro ao gerar link do Encurta.Net:", error);
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = textoOriginal;
+            btn.style.opacity = '1';
         }
         alert("Não foi possível gerar o link agora. Tente novamente em instantes.");
     }
