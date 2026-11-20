@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link rel="icon" type="image/png" href="/assets/logo-brazuka.png" sizes="32x32">
+    <link rel="shortcut icon" href="/assets/logo-brazuka.png">
+    <link rel="apple-touch-icon" href="/assets/logo-brazuka.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamentos Públicos | Brazuka Faucets</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --success: #27ae60;
+            --dark-blue: #2c3e50;
+            --brazuka-green: #27ae60;
+        }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background-color: var(--bg-color, #f8f9fa);
+            color: var(--text-color, #333);
+            margin: 0;
+        }
+
+        .hero-pagamentos {
+            background: var(--dark-blue);
+            color: #fff;
+            padding: 50px 0 80px;
+            text-align: center;
+        }
+
+        [data-theme="dark"] .hero-pagamentos {
+            background: #111b27;
+        }
+
+        .summary-card {
+            background: var(--card-bg, #fff);
+            max-width: 960px;
+            margin: -45px auto 30px;
+            padding: 25px;
+            border-radius: 18px;
+            border: 1px solid var(--card-border, #eee);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            position: relative;
+            z-index: 10;
+        }
+
+        .toolbar-pagamentos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            background: var(--table-th-bg, #f4f6f7);
+            color: var(--text-color, #333);
+            border: 1px solid var(--card-border, #ddd);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .btn-refresh {
+            background: var(--brazuka-green);
+            color: #fff;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .btn-refresh:hover {
+            filter: brightness(1.08);
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .quick-link {
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 9px 16px;
+            border-radius: 8px;
+            color: #fff;
+            background: var(--primary);
+            transition: 0.2s;
+        }
+
+        .quick-link.faucet-link {
+            background: var(--brazuka-green);
+        }
+
+        .quick-link:hover {
+            filter: brightness(1.08);
+        }
+
+        .extra-section {
+            background: var(--card-bg, #fff);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            border: 1px solid var(--card-border, #eee);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--table-th-bg, #f4f6f7);
+            color: var(--text-color, var(--dark-blue));
+            padding: 12px;
+            border-radius: 5px;
+        }
+
+        [data-theme="dark"] th {
+            color: #fff;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--card-border, #f0f0f0);
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .origem-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .origem-shortlink {
+            background: rgba(26, 115, 232, 0.14);
+            color: var(--primary);
+        }
+
+        .origem-faucet {
+            background: rgba(39, 174, 96, 0.15);
+            color: var(--success);
+        }
+
+        .status-info {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-pagamentos h1 {
+                font-size: 1.6rem;
+            }
+
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tr {
+                border: 1px solid var(--card-border, #eee);
+                margin-bottom: 10px;
+                border-radius: 10px;
+                padding: 10px;
+                background: var(--table-th-bg, #f0f0f0);
+            }
+
+            td {
+                border: none;
+                position: relative;
+                text-align: right;
+                padding: 8px 10px;
+            }
+
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                width: 45%;
+                text-align: left;
+                font-weight: bold;
+                color: var(--primary);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero-pagamentos">
+        <div class="container">
+            <h1><i class="fas fa-receipt"></i> Histórico Público de Pagamentos</h1>
+            <p>Transparência em tempo real dos envios de Faucets e Shortlinks via FaucetPay.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="summary-card">
+            <div class="quick-actions">
+                <a href="faucets.html" class="quick-link faucet-link"><i class="fas fa-faucet"></i> Ir para Torneiras (TRX / TON)</a>
+                <a href="shortlinks.html" class="quick-link"><i class="fas fa-link"></i> Ir para Shortlinks (DOGE)</a>
+            </div>
+
+            <div class="toolbar-pagamentos">
+                <div class="filter-group" id="filtros-origem">
+                    <button type="button" class="filter-btn active" data-filter="todos" onclick="aplicarFiltro('todos', this)">Todos</button>
+                    <button type="button" class="filter-btn" data-filter="faucet" onclick="aplicarFiltro('faucet', this)">Faucet</button>
+                    <button type="button" class="filter-btn" data-filter="shortlink" onclick="aplicarFiltro('shortlink', this)">Shortlink</button>
+                    <button type="button" class="filter-btn" data-filter="TRX" onclick="aplicarFiltro('TRX', this)">TRX</button>
+                    <button type="button" class="filter-btn" data-filter="TON" onclick="aplicarFiltro('TON', this)">TON</button>
+                    <button type="button" class="filter-btn" data-filter="DOGE" onclick="aplicarFiltro('DOGE', this)">DOGE</button>
+                </div>
+
+                <button type="button" class="btn-refresh" onclick="carregarPagamentosPublicos()">
+                    <i class="fas fa-sync-alt"></i> Atualizar
+                </button>
+            </div>
+
+            <div class="status-info" id="resumo-pagamentos">Carregando pagamentos...</div>
+        </section>
+
+        <section class="extra-section">
+            <h3><i class="fas fa-history"></i> Últimos Pagamentos Registrados</h3>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Origem</th>
+                            <th>Usuário</th>
+                            <th>Valor</th>
+                            <th>Moeda</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payout-rows">
+                        <tr>
+                            <td colspan="5">Carregando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/script-global.js"></script>
+    <script src="js/ads-manager.js"></script>
+    <script>
+        const API_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
+        let todosPagamentos = [];
+        let filtroAtual = 'todos';
+
+        function resolverOrigemPagamento(pago, moedaUpper) {
+            if (pago?.origem) {
+                const normalizada = String(pago.origem).trim().toLowerCase();
+                if (normalizada === 'shortlink' || normalizada === 'shortlinks') return 'shortlink';
+                if (normalizada === 'faucet' || normalizada === 'faucets') return 'faucet';
+            }
+            return moedaUpper === 'DOGE' ? 'shortlink' : 'faucet';
+        }
+
+        function mascararEmail(email) {
+            if (!email) return "---";
+            const partes = String(email).split('@');
+            if (partes.length < 2) return String(email).substring(0, 5) + "...";
+            const [user, domain] = partes;
+            return user.substring(0, 4) + '***@' + domain;
+        }
+
+        function formatarData(timestamp) {
+            if (!timestamp) return "--/--/--";
+            return new Date(timestamp).toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: '2-digit',
+                timeZone: 'UTC'
+            });
+        }
+
+        function renderizarTabela() {
+            const tabela = document.getElementById('payout-rows');
+            const resumo = document.getElementById('resumo-pagamentos');
+            if (!tabela) return;
+
+            const filtrados = todosPagamentos.filter(item => {
+                if (filtroAtual === 'todos') return true;
+                if (filtroAtual === 'faucet' || filtroAtual === 'shortlink') {
+                    return item.origem === filtroAtual;
+                }
+                return item.coin === filtroAtual;
+            });
+
+            if (resumo) {
+                resumo.innerText = `Exibindo ${filtrados.length} de ${todosPagamentos.length} pagamentos recentes.`;
+            }
+
+            tabela.innerHTML = '';
+
+            if (filtrados.length === 0) {
+                tabela.innerHTML = '<tr><td colspan="5">Nenhum pagamento encontrado para este filtro.</td></tr>';
+                return;
+            }
+
+            filtrados.forEach(pago => {
+                const isShortlink = pago.origem === 'shortlink';
+                const labelOrigem = isShortlink ? 'Shortlink' : 'Faucet';
+                const badgeClass = isShortlink ? 'origem-shortlink' : 'origem-faucet';
+
+                const logoMap = {
+                    'TRX': 'tron-trx-logo.svg',
+                    'TON': 'toncoin-ton-logo.svg',
+                    'DOGE': 'dogecoin-doge-logo.svg'
+                };
+                const logoFile = logoMap[pago.coin] || `${pago.coin.toLowerCase()}-logo.svg`;
+
+                const row = `
+                    <tr>
+                        <td data-label="Origem"><span class="origem-badge ${badgeClass}">${labelOrigem}</span></td>
+                        <td data-label="Usuário">${mascararEmail(pago.email)}</td>
+                        <td data-label="Valor">${(Number(pago.amount || 0) / 100000000).toFixed(8)}</td>
+                        <td data-label="Moeda">
+                            <img src="https://cryptologos.cc/logos/${logoFile}?v=040" width="20" onerror="this.src='https://via.placeholder.com/20?text=$'">
+                            ${pago.coin}
+                        </td>
+                        <td data-label="Data">${formatarData(pago.timestamp)}</td>
+                    </tr>
+                `;
+                tabela.innerHTML += row;
+            });
+        }
+
+        function aplicarFiltro(filtro, btnElement) {
+            filtroAtual = filtro;
+            document.querySelectorAll('#filtros-origem .filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (btnElement) btnElement.classList.add('active');
+            renderizarTabela();
+        }
+
+        async function carregarPagamentosPublicos() {
+            const tabela = document.getElementById('payout-rows');
+            const resumo = document.getElementById('resumo-pagamentos');
+
+            try {
+                if (resumo) resumo.innerText = "Atualizando pagamentos...";
+                const res = await fetch(`${API_URL}/get-recent-payouts?t=${Date.now()}`);
+                const data = await res.json();
+
+                todosPagamentos = (Array.isArray(data) ? data : []).map(pago => {
+                    const moedaUpper = String(pago.coin || '').toUpperCase();
+                    return {
+                        ...pago,
+                        coin: moedaUpper,
+                        origem: resolverOrigemPagamento(pago, moedaUpper)
+                    };
+                });
+
+                renderizarTabela();
+            } catch (err) {
+                console.error("Erro ao carregar pagamentos públicos:", err);
+                if (resumo) resumo.innerText = "Não foi possível carregar os pagamentos agora.";
+                if (tabela) tabela.innerHTML = '<tr><td colspan="5">Erro ao buscar histórico. Tente novamente.</td></tr>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', carregarPagamentosPublicos);
+    </script>
+</body>
+</html>
