@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function startShortlink(linkId) {
     const wallet = getActiveWallet();
     if (!wallet || wallet.length < 5) {
-        alert("Ei Pejotta, coloca seu e-mail ou carteira primeiro! 😂");
+        alert("Ei calabreso, coloca seu e-mail ou carteira primeiro! 😂");
         return;
     }
 
