@@ -125,21 +125,50 @@ function iniciarContagemRegressiva(btn, minutos, moeda) {
     }, 1000);
 }
 
+function extrairMoedaAtiva() {
+    const coinSelect = document.getElementById('claim-coin') || document.getElementById('select-coin') || document.querySelector('select[name="coin"]');
+    const modalEl = document.getElementById('claim-modal');
+    const btnFinish = document.getElementById('btn-finish-claim');
+    const modalTitleText = (document.getElementById('modal-title')?.innerText || '').toLowerCase();
+
+    let moedaDoTitulo = '';
+    if (modalTitleText.includes('trx')) moedaDoTitulo = 'trx';
+    else if (modalTitleText.includes('ton')) moedaDoTitulo = 'ton';
+
+    const bruta =
+        currentCoin ||
+        (btnFinish ? btnFinish.dataset.coin : '') ||
+        (modalEl ? modalEl.dataset.coin : '') ||
+        (coinSelect ? coinSelect.value : '') ||
+        moedaDoTitulo ||
+        '';
+
+    return String(bruta).trim().toLowerCase();
+}
+
 // LÓGICA DO MODAL E CAPTCHA
 async function openClaimModal(coin) {
-    currentCoin = (coin || '').trim().toLowerCase();
+    const coinLimpa = String(coin || '').trim().toLowerCase();
+    currentCoin = coinLimpa;
+
     const modalTitle = document.getElementById('modal-title');
     const modal = document.getElementById('claim-modal');
-    if (modalTitle) modalTitle.innerText = `Reivindicar ${currentCoin.toUpperCase()}`;
-    if (modal) modal.style.display = 'block';
-    
     const btn = document.getElementById('btn-finish-claim');
+
+    if (modal) {
+        if (coinLimpa) modal.dataset.coin = coinLimpa;
+        modal.style.display = 'block';
+    }
     if (btn) {
+        if (coinLimpa) btn.dataset.coin = coinLimpa;
         btn.disabled = true;
         btn.innerText = "Aguarde o Captcha...";
         btn.style.opacity = '0.5';
     }
-    
+    if (modalTitle && coinLimpa) {
+        modalTitle.innerText = `Reivindicar ${coinLimpa.toUpperCase()}`;
+    }
+
     if (window.turnstile) turnstile.reset();
 }
 
@@ -162,19 +191,7 @@ async function redirectToShortlink() {
         ''
     ).trim();
 
-    // Tenta pegar currentCoin; se estiver vazia, busca em possíveis elementos da tela
-    const coinSelect = document.getElementById('claim-coin') || document.getElementById('select-coin') || document.querySelector('select[name="coin"]');
-    const modalEl = document.getElementById('claim-modal');
-    const btnFinish = document.getElementById('btn-finish-claim');
-
-    const coinBruta =
-        currentCoin ||
-        (coinSelect ? coinSelect.value : '') ||
-        (btnFinish ? btnFinish.dataset.coin : '') ||
-        (modalEl ? modalEl.dataset.coin : '') ||
-        '';
-
-    const coinKey = String(coinBruta).trim().toLowerCase();
+    const coinKey = extrairMoedaAtiva();
     const valores = { 'trx': 0.001, 'ton': 0.00000005 };
     const valor = valores[coinKey];
 
@@ -184,7 +201,7 @@ async function redirectToShortlink() {
     }
 
     if (!coinKey || valor === undefined) {
-        alert(`Moeda inválida para o claim (${coinBruta || 'vazia'}). Abra o modal novamente.`);
+        alert(`Moeda inválida para o claim (${coinKey || 'vazia'}). Abra o modal novamente.`);
         return;
     }
 
@@ -195,6 +212,7 @@ async function redirectToShortlink() {
     localStorage.setItem('brazuka_wallet', wallet);
     localStorage.setItem('brazuka_user_email', wallet);
 
+    const btnFinish = document.getElementById('btn-finish-claim');
     const textoOriginal = btnFinish ? btnFinish.innerText : 'PEGAR TOKENS';
 
     if (btnFinish) {
