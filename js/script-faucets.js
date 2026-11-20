@@ -243,42 +243,63 @@ function logout() {
     location.reload();
 }
 
-// CARREGA PAGAMENTOS E RANKING (CORRIGIDO PARA O WORKER)
+function resolverOrigemPagamento(pago, moedaUpper) {
+    if (pago?.origem) {
+        const normalizada = String(pago.origem).trim().toLowerCase();
+        if (normalizada === 'shortlink' || normalizada === 'shortlinks') return 'shortlink';
+        if (normalizada === 'faucet' || normalizada === 'faucets') return 'faucet';
+    }
+    return moedaUpper === 'DOGE' ? 'shortlink' : 'faucet';
+}
+
+// CARREGA PAGAMENTOS E RANKING (APENAS FAUCETS NESTA PÁGINA)
 async function carregarDadosExtras() {
     try {
-        // 1. Pagamentos Recentes
-        const resPagamentos = await fetch(`${API_URL}/get-recent-payouts`);
-        const pagamentos = await resPagamentos.json();
+        // 1. Pagamentos Recentes (filtrados por origem faucet)
         const tabela = document.getElementById('payout-rows');
-        
         if (tabela) {
+            const resPagamentos = await fetch(`${API_URL}/get-recent-payouts`);
+            const pagamentos = await resPagamentos.json();
+
+            const pagamentosFaucet = (Array.isArray(pagamentos) ? pagamentos : [])
+                .map(pago => {
+                    const moedaUpper = String(pago.coin || '').toUpperCase();
+                    return {
+                        ...pago,
+                        coin: moedaUpper,
+                        origem: resolverOrigemPagamento(pago, moedaUpper)
+                    };
+                })
+                .filter(pago => pago.origem === 'faucet');
+
             tabela.innerHTML = ''; 
-            pagamentos.forEach(pago => {
+            pagamentosFaucet.forEach(pago => {
                 const logoMap = { 'TRX': 'tron-trx-logo.svg', 'TON': 'toncoin-ton-logo.svg', 'DOGE': 'dogecoin-doge-logo.svg' };
-                const logoFile = logoMap[pago.coin.toUpperCase()] || `${pago.coin.toLowerCase()}-logo.svg`;
+                const logoFile = logoMap[pago.coin] || `${pago.coin.toLowerCase()}-logo.svg`;
 
                 const row = `
                     <tr>
-                        <td>${mascararEmail(pago.email)}</td>
-                        <td>${(pago.amount / 100000000).toFixed(8)}</td>
-                        <td>
+                        <td data-label="Origem">Faucet</td>
+                        <td data-label="Usuário">${mascararEmail(pago.email)}</td>
+                        <td data-label="Valor">${(Number(pago.amount || 0) / 100000000).toFixed(8)}</td>
+                        <td data-label="Moeda">
                             <img src="https://cryptologos.cc/logos/${logoFile}?v=040" width="20" onerror="this.src='https://via.placeholder.com/20?text=$'"> 
                             ${pago.coin}
                         </td>
-                        <td>${formatarData(pago.timestamp)}</td>
+                        <td data-label="Data">${formatarData(pago.timestamp)}</td>
                     </tr>`;
                 tabela.innerHTML += row;
             });
         }
 
         // 2. Ranking Dinâmico (Sincronizado com a rota /get-rankings do Worker)
-        const resRanking = await fetch(`${API_URL}/get-rankings?tipo=claimers&limit=5`);
-        const ranking = await resRanking.json();
         const listaRanking = document.getElementById('leaderboard-list');
-        
         if (listaRanking) {
+            const resRanking = await fetch(`${API_URL}/get-rankings?tipo=claimers&limit=5`);
+            const ranking = await resRanking.json();
+
             listaRanking.innerHTML = '';
-            ranking.forEach((user, index) => {
+            (Array.isArray(ranking) ? ranking : []).forEach((user, index) => {
                 const item = `<li><strong>${index + 1}º ${mascararEmail(user.email)}</strong> - ${user.score} Claims</li>`;
                 listaRanking.innerHTML += item;
             });
@@ -290,12 +311,18 @@ async function carregarDadosExtras() {
 
 function mascararEmail(email) {
     if (!email) return "---";
-    const partes = email.split('@');
-    if (partes.length < 2) return email.substring(0, 5) + "...";
+    const partes = String(email).split('@');
+    if (partes.length < 2) return String(email).substring(0, 5) + "...";
     const [user, domain] = partes;
     return user.substring(0, 4) + '***@' + domain;
 }
 
 function formatarData(timestamp) {
-    return new Date(timestamp).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'UTC' });
+    if (!timestamp) return "--/--/--";
+    return new Date(timestamp).toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+        timeZone: 'UTC'
+    });
 }
