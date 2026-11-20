@@ -1,6 +1,6 @@
 // ANALISTA: Configurações Gerais e Padronização
 const API_URL = "https://brazuka-faucets.moneynanet-yt.workers.dev";
-const STORAGE_KEY = 'brazuka_wallet'; // Chave unificada para o Banco de Dados [cite: 2025-12-26]
+const STORAGE_KEY = 'brazuka_wallet'; // Chave unificada para o Banco de Dados
 
 // 1. Função para pegar o e-mail ativo (Input ou Cache)
 function getActiveWallet() {
@@ -11,6 +11,9 @@ function getActiveWallet() {
 
 // 2. Inicialização ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
+    // Carrega pagamentos recentes/ranking mesmo antes do login se a tabela existir na tela
+    carregarDadosExtras();
+
     // Tenta recuperar o e-mail para login automático
     const emailLogado = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('brazuka_user_email');
     
@@ -66,7 +69,7 @@ async function startShortlink(linkId) {
 
 // 4. Bloqueio visual e Timer de 60s
 function activateLock() {
-    // ANALISTA: Selecionando o container correto que você criou no HTML [cite: 2026-01-02]
+    // ANALISTA: Selecionando o container correto que você criou no HTML
     const mainContainer = document.getElementById('content-to-blur');
     const overlay = document.getElementById('lock-overlay');
     const timerDisplay = document.getElementById('timer-display');
@@ -107,7 +110,7 @@ async function checkUser(manualWallet = null) {
             localStorage.setItem(STORAGE_KEY, wallet);
             localStorage.setItem('brazuka_user_email', wallet);
 
-            const response = await fetch(`${API_URL}/get-user-stats?wallet=${wallet}&t=${Date.now()}`);
+            const response = await fetch(`${API_URL}/get-user-stats?wallet=${encodeURIComponent(wallet)}&t=${Date.now()}`);
             const data = await response.json();
             
             if (data.success) {
@@ -158,6 +161,9 @@ async function showDashboard(wallet, stats) {
             document.getElementById('faucet-balance-display').innerText = "---";
     }
 
+    // Atualiza tabela de pagamentos / ranking quando o painel abre
+    carregarDadosExtras();
+
     // Lógica de Limites Diários
     const limites = { "link_1": 10, "link_2": 5, "link_3": 3 };
     const clicksFeitos = stats.daily_clicks || {};
@@ -201,23 +207,24 @@ function logout() {
 async function carregarDadosExtras() {
     try {
         // 1. Pagamentos Recentes
-        const resPagamentos = await fetch(`${API_URL}/get-recent-payouts`);
-        const pagamentos = await resPagamentos.json();
         const tabela = document.getElementById('payout-rows');
-        
         if (tabela) {
+            const resPagamentos = await fetch(`${API_URL}/get-recent-payouts`);
+            const pagamentos = await resPagamentos.json();
+
             tabela.innerHTML = ''; 
-            pagamentos.forEach(pago => {
+            (Array.isArray(pagamentos) ? pagamentos : []).forEach(pago => {
+                const moedaUpper = (pago.coin || '').toUpperCase();
                 const logoMap = { 'TRX': 'tron-trx-logo.svg', 'TON': 'toncoin-ton-logo.svg', 'DOGE': 'dogecoin-doge-logo.svg' };
-                const logoFile = logoMap[pago.coin.toUpperCase()] || `${pago.coin.toLowerCase()}-logo.svg`;
+                const logoFile = logoMap[moedaUpper] || `${moedaUpper.toLowerCase()}-logo.svg`;
 
                 const row = `
                     <tr>
                         <td>${mascararEmail(pago.email)}</td>
-                        <td>${(pago.amount / 100000000).toFixed(8)}</td>
+                        <td>${(Number(pago.amount || 0) / 100000000).toFixed(8)}</td>
                         <td>
                             <img src="https://cryptologos.cc/logos/${logoFile}?v=040" width="20" onerror="this.src='https://via.placeholder.com/20?text=$'"> 
-                            ${pago.coin}
+                            ${moedaUpper}
                         </td>
                         <td>${formatarData(pago.timestamp)}</td>
                     </tr>`;
@@ -226,13 +233,13 @@ async function carregarDadosExtras() {
         }
 
         // 2. Ranking Dinâmico (Sincronizado com a rota /get-rankings do Worker)
-        const resRanking = await fetch(`${API_URL}/get-rankings?tipo=claimers&limit=5`);
-        const ranking = await resRanking.json();
         const listaRanking = document.getElementById('leaderboard-list');
-        
         if (listaRanking) {
+            const resRanking = await fetch(`${API_URL}/get-rankings?tipo=claimers&limit=5`);
+            const ranking = await resRanking.json();
+
             listaRanking.innerHTML = '';
-            ranking.forEach((user, index) => {
+            (Array.isArray(ranking) ? ranking : []).forEach((user, index) => {
                 const item = `<li><strong>${index + 1}º ${mascararEmail(user.email)}</strong> - ${user.score} Claims</li>`;
                 listaRanking.innerHTML += item;
             });
@@ -240,4 +247,17 @@ async function carregarDadosExtras() {
     } catch (error) {
         console.error("Erro ao carregar dados extras:", error);
     }
+}
+
+function mascararEmail(email) {
+    if (!email) return "---";
+    const partes = String(email).split('@');
+    if (partes.length < 2) return String(email).substring(0, 5) + "...";
+    const [user, domain] = partes;
+    return user.substring(0, 4) + '***@' + domain;
+}
+
+function formatarData(timestamp) {
+    if (!timestamp) return "--/--";
+    return new Date(timestamp).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'UTC' });
 }
