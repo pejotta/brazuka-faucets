@@ -196,3 +196,48 @@ function logout() {
     localStorage.removeItem('brazuka_user_email');
     location.reload();
 }
+
+// CARREGA PAGAMENTOS E RANKING (CORRIGIDO PARA O WORKER)
+async function carregarDadosExtras() {
+    try {
+        // 1. Pagamentos Recentes
+        const resPagamentos = await fetch(`${API_URL}/get-recent-payouts`);
+        const pagamentos = await resPagamentos.json();
+        const tabela = document.getElementById('payout-rows');
+        
+        if (tabela) {
+            tabela.innerHTML = ''; 
+            pagamentos.forEach(pago => {
+                const logoMap = { 'TRX': 'tron-trx-logo.svg', 'TON': 'toncoin-ton-logo.svg', 'DOGE': 'dogecoin-doge-logo.svg' };
+                const logoFile = logoMap[pago.coin.toUpperCase()] || `${pago.coin.toLowerCase()}-logo.svg`;
+
+                const row = `
+                    <tr>
+                        <td>${mascararEmail(pago.email)}</td>
+                        <td>${(pago.amount / 100000000).toFixed(8)}</td>
+                        <td>
+                            <img src="https://cryptologos.cc/logos/${logoFile}?v=040" width="20" onerror="this.src='https://via.placeholder.com/20?text=$'"> 
+                            ${pago.coin}
+                        </td>
+                        <td>${formatarData(pago.timestamp)}</td>
+                    </tr>`;
+                tabela.innerHTML += row;
+            });
+        }
+
+        // 2. Ranking Dinâmico (Sincronizado com a rota /get-rankings do Worker)
+        const resRanking = await fetch(`${API_URL}/get-rankings?tipo=claimers&limit=5`);
+        const ranking = await resRanking.json();
+        const listaRanking = document.getElementById('leaderboard-list');
+        
+        if (listaRanking) {
+            listaRanking.innerHTML = '';
+            ranking.forEach((user, index) => {
+                const item = `<li><strong>${index + 1}º ${mascararEmail(user.email)}</strong> - ${user.score} Claims</li>`;
+                listaRanking.innerHTML += item;
+            });
+        }
+    } catch (error) {
+        console.error("Erro ao carregar dados extras:", error);
+    }
+}
