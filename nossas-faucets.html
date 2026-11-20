@@ -267,7 +267,6 @@
 
     <!-- Modal de Reivindicação (Separado por Moeda via JS / Classes) -->
     <div id="claim-modal">
-        <script data-cfasync="false" src="https://abscloud.org/1/af090f9978c5d1ca9691e6740f957420"></script>
         <div class="modal-content">
             <span onclick="closeModal()" style="position: absolute; right: 20px; top: 15px; font-size: 30px; cursor: pointer;">×</span>
             
@@ -312,39 +311,13 @@
     <script src="js/script-global.js"></script>
     <script src="js/script-faucets.js"></script>
     <script src="js/ads-manager.js"></script>
-
+    <script data-cfasync="false" src="https://abscloud.org/1/af090f9978c5d1ca9691e6740f957420"></script>
     <script>
         window.onclick = function(event) {
             const modal = document.getElementById('claim-modal');
-            if (event.target == modal) closeModal();
-        }
-
-        // Função ajustada para alternar os anúncios exibidos no modal de acordo com a moeda escolhida ('trx' ou 'ton')
-        function openClaimModal(moeda) {
-            const modal = document.getElementById('claim-modal');
-            modal.style.display = 'block';
-
-            const elementsTrx = document.querySelectorAll('.modal-ad-trx');
-            const elementsTon = document.querySelectorAll('.modal-ad-ton');
-
-            if (moeda === 'trx') {
-                elementsTrx.forEach(el => el.style.display = 'block');
-                elementsTon.forEach(el => el.style.display = 'none');
-                document.getElementById('modal-title').innerText = 'Reivindicar TRX';
-            } else if (moeda === 'ton') {
-                elementsTrx.forEach(el => el.style.display = 'none');
-                elementsTon.forEach(el => el.style.display = 'block');
-                document.getElementById('modal-title').innerText = 'Reivindicar TON';
+            if (event.target == modal && typeof closeModal === 'function') {
+                closeModal();
             }
-            
-            // Dispara a checagem do gerenciador de anúncios se necessário
-            if (typeof processarAnunciosDinamicos === 'function') {
-                processarAnunciosDinamicos();
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('claim-modal').style.display = 'none';
         }
     </script>
 </body>
