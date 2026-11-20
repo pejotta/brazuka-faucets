@@ -203,30 +203,50 @@ function logout() {
     location.reload();
 }
 
-// CARREGA PAGAMENTOS E RANKING (CORRIGIDO PARA O WORKER)
+function resolverOrigemPagamento(pago, moedaUpper) {
+    if (pago?.origem) {
+        const normalizada = String(pago.origem).trim().toLowerCase();
+        if (normalizada === 'shortlink' || normalizada === 'shortlinks') return 'shortlink';
+        if (normalizada === 'faucet' || normalizada === 'faucets') return 'faucet';
+    }
+    return moedaUpper === 'DOGE' ? 'shortlink' : 'faucet';
+}
+
+// CARREGA PAGAMENTOS E RANKING (APENAS SHORTLINKS NESTA PÁGINA)
 async function carregarDadosExtras() {
     try {
-        // 1. Pagamentos Recentes
+        // 1. Pagamentos Recentes (filtrados por origem shortlink)
         const tabela = document.getElementById('payout-rows');
         if (tabela) {
             const resPagamentos = await fetch(`${API_URL}/get-recent-payouts`);
             const pagamentos = await resPagamentos.json();
 
+            const pagamentosShortlink = (Array.isArray(pagamentos) ? pagamentos : [])
+                .map(pago => {
+                    const moedaUpper = String(pago.coin || '').toUpperCase();
+                    return {
+                        ...pago,
+                        coin: moedaUpper,
+                        origem: resolverOrigemPagamento(pago, moedaUpper)
+                    };
+                })
+                .filter(pago => pago.origem === 'shortlink');
+
             tabela.innerHTML = ''; 
-            (Array.isArray(pagamentos) ? pagamentos : []).forEach(pago => {
-                const moedaUpper = (pago.coin || '').toUpperCase();
+            pagamentosShortlink.forEach(pago => {
                 const logoMap = { 'TRX': 'tron-trx-logo.svg', 'TON': 'toncoin-ton-logo.svg', 'DOGE': 'dogecoin-doge-logo.svg' };
-                const logoFile = logoMap[moedaUpper] || `${moedaUpper.toLowerCase()}-logo.svg`;
+                const logoFile = logoMap[pago.coin] || `${pago.coin.toLowerCase()}-logo.svg`;
 
                 const row = `
                     <tr>
-                        <td>${mascararEmail(pago.email)}</td>
-                        <td>${(Number(pago.amount || 0) / 100000000).toFixed(8)}</td>
-                        <td>
+                        <td data-label="Origem">Shortlink</td>
+                        <td data-label="Usuário">${mascararEmail(pago.email)}</td>
+                        <td data-label="Valor">${(Number(pago.amount || 0) / 100000000).toFixed(8)}</td>
+                        <td data-label="Moeda">
                             <img src="https://cryptologos.cc/logos/${logoFile}?v=040" width="20" onerror="this.src='https://via.placeholder.com/20?text=$'"> 
-                            ${moedaUpper}
+                            ${pago.coin}
                         </td>
-                        <td>${formatarData(pago.timestamp)}</td>
+                        <td data-label="Data">${formatarData(pago.timestamp)}</td>
                     </tr>`;
                 tabela.innerHTML += row;
             });
@@ -258,6 +278,11 @@ function mascararEmail(email) {
 }
 
 function formatarData(timestamp) {
-    if (!timestamp) return "--/--";
-    return new Date(timestamp).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'UTC' });
+    if (!timestamp) return "--/--/--";
+    return new Date(timestamp).toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+        timeZone: 'UTC'
+    });
 }
